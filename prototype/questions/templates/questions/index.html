@@ -1,0 +1,12 @@
+<b>Questions</b>
+{% if question_list %}
+    <ul>
+    {% for question in question_list %}  
+        <li>
+            {{question.question_text}}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No questions are available (use admin site to add)</p>
+{% endif %}
