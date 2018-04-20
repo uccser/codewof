@@ -17,12 +17,14 @@ class SkillView(generic.ListView):
     """displays list of questions which involve this skill"""
     template_name = 'questions/skill.html'
     context_object_name = 'question_list'
+    model = SkillArea
 
     def get_queryset(self):
-        return Question.objects.order_by('title')
+        skill = self.model
+        return Question.objects.filter(skill__in=skill_areas).order_by('title')
 
 class QuestionView(generic.DetailView):
-    """displays list of questions which involve this skill"""
+    """displays question page"""
     template_name = 'questions/question.html'
     model = Question
     
