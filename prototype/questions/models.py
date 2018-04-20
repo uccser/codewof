@@ -23,3 +23,6 @@ class SkillArea(models.Model):
 class TestCase(models.Model):
     test_input = models.CharField(max_length=SMALL)
     expected_output = models.CharField(max_length=LARGE)
+
+    def __str__(self):
+        return self.test_input + ' -> ' + self.expected_output

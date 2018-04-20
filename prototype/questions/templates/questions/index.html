@@ -1,12 +1,13 @@
-<b>Questions</b>
-{% if question_list %}
+
+<b>Skill Areas</b>
+{% if skill_list %}
     <ul>
-    {% for question in question_list %}  
+    {% for skill in skill_list %}  
         <li>
-            {{question.question_text}}
+            <a href="/skills/{{skill.name}}">{{skill.name}}</a>
         </li>
     {% endfor %}
     </ul>
 {% else %}
-    <p>No questions are available (use admin site to add)</p>
+    <p>No skill areas are available (use admin site to add)</p>
 {% endif %}

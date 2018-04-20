@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import *
+from .models import Question, SkillArea, TestCase
 
 
 admin.site.register(Question)
