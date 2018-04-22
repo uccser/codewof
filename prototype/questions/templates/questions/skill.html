@@ -1,7 +1,7 @@
 <b>Questions</b>
-{% if question_list %}
+{% if skill and skill.questions %}
     <ul>
-    {% for question in question_list %}  
+    {% for question in skill.questions.all %}  
         <li>
             <a href="/questions/{{question.id}}">{{question.title}}</a>
         </li>

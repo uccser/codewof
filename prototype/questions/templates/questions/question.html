@@ -1,8 +1,34 @@
+{% extends "questions/base.html" %}
+
+{% block content %}
 <b>{{question.title}}</b>
 <p>
     {{question.question_text}}
 </p>
-<i>IDE goes here</i>
+<textarea id="user_input">print(2)</textarea>
 <p>
-    <button>Submit</button>
+    <input id="submit" type="button" value="Submit" />
 </p>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $("#submit").click(function () {
+        console.log("fired");
+        var user_input = $("#user_input").val();
+
+        $.ajax({
+            url: '/ajax/send_code/',
+            method: 'POST',
+            data: {
+                user_input: user_input,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.result.id);
+            }
+        });
+    });
+</script>
+{% endblock %}
