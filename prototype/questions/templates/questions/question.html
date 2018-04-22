@@ -9,12 +9,38 @@
 <p>
     <input id="submit" type="button" value="Submit" />
 </p>
+<div id="loading">
+    Loading...
+</div>
+<span id="output"></span>
 {% endblock %}
 
 {% block javascript %}
 <script>
+    $('#loading').hide();
+    $('#output').hide();
+
+    var poll_sphere_engine = function(id) {
+        $('#loading').show();
+        $.ajax({
+            url: '/ajax/get_output/',
+            method: 'GET',
+            data: {
+                id: id,
+                question: '{{ question.id }}'
+            },
+            dataType: 'json',
+            success: function(result) {
+                $('#loading').hide();
+                console.log(result);
+
+                $('#output').text(result.output);
+                $('#output').show();
+            }
+        });
+    }
+
     $("#submit").click(function () {
-        console.log("fired");
         var user_input = $("#user_input").val();
 
         $.ajax({
@@ -25,8 +51,9 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             dataType: 'json',
-            success: function (data) {
-                console.log(data.result.id);
+            success: function (result) {
+                console.log(result.data.id);
+                poll_sphere_engine(result.data.id)
             }
         });
     });

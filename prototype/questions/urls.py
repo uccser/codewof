@@ -8,4 +8,5 @@ urlpatterns = [
     path('skills/<int:pk>/', views.SkillView.as_view(), name="skill"),
     path('questions/<int:pk>/', views.QuestionView.as_view(), name="question"),
     path('ajax/send_code/', views.send_code, name="send_code"),
+    path('ajax/get_output/', views.get_output, name="get_output"),
 ]
