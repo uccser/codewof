@@ -13,15 +13,18 @@
     Loading...
 </div>
 <span id="output"></span>
+<div id="all-correct">
+    Well done!
+</div>
 {% endblock %}
 
 {% block javascript %}
 <script>
     $('#loading').hide();
     $('#output').hide();
+    $('#all-correct').hide();
 
     var poll_sphere_engine = function(id) {
-        $('#loading').show();
         $.ajax({
             url: '/ajax/get_output/',
             method: 'GET',
@@ -31,11 +34,28 @@
             },
             dataType: 'json',
             success: function(result) {
-                $('#loading').hide();
+                
                 console.log(result);
+                if (result.completed) {
+                    $('#loading').hide();
+                    //$('#output').text(result.output);
+                    //$('#output').show();
+                    // todo display output in structure like coderunner
 
-                $('#output').text(result.output);
-                $('#output').show();
+                    var correctness_array = JSON.parse(result.output);
+                    var all_correct = true;
+                    for (var i = 0; i < correctness_array.length; i++) {
+                        if (correctness_array[i] == false) {
+                            all_correct = false;
+                        }
+                    }
+                    if (all_correct) {
+                        $('#all-correct').show();
+                    }
+
+                } else {
+                    poll_sphere_engine(id);
+                }
             }
         });
     }
@@ -48,12 +68,17 @@
             method: 'POST',
             data: {
                 user_input: user_input,
+                question: '{{ question.id }}',
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             dataType: 'json',
             success: function (result) {
-                console.log(result.data.id);
-                poll_sphere_engine(result.data.id)
+                var submission_id = result.id;
+                console.log(submission_id);
+                $('#loading').show();
+                $('#output').hide();
+                $('#all-correct').hide();
+                poll_sphere_engine(submission_id);
             }
         });
     });
