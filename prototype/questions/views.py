@@ -35,61 +35,134 @@ COMPLETED = 0
 PROGRAM = 1
 FUNCTION = 2
 
-PROGRAM_ABOVE = """
+COMMON_ABOVE = """
 import json
-n = 0
-m = 0
-correct = [False] * len(test_outputs)
-def input(prompt=""):
-    global n
-    real_print(prompt)
-    test_input = test_inputs[n]
-    if n >= len(test_inputs):
-        raise EOFError()
-    n += 1
-    return test_input
+
 real_print = print
-def print(user_output):
-    global m
-    if m < len(test_outputs):
-        expected_output = test_outputs[m]
-        if user_output == expected_output:
-            correct[m] = True
-        m += 1
+T = 0
+n = 0
+
 """
 
-PROGRAM_BELOW = """
-if n < len(test_inputs):
-    raise Exception('Input was not called enough times')
-real_print(json.dumps(correct))
+COMMON_MID = """
+N_test_cases = len(test_returns)
+correct = [False] * N_test_cases
+printed = [''] * N_test_cases
+returned = [None] * N_test_cases
+
+def next_question():
+    global T, n
+    T += 1
+    n = 0
+
+def input(prompt=""):
+    global n
+    if n >= len(test_inputs[T]):
+        raise EOFError()
+    if len(prompt) > 1:
+        print(prompt)
+    test_input = test_inputs[T][n]
+    n += 1
+    return test_input
+
+def print(user_output):
+    if T < N_test_cases:
+        user_output += '\\\\n'
+        printed[T] += user_output
+
 """
+
+COMMON_BELOW = """
+for index in hidden:
+    test_params[index] = ["hidden"]
+    test_inputs[index] = ["hidden"]
+    test_outputs[index] = "hidden"
+    test_returns[index] = "hidden"
+    printed[index] = "hidden"
+    returned[index] = "hidden"
+
+results = {
+    'correct': correct,
+    'printed': printed,
+    'returned': returned,
+    'inputs': test_inputs,
+    'params': test_params,
+    'expected_prints': test_outputs,
+    'expected_returns': test_returns,
+}
+real_print(json.dumps(results))
+
+"""
+
+
+def format_test_data(test_cases):
+    test_params = "\ntest_params = ["
+    test_inputs = "\ntest_inputs = ["
+    test_outputs = "\ntest_outputs = ["
+    test_returns = "\ntest_returns = ["
+    hidden = "\nhidden = []" #todo
+
+    for case in test_cases:
+        param_str = repr(case.function_params.split(',')) + ","
+        input_str = repr(case.test_input.split('\n')) + ","
+        output_str = repr(case.expected_output) + ","
+        return_str = repr(case.expected_return) + ","
+
+        test_params += param_str
+        test_inputs += input_str
+        test_outputs += output_str
+        test_returns += return_str
+
+    test_params = test_params[:-1] + "]\n"
+    test_inputs = test_inputs[:-1] + "]\n"
+    test_outputs = test_outputs[:-1] + "]\n"
+    test_returns = test_returns[:-1] + "]\n"
+
+    test_data = test_params + test_inputs + test_outputs + test_returns + hidden
+
+    return test_data
 
 def add_program_test_code(question, user_code):
     test_cases = question.test_cases.all()
     
-    test_inputs = "\ntest_inputs = ["
-    test_outputs = "\ntest_outputs = ["
-    repeated_user_code = """\n"""
+    test_data = format_test_data(test_cases)
 
+    repeated_user_code = ''
     for case in test_cases:
-        input_str = repr(case.test_input) + ", "
-        output_str = repr(case.expected_output) + ", "
-        code_str = user_code + "\n"
+        repeated_user_code += user_code
+        repeated_user_code += '\nnext_question()\n'
 
-        test_inputs += input_str
-        test_outputs += output_str
-        repeated_user_code += code_str
-        
-    test_inputs = test_inputs[:-2] + "]\n"
-    test_outputs = test_outputs[:-2] + "]\n"
+    processing = repeated_user_code + \
+        '\nfor i in range(N_test_cases):\n' + \
+        '    expected_output = test_outputs[i]\n' + \
+        '    if printed[i] != expected_output:\n' + \
+        '        correct[i] = False\n' + \
+        '    else:\n' + \
+        '        correct[i] = True\n'
 
-    complete_code = test_inputs + test_outputs + PROGRAM_ABOVE + repeated_user_code + PROGRAM_BELOW
-
+    complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
     return complete_code
 
 
 def add_function_test_code(question, user_code):
     test_cases = question.test_cases.all()
+
+    test_data = format_test_data(test_cases)
+
+    processing = user_code + \
+        '\nfor i in range(N_test_cases):\n' + \
+        '    params = test_params[i]\n' + \
+        '    result = ' + question.function_name + '(*params)\n' + \
+        '    returned[i] = result\n' + \
+        '    if result == test_returns[i]:\n' + \
+        '        correct[i] = True\n' + \
+        '    next_question()\n' + \
+        '    expected_output = test_outputs[i]\n' + \
+        '    if printed[i] != expected_output:\n' + \
+        '        correct[i] = False\n'
+
+    complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
+    return complete_code
 
 
 def send_code(request):

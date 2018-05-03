@@ -41,8 +41,9 @@
                     //$('#output').text(result.output);
                     //$('#output').show();
                     // todo display output in structure like coderunner
-
-                    var correctness_array = JSON.parse(result.output);
+                    var output = JSON.parse(result.output.slice(0, -1));
+                    var correctness_array = output["correct"];
+                    console.log(correctness_array);
                     var all_correct = true;
                     for (var i = 0; i < correctness_array.length; i++) {
                         if (correctness_array[i] == false) {
