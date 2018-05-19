@@ -1,3 +1,6 @@
+{% extends "questions/base.html" %}
+
+{% block content %}
 <b>Questions</b>
 {% if skill and skill.questions %}
     <ul>
@@ -10,3 +13,4 @@
 {% else %}
     <p>No questions are available (use admin site to add)</p>
 {% endif %}
+{% endblock %}

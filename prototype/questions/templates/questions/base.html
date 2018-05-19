@@ -4,16 +4,19 @@
         <meta charset="utf-8">
         <title>{% block title %}Prototype 402{% endblock %}</title>
         <link rel="stylesheet" type="text/css" href="{% static 'questions/style.css'%}" />
+        <link rel="shortcut icon" type="image/png" href="{% static 'questions/favicon.ico'%}" />
+
         {% block stylesheet %}{% endblock %}
     </head>
     <body>
         <div id="content">
             {% block content %}{% endblock %}
         </div>
+
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript">window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+    {% block javascript %}{% endblock %}
+
     </body>
 </html>
-
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<script type="text/javascript">window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
-{% block javascript %}{% endblock %}
 
