@@ -1,11 +1,44 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.http import JsonResponse
+from django.contrib import messages
+from django.contrib.auth import login, authenticate, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
 import requests
 import time
 
+from .forms import SignUpForm
 from .models import Question, SkillArea, TestCase, Token
 
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('/')
+    else:
+        form = SignUpForm()
+    return render(request, 'registration/signup.html', {'form': form})
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Password successfully updated')
+            return redirect('/')
+        else:
+            messages.error(request, 'Please correct the error')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'registration/change_password.html', {'form': form })
 
 class IndexView(generic.ListView):
     """displays list of skills"""
@@ -27,6 +60,13 @@ class QuestionView(generic.DetailView):
     """displays question page"""
     template_name = 'questions/question.html'
     model = Question
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context[''] = ''
+        return context
+
+
 
 BASE_URL = "http://36adab90.compilers.sphere-engine.com/api/v3/submissions/"
 TOKEN = "?access_token=" + Token.objects.get(pk='sphere').token

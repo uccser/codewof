@@ -12,7 +12,23 @@
 <div id="loading">
     Loading...
 </div>
-<span id="output"></span>
+<div id="result-table">
+    <div class="header">
+        {% for title in question.test_cases.all %}
+            <div class="cell">
+                {{title}}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="cell">
+
+        </div>
+    </div>
+</div>
+<div id="error">
+
+</div>
 <div id="all-correct">
     Well done!
 </div>
@@ -20,9 +36,12 @@
 
 {% block javascript %}
 <script>
-    $('#loading').hide();
-    $('#output').hide();
-    $('#all-correct').hide();
+
+    var hide_results = function() {
+        $('#result-table').hide();
+        $('#error').hide();
+        $('#all-correct').hide();
+    }
 
     var poll_sphere_engine = function(id) {
         $.ajax({
@@ -38,22 +57,29 @@
                 console.log(result);
                 if (result.completed) {
                     $('#loading').hide();
-                    //$('#output').text(result.output);
-                    //$('#output').show();
+                    $('#result-table').show();
                     // todo display output in structure like coderunner
-                    var output = JSON.parse(result.output.slice(0, -1));
-                    var correctness_array = output["correct"];
-                    console.log(correctness_array);
-                    var all_correct = true;
-                    for (var i = 0; i < correctness_array.length; i++) {
-                        if (correctness_array[i] == false) {
-                            all_correct = false;
+                    
+                    if (result.output.length > 0) {
+                        var output = JSON.parse(result.output.slice(0, -1));
+                        var correctness_array = output["correct"];
+                        console.log(correctness_array);
+                        var all_correct = true;
+                        for (var i = 0; i < correctness_array.length; i++) {
+                            if (correctness_array[i] == false) {
+                                all_correct = false;
+                            }
+                        }
+                        if (all_correct) {
+                            $('#all-correct').show();
+                        }
+                    } else {
+                        if (result.stderr.length > 0) {
+                            $('#error').text(result.stderr);
+                        } else {
+                            $('#error').text(result.cmpinfo);
                         }
                     }
-                    if (all_correct) {
-                        $('#all-correct').show();
-                    }
-
                 } else {
                     poll_sphere_engine(id);
                 }
@@ -77,11 +103,13 @@
                 var submission_id = result.id;
                 console.log(submission_id);
                 $('#loading').show();
-                $('#output').hide();
-                $('#all-correct').hide();
+                hide_results();
                 poll_sphere_engine(submission_id);
             }
         });
     });
+
+    $('#loading').hide();
+    hide_results();
 </script>
 {% endblock %}
