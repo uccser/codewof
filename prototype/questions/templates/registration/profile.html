@@ -1,0 +1,11 @@
+{% extends 'questions/base.html' %}
+
+{% block content %}
+<b>Your Profile</b>
+<br>
+Username: {{user.username}}
+<br>
+Name: {{user.first_name}} {{user.last_name}}
+<br>
+Email: {{user.email}}
+{% endblock %}

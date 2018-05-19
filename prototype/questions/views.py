@@ -4,12 +4,13 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.decorators import login_required
 
 import requests
 import time
 
 from .forms import SignUpForm
-from .models import Question, SkillArea, TestCase, Token
+from .models import User, Question, SkillArea, TestCase, Token
 
 
 def signup(request):
@@ -26,6 +27,8 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+
+@login_required
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -39,6 +42,16 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'registration/change_password.html', {'form': form })
+
+
+class ProfileView(generic.DetailView):
+    """displays user's profile"""
+    template_name = 'registration/profile.html'
+    model = User
+
+    def get_object(self):
+        return User.objects.get(username=self.request.user.username)
+
 
 class IndexView(generic.ListView):
     """displays list of skills"""
