@@ -2,13 +2,15 @@
 
 {% block content %}
 <div class="heading">Your Profile</div>
-<br>
-Username: {{user.username}}
-<br>
-Name: {{user.first_name}} {{user.last_name}}
-<br>
-Email: {{user.email}}
-<br>
+<div id="info">
+    <br>
+    Username: {{user.username}}
+    <br>
+    Name: {{user.first_name}} {{user.last_name}}
+    <br>
+    Email: {{user.email}}
+    <br>
+</div>
 <a href="/change_password">Change password</a>
 
 {% endblock %}
