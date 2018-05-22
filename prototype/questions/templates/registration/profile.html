@@ -1,11 +1,14 @@
 {% extends 'questions/base.html' %}
 
 {% block content %}
-<b>Your Profile</b>
+<div class="heading">Your Profile</div>
 <br>
 Username: {{user.username}}
 <br>
 Name: {{user.first_name}} {{user.last_name}}
 <br>
 Email: {{user.email}}
+<br>
+<a href="/change_password">Change password</a>
+
 {% endblock %}
