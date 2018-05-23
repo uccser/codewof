@@ -1,18 +1,18 @@
 <div id="navbar">
     <div id="home_link">
-        <a href="/">Home</a>
+        <a class="left" href="/">Home</a>
     </div>
     
     {% if request.user.is_authenticated %}
     <div id="profile_link">
-        <a href="/profile">Profile</a>
+        <a class="left" href="/profile">Profile</a>
     </div>
     <div id="logout_link">
-        <a href="/logout">Logout</a>
+        <a class="right" href="/logout">Logout</a>
     </div>
     {% else %}
     <div id="login_link">
-        <a href="/login">Login</a>
+        <a class="right" href="/login">Login</a>
     </div>
     {% endif %}
 </div>

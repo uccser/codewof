@@ -1,3 +1,33 @@
 li a {
     color: green;
 }
+
+#navbar {
+    background-color: #333;
+    overflow: hidden;
+}
+
+#navbar a {
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+a.left {
+    float: left;
+}
+a.right {
+    float: right;
+}
+
+#navbar a:hover {
+    background-color: #c18eda;
+    color: black;
+}
+
+#navbar a.active {
+    background-color: #4caf50;
+    color: white;
+}
