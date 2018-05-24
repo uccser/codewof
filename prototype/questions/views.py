@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 import requests
 import time
@@ -44,13 +45,16 @@ def change_password(request):
     return render(request, 'registration/change_password.html', {'form': form })
 
 
-class ProfileView(generic.DetailView):
+class ProfileView(LoginRequiredMixin, generic.DetailView):
     """displays user's profile"""
+    login_url = '/login/'
+    redirect_field_name = 'next'
     template_name = 'registration/profile.html'
     model = User
 
     def get_object(self):
-        return User.objects.get(username=self.request.user.username)
+        if self.request.user.is_authenticated:
+            return User.objects.get(username=self.request.user.username)
 
 
 class IndexView(generic.ListView):
@@ -82,7 +86,6 @@ class QuestionView(generic.DetailView):
 
 
 BASE_URL = "http://36adab90.compilers.sphere-engine.com/api/v3/submissions/"
-TOKEN = "?access_token=" + Token.objects.get(pk='sphere').token
 PYTHON = 116
 COMPLETED = 0
 PROGRAM = 1
@@ -228,7 +231,9 @@ def send_code(request):
     elif question.question_type == FUNCTION:
         code = add_function_test_code(question, code)
     
-    response = requests.post(BASE_URL + TOKEN, data = {"language": PYTHON, "sourceCode": code})
+    token = "?access_token=" + Token.objects.get(pk='sphere').token
+
+    response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})
     result = response.json()
 
     return JsonResponse(result)
@@ -237,12 +242,14 @@ def get_output(request):
     submission_id = request.GET.get('id')
     question_id = request.GET.get('question')
 
+    token = "?access_token=" + Token.objects.get(pk='sphere').token
+
     params = {
         "withOutput": True, 
         "withStderr": True, 
         "withCmpinfo": True
     }
-    response = requests.get(BASE_URL + submission_id + TOKEN, params=params)
+    response = requests.get(BASE_URL + submission_id + token, params=params)
     result = response.json()
 
     if result["status"] == COMPLETED:

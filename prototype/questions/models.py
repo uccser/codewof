@@ -17,7 +17,7 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
+        Profile.objects.create(user=instance, points=0)
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
@@ -40,7 +40,7 @@ class Question(models.Model):
     skill_areas = models.ManyToManyField('SkillArea', related_name='questions')
 
     def __str__(self):
-        return self.question_text
+        return self.title
 
 
 class SkillArea(models.Model):
