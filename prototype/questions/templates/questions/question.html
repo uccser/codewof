@@ -5,33 +5,60 @@
 <p>
     {{question.question_text}}
 </p>
-<textarea id="user_input">print(2)</textarea>
+<form class="form-inline">
+    <div class="form-group" style="display:block">
+        <textarea id="user_input" class="form-control" rows="7" cols="80"></textarea>
+    </div>
+</form>
 <p>
     <input id="submit" type="button" value="Submit" />
 </p>
 <div id="loading">
     Loading...
 </div>
-<div id="result-table">
-    <div class="header">
-        {% for title in question.test_cases.all %}
-            <div class="cell">
-                {{title}}
-            </div>
-        {% endfor %}
-    </div>
-    <div class="row">
-        <div class="cell">
-
-        </div>
-    </div>
-</div>
-<div id="error">
-
-</div>
 <div id="all-correct">
     Well done!
 </div>
+<div id="result-table">
+    <div class="header">
+        <div class="cell program-type-analysis">Input</div>
+        <div class="cell program-type-analysis">Expected</div>
+        <div class="cell program-type-analysis">Got</div>
+
+        <div class="cell function-type-analysis">Parameter(s)</div>
+        <div class="cell function-type-analysis">Expected</div>
+        <div class="cell function-type-analysis">Got</div>
+
+        <div class="cell">Correct</div>
+    </div>
+    {% for case in question.test_cases.all %}
+    <div class="row">
+        <div class="cell program-type-analysis">
+            {{case.test_input}}
+        </div>
+        <div class="cell program-type-analysis">
+            {{case.expected_output}}
+        </div>
+        <div class="cell program-type-analysis">
+            1
+        </div>
+        <div class="cell function-type-analysis">
+            {{case.function_params}}
+        </div>
+        <div class="cell function-type-analysis">
+            {{case.expected_return}}
+        </div>
+        <div class="cell function-type-analysis">
+            2
+        </div>
+        <div class="cell">
+            <img id="correctness-img{{forloop.counter0}}" src="https://png.icons8.com/color/50/000000/close-window.png"/>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div id="error"></div>
+<a class="credit" href="https://icons8.com">Icon pack by Icons8</a>
 {% endblock %}
 
 {% block javascript %}
@@ -41,6 +68,8 @@
         $('#result-table').hide();
         $('#error').hide();
         $('#all-correct').hide();
+        $('.program-type-analysis').show();
+        $('.function-type-analysis').show();
     }
 
     var poll_sphere_engine = function(id) {
@@ -58,20 +87,39 @@
                 if (result.completed) {
                     $('#loading').hide();
                     $('#result-table').show();
-                    // todo display output in structure like coderunner
-                    
+
                     if (result.output.length > 0) {
                         var output = JSON.parse(result.output.slice(0, -1));
+                        var got_output_array = output["printed"];
+                        var got_return_array = output["returned"];
                         var correctness_array = output["correct"];
                         console.log(correctness_array);
                         var all_correct = true;
+                        var has_print_contents = false;
+                        var has_return_contents = false;
+                        var tick = "https://png.icons8.com/color/50/000000/ok.png";
+
                         for (var i = 0; i < correctness_array.length; i++) {
                             if (correctness_array[i] == false) {
                                 all_correct = false;
+                            } else {
+                                $("#correctness-img" + i).attr("src", tick);
+                            }
+                            if (got_output_array[i] && got_output_array[i].length > 0) {
+                                has_print_contents = true;
+                            }
+                            if (got_return_array[i] && got_return_array[i].length > 0) {
+                                has_return_contents = true;
                             }
                         }
                         if (all_correct) {
                             $('#all-correct').show();
+                        }
+                        if (!has_print_contents) {
+                            $(".program-type-analysis").hide();
+                        }
+                        if (!has_return_contents) {
+                            $(".function-type-analysis").hide();
                         }
                     } else {
                         if (result.stderr.length > 0) {

@@ -1,5 +1,18 @@
 li a {
-    color: green;
+    color: #793698;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #eed812;
+}
+
+ul {
+    list-style-type: circle;
+}
+
+#content {
+    margin: 2%;
 }
 
 #navbar {
@@ -30,4 +43,35 @@ a.right {
 #navbar a.active {
     background-color: #4caf50;
     color: white;
+}
+
+#profile-info {
+    margin-bottom: 2%;
+}
+
+#all-correct {
+    margin-bottom: 2%;
+}
+
+#result-table {
+    display: table;
+    border: solid 1px #8484ff;
+    width: 80%;
+}
+.header {
+    display: table-row;
+    font-weight: bold;
+}
+.row {
+    display: table-row;
+}
+.cell {
+    display: table-cell;
+    padding: 1%;
+    border: solid 1px #e8bdfc;
+    border-collapse: collapse;
+}
+
+.credit {
+    font-size: 0.7em;
 }

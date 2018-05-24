@@ -1,14 +1,18 @@
 {% extends 'questions/base.html' %}
 
 {% block content %}
-<div class="heading">Your Profile</div>
-<div id="info">
+<div id="profile-info">
+    <b>Username</b>: {{user.username}}
     <br>
-    Username: {{user.username}}
+    <b>Name</b>: {{user.first_name}} {{user.last_name}}
     <br>
-    Name: {{user.first_name}} {{user.last_name}}
+    <b>Email</b>: {{user.email}}
     <br>
-    Email: {{user.email}}
+    <b>Points</b>: {{user.profile.points}}
+    <br>
+    <b>Last login</b>: {{user.last_login}}
+    <br>
+    <b>Date joined</b>: {{user.date_joined}}
     <br>
 </div>
 <a href="/change_password">Change password</a>
