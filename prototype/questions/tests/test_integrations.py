@@ -1,0 +1,42 @@
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+
+
+class SignUpTestCase(StaticLiveServerTestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.selenium = webdriver.Firefox()
+        cls.selenium.implicitly_wait(10)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.selenium.quit()
+        super().tearDownClass()
+
+    def test_register(self):
+        selenium = self.selenium
+        selenium.get(self.live_server_url)
+        sign_up_button = selenium.find_element_by_link_text('Sign Up')
+        sign_up_button.click()
+
+        username = selenium.find_element_by_id('id_username')
+        first_name = selenium.find_element_by_id('id_first_name')
+        last_name = selenium.find_element_by_id('id_last_name')
+        email = selenium.find_element_by_id('id_email')
+        password1 = selenium.find_element_by_id('id_password1')
+        password2 = selenium.find_element_by_id('id_password2')
+        
+        submit = selenium.find_element_by_id('sign_up_button')
+
+        username.send_keys('wizard')
+        email.send_keys('ur-a-wizard@uclive.ac.nz')
+        password1.send_keys('harrypotter')
+        password2.send_keys('harrypotter')
+
+        time.sleep(1)
+        submit.send_keys(Keys.RETURN)
+        time.sleep(1)
+        assert 'Prototype 402' in selenium.title
