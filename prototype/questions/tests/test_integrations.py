@@ -3,6 +3,32 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 
+from questions.models import *
+
+class QuestionTestCase(StaticLiveServerTestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.selenium = webdriver.Firefox()
+        cls.selenium.implicitly_wait(10)
+
+        TestCase.objects.create(expected_output="hello world\n")
+        question = Question.objects.create(title="Test question", question_text="Print hello world", question_type=1)
+        question.test_cases.add(1)
+        question.save()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.selenium.quit()
+        super().tearDownClass()
+
+    def test_random_question_button(self):
+        selenium = self.selenium
+        selenium.get(self.live_server_url)
+        random_question_button = selenium.find_element_by_link_text('Random Question')
+        random_question_button.click()
+        assert 'Test question' in selenium.page_source
+
 
 class SignUpTestCase(StaticLiveServerTestCase):
     @classmethod
