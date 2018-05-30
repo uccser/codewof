@@ -16,6 +16,8 @@ class ProfileViewTest(DjangoTestCase):
     def login_user(self):
         login = self.client.login(username='john', password='onion')
         self.assertTrue(login)
+    
+    ### tests begin ###
 
     def test_redirect_if_not_logged_in(self):
         resp = self.client.get('/profile/')
@@ -44,6 +46,8 @@ class QuestionViewTest(DjangoTestCase):
     def login_user(self):
         login = self.client.login(username='john', password='onion')
         self.assertTrue(login)
+
+    ### tests begin ###
 
     def test_url_exists_not_logged_in(self):
         resp = self.client.get('/questions/1/')

@@ -22,6 +22,8 @@ class QuestionTestCase(StaticLiveServerTestCase):
         cls.selenium.quit()
         super().tearDownClass()
 
+    ### tests begin ###
+
     def test_random_question_button(self):
         selenium = self.selenium
         selenium.get(self.live_server_url)
@@ -42,7 +44,9 @@ class SignUpTestCase(StaticLiveServerTestCase):
         cls.selenium.quit()
         super().tearDownClass()
 
-    def test_register(self):
+    ### tests begin ###
+    
+    def test_register_blue_sky(self):
         selenium = self.selenium
         selenium.get(self.live_server_url)
         sign_up_button = selenium.find_element_by_link_text('Sign Up')
@@ -62,9 +66,8 @@ class SignUpTestCase(StaticLiveServerTestCase):
         password1.send_keys('harrypotter')
         password2.send_keys('harrypotter')
 
-        time.sleep(1)
         submit.send_keys(Keys.RETURN)
-        time.sleep(1)
+        time.sleep(2)
         assert 'Prototype 402' in selenium.title
     
     def test_register_bad_password(self):
