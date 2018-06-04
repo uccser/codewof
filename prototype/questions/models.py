@@ -54,7 +54,7 @@ class TestCase(models.Model):
     function_params = models.CharField(max_length=LARGE, blank=True)
     test_input = models.CharField(max_length=LARGE, blank=True)
     expected_output = models.CharField(max_length=LARGE, blank=True)
-    expected_return = models.CharField(max_length=LARGE, blank=True)
+    expected_return = models.CharField(max_length=LARGE, blank=True, null=True)
 
     def __str__(self):
         i, f, o, r = '', '', '', ''

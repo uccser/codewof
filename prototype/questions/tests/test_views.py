@@ -53,6 +53,34 @@ class QuestionViewTest(DjangoTestCase):
         login = self.client.login(username='john', password='onion')
         self.assertTrue(login)
 
+    def get_the_output(self, user_code, question_id, assertion):
+        payload = {'user_input': user_code, 'question': question_id}
+        resp = self.client.post('/ajax/send_code/', payload)
+        result = json.loads(resp.content.decode('utf-8'))
+        self.assertIn('id', list(result.keys()))
+        submission_id = result['id']
+
+        payload = {'id': submission_id, 'question': question_id}
+        resp = self.client.post('/ajax/get_output/', payload)
+        result = json.loads(resp.content.decode('utf-8'))
+
+        if result['completed'] == False:
+            time.sleep(1)
+            resp = self.client.post('/ajax/get_output/', payload)
+            result = json.loads(resp.content.decode('utf-8'))
+            if result['completed'] == False:
+                time.sleep(2)
+                resp = self.client.post('/ajax/get_output/', payload)
+                result = json.loads(resp.content.decode('utf-8'))
+                if result['completed'] == False:
+                    time.sleep(3)
+                    resp = self.client.post('/ajax/get_output/', payload)
+                    result = json.loads(resp.content.decode('utf-8'))
+        
+        self.assertTrue(result['completed'])
+        print(result['output'])
+        self.assertTrue(assertion in result['output'])
+
     ### tests begin ###
 
     def test_url_exists_not_logged_in(self):
@@ -73,27 +101,87 @@ class QuestionViewTest(DjangoTestCase):
         submission_id = result['id']
         return submission_id
     
-    def test_get_output(self):
-        submission_id = self.test_send_code()
-        payload = {'id': submission_id, 'question': 1}
-        resp = self.client.post('/ajax/get_output/', payload)
-        result = json.loads(resp.content.decode('utf-8'))
+    def test_get_output_program(self):
+        user_code = 'print("hello world")'
+        self.get_the_output(user_code, 1, '"correct": [true]')
 
-        if result['completed'] == False:
-            time.sleep(1)
-            resp = self.client.post('/ajax/get_output/', payload)
-            result = json.loads(resp.content.decode('utf-8'))
-            if result['completed'] == False:
-                time.sleep(2)
-                resp = self.client.post('/ajax/get_output/', payload)
-                result = json.loads(resp.content.decode('utf-8'))
-                if result['completed'] == False:
-                    time.sleep(3)
-                    resp = self.client.post('/ajax/get_output/', payload)
-                    result = json.loads(resp.content.decode('utf-8'))
+
+    def test_get_output_program_multiple_test_cases(self):
+        TestCase.objects.create(test_input="max", expected_output="ax\\n")
+        TestCase.objects.create(test_input="seven", expected_output="even\\n")
+        question = Question.objects.create(title="Test 2", question_text="Take off first char", question_type=1)
+        question.test_cases.add(2)
+        question.test_cases.add(3)
+        question.save()
+
+        user_code = 't = input()\nprint(t[1:])'
+        self.get_the_output(user_code, 2, '"correct": [true, true]')
+
+    def test_get_output_program_blank_input(self):
+        TestCase.objects.create(test_input="", expected_output="\\n")
+        question = Question.objects.create(title="Test 2", question_text="Print input", question_type=1)
+        question.test_cases.add(2)
+        question.save()
+
+        user_code = 't = input()\nprint(t)'
+        self.get_the_output(user_code, 2, '"correct": [true]')
         
-        self.assertTrue(result['completed'])
-        self.assertTrue('"correct": [true]' in result['output'])
+    def test_get_output_function(self):
+        TestCase.objects.create(function_params="hello", expected_return="hello")
+        question = Question.objects.create(title="Test 2", question_text="Return given word", question_type=2, function_name="direct_return")
+        question.test_cases.add(2)
+        question.save()
 
+        user_code = 'def direct_return(word):\n    return word'
+        self.get_the_output(user_code, 2, '"correct": [true]')
+
+    def test_get_output_print_function(self):
+        TestCase.objects.create(function_params="hello", expected_output="hello\\n")
+        question = Question.objects.create(title="Test 2", question_text="Print given word", question_type=2, function_name="direct_print")
+        question.test_cases.add(2)
+        question.save()
+
+        user_code = 'def direct_print(word):\n    print(word)'
+        self.get_the_output(user_code, 2, '"correct": [true]')
+
+    def test_get_output_print_and_return_function_multiple_test_cases(self):
+        TestCase.objects.create(function_params="hello", expected_output="hello\\n", expected_return="hello")
+        TestCase.objects.create(function_params="world", expected_output="world\\n", expected_return="world")
+        question = Question.objects.create(title="Test 2", question_text="Print and return given word", question_type=2, function_name="print_return")
+        question.test_cases.add(2)
+        question.test_cases.add(3)
+        question.save()
+
+        user_code = 'def print_return(word):\n    print(word)\n    return word'
+        self.get_the_output(user_code, 2, '"correct": [true, true]')
+
+    def test_blank_test_function_multiple_test_cases(self):
+        TestCase.objects.create(function_params="hello", expected_return="hellohello")
+        TestCase.objects.create(function_params="", expected_return="")
+        question = Question.objects.create(title="Test 2", question_text="Return the string doubled", question_type=2, function_name="return_double")
+        question.test_cases.add(2)
+        question.test_cases.add(3)
+        question.save()
+
+        user_code = 'def return_double(word):\n    return word + word'
+        self.get_the_output(user_code, 2, '"correct": [true, true]')
+
+    def test_function_multiple_params(self):
+        TestCase.objects.create(function_params="good,night", expected_return="goodnight")
+        question = Question.objects.create(title="Test 2", question_text="Add the strings", question_type=2, function_name="add_words")
+        question.test_cases.add(2)
+        question.save()
+
+        user_code = 'def add_words(word1, word2):\n    return word1 + word2'
+        self.get_the_output(user_code, 2, '"correct": [true]')
+
+    def test_function_false_for_incorrect_answer(self):
+        TestCase.objects.create(function_params="good,night", expected_return="goodnight")
+        question = Question.objects.create(title="Test 2", question_text="Add the strings", question_type=2, function_name="add_words")
+        question.test_cases.add(2)
+        question.save()
+
+        user_code = 'def add_words(word1, word2):\n    return word1'
+        self.get_the_output(user_code, 2, '"correct": [false]')
 
 
