@@ -2,9 +2,10 @@ from django.test import TestCase as DjangoTestCase
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 from unittest import skip
+import json
 
-from questions.models import Profile, Question, TestCase
-from questions.views import ProfileView
+from questions.models import *
+from questions.views import *
 
 
 class ProfileViewTest(DjangoTestCase):
@@ -43,6 +44,10 @@ class QuestionViewTest(DjangoTestCase):
         question.test_cases.add(1)
         question.save()
 
+        token_file = open("../../token_file.txt", "r")
+        sphere_token = token_file.read().strip()
+        Token.objects.create(name='sphere', token=sphere_token)
+
     def login_user(self):
         login = self.client.login(username='john', password='onion')
         self.assertTrue(login)
@@ -57,3 +62,14 @@ class QuestionViewTest(DjangoTestCase):
         self.login_user()
         resp = self.client.get('/questions/1/')
         self.assertEqual(resp.status_code, 200)
+
+    def test_send_code(self):
+        user_code = 'print("hello world")'
+        payload = {'user_input': user_code, 'question': 1}
+        resp = self.client.post('/ajax/send_code/', payload)
+        result = json.loads(resp.content.decode('utf-8'))
+        self.assertIn('id', list(result.keys()))
+        submission_id = result['id']
+        return submission_id
+
+
