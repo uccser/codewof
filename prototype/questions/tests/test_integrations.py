@@ -67,7 +67,7 @@ class SignUpTestCase(StaticLiveServerTestCase):
         password2.send_keys('harrypotter')
 
         submit.send_keys(Keys.RETURN)
-        time.sleep(2)
+        time.sleep(5)
         assert 'Prototype 402' in selenium.title
     
     def test_register_bad_password(self):

@@ -39,7 +39,7 @@
         <div class="cell program-type-analysis">
             {{case.expected_output}}
         </div>
-        <div class="cell program-type-analysis">
+        <div class="cell program-type-analysis" id="program-got{{forloop.counter0}}">
             1
         </div>
         <div class="cell function-type-analysis">
@@ -48,7 +48,7 @@
         <div class="cell function-type-analysis">
             {{case.expected_return}}
         </div>
-        <div class="cell function-type-analysis">
+        <div class="cell function-type-analysis" id="function-got{{forloop.counter0}}">
             2
         </div>
         <div class="cell">
@@ -108,9 +108,11 @@
                             }
                             if (got_output_array[i] && got_output_array[i].length > 0) {
                                 has_print_contents = true;
+                                $("#program-got" + i).html(got_output_array[i]);
                             }
                             if (got_return_array[i] && got_return_array[i].length > 0) {
                                 has_return_contents = true;
+                                $("#function-got" + i).html(got_return_array[i]);
                             }
                         }
                         if (all_correct) {
