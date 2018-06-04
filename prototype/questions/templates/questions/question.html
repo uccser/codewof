@@ -75,10 +75,11 @@
     var poll_sphere_engine = function(id) {
         $.ajax({
             url: '/ajax/get_output/',
-            method: 'GET',
+            method: 'POST',
             data: {
                 id: id,
-                question: '{{ question.id }}'
+                question: '{{ question.id }}',
+                csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             dataType: 'json',
             success: function(result) {

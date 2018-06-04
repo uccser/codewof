@@ -224,7 +224,7 @@ def add_function_test_code(question, user_code):
 def send_code(request):
     code = request.POST.get('user_input')
     question_id = request.POST.get('question')
-    
+
     question = Question.objects.get(pk=question_id)
 
     if question.question_type == PROGRAM:
@@ -240,8 +240,8 @@ def send_code(request):
     return JsonResponse(result)
 
 def get_output(request):
-    submission_id = request.GET.get('id')
-    question_id = request.GET.get('question')
+    submission_id = request.POST.get('id')
+    question_id = request.POST.get('question')
 
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 

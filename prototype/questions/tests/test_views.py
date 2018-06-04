@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login
 from unittest import skip
 import json
+import time
 
 from questions.models import *
 from questions.views import *
@@ -39,7 +40,7 @@ class QuestionViewTest(DjangoTestCase):
     @classmethod
     def setUpTestData(cls):
         User.objects.create_user(username='john', email='john@uclive.ac.nz', password='onion')
-        TestCase.objects.create(expected_output="hello world\n")
+        TestCase.objects.create(expected_output="hello world\\n")
         question = Question.objects.create(title="Test question", question_text="Print hello world", question_type=1)
         question.test_cases.add(1)
         question.save()
@@ -71,5 +72,28 @@ class QuestionViewTest(DjangoTestCase):
         self.assertIn('id', list(result.keys()))
         submission_id = result['id']
         return submission_id
+    
+    def test_get_output(self):
+        submission_id = self.test_send_code()
+        payload = {'id': submission_id, 'question': 1}
+        resp = self.client.post('/ajax/get_output/', payload)
+        result = json.loads(resp.content.decode('utf-8'))
+
+        if result['completed'] == False:
+            time.sleep(1)
+            resp = self.client.post('/ajax/get_output/', payload)
+            result = json.loads(resp.content.decode('utf-8'))
+            if result['completed'] == False:
+                time.sleep(2)
+                resp = self.client.post('/ajax/get_output/', payload)
+                result = json.loads(resp.content.decode('utf-8'))
+                if result['completed'] == False:
+                    time.sleep(3)
+                    resp = self.client.post('/ajax/get_output/', payload)
+                    result = json.loads(resp.content.decode('utf-8'))
+        
+        self.assertTrue(result['completed'])
+        self.assertTrue('"correct": [true]' in result['output'])
+
 
 
