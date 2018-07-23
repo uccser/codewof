@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 import requests
 import time
+import random
 
 from .forms import SignUpForm
 from .models import User, Question, SkillArea, TestCase, Token
@@ -44,6 +45,11 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'registration/change_password.html', {'form': form })
 
+def get_random_question(request):
+    #TODO don't include current or previously completed questions
+    valid_questions = [question.id for question in Question.objects.all()]
+    question_number = random.choice(valid_questions)
+    return redirect('/questions/' + str(question_number))
 
 class ProfileView(LoginRequiredMixin, generic.DetailView):
     """displays user's profile"""
@@ -88,8 +94,6 @@ class QuestionView(generic.DetailView):
 BASE_URL = "http://36adab90.compilers.sphere-engine.com/api/v3/submissions/"
 PYTHON = 116
 COMPLETED = 0
-PROGRAM = 1
-FUNCTION = 2
 
 COMMON_ABOVE = """
 import json
@@ -227,9 +231,9 @@ def send_code(request):
 
     question = Question.objects.get(pk=question_id)
 
-    if question.question_type == PROGRAM:
+    if str(question.question_type) == 'Program':
         code = add_program_test_code(question, code)
-    elif question.question_type == FUNCTION:
+    elif str(question.question_type) == 'Function':
         code = add_function_test_code(question, code)
     
     token = "?access_token=" + Token.objects.get(pk='sphere').token

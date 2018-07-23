@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from .models import Profile, Question, SkillArea, TestCase, Token
+from .models import *
 
 class ProfileInline(admin.StackedInline):
     model = Profile
@@ -25,3 +25,8 @@ admin.site.register(Question)
 admin.site.register(TestCase)
 admin.site.register(SkillArea)
 admin.site.register(Token)
+admin.site.register(QuestionType)
+admin.site.register(Badge)
+admin.site.register(Earned)
+admin.site.register(Attempt)
+admin.site.register(Skill)
