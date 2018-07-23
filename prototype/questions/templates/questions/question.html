@@ -40,7 +40,7 @@
             {{case.expected_output}}
         </div>
         <div class="cell program-type-analysis" id="program-got{{forloop.counter0}}">
-            1
+            Pending
         </div>
         <div class="cell function-type-analysis">
             {{case.function_params}}
@@ -49,10 +49,10 @@
             {{case.expected_return}}
         </div>
         <div class="cell function-type-analysis" id="function-got{{forloop.counter0}}">
-            2
+            Pending
         </div>
         <div class="cell">
-            <img id="correctness-img{{forloop.counter0}}" src="https://png.icons8.com/color/50/000000/close-window.png"/>
+            <img id="correctness-img{{forloop.counter0}}" src="https://png.icons8.com/flat_round/50/000000/available-updates.png"/>
         </div>
     </div>
     {% endfor %}
@@ -86,9 +86,7 @@
                 
                 console.log(result);
                 if (result.completed) {
-                    $('#loading').hide();
-                    $('#result-table').show();
-
+                    
                     if (result.output.length > 0) {
                         var output = JSON.parse(result.output.slice(0, -1));
                         var got_output_array = output["printed"];
@@ -99,10 +97,12 @@
                         var has_print_contents = false;
                         var has_return_contents = false;
                         var tick = "https://png.icons8.com/color/50/000000/ok.png";
+                        var cross = "https://png.icons8.com/color/50/000000/close-window.png";
 
                         for (var i = 0; i < correctness_array.length; i++) {
                             if (correctness_array[i] == false) {
                                 all_correct = false;
+                                $("#correctness-img" + i).attr("src", cross);
                             } else {
                                 $("#correctness-img" + i).attr("src", tick);
                             }
@@ -115,6 +115,10 @@
                                 $("#function-got" + i).html(got_return_array[i]);
                             }
                         }
+
+                        $('#loading').hide();
+                        $('#result-table').show();
+                        
                         if (all_correct) {
                             $('#all-correct').show();
                         }
