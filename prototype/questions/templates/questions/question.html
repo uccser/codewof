@@ -57,7 +57,7 @@
     </div>
     {% endfor %}
 </div>
-<div id="error"></div>
+<pre><div id="error"></div></pre>
 <a class="credit" href="https://icons8.com">Icon pack by Icons8</a>
 {% endblock %}
 
@@ -87,12 +87,15 @@
                 console.log(result);
                 if (result.completed) {
                     
+                    $('#loading').hide();
+
                     if (result.output.length > 0) {
                         var output = JSON.parse(result.output.slice(0, -1));
                         var got_output_array = output["printed"];
                         var got_return_array = output["returned"];
                         var correctness_array = output["correct"];
                         console.log(correctness_array);
+
                         var all_correct = true;
                         var has_print_contents = false;
                         var has_return_contents = false;
@@ -116,7 +119,6 @@
                             }
                         }
 
-                        $('#loading').hide();
                         $('#result-table').show();
                         
                         if (all_correct) {
@@ -128,12 +130,14 @@
                         if (!has_return_contents) {
                             $(".function-type-analysis").hide();
                         }
-                    } else {
-                        if (result.stderr.length > 0) {
-                            $('#error').text(result.stderr);
-                        } else {
-                            $('#error').text(result.cmpinfo);
-                        }
+                    } 
+                    if (result.stderr.length > 0) {
+                        $('#error').text(result.stderr);
+                        $('#error').show();
+                    }
+                    if (result.cmpinfo.length > 0) {
+                        $('#error').text(result.cmpinfo);
+                        $('#error').show();
                     }
                 } else {
                     poll_sphere_engine(id);
