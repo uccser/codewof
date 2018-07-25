@@ -8,12 +8,22 @@
     <br>
     <b>Email</b>: {{user.email}}
     <br>
-    <b>Points</b>: {{user.profile.points}}
-    <br>
     <b>Last login</b>: {{user.last_login}}
     <br>
     <b>Date joined</b>: {{user.date_joined}}
     <br>
+    <b>Points</b>: {{user.profile.points}}
+    <br>
+    <b>Achievements</b>:
+    <br>
+    {% for badge in all_badges %}
+        {% if badge in user.profile.earned_badges.all %}
+        <u>{{badge.name}} - {{badge.description}}</u>
+        {% else %}
+        <i>{{badge.name}} - {{badge.description}}</i>
+        {% endif %}
+        <br>
+    {% endfor %}
 </div>
 <a href="/change_password">Change password</a>
 

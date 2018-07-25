@@ -86,6 +86,11 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
         if self.request.user.is_authenticated:
             return User.objects.get(username=self.request.user.username)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['all_badges'] = Badge.objects.all()
+        return context
+
 
 class IndexView(generic.ListView):
     """displays list of skills"""
@@ -107,11 +112,6 @@ class QuestionView(generic.DetailView):
     """displays question page"""
     template_name = 'questions/question.html'
     model = Question
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context[''] = ''
-        return context
 
 
 
