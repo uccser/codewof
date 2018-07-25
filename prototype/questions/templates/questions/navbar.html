@@ -10,7 +10,11 @@
     {% endif %}
 
     <div id="random_link">
-        <a class="left" href="/random">Random Question</a>
+        {% if question %}
+        <a class="left" href="/random/{{question.id}}">Random Question</a>
+        {% else %}
+        <a class="left" href="/random/0">Random Question</a>
+        {% endif %}
     </div>
     
     {% if request.user.is_authenticated %}

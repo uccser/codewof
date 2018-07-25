@@ -10,9 +10,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import requests
 import time
 import random
+import json
 
 from .forms import SignUpForm
-from .models import User, Question, SkillArea, TestCase, Token
+from .models import *
 
 
 def signup(request):
@@ -45,11 +46,34 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'registration/change_password.html', {'form': form })
 
-def get_random_question(request):
-    #TODO don't include current or previously completed questions
-    valid_questions = [question.id for question in Question.objects.all()]
-    question_number = random.choice(valid_questions)
+
+def get_random_question(request, current_question_id):
+    user = User.objects.get(username=request.user.username)
+    completed_questions = Question.objects.filter(profile=user.profile, attempt__passed_tests=True)
+    valid_question_ids = [question.id for question in Question.objects.all() if question not in completed_questions]
+    
+    if current_question_id in valid_question_ids:
+        valid_question_ids.remove(current_question_id)
+
+    question_number = random.choice(valid_question_ids)
     return redirect('/questions/' + str(question_number))
+
+
+def save_attempt(request):
+    user = User.objects.get(username=request.user.username)
+    profile = user.profile
+    question = Question.objects.get(pk=request.POST.get('question'))
+    
+    user_code = request.POST.get('user_input')
+    passed_tests = json.loads(request.POST.get('passed_tests'))
+    is_save = json.loads(request.POST.get('is_save'))
+
+    attempt = Attempt(profile=profile, question=question, user_code=user_code, passed_tests=passed_tests, is_save=is_save)
+    attempt.save()
+
+    result = {}
+    return JsonResponse(result)
+
 
 class ProfileView(LoginRequiredMixin, generic.DetailView):
     """displays user's profile"""

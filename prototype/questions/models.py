@@ -11,7 +11,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     points = models.IntegerField()
     earned_badges = models.ManyToManyField('Badge', through='Earned')
-    attempts = models.ManyToManyField('Question', through='Attempt')
+    attempted_questions = models.ManyToManyField('Question', through='Attempt')
 
     def __str__(self):
         return self.user.username
@@ -55,11 +55,13 @@ class Attempt(models.Model):
     question = models.ForeignKey('Question', on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     user_code = models.TextField()
-    passed_tests = models.BooleanField()
+    passed_tests = models.BooleanField(default=False)
+    is_save = models.BooleanField(default=False)
     skills_hinted = models.ManyToManyField('Skill', blank=True)
 
     def __str__(self):
-        return "Attempted " + str(self.question) + " on " + str(self.date)
+        return "Attempted '" + str(self.question) + "' on " + str(self.date)
+
 
 class Question(models.Model):
     title = models.CharField(max_length=SMALL)

@@ -11,6 +11,7 @@
     </div>
 </form>
 <p>
+    <input id="save" type="button" value="Save" />
     <input id="submit" type="button" value="Submit" />
 </p>
 <div id="loading">
@@ -72,6 +73,27 @@
         $('.function-type-analysis').show();
     }
 
+    var save_code = function(passed_tests, is_save) {
+        var user_input = $("#user_input").val();
+        var question_id = '{{ question.id }}';
+
+        $.ajax({
+            url: '/ajax/save_attempt/',
+            method: 'POST',
+            data: {
+                user_input: user_input,
+                question: question_id,
+                passed_tests: passed_tests,
+                is_save: is_save,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            dataType: 'json',
+            success: function(result) {
+
+            }
+        });
+    }
+
     var poll_sphere_engine = function(id) {
         $.ajax({
             url: '/ajax/get_output/',
@@ -123,6 +145,9 @@
                         
                         if (all_correct) {
                             $('#all-correct').show();
+                            save_code(true, false);
+                        } else {
+                            save_code(false, false);
                         }
                         if (!has_print_contents) {
                             $(".program-type-analysis").hide();
@@ -134,10 +159,12 @@
                     if (result.stderr.length > 0) {
                         $('#error').text(result.stderr);
                         $('#error').show();
+                        save_code(false, false);
                     }
                     if (result.cmpinfo.length > 0) {
                         $('#error').text(result.cmpinfo);
                         $('#error').show();
+                        save_code(false, false);
                     }
                 } else {
                     poll_sphere_engine(id);
@@ -166,6 +193,10 @@
                 poll_sphere_engine(submission_id);
             }
         });
+    });
+
+    $('#save').click(function () {
+        save_code(false, true);
     });
 
     $('#loading').hide();
