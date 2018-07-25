@@ -24,6 +24,13 @@
         {% endif %}
         <br>
     {% endfor %}
+    <b>History</b>:
+    <br>
+    {% for question in history %}
+        <div>
+            {{question.latest_attempt}} {{question.title}}. Attempts: {{question.n_attempts}}
+        </div>
+    {% endfor %}
 </div>
 <a href="/change_password">Change password</a>
 

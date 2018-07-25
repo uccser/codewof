@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 import requests
 import time
+import datetime
 import random
 import json
 
@@ -89,6 +90,17 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['all_badges'] = Badge.objects.all()
+
+        user = User.objects.get(username=self.request.user.username)
+        questions = user.profile.attempted_questions.all()
+
+        history = []
+        for question in questions:
+            if question.title not in [question['title'] for question in history]:
+                attempts = Attempt.objects.filter(profile=user.profile, question=question)
+                max_date = max(attempt.date for attempt in attempts)
+                history.append({'latest_attempt': max_date,'title': question.title,'n_attempts': len(attempts)})
+        context['history'] = history
         return context
 
 
