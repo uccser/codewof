@@ -11,7 +11,9 @@
     </div>
 </form>
 <p>
+    {% if request.user.is_authenticated %}
     <input id="save" type="button" value="Save" />
+    {% endif %}
     <input id="submit" type="button" value="Submit" />
 </p>
 <div id="loading">

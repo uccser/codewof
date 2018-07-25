@@ -49,9 +49,13 @@ def change_password(request):
 
 
 def get_random_question(request, current_question_id):
-    user = User.objects.get(username=request.user.username)
-    completed_questions = Question.objects.filter(profile=user.profile, attempt__passed_tests=True)
-    valid_question_ids = [question.id for question in Question.objects.all() if question not in completed_questions]
+    valid_question_ids = []
+    if request.user.is_authenticated:
+        user = User.objects.get(username=request.user.username)
+        completed_questions = Question.objects.filter(profile=user.profile, attempt__passed_tests=True)
+        valid_question_ids = [question.id for question in Question.objects.all() if question not in completed_questions]
+    else:
+        valid_question_ids = [question.id for question in Question.objects.all()]
     
     if current_question_id in valid_question_ids:
         valid_question_ids.remove(current_question_id)
@@ -61,16 +65,17 @@ def get_random_question(request, current_question_id):
 
 
 def save_attempt(request):
-    user = User.objects.get(username=request.user.username)
-    profile = user.profile
-    question = Question.objects.get(pk=request.POST.get('question'))
-    
-    user_code = request.POST.get('user_input')
-    passed_tests = json.loads(request.POST.get('passed_tests'))
-    is_save = json.loads(request.POST.get('is_save'))
+    if request.user.is_authenticated:
+        user = User.objects.get(username=request.user.username)
+        profile = user.profile
+        question = Question.objects.get(pk=request.POST.get('question'))
+        
+        user_code = request.POST.get('user_input')
+        passed_tests = json.loads(request.POST.get('passed_tests'))
+        is_save = json.loads(request.POST.get('is_save'))
 
-    attempt = Attempt(profile=profile, question=question, user_code=user_code, passed_tests=passed_tests, is_save=is_save)
-    attempt.save()
+        attempt = Attempt(profile=profile, question=question, user_code=user_code, passed_tests=passed_tests, is_save=is_save)
+        attempt.save()
 
     result = {}
     return JsonResponse(result)
