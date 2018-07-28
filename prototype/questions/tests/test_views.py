@@ -41,7 +41,8 @@ class QuestionViewTest(DjangoTestCase):
     def setUpTestData(cls):
         User.objects.create_user(username='john', email='john@uclive.ac.nz', password='onion')
         TestCase.objects.create(expected_output="hello world\\n")
-        question = Question.objects.create(title="Test question", question_text="Print hello world", question_type=1)
+        program = QuestionType.objects.create(name="Program")
+        question = Question.objects.create(title="Test question", question_text="Print hello world", question_type=program)
         question.test_cases.add(1)
         question.save()
 
@@ -109,7 +110,8 @@ class QuestionViewTest(DjangoTestCase):
     def test_get_output_program_multiple_test_cases(self):
         TestCase.objects.create(test_input="max", expected_output="ax\\n")
         TestCase.objects.create(test_input="seven", expected_output="even\\n")
-        question = Question.objects.create(title="Test 2", question_text="Take off first char", question_type=1)
+        program = QuestionType.objects.create(name="Program")
+        question = Question.objects.create(title="Test 2", question_text="Take off first char", question_type=program)
         question.test_cases.add(2)
         question.test_cases.add(3)
         question.save()
@@ -119,7 +121,8 @@ class QuestionViewTest(DjangoTestCase):
 
     def test_get_output_program_blank_input(self):
         TestCase.objects.create(test_input="", expected_output="\\n")
-        question = Question.objects.create(title="Test 2", question_text="Print input", question_type=1)
+        program = QuestionType.objects.create(name="Program")
+        question = Question.objects.create(title="Test 2", question_text="Print input", question_type=program)
         question.test_cases.add(2)
         question.save()
 
@@ -128,7 +131,8 @@ class QuestionViewTest(DjangoTestCase):
         
     def test_get_output_function(self):
         TestCase.objects.create(function_params="hello", expected_return="hello")
-        question = Question.objects.create(title="Test 2", question_text="Return given word", question_type=2, function_name="direct_return")
+        function = QuestionType.objects.create(name="Function")
+        question = Question.objects.create(title="Test 2", question_text="Return given word", question_type=function, function_name="direct_return")
         question.test_cases.add(2)
         question.save()
 
@@ -137,7 +141,8 @@ class QuestionViewTest(DjangoTestCase):
 
     def test_get_output_print_function(self):
         TestCase.objects.create(function_params="hello", expected_output="hello\\n")
-        question = Question.objects.create(title="Test 2", question_text="Print given word", question_type=2, function_name="direct_print")
+        function = QuestionType.objects.create(name="Function")
+        question = Question.objects.create(title="Test 2", question_text="Print given word", question_type=function, function_name="direct_print")
         question.test_cases.add(2)
         question.save()
 
@@ -147,7 +152,8 @@ class QuestionViewTest(DjangoTestCase):
     def test_get_output_print_and_return_function_multiple_test_cases(self):
         TestCase.objects.create(function_params="hello", expected_output="hello\\n", expected_return="hello")
         TestCase.objects.create(function_params="world", expected_output="world\\n", expected_return="world")
-        question = Question.objects.create(title="Test 2", question_text="Print and return given word", question_type=2, function_name="print_return")
+        function = QuestionType.objects.create(name="Function")
+        question = Question.objects.create(title="Test 2", question_text="Print and return given word", question_type=function, function_name="print_return")
         question.test_cases.add(2)
         question.test_cases.add(3)
         question.save()
@@ -158,7 +164,8 @@ class QuestionViewTest(DjangoTestCase):
     def test_blank_test_function_multiple_test_cases(self):
         TestCase.objects.create(function_params="hello", expected_return="hellohello")
         TestCase.objects.create(function_params="", expected_return="")
-        question = Question.objects.create(title="Test 2", question_text="Return the string doubled", question_type=2, function_name="return_double")
+        function = QuestionType.objects.create(name="Function")
+        question = Question.objects.create(title="Test 2", question_text="Return the string doubled", question_type=function, function_name="return_double")
         question.test_cases.add(2)
         question.test_cases.add(3)
         question.save()
@@ -168,7 +175,8 @@ class QuestionViewTest(DjangoTestCase):
 
     def test_function_multiple_params(self):
         TestCase.objects.create(function_params="good,night", expected_return="goodnight")
-        question = Question.objects.create(title="Test 2", question_text="Add the strings", question_type=2, function_name="add_words")
+        function = QuestionType.objects.create(name="Function")
+        question = Question.objects.create(title="Test 2", question_text="Add the strings", question_type=function, function_name="add_words")
         question.test_cases.add(2)
         question.save()
 
@@ -177,7 +185,8 @@ class QuestionViewTest(DjangoTestCase):
 
     def test_function_false_for_incorrect_answer(self):
         TestCase.objects.create(function_params="good,night", expected_return="goodnight")
-        question = Question.objects.create(title="Test 2", question_text="Add the strings", question_type=2, function_name="add_words")
+        function = QuestionType.objects.create(name="Function")
+        question = Question.objects.create(title="Test 2", question_text="Add the strings", question_type=function, function_name="add_words")
         question.test_cases.add(2)
         question.save()
 

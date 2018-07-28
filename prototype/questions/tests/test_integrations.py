@@ -13,7 +13,8 @@ class QuestionTestCase(StaticLiveServerTestCase):
         cls.selenium.implicitly_wait(10)
 
         TestCase.objects.create(expected_output="hello world\n")
-        question = Question.objects.create(title="Test question", question_text="Print hello world", question_type=1)
+        program = QuestionType.objects.create(name="Program")
+        question = Question.objects.create(title="Test question", question_text="Print hello world", question_type=program)
         question.test_cases.add(1)
         question.save()
 

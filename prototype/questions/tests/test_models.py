@@ -1,12 +1,13 @@
 from django.test import TestCase
 
-from questions.models import Question
+from questions.models import Question, QuestionType
 
 class QuestionModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         # never modify this object in tests
-        Question.objects.create(title='Test', question_text='Hello', question_type=1)
+        function = QuestionType.objects.create(name="Function")
+        Question.objects.create(title='Test', question_text='Hello', question_type=function)
 
     def setUp(self):
         pass
