@@ -66,6 +66,7 @@ class Attempt(models.Model):
 class Question(models.Model):
     title = models.CharField(max_length=SMALL)
     question_text = models.CharField(max_length=LARGE)
+    solution = models.TextField(blank=True)
     question_type = models.ForeignKey('QuestionType', on_delete=models.CASCADE)
     function_name = models.CharField(max_length=SMALL, blank=True)
     test_cases = models.ManyToManyField('TestCase')
