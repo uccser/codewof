@@ -130,6 +130,16 @@ class QuestionView(generic.DetailView):
     template_name = 'questions/question.html'
     model = Question
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            question = self.get_object()
+            profile = self.request.user.profile
+            all_attempts = Attempt.objects.filter(question=question, profile=profile)
+            if len(all_attempts) > 0:
+                context['previous_attempt'] = all_attempts.latest('date').user_code
+        return context
+
 
 
 BASE_URL = "http://36adab90.compilers.sphere-engine.com/api/v3/submissions/"
