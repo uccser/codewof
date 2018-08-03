@@ -13,6 +13,7 @@
 <p>
     {% if request.user.is_authenticated %}
     <input id="save" type="button" value="Save" />
+    <img id="has_saved" src="https://png.icons8.com/color/50/000000/ok.png" />
     {% endif %}
     <input id="submit" type="button" value="Submit" />
 </p>
@@ -75,6 +76,7 @@
         $('#credit').hide();
         $('#error').hide();
         $('#all-correct').hide();
+        $('#has_saved').hide();
         $('.program-type-analysis').show();
         $('.function-type-analysis').show();
     }
@@ -95,7 +97,8 @@
             },
             dataType: 'json',
             success: function(result) {
-
+                $('#has_saved').show();
+                setTimeout(() => {$('#has_saved').hide()}, 2000);
             }
         });
     }

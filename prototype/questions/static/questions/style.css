@@ -63,6 +63,11 @@ a.right {
     font-size: 0.7em;
 }
 
+#has_saved {
+    height: 4%;
+    width: 4%;
+}
+
 .header {
     display: table-row;
     font-weight: bold;
