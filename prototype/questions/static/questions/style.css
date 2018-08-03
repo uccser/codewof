@@ -58,6 +58,11 @@ a.right {
     border: solid 1px #8484ff;
     width: 80%;
 }
+
+#credit {
+    font-size: 0.7em;
+}
+
 .header {
     display: table-row;
     font-weight: bold;
@@ -72,6 +77,3 @@ a.right {
     border-collapse: collapse;
 }
 
-.credit {
-    font-size: 0.7em;
-}

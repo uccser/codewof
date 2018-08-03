@@ -60,8 +60,11 @@
     </div>
     {% endfor %}
 </div>
+<a id="credit" href="https://icons8.com">Icon pack by Icons8</a>
 <pre><div id="error"></div></pre>
-<a class="credit" href="https://icons8.com">Icon pack by Icons8</a>
+<br>
+<button id="show_solution">Show Suggested Solution</button>
+<div id="solution"></div>
 {% endblock %}
 
 {% block javascript %}
@@ -69,6 +72,7 @@
 
     var hide_results = function() {
         $('#result-table').hide();
+        $('#credit').hide();
         $('#error').hide();
         $('#all-correct').hide();
         $('.program-type-analysis').show();
@@ -144,6 +148,7 @@
                         }
 
                         $('#result-table').show();
+                        $('#credit').show();
                         
                         if (all_correct) {
                             $('#all-correct').show();
@@ -199,6 +204,11 @@
 
     $('#save').click(function () {
         save_code(false, true);
+    });
+
+    $('#show_solution').click(function () {
+        $('#solution').html('{{question.solution|linebreaks}}');
+        $('#show_solution').hide();
     });
 
     $('#loading').hide();
