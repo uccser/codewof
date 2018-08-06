@@ -3,7 +3,7 @@
 {% block content %}
 <b>{{question.title}}</b>
 <p>
-    {{question.question_text|linebreaks}}
+    <pre>{{question.question_text|linebreaks}}</pre>
 </p>
 <form class="form-inline">
     <div class="form-group" style="display:block">
@@ -65,7 +65,7 @@
 <pre><div id="error"></div></pre>
 <br>
 <button id="show_solution">Show Suggested Solution</button>
-<div id="solution"></div>
+<pre><div id="solution"></div></pre>
 {% endblock %}
 
 {% block javascript %}
