@@ -65,7 +65,7 @@ class Attempt(models.Model):
 
 class Question(models.Model):
     title = models.CharField(max_length=SMALL)
-    question_text = models.CharField(max_length=LARGE)
+    question_text = models.TextField()
     solution = models.TextField(blank=True)
     question_type = models.ForeignKey('QuestionType', on_delete=models.CASCADE)
     function_name = models.CharField(max_length=SMALL, blank=True)
@@ -106,16 +106,11 @@ class TestCase(models.Model):
 
     def __str__(self):
         i, f, o, r = '', '', '', ''
-        if len(self.test_input) > 0:
-            i = self.test_input
-            if len(self.function_params) > 0:
-                i += ' + '
-        if len(self.function_params) > 0:           
-            f = 'f(' + self.function_params + ')'
-        if len(self.expected_output) > 0:
-            o = '"' + self.expected_output + '"'
-            if len(self.expected_return) > 0:
-                o += ' + '
-        if len(self.expected_return) > 0:
-            r = '(' + self.expected_return + ')'
+        i = str(self.test_input)
+        i += ' + '    
+        f = 'f(' + str(self.function_params) + ')'
+    
+        o = '"' + str(self.expected_output) + '"'
+        o += ' + '
+        r = '(' + str(self.expected_return) + ')'
         return i + f + ' -> ' + o + r

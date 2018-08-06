@@ -3,7 +3,7 @@
 {% block content %}
 <b>{{question.title}}</b>
 <p>
-    {{question.question_text}}
+    {{question.question_text|linebreaks}}
 </p>
 <form class="form-inline">
     <div class="form-group" style="display:block">
