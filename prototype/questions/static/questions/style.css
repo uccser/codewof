@@ -59,6 +59,13 @@ a.right {
     width: 80%;
 }
 
+#editor {
+    position: relative;
+    font-size: 1.1em;
+    height: 40%;
+    width: 700px;
+}
+
 #credit {
     font-size: 0.7em;
 }

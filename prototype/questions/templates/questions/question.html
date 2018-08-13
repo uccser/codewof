@@ -7,7 +7,7 @@
 </p>
 <form class="form-inline">
     <div class="form-group" style="display:block">
-        <div id="editor"><textarea id="user_input" class="form-control" rows="7" cols="80">{{previous_attempt}}</textarea></div>
+        <div id="editor" class="form-control">{{previous_attempt}}</div>
     </div>
 </form>
 <p>
@@ -72,8 +72,11 @@
 
 <script>
     var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/javascript");
+
+    var setup_ace = function() {
+        editor.setTheme("ace/theme/xcode");
+        editor.session.setMode("ace/mode/python");
+    }
 
     var hide_results = function() {
         $('#result-table').hide();
@@ -86,7 +89,7 @@
     }
 
     var save_code = function(passed_tests, is_save) {
-        var user_input = $("#user_input").val();
+        var user_input = editor.getValue();
         var question_id = '{{ question.id }}';
 
         $.ajax({
@@ -188,7 +191,7 @@
     }
 
     $("#submit").click(function () {
-        var user_input = $("#user_input").val();
+        var user_input = editor.getValue();
 
         $.ajax({
             url: '/ajax/send_code/',
@@ -220,5 +223,6 @@
 
     $('#loading').hide();
     hide_results();
+    setup_ace();
 </script>
 {% endblock %}
