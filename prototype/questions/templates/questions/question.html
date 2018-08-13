@@ -7,7 +7,7 @@
 </p>
 <form class="form-inline">
     <div class="form-group" style="display:block">
-        <textarea id="user_input" class="form-control" rows="7" cols="80">{{previous_attempt}}</textarea>
+        <div id="editor"><textarea id="user_input" class="form-control" rows="7" cols="80">{{previous_attempt}}</textarea></div>
     </div>
 </form>
 <p>
@@ -69,7 +69,11 @@
 {% endblock %}
 
 {% block javascript %}
+
 <script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/javascript");
 
     var hide_results = function() {
         $('#result-table').hide();
