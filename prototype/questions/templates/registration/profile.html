@@ -27,9 +27,11 @@
     <b>History</b>:
     <br>
     {% for question in history %}
-        <div>
+    <a href="/questions/{{question.id}}">
+        <div style="color:{% if question.completed %}#008b00{% else %}#9b9b00{% endif %}">
             {{question.latest_attempt}} {{question.title}}. Attempts: {{question.n_attempts}}
         </div>
+    </a>
     {% endfor %}
 </div>
 <a href="/change_password">Change password</a>

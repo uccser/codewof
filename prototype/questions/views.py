@@ -104,8 +104,9 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
             if question.title not in [question['title'] for question in history]:
                 attempts = Attempt.objects.filter(profile=user.profile, question=question)
                 max_date = max(attempt.date for attempt in attempts)
-                history.append({'latest_attempt': max_date,'title': question.title,'n_attempts': len(attempts)})
-        context['history'] = history
+                completed = any(attempt.passed_tests for attempt in attempts)
+                history.append({'latest_attempt': max_date,'title': question.title,'n_attempts': len(attempts), 'completed': completed, 'id': question.pk})
+        context['history'] = sorted(history, key=lambda k: k['latest_attempt'], reverse=True)
         return context
 
 
