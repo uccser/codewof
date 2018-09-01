@@ -8,10 +8,16 @@
     <br>
     <b>Email</b>: {{user.email}}
     <br>
-    <b>Last login</b>: {{user.last_login}}
+    <b>Last login</b>: {{user.last_login|date:"M d, Y"}}
     <br>
     <b>Date joined</b>: {{user.date_joined}}
     <br>
+    <b>Days logged in</b>:
+    <br>
+    {% for day in user.profile.loginday_set.all %}
+        {{day}}
+        <br>
+    {% endfor %}
     <b>Points</b>: {{user.profile.points}}
     <br>
     <b>Achievements</b>:

@@ -16,6 +16,25 @@ import json
 from .forms import SignUpForm
 from .models import *
 
+class LastAccessMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            request.user.last_login = datetime.datetime.now()
+            request.user.save(update_fields=['last_login'])
+
+            profile = request.user.profile
+            today = datetime.date.today()
+
+            login_days = profile.loginday_set.order_by('-day')
+            if len(login_days) > 1:
+                request.user.last_login = login_days[1].day
+                request.user.save(update_fields=['last_login'])
+
+            if not login_days.filter(day=today).exists():
+                day = LoginDay(profile=profile)
+                day.save()
+
+        return super(LastAccessMixin, self).dispatch(request, *args, **kwargs)
 
 def signup(request):
     if request.method == 'POST':
@@ -81,7 +100,7 @@ def save_attempt(request):
     return JsonResponse(result)
 
 
-class ProfileView(LoginRequiredMixin, generic.DetailView):
+class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
     """displays user's profile"""
     login_url = '/login/'
     redirect_field_name = 'next'
@@ -110,7 +129,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class IndexView(generic.ListView):
+class IndexView(LastAccessMixin, generic.ListView):
     """displays list of skills"""
     template_name = 'questions/index.html'
     context_object_name = 'skill_list'
@@ -119,14 +138,14 @@ class IndexView(generic.ListView):
         return SkillArea.objects.order_by('name')
 
 
-class SkillView(generic.DetailView):
+class SkillView(LastAccessMixin, generic.DetailView):
     """displays list of questions which involve this skill"""
     template_name = 'questions/skill.html'
     context_object_name = 'skill'
     model = SkillArea
 
 
-class QuestionView(generic.DetailView):
+class QuestionView(LastAccessMixin, generic.DetailView):
     """displays question page"""
     template_name = 'questions/question.html'
     model = Question

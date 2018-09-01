@@ -25,6 +25,12 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
+class LoginDay(models.Model):
+    profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
+    day = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.day)
 
 class Badge(models.Model):
     name = models.CharField(max_length=SMALL)
