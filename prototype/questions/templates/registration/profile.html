@@ -1,4 +1,5 @@
 {% extends 'questions/base.html' %}
+{% load static %}
 
 {% block content %}
 <div id="profile-info">
@@ -53,6 +54,9 @@
 {% endblock %}
 
 {% block javascript %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+<script src="{% static 'questions/scripts/vendor/kuma-gauge.jquery.js' %}"></script>
+
 <script>
     $('.demo').kumaGauge({
         value : 100,

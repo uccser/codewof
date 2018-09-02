@@ -36,6 +36,7 @@ class LastAccessMixin(object):
 
         return super(LastAccessMixin, self).dispatch(request, *args, **kwargs)
 
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -164,7 +165,7 @@ class QuestionView(LastAccessMixin, generic.DetailView):
 class ParsonsView(generic.DetailView):
     template_name = 'questions/parsons.html'
     model = Question
-    
+
 
 
 BASE_URL = "http://36adab90.compilers.sphere-engine.com/api/v3/submissions/"

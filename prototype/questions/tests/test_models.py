@@ -22,11 +22,6 @@ class QuestionModelTests(TestCase):
         field_label = question._meta.get_field('question_type').verbose_name
         self.assertEquals(field_label, 'question type')
 
-    def test_question_text_length(self):
-        question = Question.objects.get(id=1)
-        max_length = question._meta.get_field('question_text').max_length
-        self.assertEquals(max_length, 500)
-
     def test_str_question_is_title(self):
         question = Question.objects.get(id=1)
         self.assertEquals(str(question), question.title)
