@@ -31,8 +31,10 @@
     <script src="{% static 'questions/scripts/vendor/js-parsons-master/lib/underscore-min.js' %}"></script>
     <script src="{% static 'questions/scripts/vendor/js-parsons-master/lib/lis.js' %}"></script>
     <script src="{% static 'questions/scripts/vendor/js-parsons-master/parsons.js' %}"></script>
-    <script> 
-        var initial = "{{question.solution|escapejs}}"; 
+    <script>
+        var question_id = "{{question.id}}"; 
+        var initial = "{{question.solution|escapejs}}";
+        var csrf_token = '{{ csrf_token }}'; 
     </script>
     <script src="{% static 'questions/scripts/parsons.js' %}"></script>
 {% else %}

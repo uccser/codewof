@@ -162,11 +162,6 @@ class QuestionView(LastAccessMixin, generic.DetailView):
         return context
 
 
-class ParsonsView(generic.DetailView):
-    template_name = 'questions/parsons.html'
-    model = Question
-
-
 
 BASE_URL = "http://36adab90.compilers.sphere-engine.com/api/v3/submissions/"
 PYTHON = 116
