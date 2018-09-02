@@ -21,9 +21,7 @@
 {% block javascript %}
 
 <script>
-    var initial = 'print "Hello"\n' +
-                'print "World"\n' +
-                'juniper = [elephant.tusk_length for elephant in hippo_collection] #distractor\n';
+    var initial = "{{question.solution|escapejs}}";
 
     function displayErrors(fb) {
         if (fb.errors.length > 0) {
@@ -39,6 +37,7 @@
             feedback_cb : displayErrors,
             can_indent: true
         });
+
         parson.init(initial);
         parson.shuffleLines();
         
