@@ -41,6 +41,7 @@
     <script src="{% static 'questions/scripts/vendor/ace-builds-master/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
     <script> 
         var question_id = "{{question.id}}";
+        var buggy_program = "{{question.buggy_program|escapejs}}";
         var solution = '{{question.solution|linebreaks}}';
         var csrf_token = '{{ csrf_token }}';
     </script>

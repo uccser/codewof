@@ -15,6 +15,7 @@ urlpatterns = [
     path('questions/<int:pk>/', views.QuestionView.as_view(), name="question"),
     path('random/<int:current_question_id>/', views.get_random_question, name='random'),
     path('ajax/send_code/', views.send_code, name="send_code"),
+    path('ajax/send_solution/', views.send_solution, name="send_solution"),
     path('ajax/get_output/', views.get_output, name="get_output"),
     path('ajax/save_attempt/', views.save_attempt, name="save_attempt"),
 ]

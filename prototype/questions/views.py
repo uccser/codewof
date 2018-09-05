@@ -13,7 +13,7 @@ import datetime
 import random
 import json
 
-from .forms import SignUpForm
+from .forms import *
 from .models import *
 
 class LastAccessMixin(object):
@@ -153,6 +153,7 @@ class QuestionView(LastAccessMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['form'] = DebugInputForm()
         if self.request.user.is_authenticated:
             question = self.get_object()
             profile = self.request.user.profile
@@ -169,6 +170,7 @@ COMPLETED = 0
 
 COMMON_ABOVE = """
 import json
+from ast import literal_eval
 
 real_print = print
 T = 0
@@ -203,17 +205,25 @@ def print(user_output):
         user_output += '\\\\n'
         printed[T] += user_output
 
+temp = []
+for params in test_params:
+    params = [literal_eval(p) if p != '' else p for p in params]
+    temp.append(params)
+
+test_params = temp
+
+temp = []
+for params in test_inputs:
+    params = [literal_eval(p) if p != '' else p for p in params]
+    temp.append(params)
+
+test_inputs = temp
+
+test_outputs = [literal_eval(p) if p != '' else p for p in test_outputs]
+test_returns = [literal_eval(p) if p != '' else p for p in test_returns]
 """
 
 COMMON_BELOW = """
-for index in hidden:
-    test_params[index] = ["hidden"]
-    test_inputs[index] = ["hidden"]
-    test_outputs[index] = "hidden"
-    test_returns[index] = "hidden"
-    printed[index] = "hidden"
-    returned[index] = "hidden"
-
 results = {
     'correct': correct,
     'printed': printed,
@@ -227,13 +237,59 @@ real_print(json.dumps(results))
 
 """
 
+DEBUGGY_ABOVE = """
+import json
+from ast import literal_eval
+
+real_print = print
+T = 0
+n = 0
+
+"""
+
+DEBUGGY_MID = """
+N_test_cases = 1
+printed = ['']
+returned = [None]
+
+def input(prompt=""):
+    global n
+    if n >= len(test_inputs[T]):
+        raise EOFError()
+    if len(prompt) > 1:
+        print(prompt)
+    test_input = test_inputs[T][n]
+    n += 1
+    return test_input
+
+def print(user_output):
+    if T < N_test_cases:
+        user_output = str(user_output)
+        user_output += '\\\\n'
+        printed[T] += user_output
+
+temp = []
+for params in test_params:
+    params = [literal_eval(p) if p != '' else p for p in params]
+    temp.append(params)
+
+test_params = temp
+"""
+
+DEBUGGY_BELOW = """
+results = {
+    'expected_print': printed,
+    'expected_return': returned,
+}
+real_print(json.dumps(results))
+"""
+
 
 def format_test_data(test_cases):
     test_params = "\ntest_params = ["
     test_inputs = "\ntest_inputs = ["
     test_outputs = "\ntest_outputs = ["
     test_returns = "\ntest_returns = ["
-    hidden = "\nhidden = []" #todo
 
     for case in test_cases:
         param_str = repr(case.function_params.split(',')) + ","
@@ -251,7 +307,7 @@ def format_test_data(test_cases):
     test_outputs = test_outputs[:-1] + "]\n"
     test_returns = test_returns[:-1] + "]\n"
 
-    test_data = test_params + test_inputs + test_outputs + test_returns + hidden
+    test_data = test_params + test_inputs + test_outputs + test_returns
 
     return test_data
 
@@ -277,44 +333,93 @@ def add_program_test_code(question, user_code):
     return complete_code
 
 
-def add_function_test_code(question, user_code):
-    test_cases = question.test_cases.all()
+def add_function_test_code(question, user_code, expected_return):
+    
+    if question.buggy_program:
+        test_data = "\ntest_params = [" + repr(user_code.split(',')) + "]\n" + \
+                    "\ntest_returns = " + repr(expected_return) + "\n" + \
+                    "\ntest_inputs = [[]]\n" + \
+                    "\ntest_outputs = []\n"
 
-    test_data = format_test_data(test_cases)
+        processing = question.buggy_program + \
+            '\nfor i in range(N_test_cases):\n' + \
+            '    params = test_params[i]\n' + \
+            '    result = ' + question.function_name + '(*params)\n' + \
+            '    returned[i] = result\n' + \
+            '    if result != test_returns[i]:\n' + \
+            '        correct[i] = True\n'
 
-    processing = user_code + \
-        '\nfor i in range(N_test_cases):\n' + \
-        '    params = test_params[i]\n' + \
-        '    result = ' + question.function_name + '(*params)\n' + \
-        '    returned[i] = result\n' + \
-        '    if result == test_returns[i]:\n' + \
-        '        correct[i] = True\n' + \
-        '    next_question()\n' + \
-        '    expected_output = test_outputs[i]\n' + \
-        '    if printed[i] != expected_output:\n' + \
-        '        correct[i] = False\n'
+        complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
+        return complete_code
 
-    complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
-    return complete_code
+    else:
+        test_cases = question.test_cases.all()
+        test_data = format_test_data(test_cases)
+
+        processing = user_code + \
+            '\nfor i in range(N_test_cases):\n' + \
+            '    params = test_params[i]\n' + \
+            '    result = ' + question.function_name + '(*params)\n' + \
+            '    returned[i] = result\n' + \
+            '    if result == test_returns[i]:\n' + \
+            '        correct[i] = True\n' + \
+            '    next_question()\n' + \
+            '    expected_output = test_outputs[i]\n' + \
+            '    if printed[i] != expected_output:\n' + \
+            '        correct[i] = False\n'
+
+        complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
+        return complete_code
 
 
 def send_code(request):
     code = request.POST.get('user_input')
+    expected_output = request.POST.get('expected_output')
+    expected_return = request.POST.get('expected_return')
     question_id = request.POST.get('question')
 
     question = Question.objects.get(pk=question_id)
 
     if str(question.question_type) == 'Program':
-        code = add_program_test_code(question, code)
+        code = add_program_test_code(question, code, expected_output)
     elif str(question.question_type) == 'Function':
-        code = add_function_test_code(question, code)
+        code = add_function_test_code(question, code, expected_return)
     
+    print(code)
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
     response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})
     result = response.json()
 
     return JsonResponse(result)
+
+def send_solution(request):
+    test_input = request.POST.get('user_input')
+    question_id = request.POST.get('question')
+
+    question = Question.objects.get(pk=question_id)
+    solution = question.solution
+
+    test_data = "\ntest_params = [" + repr(test_input.split(',')) + "]\n"
+
+    if str(question.question_type) == 'Program':
+        solution = solution
+    elif str(question.question_type) == 'Function':
+        solution = solution + \
+            '\nfor i in range(N_test_cases):\n' + \
+            '    params = test_params[i]\n' + \
+            '    result = ' + question.function_name + '(*params)\n' + \
+            '    returned[i] = result\n'
+
+    code = DEBUGGY_ABOVE + test_data + DEBUGGY_MID + solution + DEBUGGY_BELOW
+    #print(code)
+    token = "?access_token=" + Token.objects.get(pk='sphere').token
+
+    response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})
+    result = response.json()
+
+    return JsonResponse(result)
+
 
 def get_output(request):
     submission_id = request.POST.get('id')

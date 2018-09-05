@@ -4,6 +4,14 @@ var editor = ace.edit("editor");
 var setup_ace = function() {
     editor.setTheme("ace/theme/xcode");
     editor.session.setMode("ace/mode/python");
+    if (buggy_program) {
+        editor.setReadOnly(true);
+        editor.container.style.pointerEvents="none";
+        editor.renderer.setStyle("disabled", true);
+        editor.setHighlightActiveLine(false);
+        editor.setHighlightGutterLine(false);
+        editor.renderer.$cursorLayer.element.style.opacity = 0;
+    }
 }
 
 var hide_results = function() {
@@ -38,6 +46,7 @@ var save_code = function(passed_tests, is_save) {
     });
 }
 
+
 var poll_sphere_engine = function(id) {
     $.ajax({
         url: '/ajax/get_output/',
@@ -50,7 +59,7 @@ var poll_sphere_engine = function(id) {
         },
         dataType: 'json',
         success: function(result) {
-            
+            // TODO move to separate function and test still works
             console.log(result);
             if (result.completed) {
                 
@@ -80,7 +89,8 @@ var poll_sphere_engine = function(id) {
                             has_print_contents = true;
                             $("#program-got" + i).html(got_output_array[i]);
                         }
-                        if (got_return_array[i] && got_return_array[i].length > 0) {
+                        console.log(got_return_array);
+                        if (got_return_array[i]) {
                             has_return_contents = true;
                             $("#function-got" + i).html(got_return_array[i]);
                         }
@@ -119,27 +129,105 @@ var poll_sphere_engine = function(id) {
     });
 }
 
-$("#submit").click(function () {
-    var user_input = editor.getValue();
 
+var poll_sphere_engine_no_display = function(id) {
     $.ajax({
-        url: '/ajax/send_code/',
+        url: '/ajax/get_output/',
         type: 'POST',
         method: 'POST',
         data: {
-            user_input: user_input,
+            id: id,
             question: question_id,
             csrfmiddlewaretoken: csrf_token
         },
         dataType: 'json',
-        success: function (result) {
-            var submission_id = result.id;
-            console.log(submission_id);
-            $('#loading').show();
-            hide_results();
-            poll_sphere_engine(submission_id);
+        success: function(result) {
+            if (result.completed) {
+                // receive output
+                var output = JSON.parse(result.output.slice(0, -1));
+                var expected_print = output["expected_print"][0];
+                var expected_return = output["expected_return"][0];
+
+                console.log(expected_print);
+                console.log(expected_return);
+
+                // send buggy as normal but with single test case: user_input -> solution output
+                var user_input = $("#id_debug_input").val();
+
+                $.ajax({
+                    url: '/ajax/send_code/',
+                    type: 'POST',
+                    method: 'POST',
+                    data: {
+                        user_input: user_input,
+                        expected_print: expected_print,
+                        expected_return: expected_return,
+                        question: question_id,
+                        csrfmiddlewaretoken: csrf_token
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        var submission_id = result.id;
+                        console.log(submission_id);
+                        $('#loading').show();
+                        hide_results();
+                        poll_sphere_engine(submission_id);
+                    }
+                });
+            } else {
+                poll_sphere_engine_no_display(id);
+            }
         }
     });
+}
+
+$("#submit").click(function () {
+
+    if (buggy_program) {
+        // send solution with user input to get expected output
+        var user_input = $("#id_debug_input").val();
+
+        $.ajax({
+            url: '/ajax/send_solution/',
+            type: 'POST',
+            method: 'POST',
+            data: {
+                user_input: user_input,
+                question: question_id,
+                csrfmiddlewaretoken: csrf_token
+            },
+            dataType: 'json',
+            success: function(result) {
+                var submission_id = result.id;
+                console.log(submission_id);
+                $('#loading').show();
+                hide_results();
+                poll_sphere_engine_no_display(submission_id);
+            }
+        });
+
+    } else {
+        var user_input = editor.getValue();
+
+        $.ajax({
+            url: '/ajax/send_code/',
+            type: 'POST',
+            method: 'POST',
+            data: {
+                user_input: user_input,
+                question: question_id,
+                csrfmiddlewaretoken: csrf_token
+            },
+            dataType: 'json',
+            success: function (result) {
+                var submission_id = result.id;
+                console.log(submission_id);
+                $('#loading').show();
+                hide_results();
+                poll_sphere_engine(submission_id);
+            }
+        });
+    }
 });
 
 $('#save').click(function () {

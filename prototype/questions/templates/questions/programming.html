@@ -1,11 +1,18 @@
-
 <form class="form-inline">
     <div class="form-group" style="display:block">
+        {% if question.buggy_program %}
+        <div id="editor" class="form-control">{{question.buggy_program}}</div>
+        {% else %}
         <div id="editor" class="form-control">{{previous_attempt}}</div>
+        {% endif %}
     </div>
 </form>
+{% if question.buggy_program %}
+<p>Find an input for which the above solution does not work as intended.</p>
+<p>Input: {{form.debug_input}} </p>
+{% endif %}
 <p>
-    {% if request.user.is_authenticated %}
+    {% if request.user.is_authenticated and not question.buggy_program %}
     <input id="save" type="button" value="Save" />
     <img id="has_saved" src="https://png.icons8.com/color/50/000000/ok.png" />
     {% endif %}
