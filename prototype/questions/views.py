@@ -219,7 +219,7 @@ for params in test_inputs:
 
 test_inputs = temp
 
-test_outputs = [literal_eval(p) if p != '' else p for p in test_outputs]
+#test_outputs = [literal_eval(p) if p != '' else p for p in test_outputs]
 test_returns = [literal_eval(p) if p != '' else p for p in test_returns]
 """
 
@@ -333,13 +333,13 @@ def add_program_test_code(question, user_code):
     return complete_code
 
 
-def add_function_test_code(question, user_code, expected_return):
+def add_function_test_code(question, user_code, expected_return, expected_output):
     
     if question.buggy_program:
         test_data = "\ntest_params = [" + repr(user_code.split(',')) + "]\n" + \
-                    "\ntest_returns = " + repr(expected_return) + "\n" + \
+                    "\ntest_returns = [" + repr(expected_return) + "]\n" + \
                     "\ntest_inputs = [[]]\n" + \
-                    "\ntest_outputs = []\n"
+                    "\ntest_outputs = [" + repr(expected_output) + "]\n"
 
         processing = question.buggy_program + \
             '\nfor i in range(N_test_cases):\n' + \
@@ -347,6 +347,9 @@ def add_function_test_code(question, user_code, expected_return):
             '    result = ' + question.function_name + '(*params)\n' + \
             '    returned[i] = result\n' + \
             '    if result != test_returns[i]:\n' + \
+            '        correct[i] = True\n' + \
+            '    expected_output = test_outputs[i]\n' + \
+            '    if printed[i] != expected_output:\n' + \
             '        correct[i] = True\n'
 
         complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
@@ -374,7 +377,7 @@ def add_function_test_code(question, user_code, expected_return):
 
 def send_code(request):
     code = request.POST.get('user_input')
-    expected_output = request.POST.get('expected_output')
+    expected_output = request.POST.get('expected_print')
     expected_return = request.POST.get('expected_return')
     question_id = request.POST.get('question')
 
@@ -383,7 +386,7 @@ def send_code(request):
     if str(question.question_type) == 'Program':
         code = add_program_test_code(question, code, expected_output)
     elif str(question.question_type) == 'Function':
-        code = add_function_test_code(question, code, expected_return)
+        code = add_function_test_code(question, code, expected_return, expected_output)
     
     print(code)
     token = "?access_token=" + Token.objects.get(pk='sphere').token
@@ -402,9 +405,7 @@ def send_solution(request):
 
     test_data = "\ntest_params = [" + repr(test_input.split(',')) + "]\n"
 
-    if str(question.question_type) == 'Program':
-        solution = solution
-    elif str(question.question_type) == 'Function':
+    if str(question.question_type) == 'Function':
         solution = solution + \
             '\nfor i in range(N_test_cases):\n' + \
             '    params = test_params[i]\n' + \

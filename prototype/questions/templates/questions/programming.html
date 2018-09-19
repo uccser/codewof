@@ -8,7 +8,7 @@
     </div>
 </form>
 {% if question.buggy_program %}
-<p>Find an input for which the above solution does not work as intended.</p>
+<p>Find an input for which the above solution does <b>not</b> work as intended.</p>
 <p>Input: {{form.debug_input}} </p>
 {% endif %}
 <p>
@@ -38,19 +38,19 @@
     </div>
     {% for case in question.test_cases.all %}
     <div class="row">
-        <div class="cell program-type-analysis">
+        <div class="cell program-type-analysis" id="program-inp{{forloop.counter0}}">
             {{case.test_input}}
         </div>
-        <div class="cell program-type-analysis">
+        <div class="cell program-type-analysis" id="program-exp{{forloop.counter0}}">
             {{case.expected_output}}
         </div>
         <div class="cell program-type-analysis" id="program-got{{forloop.counter0}}">
             Pending
         </div>
-        <div class="cell function-type-analysis">
+        <div class="cell function-type-analysis" id="function-inp{{forloop.counter0}}">
             {{case.function_params}}
         </div>
-        <div class="cell function-type-analysis">
+        <div class="cell function-type-analysis" id="function-exp{{forloop.counter0}}">
             {{case.expected_return}}
         </div>
         <div class="cell function-type-analysis" id="function-got{{forloop.counter0}}">

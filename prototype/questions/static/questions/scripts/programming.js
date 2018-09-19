@@ -6,7 +6,7 @@ var setup_ace = function() {
     editor.session.setMode("ace/mode/python");
     if (buggy_program) {
         editor.setReadOnly(true);
-        editor.container.style.pointerEvents="none";
+        //editor.container.style.pointerEvents="none";
         editor.renderer.setStyle("disabled", true);
         editor.setHighlightActiveLine(false);
         editor.setHighlightGutterLine(false);
@@ -150,9 +150,21 @@ var poll_sphere_engine_no_display = function(id) {
 
                 console.log(expected_print);
                 console.log(expected_return);
+                if (expected_print === null) {
+                    expected_print = 'None'
+                }
+                if (expected_return === null) {
+                    expected_return = 'None'
+                }
 
                 // send buggy as normal but with single test case: user_input -> solution output
                 var user_input = $("#id_debug_input").val();
+
+                $("#function-inp" + 0).html(user_input);
+                $("#program-inp" + 0).html(user_input);
+
+                $("#function-exp" + 0).html(expected_return);    
+                $("#program-exp" + 0).html(expected_print);
 
                 $.ajax({
                     url: '/ajax/send_code/',
