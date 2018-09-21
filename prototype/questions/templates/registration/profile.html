@@ -48,7 +48,22 @@
     {% endfor %}
 </div>
 <a href="/change_password">Change password</a>
-
+<br>
+<b>Fitness goals</b>:
+<br>
+<p>
+    Below you can set the number of questions you aim to attempt each week. 
+    The fitness meter gives a visualisation of how well you are meeting your goal 
+    based on your activity over the last five weeks.
+</p>
+<p>
+    <select id="goal_choice">
+    {% for n in "1234567" %}
+        <option value={{n}} {% if n in goal|linebreaks %} selected {% endif %}>{{n}}</option>
+    {% endfor %}
+    </select>
+    question(s) per week
+</p>
 <div class="js-gauge demo gauge"></div>
 
 {% endblock %}

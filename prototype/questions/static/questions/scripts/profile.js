@@ -8,3 +8,20 @@ $('.demo').kumaGauge({
         display: false,
     }
 });
+
+$('#goal_choice').change(function() {
+    var choice = $('#goal_choice').val();
+
+    $.ajax({
+        url: '/ajax/save_goal_choice/',
+        type: 'POST',
+        method: 'POST',
+        data: {
+            goal_choice: choice,
+            csrfmiddlewaretoken: window.CSRF_TOKEN
+        },
+        dataType: 'json',
+        success: function(result) {
+        }
+    });
+});

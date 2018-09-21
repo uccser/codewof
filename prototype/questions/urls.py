@@ -18,4 +18,5 @@ urlpatterns = [
     path('ajax/send_solution/', views.send_solution, name="send_solution"),
     path('ajax/get_output/', views.get_output, name="get_output"),
     path('ajax/save_attempt/', views.save_attempt, name="save_attempt"),
+    path('ajax/save_goal_choice/', views.save_goal_choice, name="save_goal_choice"),
 ]

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 SMALL = 100
@@ -10,6 +11,7 @@ LARGE = 500
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     points = models.IntegerField()
+    goal = models.IntegerField(default=1, validators=[MinValueValidator(1)])
     earned_badges = models.ManyToManyField('Badge', through='Earned')
     attempted_questions = models.ManyToManyField('Question', through='Attempt')
 

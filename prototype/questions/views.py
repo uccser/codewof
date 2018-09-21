@@ -101,6 +101,19 @@ def save_attempt(request):
     return JsonResponse(result)
 
 
+def save_goal_choice(request):
+    if request.user.is_authenticated:
+        user = User.objects.get(username=request.user.username)
+        profile = user.profile
+
+        goal_choice = request.POST.get('goal_choice')
+        profile.goal = int(goal_choice)
+        profile.save()
+    
+    return JsonResponse({})
+
+
+
 class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
     """displays user's profile"""
     login_url = '/login/'
@@ -118,6 +131,8 @@ class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
 
         user = User.objects.get(username=self.request.user.username)
         questions = user.profile.attempted_questions.all()
+
+        context['goal'] = user.profile.goal
 
         history = []
         for question in questions:
