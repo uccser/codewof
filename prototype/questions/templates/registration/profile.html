@@ -70,7 +70,7 @@ Number of questions attempted:
 <br>
 {% for week in past_5_weeks %}
 <div id="past-5-weeks">
-    <div class="numberCircle">{{week.n_attempts}}</div>
+    <div id="week{{forloop.counter0}}" class="numberCircle">{{week.n_attempts}}</div>
     <div>{{week.label}}</div>
     <div>Mon {{week.week|date:"d M"}}</div>
 </div>
