@@ -75,6 +75,12 @@ a.right {
     width: 4%;
 }
 
+#past-5-weeks {
+    float: left; 
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
 .header {
     display: table-row;
     font-weight: bold;
@@ -87,5 +93,17 @@ a.right {
     padding: 1%;
     border: solid 1px #e8bdfc;
     border-collapse: collapse;
+}
+
+.numberCircle {
+    width: 70px;
+    line-height: 70px;
+    border-radius: 20%;
+    text-align: center;
+    font-size: 32px;
+    color: #793698;
+    border: 5px solid #333;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 

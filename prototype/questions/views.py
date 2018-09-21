@@ -134,6 +134,29 @@ class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
 
         context['goal'] = user.profile.goal
 
+        context['past_5_weeks'] = [{'week': '17 Sep', 'n_attempts': 7}]
+
+        t = datetime.date.today()
+        today = datetime.datetime(t.year, t.month, t.day)
+        last_monday = today - datetime.timedelta(days=today.weekday(), weeks=0)
+        last_last_monday = today - datetime.timedelta(days=today.weekday(), weeks=1)
+
+        past_5_weeks = []
+        to_date = today
+        for week in range(0, 5):
+            from_date = today - datetime.timedelta(days=today.weekday(), weeks=week)
+            attempts = Attempt.objects.filter(profile=user.profile, date__range=(from_date, to_date))
+
+            label = str(week) + " weeks ago"
+            if week == 0:
+                label = "This week"
+            elif week == 1:
+                label = "Last week"
+
+            past_5_weeks.append({'week': from_date, 'n_attempts': len(attempts), 'label': label})
+            to_date = from_date
+        context['past_5_weeks'] = past_5_weeks
+
         history = []
         for question in questions:
             if question.title not in [question['title'] for question in history]:
