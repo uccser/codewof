@@ -178,11 +178,11 @@ def check_badge_conditions(user):
     for solve_badge in solve_badges:
         if solve_badge not in earned_badges:
             n_problems = int(solve_badge.id_name.split("-")[1])
-            n_completed = len(Attempt.objects.filter(profile=user.profile, passed_tests=True, is_save=False))
-            if n_completed >= n_problems:
+            n_completed = Attempt.objects.filter(profile=user.profile, passed_tests=True, is_save=False)
+            n_distinct = n_completed.values("question__pk").distinct().count()
+            if n_distinct >= n_problems:
                 new_achievement = Earned(profile=user.profile, badge=solve_badge)
                 new_achievement.save()
-
 
 
 class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
