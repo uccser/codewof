@@ -6,6 +6,7 @@ from django.contrib.auth import login, authenticate, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import F
 
 import requests
 import time
@@ -97,6 +98,27 @@ def save_attempt(request):
         attempt = Attempt(profile=profile, question=question, user_code=user_code, passed_tests=passed_tests, is_save=is_save)
         attempt.save()
 
+        if not is_save:
+            max_points_from_attempts = 3
+            points_for_correct = 5
+            n_attempts = len(Attempt.objects.filter(question=question, profile=profile, is_save=False))
+
+            previous_corrects = Attempt.objects.filter(question=question, profile=profile, passed_tests=True, is_save=False)
+            is_first_correct = len(previous_corrects) == 1
+
+            points_to_add = 0
+            if n_attempts <= max_points_from_attempts:
+                points_to_add += 1
+
+            if passed_tests and is_first_correct:
+                points_from_previous_attempts = n_attempts if n_attempts < max_points_from_attempts else max_points_from_attempts
+                points_to_add += (points_for_correct - points_from_previous_attempts)
+            
+            profile.points = F('points') + points_to_add
+            print(points_to_add)
+            profile.save()
+
+
     result = {}
     return JsonResponse(result)
 
@@ -160,7 +182,7 @@ class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
         history = []
         for question in questions:
             if question.title not in [question['title'] for question in history]:
-                attempts = Attempt.objects.filter(profile=user.profile, question=question)
+                attempts = Attempt.objects.filter(profile=user.profile, question=question, is_save=False)
                 max_date = max(attempt.date for attempt in attempts)
                 completed = any(attempt.passed_tests for attempt in attempts)
                 history.append({'latest_attempt': max_date,'title': question.title,'n_attempts': len(attempts), 'completed': completed, 'id': question.pk})
