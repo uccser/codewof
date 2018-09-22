@@ -135,6 +135,55 @@ def save_goal_choice(request):
     return JsonResponse({})
 
 
+def get_consecutive_sections(days_logged_in):
+    consecutive_sections = []
+
+    today = days_logged_in[0]
+    previous_section = [today]
+    for day in days_logged_in[1:]:
+        if day == previous_section[-1] - datetime.timedelta(days=1):
+            previous_section.append(day)
+        else:
+            consecutive_sections.append(previous_section)
+            previous_section = [day]
+    
+    consecutive_sections.append(previous_section)
+    return consecutive_sections
+
+
+def check_badge_conditions(user):
+    earned_badges = user.profile.earned_badges.all()
+
+    creation_badge = Badge.objects.get(id_name="create-account")
+    if creation_badge not in earned_badges:
+        new_achievement = Earned(profile=user.profile, badge=creation_badge)
+        new_achievement.save()
+
+    login_badges = Badge.objects.filter(id_name__contains="login")
+    for login_badge in login_badges:
+        if login_badge not in earned_badges:
+            n_days = int(login_badge.id_name.split("-")[1])
+
+            days_logged_in = LoginDay.objects.filter(profile=user.profile)
+            days_logged_in = sorted(days_logged_in, key=lambda k: k.day, reverse=True)
+            sections = get_consecutive_sections([d.day for d in days_logged_in])
+
+            max_consecutive = len(max(sections, key=lambda k: len(k)))
+
+            if max_consecutive >= n_days:
+                new_achievement = Earned(profile=user.profile, badge=login_badge)
+                new_achievement.save()
+
+    solve_badges = Badge.objects.filter(id_name__contains="solve")
+    for solve_badge in solve_badges:
+        if solve_badge not in earned_badges:
+            n_problems = int(solve_badge.id_name.split("-")[1])
+            n_completed = len(Attempt.objects.filter(profile=user.profile, passed_tests=True, is_save=False))
+            if n_completed >= n_problems:
+                new_achievement = Earned(profile=user.profile, badge=solve_badge)
+                new_achievement.save()
+
+
 
 class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
     """displays user's profile"""
@@ -149,13 +198,14 @@ class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['all_badges'] = Badge.objects.all()
 
         user = User.objects.get(username=self.request.user.username)
         questions = user.profile.attempted_questions.all()
 
-        context['goal'] = user.profile.goal
+        check_badge_conditions(user)
 
+        context['goal'] = user.profile.goal
+        context['all_badges'] = Badge.objects.all()
         context['past_5_weeks'] = [{'week': '17 Sep', 'n_attempts': 7}]
 
         t = datetime.date.today()
@@ -167,7 +217,7 @@ class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
         to_date = today
         for week in range(0, 5):
             from_date = today - datetime.timedelta(days=today.weekday(), weeks=week)
-            attempts = Attempt.objects.filter(profile=user.profile, date__range=(from_date, to_date))
+            attempts = Attempt.objects.filter(profile=user.profile, date__range=(from_date, to_date), is_save=False)
 
             label = str(week) + " weeks ago"
             if week == 0:
@@ -448,7 +498,6 @@ def send_code(request):
     elif str(question.question_type) == 'Function':
         code = add_function_test_code(question, code, expected_return, expected_output)
     
-    print(code)
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
     response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})
@@ -473,7 +522,6 @@ def send_solution(request):
             '    returned[i] = result\n'
 
     code = DEBUGGY_ABOVE + test_data + DEBUGGY_MID + solution + DEBUGGY_BELOW
-    #print(code)
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
     response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})

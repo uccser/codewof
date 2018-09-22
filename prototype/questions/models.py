@@ -35,11 +35,12 @@ class LoginDay(models.Model):
         return str(self.day)
 
 class Badge(models.Model):
-    name = models.CharField(max_length=SMALL)
+    id_name = models.CharField(max_length=SMALL, unique=True)
+    display_name = models.CharField(max_length=SMALL)
     description = models.CharField(max_length=LARGE)
 
     def __str__(self):
-        return self.name
+        return self.display_name
 
 
 class Earned(models.Model):
