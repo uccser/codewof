@@ -296,11 +296,7 @@
 
                 // Update the value label
                 if (_this.config.valueLabel.display) {
-                    if (_this.config.showNeedle) {
-                        _this.gauge.valueLabel.attr('text', value);
-                    } else {
-                        _this.gauge.valueLabel.attr('text', (max - min) / 2);
-                    }
+                    _this.gauge.valueLabel.attr('text', value);
                 }
             };
 
