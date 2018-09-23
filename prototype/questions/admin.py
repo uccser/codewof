@@ -18,12 +18,26 @@ class CustomUserAdmin(UserAdmin):
             return list()
         return super(CustomUserAdmin, self).get_inline_instances(request, obj)
 
+class ProgramTestCaseInline(admin.StackedInline):
+    model = TestCaseProgram
+    extra = 1
+
+@admin.register(Programming)
+class CustomProgramQuestionAdmin(admin.ModelAdmin):
+    inlines = [ProgramTestCaseInline, ]
+
+class FunctionTestCaseInline(admin.StackedInline):
+    model = TestCaseFunction
+    extra = 1
+
+@admin.register(ProgrammingFunction)
+class CustomFunctionQuestionAdmin(admin.ModelAdmin):
+    inlines = [FunctionTestCaseInline, ]
+
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 
 admin.site.register(Question)
-admin.site.register(Programming)
-admin.site.register(ProgrammingFunction)
 admin.site.register(Buggy)
 admin.site.register(BuggyFunction)
 

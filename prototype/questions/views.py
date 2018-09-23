@@ -221,6 +221,7 @@ class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
         for week in range(0, 5):
             from_date = today - datetime.timedelta(days=today.weekday(), weeks=week)
             attempts = Attempt.objects.filter(profile=user.profile, date__range=(from_date, to_date + datetime.timedelta(days=1)), is_save=False)
+            distinct_questions_attempted = attempts.values("question__pk").distinct().count()
 
             label = str(week) + " weeks ago"
             if week == 0:
@@ -228,7 +229,7 @@ class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
             elif week == 1:
                 label = "Last week"
 
-            past_5_weeks.append({'week': from_date, 'n_attempts': len(attempts), 'label': label})
+            past_5_weeks.append({'week': from_date, 'n_attempts': distinct_questions_attempted, 'label': label})
             to_date = from_date
         context['past_5_weeks'] = past_5_weeks
 
