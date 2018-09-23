@@ -31,26 +31,17 @@ $('.gauge').kumaGauge({
     }
 });
 
-
-
 $('#goal_choice').change(function() {
     var choice = $('#goal_choice').val();
 
-    $.ajax({
-        url: '/ajax/save_goal_choice/',
-        type: 'POST',
-        method: 'POST',
-        data: {
-            goal_choice: choice,
-            csrfmiddlewaretoken: window.CSRF_TOKEN
-        },
-        dataType: 'json',
-        success: function(result) {
-            var score = calculate_fitness_score(choice);
-            console.log(score);
-            $('.gauge').kumaGauge('update', {
-                value: score
-            });
-        }
-    });
+    var data = {
+        goal_choice: choice
+    }
+    var success = function(result) {
+        var score = calculate_fitness_score(choice);
+        $('.gauge').kumaGauge('update', {
+            value: score
+        });
+    }
+    post('save_goal_choice', data, success);
 });

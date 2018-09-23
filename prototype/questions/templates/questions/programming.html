@@ -6,17 +6,17 @@
 <p>
     {% if request.user.is_authenticated %}
     <input id="save" type="button" value="Save" />
-    <img id="has_saved" src="https://png.icons8.com/color/50/000000/ok.png" />
+    <img id="has_saved"  class="hidden" src="https://png.icons8.com/color/50/000000/ok.png" />
     {% endif %}
     <input id="submit" type="button" value="Submit" />
 </p>
-<div id="loading">
+<div id="loading" class="hidden">
     Loading...
 </div>
-<div id="all-correct">
+<div id="all-correct" class="hidden">
     Well done!
 </div>
-<div id="result-table">
+<div id="result-table" class="hidden">
     <div class="header">
         <div class="cell program-type-analysis">Input</div>
         <div class="cell program-type-analysis">Expected</div>
@@ -73,8 +73,8 @@
         {% endfor %}
     {% endif %}
 </div>
-<a id="credit" href="https://icons8.com">Icon pack by Icons8</a>
-<pre><div id="error"></div></pre>
+<a id="credit" class="hidden" href="https://icons8.com">Icon pack by Icons8</a>
+<pre><div id="error" class="hidden"></div></pre>
 <br>
 <button id="show_solution">Show Suggested Solution</button>
 <pre><div id="solution"></div></pre>

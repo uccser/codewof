@@ -1,7 +1,10 @@
 
 function displayErrors(fb) {
+    $('#feedback').addClass('hidden');
+
     if (fb.errors.length > 0) {
-        alert(fb.errors[0]);
+        setTimeout(() => {$('#feedback').removeClass('hidden')}, 200);
+        $('#feedback').text(fb.errors[0]);
     }
 }
 
@@ -25,25 +28,20 @@ $(document).ready(function(){
         event.preventDefault();
         feedback = parson.getFeedback();
         is_correct = false;
+        $('#has_saved').addClass('hidden');
+
         if (feedback.length < 1) {
             is_correct = true;
+            $('#has_saved').removeClass('hidden');
         }
-        $.ajax({
-            url: '/ajax/save_attempt/',
-            type: 'POST',
-            method: 'POST',
-            data: {
-                user_input: initial,
-                question: question_id,
-                passed_tests: is_correct,
-                is_save: false,
-                csrfmiddlewaretoken: csrf_token
-            },
-            dataType: 'json',
-            success: function(result) {
-                $('#has_saved').show();
-                setTimeout(() => {$('#has_saved').hide()}, 2000);
-            }
-        });
+
+        var data = {
+            user_input: initial,
+            question: question_id,
+            passed_tests: is_correct,
+            is_save: false
+        }
+        var success = function(result) {};
+        post('save_attempt', data, success);
     });
 });

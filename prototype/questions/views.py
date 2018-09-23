@@ -89,6 +89,26 @@ def get_random_question(request, current_question_id):
     return redirect(url)
 
 
+def add_points(question, profile, passed_tests):
+    max_points_from_attempts = 3
+    points_for_correct = 5
+
+    n_attempts = len(Attempt.objects.filter(question=question, profile=profile, is_save=False))
+    previous_corrects = Attempt.objects.filter(question=question, profile=profile, passed_tests=True, is_save=False)
+    is_first_correct = len(previous_corrects) == 1
+
+    points_to_add = 0
+    if n_attempts <= max_points_from_attempts:
+        points_to_add += 1
+
+    if passed_tests and is_first_correct:
+        points_from_previous_attempts = n_attempts if n_attempts < max_points_from_attempts else max_points_from_attempts
+        points_to_add += (points_for_correct - points_from_previous_attempts)
+    
+    profile.points = F('points') + points_to_add
+    profile.save()
+
+
 def save_attempt(request):
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
@@ -103,25 +123,7 @@ def save_attempt(request):
         attempt.save()
 
         if not is_save:
-            max_points_from_attempts = 3
-            points_for_correct = 5
-            n_attempts = len(Attempt.objects.filter(question=question, profile=profile, is_save=False))
-
-            previous_corrects = Attempt.objects.filter(question=question, profile=profile, passed_tests=True, is_save=False)
-            is_first_correct = len(previous_corrects) == 1
-
-            points_to_add = 0
-            if n_attempts <= max_points_from_attempts:
-                points_to_add += 1
-
-            if passed_tests and is_first_correct:
-                points_from_previous_attempts = n_attempts if n_attempts < max_points_from_attempts else max_points_from_attempts
-                points_to_add += (points_for_correct - points_from_previous_attempts)
-            
-            profile.points = F('points') + points_to_add
-            print(points_to_add)
-            profile.save()
-
+            add_points(question, profile, passed_tests)
 
     result = {}
     return JsonResponse(result)
@@ -189,6 +191,30 @@ def check_badge_conditions(user):
                 new_achievement.save()
 
 
+def get_past_5_weeks(user):
+    t = datetime.date.today()
+    today = datetime.datetime(t.year, t.month, t.day)
+    last_monday = today - datetime.timedelta(days=today.weekday(), weeks=0)
+    last_last_monday = today - datetime.timedelta(days=today.weekday(), weeks=1)
+
+    past_5_weeks = []
+    to_date = today
+    for week in range(0, 5):
+        from_date = today - datetime.timedelta(days=today.weekday(), weeks=week)
+        attempts = Attempt.objects.filter(profile=user.profile, date__range=(from_date, to_date + datetime.timedelta(days=1)), is_save=False)
+        distinct_questions_attempted = attempts.values("question__pk").distinct().count()
+
+        label = str(week) + " weeks ago"
+        if week == 0:
+            label = "This week"
+        elif week == 1:
+            label = "Last week"
+
+        past_5_weeks.append({'week': from_date, 'n_attempts': distinct_questions_attempted, 'label': label})
+        to_date = from_date
+    return past_5_weeks
+
+
 class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
     """displays user's profile"""
     login_url = '/login/'
@@ -210,28 +236,7 @@ class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
 
         context['goal'] = user.profile.goal
         context['all_badges'] = Badge.objects.all()
-
-        t = datetime.date.today()
-        today = datetime.datetime(t.year, t.month, t.day)
-        last_monday = today - datetime.timedelta(days=today.weekday(), weeks=0)
-        last_last_monday = today - datetime.timedelta(days=today.weekday(), weeks=1)
-
-        past_5_weeks = []
-        to_date = today
-        for week in range(0, 5):
-            from_date = today - datetime.timedelta(days=today.weekday(), weeks=week)
-            attempts = Attempt.objects.filter(profile=user.profile, date__range=(from_date, to_date + datetime.timedelta(days=1)), is_save=False)
-            distinct_questions_attempted = attempts.values("question__pk").distinct().count()
-
-            label = str(week) + " weeks ago"
-            if week == 0:
-                label = "This week"
-            elif week == 1:
-                label = "Last week"
-
-            past_5_weeks.append({'week': from_date, 'n_attempts': distinct_questions_attempted, 'label': label})
-            to_date = from_date
-        context['past_5_weeks'] = past_5_weeks
+        context['past_5_weeks'] = get_past_5_weeks(user)
 
         history = []
         for question in questions:

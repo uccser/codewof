@@ -12,13 +12,11 @@ var setup_ace = function() {
 }
 
 var hide_results = function() {
-    $('#result-table').hide();
-    $('#credit').hide();
-    $('#error').hide();
-    $('#all-correct').hide();
-    $('#has_saved').hide();
-    $('.program-type-analysis').show();
-    $('.function-type-analysis').show();
+    $('#result-table').addClass('hidden');
+    $('#credit').addClass('hidden');
+    $('#all-correct').addClass('hidden');
+    $('.program-type-analysis').removeClass('hidden');
+    $('.function-type-analysis').removeClass('hidden');
 }
 
 var save_code = function(passed_tests, is_save) {
@@ -36,10 +34,7 @@ var save_code = function(passed_tests, is_save) {
             csrfmiddlewaretoken: csrf_token
         },
         dataType: 'json',
-        success: function(result) {
-            $('#has_saved').show();
-            setTimeout(() => {$('#has_saved').hide()}, 2000);
-        }
+        success: function(result) { }
     });
 }
 
@@ -59,7 +54,7 @@ var poll_sphere_engine = function(id) {
             console.log(result);
             if (result.completed) {
                 
-                $('#loading').hide();
+                $('#loading').addClass('hidden');
 
                 if (result.output.length > 0) {
                     var output = JSON.parse(result.output.slice(0, -1));
@@ -72,7 +67,7 @@ var poll_sphere_engine = function(id) {
 
                     if (is_correct == true) {
                         $("#correctness-img").attr("src", tick);
-                        $('#all-correct').show();
+                        $('#all-correct').removeClass('hidden');
                         save_code(true, false);
                     } else {
                         $("#correctness-img").attr("src", cross);
@@ -82,17 +77,17 @@ var poll_sphere_engine = function(id) {
                     if (actual_output && actual_output.length > 0) {
                         $("#program-got").html(actual_output);
                     } else {
-                        $(".program-type-analysis").hide();
+                        $(".program-type-analysis").addClass('hidden');
                     }
 
                     if (actual_returned) {
                         $("#function-got").html(actual_returned);
                     } else {
-                        $(".function-type-analysis").hide();
+                        $(".function-type-analysis").addClass('hidden');
                     }
 
-                    $('#result-table').show();
-                    $('#credit').show();
+                    $('#result-table').removeClass('hidden');
+                    $('#credit').removeClass('hidden');
                 } 
                 if (result.stderr.length > 0) {
                     console.log(result.stderr);
@@ -159,7 +154,7 @@ var poll_sphere_engine_no_display = function(id) {
                     success: function (result) {
                         var submission_id = result.id;
                         console.log(submission_id);
-                        $('#loading').show();
+                        $('#loading').removeClass('hidden');
                         hide_results();
                         poll_sphere_engine(submission_id);
                     }
@@ -190,7 +185,7 @@ $("#submit").click(function () {
             success: function(result) {
                 var submission_id = result.id;
                 console.log(submission_id);
-                $('#loading').show();
+                $('#loading').removeClass('hidden');
                 hide_results();
                 poll_sphere_engine_no_display(submission_id);
             }
@@ -212,7 +207,7 @@ $("#submit").click(function () {
             success: function (result) {
                 var submission_id = result.id;
                 console.log(submission_id);
-                $('#loading').show();
+                $('#loading').removeClass('hidden');
                 hide_results();
                 poll_sphere_engine(submission_id);
             }
@@ -222,9 +217,7 @@ $("#submit").click(function () {
 
 $('#show_solution').click(function () {
     $('#solution').html(solution);
-    $('#show_solution').hide();
+    $('#show_solution').addClass('hidden');
 });
 
-$('#loading').hide();
-hide_results();
 setup_ace();

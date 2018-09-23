@@ -6,13 +6,13 @@ var setup_ace = function() {
 }
 
 var hide_results = function() {
-    $('#result-table').hide();
-    $('#credit').hide();
-    $('#error').hide();
-    $('#all-correct').hide();
-    $('#has_saved').hide();
-    $('.program-type-analysis').show();
-    $('.function-type-analysis').show();
+    $('#result-table').addClass('hidden');
+    $('#credit').addClass('hidden');
+    $('#error').addClass('hidden');
+    $('#all-correct').addClass('hidden');
+    $('#has_saved').addClass('hidden');
+    $('.program-type-analysis').removeClass('hidden');
+    $('.function-type-analysis').removeClass('hidden');
 }
 
 var save_code = function(passed_tests, is_save) {
@@ -31,8 +31,8 @@ var save_code = function(passed_tests, is_save) {
         },
         dataType: 'json',
         success: function(result) {
-            $('#has_saved').show();
-            setTimeout(() => {$('#has_saved').hide()}, 2000);
+            $('#has_saved').removeClass('hidden');
+            setTimeout(() => {$('#has_saved').addClass('hidden')}, 2000);
         }
     });
 }
@@ -54,7 +54,7 @@ var poll_sphere_engine = function(id) {
             console.log(result);
             if (result.completed) {
                 
-                $('#loading').hide();
+                $('#loading').addClass('hidden');
 
                 if (result.output.length > 0) {
                     var output = JSON.parse(result.output.slice(0, -1));
@@ -87,30 +87,30 @@ var poll_sphere_engine = function(id) {
                         }
                     }
 
-                    $('#result-table').show();
-                    $('#credit').show();
+                    $('#result-table').removeClass('hidden');
+                    $('#credit').removeClass('hidden');
                     
                     if (all_correct) {
-                        $('#all-correct').show();
+                        $('#all-correct').removeClass('hidden');
                         save_code(true, false);
                     } else {
                         save_code(false, false);
                     }
                     if (!has_print_contents) {
-                        $(".program-type-analysis").hide();
+                        $(".program-type-analysis").addClass('hidden');
                     }
                     if (!has_return_contents) {
-                        $(".function-type-analysis").hide();
+                        $(".function-type-analysis").addClass('hidden');
                     }
                 } 
                 if (result.stderr.length > 0) {
                     $('#error').text(result.stderr);
-                    $('#error').show();
+                    $('#error').removeClass('hidden');
                     save_code(false, false);
                 }
                 if (result.cmpinfo.length > 0) {
                     $('#error').text(result.cmpinfo);
-                    $('#error').show();
+                    $('#error').removeClass('hidden');
                     save_code(false, false);
                 }
             } else {
@@ -136,7 +136,7 @@ $("#submit").click(function () {
         success: function (result) {
             var submission_id = result.id;
             console.log(submission_id);
-            $('#loading').show();
+            $('#loading').removeClass('hidden');
             hide_results();
             poll_sphere_engine(submission_id);
         }
@@ -149,9 +149,7 @@ $('#save').click(function () {
 
 $('#show_solution').click(function () {
     $('#solution').html(solution);
-    $('#show_solution').hide();
+    $('#show_solution').addClass('hidden');
 });
 
-$('#loading').hide();
-hide_results();
 setup_ace();
