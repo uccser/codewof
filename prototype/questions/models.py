@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from model_utils.managers import InheritanceManager
 
 SMALL = 100
 LARGE = 500
@@ -76,22 +77,62 @@ class Question(models.Model):
     title = models.CharField(max_length=SMALL)
     question_text = models.TextField()
     solution = models.TextField(blank=True)
-    buggy_program = models.TextField(blank=True)
-    question_type = models.ForeignKey('QuestionType', on_delete=models.CASCADE)
-    function_name = models.CharField(max_length=SMALL, blank=True)
-    test_cases = models.ManyToManyField('TestCase')
     skill_areas = models.ManyToManyField('SkillArea', related_name='questions')
     skills = models.ManyToManyField('Skill', blank=True)
+    objects = InheritanceManager()
 
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = "Parsons Problem"
 
-class QuestionType(models.Model):
-    name = models.CharField(max_length=SMALL)
+
+class Programming(Question):
     
+    class Meta:
+        verbose_name = "Program Programming Question"
+
+class ProgrammingFunction(Programming):
+    function_name = models.CharField(max_length=SMALL, blank=True)
+
+    class Meta:
+        verbose_name = "Function Programming Question"
+
+class Buggy(Question):
+    buggy_program = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = "Program Debugging Question"
+
+class BuggyFunction(Buggy):
+    function_name = models.CharField(max_length=SMALL, blank=True)
+
+    class Meta:
+        verbose_name = "Function Debugging Question"
+
+
+class TestCase(models.Model):
+    test_input = models.CharField(max_length=LARGE, blank=True)
+    expected_output = models.CharField(max_length=LARGE, blank=True)
+
     def __str__(self):
-        return self.name
+        return str(self.test_input) + ' -> ' + str(self.expected_output)
+
+class TestCaseFunction(TestCase):
+    function_params = models.CharField(max_length=LARGE, blank=True)
+    expected_return = models.CharField(max_length=LARGE, blank=True, null=True)
+    question = models.ForeignKey('ProgrammingFunction', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Function Test Case"
+
+class TestCaseProgram(TestCase):
+    question = models.ForeignKey('Programming', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Program Test Case"
+
 
 class Skill(models.Model):
     name = models.CharField(max_length=SMALL)
@@ -106,21 +147,3 @@ class SkillArea(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class TestCase(models.Model):
-    function_params = models.CharField(max_length=LARGE, blank=True)
-    test_input = models.CharField(max_length=LARGE, blank=True)
-    expected_output = models.CharField(max_length=LARGE, blank=True)
-    expected_return = models.CharField(max_length=LARGE, blank=True, null=True)
-
-    def __str__(self):
-        i, f, o, r = '', '', '', ''
-        i = str(self.test_input)
-        i += ' + '    
-        f = 'f(' + str(self.function_params) + ')'
-    
-        o = '"' + str(self.expected_output) + '"'
-        o += ' + '
-        r = '(' + str(self.expected_return) + ')'
-        return i + f + ' -> ' + o + r

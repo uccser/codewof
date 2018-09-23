@@ -22,10 +22,17 @@ admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 
 admin.site.register(Question)
+admin.site.register(Programming)
+admin.site.register(ProgrammingFunction)
+admin.site.register(Buggy)
+admin.site.register(BuggyFunction)
+
 admin.site.register(TestCase)
+admin.site.register(TestCaseFunction)
+admin.site.register(TestCaseProgram)
+
 admin.site.register(SkillArea)
 admin.site.register(Token)
-admin.site.register(QuestionType)
 admin.site.register(Badge)
 admin.site.register(Earned)
 admin.site.register(Attempt)

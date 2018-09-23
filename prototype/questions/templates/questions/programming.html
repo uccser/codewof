@@ -1,18 +1,10 @@
 <form class="form-inline">
     <div class="form-group" style="display:block">
-        {% if question.buggy_program %}
-        <div id="editor" class="form-control">{{question.buggy_program}}</div>
-        {% else %}
         <div id="editor" class="form-control">{{previous_attempt}}</div>
-        {% endif %}
     </div>
 </form>
-{% if question.buggy_program %}
-<p>Find an input for which the above solution does <b>not</b> work as intended.</p>
-<p>Input: {{form.debug_input}} </p>
-{% endif %}
 <p>
-    {% if request.user.is_authenticated and not question.buggy_program %}
+    {% if request.user.is_authenticated %}
     <input id="save" type="button" value="Save" />
     <img id="has_saved" src="https://png.icons8.com/color/50/000000/ok.png" />
     {% endif %}
@@ -36,31 +28,50 @@
 
         <div class="cell">Correct</div>
     </div>
-    {% for case in question.test_cases.all %}
-    <div class="row">
-        <div class="cell program-type-analysis" id="program-inp{{forloop.counter0}}">
-            {{case.test_input}}
+    {% if question_subclass == "programming_func" %}
+        {% for case in question.programming.programmingfunction.testcasefunction_set.all %}
+        <div class="row">
+            <div class="cell program-type-analysis" id="program-inp{{forloop.counter0}}">
+                {{case.test_input}}
+            </div>
+            <div class="cell program-type-analysis" id="program-exp{{forloop.counter0}}">
+                {{case.expected_output}}
+            </div>
+            <div class="cell program-type-analysis" id="program-got{{forloop.counter0}}">
+                Pending
+            </div>
+            <div class="cell function-type-analysis" id="function-inp{{forloop.counter0}}">
+                {{case.function_params}}
+            </div>
+            <div class="cell function-type-analysis" id="function-exp{{forloop.counter0}}">
+                {{case.expected_return}}
+            </div>
+            <div class="cell function-type-analysis" id="function-got{{forloop.counter0}}">
+                Pending
+            </div>
+            <div class="cell">
+                <img id="correctness-img{{forloop.counter0}}" src="https://png.icons8.com/flat_round/50/000000/available-updates.png"/>
+            </div>
         </div>
-        <div class="cell program-type-analysis" id="program-exp{{forloop.counter0}}">
-            {{case.expected_output}}
+        {% endfor %}
+    {% else %}
+        {% for case in question.programming.testcaseprogram_set.all %}
+        <div class="row">
+            <div class="cell program-type-analysis" id="program-inp{{forloop.counter0}}">
+                {{case.test_input}}
+            </div>
+            <div class="cell program-type-analysis" id="program-exp{{forloop.counter0}}">
+                {{case.expected_output}}
+            </div>
+            <div class="cell program-type-analysis" id="program-got{{forloop.counter0}}">
+                Pending
+            </div>
+            <div class="cell">
+                <img id="correctness-img{{forloop.counter0}}" src="https://png.icons8.com/flat_round/50/000000/available-updates.png"/>
+            </div>
         </div>
-        <div class="cell program-type-analysis" id="program-got{{forloop.counter0}}">
-            Pending
-        </div>
-        <div class="cell function-type-analysis" id="function-inp{{forloop.counter0}}">
-            {{case.function_params}}
-        </div>
-        <div class="cell function-type-analysis" id="function-exp{{forloop.counter0}}">
-            {{case.expected_return}}
-        </div>
-        <div class="cell function-type-analysis" id="function-got{{forloop.counter0}}">
-            Pending
-        </div>
-        <div class="cell">
-            <img id="correctness-img{{forloop.counter0}}" src="https://png.icons8.com/flat_round/50/000000/available-updates.png"/>
-        </div>
-    </div>
-    {% endfor %}
+        {% endfor %}
+    {% endif %}
 </div>
 <a id="credit" href="https://icons8.com">Icon pack by Icons8</a>
 <pre><div id="error"></div></pre>

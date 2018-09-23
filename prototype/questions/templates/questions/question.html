@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block stylesheet %}
-{% if question.question_type|stringformat:"s" == "Parsons" %}
+{% if question_subclass == "parsons" %}
     <link rel="stylesheet" href="{% static 'questions/scripts/vendor/js-parsons-master/parsons.css' %}" />
     <link rel="stylesheet" href="{% static 'questions/scripts/vendor/js-parsons-master/lib/prettify.css' %}" />
     <script src="{% static 'questions/scripts/vendor/js-parsons-master/lib/prettify.js' %}"></script>
@@ -16,15 +16,21 @@
 <p>
     <pre>{{question.question_text|linebreaks}}</pre>
 </p>
-{% if question.question_type|stringformat:"s" == "Parsons" %}
+{% if question_subclass == "parsons" %}
     {% include "questions/parsons.html" %}
-{% else %}
+{% elif question_subclass == "buggy" or question_subclass == "buggy_func" %}
+    {% include "questions/buggy.html" %}
+{% elif question_subclass == "programming" or question_subclass == "programming_func" %}
     {% include "questions/programming.html" %}
 {% endif %}
 {% endblock %}
 
 {% block javascript %}
-{% if question.question_type|stringformat:"s" == "Parsons" %}
+<script>
+    var question_id = "{{question.id}}"; 
+    var csrf_token = '{{ csrf_token }}'; 
+</script>
+{% if question_subclass == "parsons" %}
     <script src="{% static 'questions/scripts/vendor/js-parsons-master/lib/jquery.min.js' %}"></script>
     <script src="{% static 'questions/scripts/vendor/js-parsons-master/lib/jquery-ui.min.js' %}"></script>
     <script src="{% static 'questions/scripts/vendor/js-parsons-master/lib/jquery.ui.touch-punch.min.js' %}"></script>
@@ -32,18 +38,20 @@
     <script src="{% static 'questions/scripts/vendor/js-parsons-master/lib/lis.js' %}"></script>
     <script src="{% static 'questions/scripts/vendor/js-parsons-master/parsons.js' %}"></script>
     <script>
-        var question_id = "{{question.id}}"; 
         var initial = "{{question.solution|escapejs}}";
-        var csrf_token = '{{ csrf_token }}'; 
     </script>
     <script src="{% static 'questions/scripts/parsons.js' %}"></script>
-{% else %}
+{% elif question_subclass == "buggy" or question_subclass == "buggy_func" %}
     <script src="{% static 'questions/scripts/vendor/ace-builds-master/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
     <script> 
-        var question_id = "{{question.id}}";
-        var buggy_program = "{{question.buggy_program|escapejs}}";
+        var buggy_program = "{{question.buggy.buggy_program|escapejs}}";
         var solution = '{{question.solution|linebreaks}}';
-        var csrf_token = '{{ csrf_token }}';
+    </script>
+    <script src="{% static 'questions/scripts/buggy.js' %}"></script>
+{% elif question_subclass == "programming" or question_subclass == "programming_func" %}
+    <script src="{% static 'questions/scripts/vendor/ace-builds-master/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script> 
+        var solution = '{{question.solution|linebreaks}}';
     </script>
     <script src="{% static 'questions/scripts/programming.js' %}"></script>
 {% endif %}

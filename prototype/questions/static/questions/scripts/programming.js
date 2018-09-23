@@ -1,17 +1,8 @@
-
 var editor = ace.edit("editor");
 
 var setup_ace = function() {
     editor.setTheme("ace/theme/xcode");
     editor.session.setMode("ace/mode/python");
-    if (buggy_program) {
-        editor.setReadOnly(true);
-        //editor.container.style.pointerEvents="none";
-        editor.renderer.setStyle("disabled", true);
-        editor.setHighlightActiveLine(false);
-        editor.setHighlightGutterLine(false);
-        editor.renderer.$cursorLayer.element.style.opacity = 0;
-    }
 }
 
 var hide_results = function() {
@@ -129,117 +120,27 @@ var poll_sphere_engine = function(id) {
     });
 }
 
+$("#submit").click(function () {
+    var user_input = editor.getValue();
 
-var poll_sphere_engine_no_display = function(id) {
     $.ajax({
-        url: '/ajax/get_output/',
+        url: '/ajax/send_code/',
         type: 'POST',
         method: 'POST',
         data: {
-            id: id,
+            user_input: user_input,
             question: question_id,
             csrfmiddlewaretoken: csrf_token
         },
         dataType: 'json',
-        success: function(result) {
-            if (result.completed) {
-                // receive output
-                var output = JSON.parse(result.output.slice(0, -1));
-                var expected_print = output["expected_print"][0];
-                var expected_return = output["expected_return"][0];
-
-                console.log(expected_print);
-                console.log(expected_return);
-                if (expected_print === null) {
-                    expected_print = 'None'
-                }
-                if (expected_return === null) {
-                    expected_return = 'None'
-                }
-
-                // send buggy as normal but with single test case: user_input -> solution output
-                var user_input = $("#id_debug_input").val();
-
-                $("#function-inp" + 0).html(user_input);
-                $("#program-inp" + 0).html(user_input);
-
-                $("#function-exp" + 0).html(expected_return);    
-                $("#program-exp" + 0).html(expected_print);
-
-                $.ajax({
-                    url: '/ajax/send_code/',
-                    type: 'POST',
-                    method: 'POST',
-                    data: {
-                        user_input: user_input,
-                        expected_print: expected_print,
-                        expected_return: expected_return,
-                        question: question_id,
-                        csrfmiddlewaretoken: csrf_token
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        var submission_id = result.id;
-                        console.log(submission_id);
-                        $('#loading').show();
-                        hide_results();
-                        poll_sphere_engine(submission_id);
-                    }
-                });
-            } else {
-                poll_sphere_engine_no_display(id);
-            }
+        success: function (result) {
+            var submission_id = result.id;
+            console.log(submission_id);
+            $('#loading').show();
+            hide_results();
+            poll_sphere_engine(submission_id);
         }
     });
-}
-
-$("#submit").click(function () {
-
-    if (buggy_program) {
-        // send solution with user input to get expected output
-        var user_input = $("#id_debug_input").val();
-
-        $.ajax({
-            url: '/ajax/send_solution/',
-            type: 'POST',
-            method: 'POST',
-            data: {
-                user_input: user_input,
-                question: question_id,
-                csrfmiddlewaretoken: csrf_token
-            },
-            dataType: 'json',
-            success: function(result) {
-                var submission_id = result.id;
-                console.log(submission_id);
-                $('#loading').show();
-                hide_results();
-                poll_sphere_engine_no_display(submission_id);
-            }
-        });
-
-    } else {
-        var user_input = editor.getValue();
-
-        $.ajax({
-            url: '/ajax/send_code/',
-            type: 'POST',
-            method: 'POST',
-            data: {
-                user_input: user_input,
-                question: question_id,
-                csrfmiddlewaretoken: csrf_token
-            },
-            dataType: 'json',
-            success: function (result) {
-                var submission_id = result.id;
-                console.log(submission_id);
-                $('#loading').show();
-                hide_results();
-                poll_sphere_engine(submission_id);
-            }
-        });
-    }
 });
 
 $('#save').click(function () {

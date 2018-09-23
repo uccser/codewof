@@ -81,8 +81,12 @@ def get_random_question(request, current_question_id):
     if current_question_id in valid_question_ids:
         valid_question_ids.remove(current_question_id)
 
-    question_number = random.choice(valid_question_ids)
-    return redirect('/questions/' + str(question_number))
+    if len(valid_question_ids) < 1:
+        url = '/'
+    else:
+        question_number = random.choice(valid_question_ids)
+        url = '/questions/' + str(question_number)
+    return redirect(url)
 
 
 def save_attempt(request):
@@ -206,7 +210,6 @@ class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
 
         context['goal'] = user.profile.goal
         context['all_badges'] = Badge.objects.all()
-        context['past_5_weeks'] = [{'week': '17 Sep', 'n_attempts': 7}]
 
         t = datetime.date.today()
         today = datetime.datetime(t.year, t.month, t.day)
@@ -217,7 +220,7 @@ class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
         to_date = today
         for week in range(0, 5):
             from_date = today - datetime.timedelta(days=today.weekday(), weeks=week)
-            attempts = Attempt.objects.filter(profile=user.profile, date__range=(from_date, to_date), is_save=False)
+            attempts = Attempt.objects.filter(profile=user.profile, date__range=(from_date, to_date + datetime.timedelta(days=1)), is_save=False)
 
             label = str(week) + " weeks ago"
             if week == 0:
@@ -233,9 +236,10 @@ class ProfileView(LoginRequiredMixin, LastAccessMixin, generic.DetailView):
         for question in questions:
             if question.title not in [question['title'] for question in history]:
                 attempts = Attempt.objects.filter(profile=user.profile, question=question, is_save=False)
-                max_date = max(attempt.date for attempt in attempts)
-                completed = any(attempt.passed_tests for attempt in attempts)
-                history.append({'latest_attempt': max_date,'title': question.title,'n_attempts': len(attempts), 'completed': completed, 'id': question.pk})
+                if len(attempts) > 0:
+                    max_date = max(attempt.date for attempt in attempts)
+                    completed = any(attempt.passed_tests for attempt in attempts)
+                    history.append({'latest_attempt': max_date,'title': question.title,'n_attempts': len(attempts), 'completed': completed, 'id': question.pk})
         context['history'] = sorted(history, key=lambda k: k['latest_attempt'], reverse=True)
         return context
 
@@ -264,6 +268,21 @@ class QuestionView(LastAccessMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = DebugInputForm()
+
+        question = Question.objects.get_subclass(pk=self.get_object().pk)
+        if isinstance(question, ProgrammingFunction):
+            subclass = "programming_func"
+        elif isinstance(question, Programming):
+            subclass = "programming"
+        elif isinstance(question, BuggyFunction):
+            subclass = "buggy_func"
+        elif isinstance(question, Buggy):
+            subclass = "buggy"
+        else:
+            subclass = "parsons"
+
+        context['question_subclass'] = subclass
+
         if self.request.user.is_authenticated:
             question = self.get_object()
             profile = self.request.user.profile
@@ -395,36 +414,40 @@ real_print(json.dumps(results))
 """
 
 
-def format_test_data(test_cases):
+def format_test_data(test_cases, is_function_type):
     test_params = "\ntest_params = ["
     test_inputs = "\ntest_inputs = ["
     test_outputs = "\ntest_outputs = ["
     test_returns = "\ntest_returns = ["
 
     for case in test_cases:
-        param_str = repr(case.function_params.split(',')) + ","
+        if is_function_type:
+            param_str = repr(case.function_params.split(',')) + ","
+            return_str = repr(case.expected_return) + ","
+            test_params += param_str
+            test_returns += return_str
+
         input_str = repr(case.test_input.split('\n')) + ","
         output_str = repr(case.expected_output) + ","
-        return_str = repr(case.expected_return) + ","
-
-        test_params += param_str
         test_inputs += input_str
         test_outputs += output_str
-        test_returns += return_str
 
-    test_params = test_params[:-1] + "]\n"
+    if is_function_type:
+        test_params = test_params[:-1] + "]\n"
+        test_returns = test_returns[:-1] + "]\n"
+    else:
+        test_params += "]\n"
+        test_returns += "]\n"
+
     test_inputs = test_inputs[:-1] + "]\n"
     test_outputs = test_outputs[:-1] + "]\n"
-    test_returns = test_returns[:-1] + "]\n"
 
     test_data = test_params + test_inputs + test_outputs + test_returns
-
     return test_data
 
 def add_program_test_code(question, user_code):
-    test_cases = question.test_cases.all()
-    
-    test_data = format_test_data(test_cases)
+    test_cases = question.programming.testcaseprogram_set.all()
+    test_data = format_test_data(test_cases, is_function_type=False)
 
     repeated_user_code = ''
     for case in test_cases:
@@ -442,61 +465,66 @@ def add_program_test_code(question, user_code):
     complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
     return complete_code
 
+def add_buggy_program_test_code(code):
+    # TODO
+    return code
 
-def add_function_test_code(question, user_code, expected_return, expected_output):
-    
-    if question.buggy_program:
-        test_data = "\ntest_params = [" + repr(user_code.split(',')) + "]\n" + \
-                    "\ntest_returns = [" + repr(expected_return) + "]\n" + \
-                    "\ntest_inputs = [[]]\n" + \
-                    "\ntest_outputs = [" + repr(expected_output) + "]\n"
+def add_function_test_code(question, user_code):
+    test_cases = question.programming.programmingfunction.testcasefunction_set.all()
+    test_data = format_test_data(test_cases, is_function_type=True)
 
-        processing = question.buggy_program + \
-            '\nfor i in range(N_test_cases):\n' + \
-            '    params = test_params[i]\n' + \
-            '    result = ' + question.function_name + '(*params)\n' + \
-            '    returned[i] = result\n' + \
-            '    if result != test_returns[i]:\n' + \
-            '        correct[i] = True\n' + \
-            '    expected_output = test_outputs[i]\n' + \
-            '    if printed[i] != expected_output:\n' + \
-            '        correct[i] = True\n'
+    processing = user_code + \
+        '\nfor i in range(N_test_cases):\n' + \
+        '    params = test_params[i]\n' + \
+        '    result = ' + question.programming.programmingfunction.function_name + '(*params)\n' + \
+        '    returned[i] = result\n' + \
+        '    if result == test_returns[i]:\n' + \
+        '        correct[i] = True\n' + \
+        '    next_question()\n' + \
+        '    expected_output = test_outputs[i]\n' + \
+        '    if printed[i] != expected_output:\n' + \
+        '        correct[i] = False\n'
 
-        complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
-        return complete_code
+    complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
+    return complete_code
 
-    else:
-        test_cases = question.test_cases.all()
-        test_data = format_test_data(test_cases)
+def add_buggy_function_test_code(question, user_params, expected_output, expected_return):
+    test_data = "\ntest_params = [" + repr(user_params.split(',')) + "]\n" + \
+                "\ntest_returns = [" + repr(expected_return) + "]\n" + \
+                "\ntest_inputs = [[]]\n" + \
+                "\ntest_outputs = [" + repr(expected_output) + "]\n"
 
-        processing = user_code + \
-            '\nfor i in range(N_test_cases):\n' + \
-            '    params = test_params[i]\n' + \
-            '    result = ' + question.function_name + '(*params)\n' + \
-            '    returned[i] = result\n' + \
-            '    if result == test_returns[i]:\n' + \
-            '        correct[i] = True\n' + \
-            '    next_question()\n' + \
-            '    expected_output = test_outputs[i]\n' + \
-            '    if printed[i] != expected_output:\n' + \
-            '        correct[i] = False\n'
+    processing = question.buggy.buggy_program + \
+        '\nfor i in range(N_test_cases):\n' + \
+        '    params = test_params[i]\n' + \
+        '    result = ' + question.buggy.buggyfunction.function_name + '(*params)\n' + \
+        '    returned[i] = result\n' + \
+        '    if result != test_returns[i]:\n' + \
+        '        correct[i] = True\n' + \
+        '    expected_output = test_outputs[i]\n' + \
+        '    if printed[i] != expected_output:\n' + \
+        '        correct[i] = True\n'
 
-        complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
-        return complete_code
+    complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
+    return complete_code
 
 
 def send_code(request):
-    code = request.POST.get('user_input')
+    user_input = request.POST.get('user_input')
     expected_output = request.POST.get('expected_print')
     expected_return = request.POST.get('expected_return')
     question_id = request.POST.get('question')
 
-    question = Question.objects.get(pk=question_id)
+    question = Question.objects.get_subclass(pk=question_id)
 
-    if str(question.question_type) == 'Program':
-        code = add_program_test_code(question, code, expected_output)
-    elif str(question.question_type) == 'Function':
-        code = add_function_test_code(question, code, expected_return, expected_output)
+    if isinstance(question, ProgrammingFunction):
+        code = add_function_test_code(question, user_input)
+    elif isinstance(question, Programming):
+        code = add_program_test_code(question, user_input)
+    elif isinstance(question, BuggyFunction):
+        code = add_buggy_function_test_code(question, user_input, expected_output, expected_return)
+    elif isinstance(question, Buggy):
+        code = add_buggy_program_test_code(user_input)
     
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
@@ -509,16 +537,16 @@ def send_solution(request):
     test_input = request.POST.get('user_input')
     question_id = request.POST.get('question')
 
-    question = Question.objects.get(pk=question_id)
+    question = Question.objects.get_subclass(pk=question_id)
     solution = question.solution
 
     test_data = "\ntest_params = [" + repr(test_input.split(',')) + "]\n"
 
-    if str(question.question_type) == 'Function':
+    if isinstance(question, BuggyFunction):
         solution = solution + \
             '\nfor i in range(N_test_cases):\n' + \
             '    params = test_params[i]\n' + \
-            '    result = ' + question.function_name + '(*params)\n' + \
+            '    result = ' + question.buggy.buggyfunction.function_name + '(*params)\n' + \
             '    returned[i] = result\n'
 
     code = DEBUGGY_ABOVE + test_data + DEBUGGY_MID + solution + DEBUGGY_BELOW
