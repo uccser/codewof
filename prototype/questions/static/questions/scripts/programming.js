@@ -15,20 +15,9 @@ var hide_results = function() {
     $('.function-type-analysis').removeClass('hidden');
 }
 
-var save_code = function(passed_tests, is_save) {
-    var user_input = editor.getValue();
-
-    var data = {
-        user_input: user_input,
-        question: question_id,
-        passed_tests: passed_tests,
-        is_save: is_save
-    }
-    var success = function(result) {
-        $('#has_saved').removeClass('hidden');
-        setTimeout(() => {$('#has_saved').addClass('hidden')}, 2000);
-    }
-    post('save_attempt', data, success);
+var show_save_icon = function(result) {
+    $('#has_saved').removeClass('hidden');
+    setTimeout(() => {$('#has_saved').addClass('hidden')}, 2000);
 }
 
 var display_table = function(result) {
@@ -64,11 +53,12 @@ var display_table = function(result) {
     $('#result-table').removeClass('hidden');
     $('#credit').removeClass('hidden');
     
+    var user_input = editor.getValue();
     if (all_correct) {
         $('#all-correct').removeClass('hidden');
-        save_code(true, false);
+        save_code(user_input, true, false, show_save_icon);
     } else {
-        save_code(false, false);
+        save_code(user_input, false, false, show_save_icon);
     }
     if (!has_print_contents) {
         $(".program-type-analysis").addClass('hidden');
@@ -78,33 +68,23 @@ var display_table = function(result) {
     }
 }
 
-var poll_sphere_engine = function(id) {
-    var data = {
-        id: id,
-        question: question_id
-    }
-    var success = function(result) {
-        if (result.completed) {     
-            $('#loading').addClass('hidden');
+var display_results = function(result) {
+    $('#loading').addClass('hidden');
+    var user_input = editor.getValue();
 
-            if (result.output.length > 0) {
-                display_table(result);
-            } 
-            if (result.stderr.length > 0) {
-                $('#error').text(result.stderr);
-                $('#error').removeClass('hidden');
-                save_code(false, false);
-            }
-            if (result.cmpinfo.length > 0) {
-                $('#error').text(result.cmpinfo);
-                $('#error').removeClass('hidden');
-                save_code(false, false);
-            }
-        } else {
-            poll_sphere_engine(id);
-        }
+    if (result.output.length > 0) {
+        display_table(result);
     }
-    post('get_output', data, success);
+    if (result.stderr.length > 0) {
+        $('#error').text(result.stderr);
+        $('#error').removeClass('hidden');
+        save_code(user_input, false, false, show_save_icon);
+    }
+    if (result.cmpinfo.length > 0) {
+        $('#error').text(result.cmpinfo);
+        $('#error').removeClass('hidden');
+        save_code(user_input, false, false, show_save_icon);
+    }
 }
 
 $("#submit").click(function () {
@@ -119,13 +99,14 @@ $("#submit").click(function () {
         console.log(submission_id);
         $('#loading').removeClass('hidden');
         hide_results();
-        poll_sphere_engine(submission_id);
+        poll_until_completed(submission_id, display_results);
     }
     post('send_code', data, success);
 });
 
 $('#save').click(function () {
-    save_code(false, true);
+    var user_input = editor.getValue();
+    save_code(user_input, false, true, show_save_icon);
 });
 
 $('#show_solution').click(function () {

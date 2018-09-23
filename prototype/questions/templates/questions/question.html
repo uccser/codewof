@@ -28,8 +28,8 @@
 {% block javascript %}
 <script>
     var question_id = "{{question.id}}"; 
-    var csrf_token = '{{ csrf_token }}'; 
 </script>
+<script src="{% static 'questions/scripts/question.js' %}"></script>
 {% if question_subclass == "parsons" %}
     <script src="{% static 'questions/scripts/vendor/js-parsons-master/lib/jquery.min.js' %}"></script>
     <script src="{% static 'questions/scripts/vendor/js-parsons-master/lib/jquery-ui.min.js' %}"></script>

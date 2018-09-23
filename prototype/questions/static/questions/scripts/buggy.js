@@ -19,19 +19,6 @@ var hide_results = function() {
     $('.function-type-analysis').removeClass('hidden');
 }
 
-var save_code = function(passed_tests, is_save) {
-    var user_input = editor.getValue();
-
-    var data = {
-        user_input: user_input,
-        question: question_id,
-        passed_tests: passed_tests,
-        is_save: is_save
-    }
-    var success = function(result) {}
-    post('save_attempt', data, success);
-}
-
 var display_table = function(result) {
     var output = JSON.parse(result.output.slice(0, -1));
     var actual_output = output["printed"][0];
@@ -41,13 +28,14 @@ var display_table = function(result) {
     var tick = "https://png.icons8.com/color/50/000000/ok.png";
     var cross = "https://png.icons8.com/color/50/000000/close-window.png";
 
+    var user_input = $("#id_debug_input").val();
     if (is_correct == true) {
         $("#correctness-img").attr("src", tick);
         $('#all-correct').removeClass('hidden');
-        save_code(true, false);
+        save_code(user_input, true, false, function(result) {});
     } else {
         $("#correctness-img").attr("src", cross);
-        save_code(false, false);
+        save_code(user_input, false, false, function(result) {});
     }
 
     if (actual_output && actual_output.length > 0) {
@@ -66,79 +54,56 @@ var display_table = function(result) {
     $('#credit').removeClass('hidden');
 }
 
-var poll_sphere_engine = function(id) {
-    var data = {
-        id: id,
-        question: question_id
-    }
-    var success = function(result) {
-        if (result.completed) {
-            $('#loading').addClass('hidden');
+var display_results = function(result) {
+    $('#loading').addClass('hidden');
 
-            if (result.output.length > 0) {
-                display_table(result);
-            } 
-            if (result.stderr.length > 0) {
-                console.log(result.stderr);
-            }
-            if (result.cmpinfo.length > 0) {
-                console.log(result.cmpinfo);
-            }
-        } else {
-            poll_sphere_engine(id);
-        }
+    if (result.output.length > 0) {
+        display_table(result);
+    } 
+    if (result.stderr.length > 0) {
+        console.log(result.stderr);
     }
-    post('get_output', data, success);
+    if (result.cmpinfo.length > 0) {
+        console.log(result.cmpinfo);
+    }
 }
 
+var send_buggy_code = function(result) {
+    // receive output
+    var output = JSON.parse(result.output.slice(0, -1));
+    var expected_print = output["expected_print"][0];
+    var expected_return = output["expected_return"][0];
 
-var poll_sphere_engine_no_display = function(id) {
+    if (expected_print === null) {
+        expected_print = 'None'
+    }
+    if (expected_return === null) {
+        expected_return = 'None'
+    }
+
+    // send buggy as normal but with single test case: user_input -> solution output
+    var user_input = $("#id_debug_input").val();
+
+    // load input and expected values into table
+    $("#function-inp").html(user_input);
+    $("#program-inp").html(user_input);
+    $("#function-exp").html(expected_return);    
+    $("#program-exp").html(expected_print);
+
     var data = {
-        id: id,
+        user_input: user_input,
+        expected_print: expected_print,
+        expected_return: expected_return,
         question: question_id
     }
-    var success = function(result) {
-        if (result.completed) {
-            // receive output
-            var output = JSON.parse(result.output.slice(0, -1));
-            var expected_print = output["expected_print"][0];
-            var expected_return = output["expected_return"][0];
-
-            if (expected_print === null) {
-                expected_print = 'None'
-            }
-            if (expected_return === null) {
-                expected_return = 'None'
-            }
-
-            // send buggy as normal but with single test case: user_input -> solution output
-            var user_input = $("#id_debug_input").val();
-
-            // load input and expected values into table
-            $("#function-inp").html(user_input);
-            $("#program-inp").html(user_input);
-            $("#function-exp").html(expected_return);    
-            $("#program-exp").html(expected_print);
-
-            var data = {
-                user_input: user_input,
-                expected_print: expected_print,
-                expected_return: expected_return,
-                question: question_id
-            }
-            var success = function (result) {
-                var submission_id = result.id;
-                console.log(submission_id);
-                $('#loading').removeClass('hidden');
-                hide_results();
-                poll_sphere_engine(submission_id);
-            }
-            post('send_code', data, success);
-        } else {
-            poll_sphere_engine_no_display(id);
-        }
+    var success = function (result) {
+        var submission_id = result.id;
+        console.log(submission_id);
+        $('#loading').removeClass('hidden');
+        hide_results();
+        poll_until_completed(submission_id, display_results);
     }
-    post('get_output', data, success);
+    post('send_code', data, success);
 }
 
 $("#submit").click(function () {
@@ -154,7 +119,7 @@ $("#submit").click(function () {
         console.log(submission_id);
         $('#loading').removeClass('hidden');
         hide_results();
-        poll_sphere_engine_no_display(submission_id);
+        poll_until_completed(submission_id, send_buggy_code);
     }
     post('send_solution', data, success);
 });
