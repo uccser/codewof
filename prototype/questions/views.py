@@ -33,6 +33,7 @@ class LastAccessMixin(object):
 
             if not login_days.filter(day=today).exists():
                 day = LoginDay(profile=profile)
+                day.full_clean()
                 day.save()
 
         return super(LastAccessMixin, self).dispatch(request, *args, **kwargs)
@@ -42,6 +43,7 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
+            form.full_clean()
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
@@ -58,6 +60,7 @@ def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
+            form.full_clean()
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(request, 'Password successfully updated')
@@ -106,6 +109,7 @@ def add_points(question, profile, passed_tests):
         points_to_add += (points_for_correct - points_from_previous_attempts)
     
     profile.points = F('points') + points_to_add
+    profile.full_clean()
     profile.save()
 
 
@@ -120,6 +124,7 @@ def save_attempt(request):
         is_save = json.loads(request.POST.get('is_save'))
 
         attempt = Attempt(profile=profile, question=question, user_code=user_code, passed_tests=passed_tests, is_save=is_save)
+        attempt.full_clean()
         attempt.save()
 
         if not is_save:
@@ -136,6 +141,7 @@ def save_goal_choice(request):
 
         goal_choice = request.POST.get('goal_choice')
         profile.goal = int(goal_choice)
+        profile.full_clean()
         profile.save()
     
     return JsonResponse({})
@@ -160,10 +166,14 @@ def get_consecutive_sections(days_logged_in):
 def check_badge_conditions(user):
     earned_badges = user.profile.earned_badges.all()
 
-    creation_badge = Badge.objects.get(id_name="create-account")
-    if creation_badge not in earned_badges:
-        new_achievement = Earned(profile=user.profile, badge=creation_badge)
-        new_achievement.save()
+    try:
+        creation_badge = Badge.objects.get(id_name="create-account")
+        if creation_badge not in earned_badges:
+            new_achievement = Earned(profile=user.profile, badge=creation_badge)
+            new_achievement.full_clean()
+            new_achievement.save()
+    except (Badge.DoesNotExist):
+        pass
 
     login_badges = Badge.objects.filter(id_name__contains="login")
     for login_badge in login_badges:
@@ -178,6 +188,7 @@ def check_badge_conditions(user):
 
             if max_consecutive >= n_days:
                 new_achievement = Earned(profile=user.profile, badge=login_badge)
+                new_achievement.full_clean()
                 new_achievement.save()
 
     solve_badges = Badge.objects.filter(id_name__contains="solve")
@@ -188,6 +199,7 @@ def check_badge_conditions(user):
             n_distinct = n_completed.values("question__pk").distinct().count()
             if n_distinct >= n_problems:
                 new_achievement = Earned(profile=user.profile, badge=solve_badge)
+                new_achievement.full_clean()
                 new_achievement.save()
 
 

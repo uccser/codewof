@@ -12,7 +12,7 @@ LARGE = 500
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     points = models.IntegerField(default=0)
-    goal = models.IntegerField(default=1, validators=[MinValueValidator(1)])
+    goal = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(7)])
     earned_badges = models.ManyToManyField('Badge', through='Earned')
     attempted_questions = models.ManyToManyField('Question', through='Attempt')
 
@@ -26,6 +26,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
+    instance.profile.full_clean()
     instance.profile.save()
 
 class LoginDay(models.Model):
@@ -94,19 +95,19 @@ class Programming(Question):
         verbose_name = "Program Programming Question"
 
 class ProgrammingFunction(Programming):
-    function_name = models.CharField(max_length=SMALL, blank=True)
+    function_name = models.CharField(max_length=SMALL)
 
     class Meta:
         verbose_name = "Function Programming Question"
 
 class Buggy(Question):
-    buggy_program = models.TextField(blank=True)
+    buggy_program = models.TextField()
 
     class Meta:
         verbose_name = "Program Debugging Question"
 
 class BuggyFunction(Buggy):
-    function_name = models.CharField(max_length=SMALL, blank=True)
+    function_name = models.CharField(max_length=SMALL)
 
     class Meta:
         verbose_name = "Function Debugging Question"

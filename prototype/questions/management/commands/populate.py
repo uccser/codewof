@@ -20,9 +20,11 @@
 #         program = QuestionType.objects.get(name='Program')
 
 #         test = TestCase(expected_output="2821\n", expected_return="", test_input="", function_params="")
+#         test.full_clean()        
 #         test.save()
 
 #         question = Question(title=NAME, question_text=TEXT, question_type=program, solution=SOL)
+#         question.full_clean()
 #         question.save()
 #         question.test_cases.add(test)
 
