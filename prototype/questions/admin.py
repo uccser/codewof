@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from django.db.models import F
 
 from .models import *
 
@@ -49,7 +48,6 @@ class CustomGenericQuestionAdmin(admin.ModelAdmin):
         return get_question_type(obj.pk)
 
     type_display.short_description = "Question Type"
-    type_display.admin_order_field = '_type'
 
 @admin.register(Question)
 class CustomQuestionAdmin(CustomGenericQuestionAdmin):
