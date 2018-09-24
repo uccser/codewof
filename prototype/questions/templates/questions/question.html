@@ -27,7 +27,7 @@
 
 {% block javascript %}
 <script>
-    var question_id = "{{question.id}}"; 
+    var question_id = {{question.id}}; 
 </script>
 <script src="{% static 'questions/scripts/question.js' %}"></script>
 {% if question_subclass == "parsons" %}

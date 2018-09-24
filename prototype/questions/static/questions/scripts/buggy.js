@@ -14,6 +14,7 @@ var setup_ace = function() {
 var hide_results = function() {
     $('#result-table').addClass('hidden');
     $('#credit').addClass('hidden');
+    $('#error').addClass('hidden');
     $('#all-correct').addClass('hidden');
     $('.program-type-analysis').removeClass('hidden');
     $('.function-type-analysis').removeClass('hidden');
@@ -28,26 +29,31 @@ var display_table = function(result) {
     var tick = "https://png.icons8.com/color/50/000000/ok.png";
     var cross = "https://png.icons8.com/color/50/000000/close-window.png";
 
-    var user_input = $("#id_debug_input").val();
+    var user_input = $("#id_params_input").val();
+    var user_stdin = $("#id_debug_input").val();
+
     if (is_correct == true) {
         $("#correctness-img").attr("src", tick);
         $('#all-correct').removeClass('hidden');
-        save_code(user_input, true, false, function(result) {});
+        save_code(user_input + '\n' + user_stdin, true, false, function(result) {});
     } else {
         $("#correctness-img").attr("src", cross);
-        save_code(user_input, false, false, function(result) {});
+        save_code(user_input + '\n' + user_stdin, false, false, function(result) {});
     }
 
     if (actual_output && actual_output.length > 0) {
         $("#program-got").html(actual_output);
     } else {
-        $(".program-type-analysis").addClass('hidden');
+        if (user_stdin.length < 1) {
+            $(".program-type-analysis").addClass('hidden');
+        }
     }
-
     if (actual_returned) {
         $("#function-got").html(actual_returned);
     } else {
-        $(".function-type-analysis").addClass('hidden');
+        if (user_input.length < 1) {
+            $(".function-type-analysis").addClass('hidden');
+        }
     }
 
     $('#result-table').removeClass('hidden');
@@ -56,6 +62,7 @@ var display_table = function(result) {
 
 var display_results = function(result) {
     $('#loading').addClass('hidden');
+    console.log(result);
 
     if (result.output.length > 0) {
         display_table(result);
@@ -70,48 +77,71 @@ var display_results = function(result) {
 
 var send_buggy_code = function(result) {
     // receive output
+    console.log(result);
+    console.log(result.output);
     var output = JSON.parse(result.output.slice(0, -1));
     var expected_print = output["expected_print"][0];
     var expected_return = output["expected_return"][0];
 
-    if (expected_print === null) {
-        expected_print = 'None'
-    }
-    if (expected_return === null) {
-        expected_return = 'None'
-    }
-
     // send buggy as normal but with single test case: user_input -> solution output
-    var user_input = $("#id_debug_input").val();
+    var user_input = $("#id_params_input").val();
+    var user_stdin = $("#id_debug_input").val();
 
     // load input and expected values into table
     $("#function-inp").html(user_input);
-    $("#program-inp").html(user_input);
-    $("#function-exp").html(expected_return);    
-    $("#program-exp").html(expected_print);
+    $("#program-inp").html(user_stdin);
+    if (expected_return) {
+        $("#function-exp").html(expected_return);
+    }
+    if (expected_print){
+        $("#program-exp").html(expected_print);
+    }
 
     var data = {
         user_input: user_input,
+        buggy_stdin: user_stdin,
         expected_print: expected_print,
         expected_return: expected_return,
         question: question_id
     }
-    var success = function (result) {
-        var submission_id = result.id;
-        console.log(submission_id);
-        $('#loading').removeClass('hidden');
-        hide_results();
-        poll_until_completed(submission_id, display_results);
+    post('send_code', data, function (result) {
+        if (result.error) {
+            $('#error').text(result.error);
+            $('#error').removeClass('hidden');            
+        } else {
+            var submission_id = result.id;
+            console.log(submission_id);
+            $('#loading').removeClass('hidden');
+            hide_results();
+            poll_until_completed(submission_id, display_results);
+        }
+    });
+}
+
+var check_for_errors = function(result) {
+    $('#loading').addClass('hidden');
+
+    if (result.output.length > 0) {
+        send_buggy_code(result);
     }
-    post('send_code', data, success);
+    if (result.stderr.length > 0) {
+        $('#error').text(result.stderr);
+        $('#error').removeClass('hidden');
+    }
+    if (result.cmpinfo.length > 0) {
+        $('#error').text(result.cmpinfo);
+        $('#error').removeClass('hidden');
+    }
 }
 
 $("#submit").click(function () {
     // send solution with user input to get expected output
-    var user_input = $("#id_debug_input").val();
+    var user_input = $("#id_params_input").val();
+    var user_stdin = $("#id_debug_input").val();
 
     var data = {
         user_input: user_input,
+        buggy_stdin: user_stdin,
         question: question_id
     }
     var success = function(result) {
@@ -119,7 +149,7 @@ $("#submit").click(function () {
         console.log(submission_id);
         $('#loading').removeClass('hidden');
         hide_results();
-        poll_until_completed(submission_id, send_buggy_code);
+        poll_until_completed(submission_id, check_for_errors);
     }
     post('send_solution', data, success);
 });

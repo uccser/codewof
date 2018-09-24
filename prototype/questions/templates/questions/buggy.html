@@ -4,7 +4,10 @@
     </div>
 </form>
 <p>Find an input for which the above solution does <b>not</b> work as intended.</p>
-<p>Input: {{form.debug_input}} </p>
+{% if question.buggy.buggyfunction %}
+<p>Params: {{form.params_input}} </p>
+{% endif %}
+<p>Standard Input: {{form.debug_input}}</p>
 <p>
     <input id="submit" type="button" value="Submit" />
 </p>
@@ -18,32 +21,32 @@
     <div class="header">
         <div class="cell program-type-analysis">Input</div>
         <div class="cell program-type-analysis">Expected</div>
-        <div class="cell program-type-analysis">Got</div>
+        <div class="cell program-type-analysis">Printed</div>
 
         <div class="cell function-type-analysis">Parameter(s)</div>
         <div class="cell function-type-analysis">Expected</div>
-        <div class="cell function-type-analysis">Got</div>
+        <div class="cell function-type-analysis">Returned</div>
 
         <div class="cell">Correct</div>
     </div>
     <div class="row">
         <div class="cell program-type-analysis" id="program-inp">
-            Pending
+            None
         </div>
         <div class="cell program-type-analysis" id="program-exp">
-            Pending
+            None
         </div>
         <div class="cell program-type-analysis" id="program-got">
-            Pending
+            None
         </div>
         <div class="cell function-type-analysis" id="function-inp">
-            Pending
+            None
         </div>
         <div class="cell function-type-analysis" id="function-exp">
-            Pending
+            None
         </div>
         <div class="cell function-type-analysis" id="function-got">
-            Pending
+            None
         </div>
         <div class="cell">
             <img id="correctness-img" src="https://png.icons8.com/flat_round/50/000000/available-updates.png"/>
@@ -51,6 +54,7 @@
     </div>
 </div>
 <a id="credit" class="hidden" href="https://icons8.com">Icon pack by Icons8</a>
+<pre><div id="error" class="hidden"></div></pre>
 <br>
 <button id="show_solution">Show Suggested Solution</button>
 <pre><div id="solution"></div></pre>

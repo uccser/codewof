@@ -6,13 +6,14 @@ from django.contrib.auth import login, authenticate, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import F
 
 import requests
 import time
 import datetime
 import random
 import json
+from ast import literal_eval
+import jinja2
 
 from .forms import *
 from .models import *
@@ -108,20 +109,21 @@ def add_points(question, profile, passed_tests):
         points_from_previous_attempts = n_attempts if n_attempts < max_points_from_attempts else max_points_from_attempts
         points_to_add += (points_for_correct - points_from_previous_attempts)
     
-    profile.points = F('points') + points_to_add
+    profile.points += points_to_add
     profile.full_clean()
     profile.save()
 
 
 def save_attempt(request):
+    request_json = json.loads(request.body.decode('utf-8'))
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
         profile = user.profile
-        question = Question.objects.get(pk=request.POST.get('question'))
+        question = Question.objects.get(pk=request_json['question'])
         
-        user_code = request.POST.get('user_input')
-        passed_tests = json.loads(request.POST.get('passed_tests'))
-        is_save = json.loads(request.POST.get('is_save'))
+        user_code = request_json['user_input']
+        passed_tests = request_json['passed_tests']
+        is_save = request_json['is_save']
 
         attempt = Attempt(profile=profile, question=question, user_code=user_code, passed_tests=passed_tests, is_save=is_save)
         attempt.full_clean()
@@ -135,11 +137,12 @@ def save_attempt(request):
 
 
 def save_goal_choice(request):
+    request_json = json.loads(request.body.decode('utf-8'))
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
         profile = user.profile
 
-        goal_choice = request.POST.get('goal_choice')
+        goal_choice = request_json['goal_choice']
         profile.goal = int(goal_choice)
         profile.full_clean()
         profile.save()
@@ -528,22 +531,81 @@ def add_buggy_function_test_code(question, user_params, expected_output, expecte
 
 
 def send_code(request):
-    user_input = request.POST.get('user_input')
-    expected_output = request.POST.get('expected_print')
-    expected_return = request.POST.get('expected_return')
-    question_id = request.POST.get('question')
-
+    request_json = json.loads(request.body.decode('utf-8'))
+    user_input = request_json['user_input']
+    question_id = request_json['question']
     question = Question.objects.get_subclass(pk=question_id)
 
-    if isinstance(question, ProgrammingFunction):
-        code = add_function_test_code(question, user_input)
-    elif isinstance(question, Programming):
-        code = add_program_test_code(question, user_input)
-    elif isinstance(question, BuggyFunction):
-        code = add_buggy_function_test_code(question, user_input, expected_output, expected_return)
-    elif isinstance(question, Buggy):
-        code = add_buggy_program_test_code(user_input)
-    
+    # ###
+    # if isinstance(question, ProgrammingFunction):
+    #     code = add_function_test_code(question, user_input)
+    # elif isinstance(question, Programming):
+    #     code = add_program_test_code(question, user_input)
+    # elif isinstance(question, BuggyFunction):
+    #     code = add_buggy_function_test_code(question, user_input, expected_output, expected_return)
+    # elif isinstance(question, Buggy):
+    #     code = add_buggy_program_test_code(user_input)
+
+    # ###
+
+    template_loader = jinja2.FileSystemLoader(searchpath="questions/wrapper_templates")
+    template_env = jinja2.Environment(loader=template_loader)
+    template_file = "common.py"
+    template = template_env.get_template(template_file)
+
+    is_func = isinstance(question, ProgrammingFunction) or isinstance(question, BuggyFunction)
+    is_buggy = isinstance(question, Buggy)
+
+    if is_func:
+        if is_buggy:
+            func_name = question.buggy.buggyfunction.function_name
+        else:
+            func_name = question.programming.programmingfunction.function_name
+
+    if is_buggy:
+        user_stdin = request_json['buggy_stdin']
+        inputs = [user_stdin.split('\n')]
+        expected_output = request_json['expected_print']
+        outputs = [expected_output]
+        if is_func:
+            user_input = "[" + user_input + "]"
+            try:
+                test_params = literal_eval(user_input)
+            except:
+                message = "Input formatted incorrectly. Must be valid comma-separated python."
+                result = {
+                    'error': message
+                }
+                return JsonResponse(result)
+            params = [test_params]
+            print(request.body.decode('utf-8'))
+            expected_return = request_json['expected_return']
+            returns = [expected_return]
+        
+        user_input = question.buggy.buggy_program
+    else:
+        if is_func:
+            test_cases = question.programming.programmingfunction.testcasefunction_set.all()
+        else:
+            test_cases = question.programming.testcaseprogram_set.all()
+
+        params = [case.function_params.split(',') for case in test_cases]
+        inputs = [case.test_input.split('\n') for case in test_cases]
+        outputs = [case.expected_output for case in test_cases]
+        returns = [case.expected_return for case in test_cases]
+
+    context_variables = {
+        'params': repr(params),
+        'inputs': repr(inputs), 
+        'outputs': repr(outputs),
+        'returns': repr(returns),
+        'is_func': is_func,
+        'is_buggy': is_buggy,
+        'user_code': user_input.replace('/t', '    '),
+        'function_name': func_name
+    }
+    code = template.render(**context_variables)
+    print(code)
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
     response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})
@@ -552,22 +614,25 @@ def send_code(request):
     return JsonResponse(result)
 
 def send_solution(request):
-    test_input = request.POST.get('user_input')
-    question_id = request.POST.get('question')
+    request_json = json.loads(request.body.decode('utf-8'))
+    test_input = request_json['user_input']
+    question_id = request_json['question']
 
     question = Question.objects.get_subclass(pk=question_id)
     solution = question.solution
+    
+    template_loader = jinja2.FileSystemLoader(searchpath="questions/wrapper_templates")
+    template_env = jinja2.Environment(loader=template_loader)
+    template_file = "template.py"
+    template = template_env.get_template(template_file)
 
-    test_data = "\ntest_params = [" + repr(test_input.split(',')) + "]\n"
+    context_variables = {
+        'params': repr(test_input.split(',')),
+        'solution': solution,
+        'function_name': question.buggy.buggyfunction.function_name
+    }
+    code = template.render(**context_variables)
 
-    if isinstance(question, BuggyFunction):
-        solution = solution + \
-            '\nfor i in range(N_test_cases):\n' + \
-            '    params = test_params[i]\n' + \
-            '    result = ' + question.buggy.buggyfunction.function_name + '(*params)\n' + \
-            '    returned[i] = result\n'
-
-    code = DEBUGGY_ABOVE + test_data + DEBUGGY_MID + solution + DEBUGGY_BELOW
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
     response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})
@@ -577,8 +642,9 @@ def send_solution(request):
 
 
 def get_output(request):
-    submission_id = request.POST.get('id')
-    question_id = request.POST.get('question')
+    request_json = json.loads(request.body.decode('utf-8'))
+    submission_id = request_json['id']
+    question_id = request_json['question']
 
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 

@@ -14,4 +14,5 @@ class SignUpForm(UserCreationForm):
 
 
 class DebugInputForm(forms.Form):
-    debug_input = forms.CharField(max_length=100)
+    params_input = forms.CharField(max_length=100)
+    debug_input = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}))

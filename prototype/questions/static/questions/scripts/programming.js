@@ -94,14 +94,18 @@ $("#submit").click(function () {
         user_input: user_input,
         question: question_id
     }
-    var success = function (result) {
-        var submission_id = result.id;
-        console.log(submission_id);
-        $('#loading').removeClass('hidden');
-        hide_results();
-        poll_until_completed(submission_id, display_results);
-    }
-    post('send_code', data, success);
+    post('send_code', data, function (result) {
+        if (result.error) {
+            $('#error').text(result.error);
+            $('#error').removeClass('hidden'); 
+        } else {
+            var submission_id = result.id;
+            console.log(submission_id);
+            $('#loading').removeClass('hidden');
+            hide_results();
+            poll_until_completed(submission_id, display_results);
+        }
+    });
 });
 
 $('#save').click(function () {
