@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from django.db.models import F
 
 from .models import *
 
@@ -48,6 +49,7 @@ class CustomGenericQuestionAdmin(admin.ModelAdmin):
         return get_question_type(obj.pk)
 
     type_display.short_description = "Question Type"
+    type_display.admin_order_field = '_type'
 
 @admin.register(Question)
 class CustomQuestionAdmin(CustomGenericQuestionAdmin):
@@ -58,13 +60,14 @@ class CustomQuestionAdmin(CustomGenericQuestionAdmin):
         if context['original']:
             pk = context['original'].pk
             question = Question.objects.get_subclass(pk=pk)
+            subclass = get_question_type(pk)
             is_correct_type = not isinstance(question, Buggy) and not isinstance(question, Programming)
         else:
             is_correct_type = True
 
         extra = {
             'is_correct_type': is_correct_type,
-            'error_message': 'This page is intended for managing Parsons Problems only',
+            'error_message': 'This page is intended for editing Parsons Problems only. Please go to the ' + subclass + ' page to edit this question.',
             'help_text': 'To define which blocks are displayed, write the program in the correct order in the solution box. Use 2 spaces for each level of indentation. A distractor can be added by ending the line with #distractor'
         }
         context.update(extra)
@@ -81,13 +84,14 @@ class CustomProgramQuestionAdmin(CustomGenericQuestionAdmin):
         if context['original']:
             pk = context['original'].pk
             question = Question.objects.get_subclass(pk=pk)
+            subclass = get_question_type(pk)
             is_correct_type = not isinstance(question, ProgrammingFunction)
         else:
             is_correct_type = True
 
         extra = {
             'is_correct_type': is_correct_type,
-            'error_message': 'This page is intended for managing program-type programming questions only',
+            'error_message': 'This page is intended for editing program-type programming questions only. Please go to the ' + subclass + ' page to edit this question.',
             'help_text': ''
         }
         context.update(extra)
@@ -103,13 +107,14 @@ class CustomBuggyAdmin(CustomGenericQuestionAdmin):
         if context['original']:
             pk = context['original'].pk
             question = Question.objects.get_subclass(pk=pk)
+            subclass = get_question_type(pk)
             is_correct_type = not isinstance(question, BuggyFunction)
         else:
             is_correct_type = True
 
         extra = {
             'is_correct_type': is_correct_type,
-            'error_message': 'This page is intended for managing program-type debugging questions only',
+            'error_message': 'This page is intended for editing program-type debugging questions only. Please go to the ' + subclass + ' page to edit this question.',
             'help_text': ''
         }
         context.update(extra)
