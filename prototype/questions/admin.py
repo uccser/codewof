@@ -40,8 +40,7 @@ class CustomUserAdmin(UserAdmin):
             return list()
         return super(CustomUserAdmin, self).get_inline_instances(request, obj)
 
-@admin.register(Question)
-class CustomQuestionAdmin(admin.ModelAdmin):
+class CustomGenericQuestionAdmin(admin.ModelAdmin):
     list_display = ('title', 'type_display')
     search_fields = ('title',)
 
@@ -49,6 +48,9 @@ class CustomQuestionAdmin(admin.ModelAdmin):
         return get_question_type(obj.pk)
 
     type_display.short_description = "Question Type"
+
+@admin.register(Question)
+class CustomQuestionAdmin(CustomGenericQuestionAdmin):
 
     def render_change_form(self, request, context, *args, **kwargs):
         self.change_form_template = 'admin/change_form_with_help_text.html'
@@ -70,15 +72,8 @@ class CustomQuestionAdmin(admin.ModelAdmin):
 
 
 @admin.register(Programming)
-class CustomProgramQuestionAdmin(admin.ModelAdmin):
+class CustomProgramQuestionAdmin(CustomGenericQuestionAdmin):
     inlines = [ProgramTestCaseInline, ]
-    list_display = ('title', 'type_display')
-    search_fields = ('title',)
-
-    def type_display(self, obj):
-        return get_question_type(obj.pk)
-
-    type_display.short_description = "Question Type"
 
     def render_change_form(self, request, context, *args, **kwargs):
         self.change_form_template = 'admin/change_form_with_help_text.html'
@@ -100,14 +95,7 @@ class CustomProgramQuestionAdmin(admin.ModelAdmin):
 
 
 @admin.register(Buggy)
-class CustomBuggyAdmin(admin.ModelAdmin):
-    list_display = ('title', 'type_display')
-    search_fields = ('title',)
-
-    def type_display(self, obj):
-        return get_question_type(obj.pk)
-
-    type_display.short_description = "Question Type"
+class CustomBuggyAdmin(CustomGenericQuestionAdmin):
 
     def render_change_form(self, request, context, *args, **kwargs):
         self.change_form_template = 'admin/change_form_with_help_text.html'
@@ -129,25 +117,13 @@ class CustomBuggyAdmin(admin.ModelAdmin):
 
 
 @admin.register(ProgrammingFunction)
-class CustomFunctionQuestionAdmin(admin.ModelAdmin):
+class CustomFunctionQuestionAdmin(CustomGenericQuestionAdmin):
     inlines = [FunctionTestCaseInline, ]
-    list_display = ('title', 'type_display')
-    search_fields = ('title',)
-
-    def type_display(self, obj):
-        return get_question_type(obj.pk)
-
-    type_display.short_description = "Question Type"
+   
 
 @admin.register(BuggyFunction)
-class CustomBuggyFunctionQuestionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'type_display')
-    search_fields = ('title',)
-
-    def type_display(self, obj):
-        return get_question_type(obj.pk)
-
-    type_display.short_description = "Question Type"
+class CustomBuggyFunctionQuestionAdmin(CustomGenericQuestionAdmin):
+    pass
 
 
 admin.site.unregister(User)
