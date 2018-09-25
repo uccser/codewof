@@ -47,8 +47,7 @@ for i in range(N_test_cases):
     returned[i] = result
     if result == test_returns[i]:
         correct[i] = True
-    expected_output = test_outputs[i]
-    if printed[i].rstrip() != expected_output.rstrip():
+    if printed[i].rstrip() != test_outputs[i].rstrip():
         correct[i] = False
 {% else %}
 
@@ -60,8 +59,7 @@ for i in range(N_test_cases):
     update_globals()
 
     correct[i] = True
-    expected_output = test_outputs[i]
-    if printed[i].rstrip() != expected_output.rstrip():
+    if printed[i].rstrip() != test_outputs[i].rstrip():
         correct[i] = False
 {% endif %}
 
