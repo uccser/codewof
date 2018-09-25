@@ -1,6 +1,5 @@
 
 var post = function(url, data, success_function) {
-    //sdata.csrfmiddlewaretoken = window.CSRF_TOKEN;
     $.ajax({
         url: '/ajax/' + url + '/',
         type: 'POST',

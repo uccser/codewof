@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 from .models import *
+from .forms import *
 
 def get_question_type(question_id):
     question = Question.objects.get_subclass(pk=question_id)
@@ -26,10 +27,12 @@ class ProfileInline(admin.StackedInline):
 
 class ProgramTestCaseInline(admin.StackedInline):
     model = TestCaseProgram
+    form = TestCaseProgramForm
     extra = 1
 
 class FunctionTestCaseInline(admin.StackedInline):
     model = TestCaseFunction
+    form = TestCaseFunctionForm
     extra = 1
 
 class CustomUserAdmin(UserAdmin):
@@ -128,13 +131,20 @@ class CustomFunctionQuestionAdmin(CustomGenericQuestionAdmin):
 class CustomBuggyFunctionQuestionAdmin(CustomGenericQuestionAdmin):
     pass
 
+@admin.register(TestCase)
+class TestCaseAdmin(admin.ModelAdmin):
+    form = TestCaseForm
+
+@admin.register(TestCaseProgram)
+class TestCaseProgramAdmin(admin.ModelAdmin):
+    form = TestCaseProgramForm
+
+@admin.register(TestCaseFunction)
+class TestCaseFunctionAdmin(admin.ModelAdmin):
+    form = TestCaseFunctionForm
 
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
-
-admin.site.register(TestCase)
-admin.site.register(TestCaseFunction)
-admin.site.register(TestCaseProgram)
 
 admin.site.register(SkillArea)
 admin.site.register(Token)

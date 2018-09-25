@@ -561,6 +561,8 @@ def send_code(request):
             func_name = question.buggy.buggyfunction.function_name
         else:
             func_name = question.programming.programmingfunction.function_name
+    else:
+        func_name = ''
 
     if is_buggy:
         user_stdin = request_json['buggy_stdin']
@@ -578,34 +580,41 @@ def send_code(request):
                 }
                 return JsonResponse(result)
             params = [test_params]
-            print(request.body.decode('utf-8'))
             expected_return = request_json['expected_return']
             returns = [expected_return]
-        
+        else:
+            params = [[]]
+            returns = []
+
         user_input = question.buggy.buggy_program
+        n_test_cases = 1
     else:
         if is_func:
             test_cases = question.programming.programmingfunction.testcasefunction_set.all()
+            params = [case.function_params.split(',') for case in test_cases]
+            returns = [case.expected_return for case in test_cases]
         else:
             test_cases = question.programming.testcaseprogram_set.all()
+            params = [[]]
+            returns = []
 
-        params = [case.function_params.split(',') for case in test_cases]
         inputs = [case.test_input.split('\n') for case in test_cases]
-        outputs = [case.expected_output for case in test_cases]
-        returns = [case.expected_return for case in test_cases]
+        outputs = [literal_eval('"""' + case.expected_output + '"""') for case in test_cases]
+        n_test_cases = len(test_cases)
 
     context_variables = {
         'params': repr(params),
         'inputs': repr(inputs), 
         'outputs': repr(outputs),
         'returns': repr(returns),
+        'n_test_cases': n_test_cases,
         'is_func': is_func,
         'is_buggy': is_buggy,
-        'user_code': user_input.replace('/t', '    '),
+        'user_code': user_input.replace('\t', '    ').replace('\n', '\n    '),
         'function_name': func_name
     }
     code = template.render(**context_variables)
-    print(code)
+    #print(code)
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
     response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})

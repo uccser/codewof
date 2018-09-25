@@ -24,7 +24,7 @@ def input(prompt=""):
 def print(user_output):
     if T < N_test_cases:
         user_output = str(user_output)
-        user_output += '\\n'
+        user_output += '\n'
         printed[T] += user_output
 
 temp = []

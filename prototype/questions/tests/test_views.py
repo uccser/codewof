@@ -52,30 +52,33 @@ class QuestionViewTest(DjangoTestCase):
         login = self.client.login(username='john', password='onion')
         self.assertTrue(login)
 
+    def post_payload(self, url, payload):
+        resp = self.client.post(url, json.dumps(payload), content_type="application/json")
+        result = json.loads(resp.content.decode('utf-8'))
+        return result
+
     def get_the_output(self, user_code, question_id, assertion):
         payload = {'user_input': user_code, 'question': question_id}
-        resp = self.client.post('/ajax/send_code/', payload)
-        result = json.loads(resp.content.decode('utf-8'))
+        result = self.post_payload('/ajax/send_code/', payload)
         self.assertIn('id', list(result.keys()))
         submission_id = result['id']
 
         payload = {'id': submission_id, 'question': question_id}
-        resp = self.client.post('/ajax/get_output/', payload)
-        result = json.loads(resp.content.decode('utf-8'))
+        result = self.post_payload('/ajax/get_output/', payload)
 
         if result['completed'] == False:
             time.sleep(1)
-            resp = self.client.post('/ajax/get_output/', payload)
-            result = json.loads(resp.content.decode('utf-8'))
+            result = self.post_payload('/ajax/get_output/', payload)
             if result['completed'] == False:
                 time.sleep(2)
-                resp = self.client.post('/ajax/get_output/', payload)
-                result = json.loads(resp.content.decode('utf-8'))
+                result = self.post_payload('/ajax/get_output/', payload)
                 if result['completed'] == False:
                     time.sleep(3)
-                    resp = self.client.post('/ajax/get_output/', payload)
-                    result = json.loads(resp.content.decode('utf-8'))
-        
+                    result = self.post_payload('/ajax/get_output/', payload)
+        #print(result['output'])
+        #print(result['stderr'])
+        #print(result['cmpinfo'])
+
         self.assertTrue(result['completed'])
         self.assertTrue(assertion in result['output'])
 
@@ -93,8 +96,7 @@ class QuestionViewTest(DjangoTestCase):
     def test_send_code(self):
         user_code = 'print("hello world")'
         payload = {'user_input': user_code, 'question': 1}
-        resp = self.client.post('/ajax/send_code/', payload)
-        result = json.loads(resp.content.decode('utf-8'))
+        result = self.post_payload('/ajax/send_code/', payload)
         self.assertIn('id', list(result.keys()))
         submission_id = result['id']
         return submission_id
@@ -105,19 +107,40 @@ class QuestionViewTest(DjangoTestCase):
 
     def test_get_output_program_multiple_test_cases(self):
         question = Programming.objects.create(title="Test 2", question_text="Take off first char")
-        TestCaseProgram.objects.create(question=question, test_input="max", expected_output="ax\\n")
-        TestCaseProgram.objects.create(question=question, test_input="seven", expected_output="even\\n")
+        TestCaseProgram.objects.create(question=question, test_input="max", expected_output="ax\n")
+        TestCaseProgram.objects.create(question=question, test_input="seven", expected_output="even\n")
 
         user_code = 't = input()\nprint(t[1:])'
         self.get_the_output(user_code, 2, '"correct": [true, true]')
 
     def test_get_output_program_blank_input(self):
         question = Programming.objects.create(title="Test 2", question_text="Print input")
-        TestCaseProgram.objects.create(question=question, test_input="", expected_output="\\n")
+        TestCaseProgram.objects.create(question=question, test_input="", expected_output="\n")
 
         user_code = 't = input()\nprint(t)'
         self.get_the_output(user_code, 2, '"correct": [true]')
-        
+    
+    def test_get_output_program_using_tab_to_indent(self):
+        question = Programming.objects.create(title="Test 2", question_text="Print hello")
+        TestCaseProgram.objects.create(question=question, expected_output="hello\n")
+
+        user_code = 'if True:\n\tprint("hello")'
+        self.get_the_output(user_code, 2, '"correct": [true]')
+
+    def test_get_output_program_using_spaces_to_indent(self):
+        question = Programming.objects.create(title="Test 2", question_text="Print hello")
+        TestCaseProgram.objects.create(question=question, expected_output="hello\n")
+
+        user_code = 'if True:\n    print("hello")'
+        self.get_the_output(user_code, 2, '"correct": [true]')
+
+    def test_get_output_program_escaped_newline_not_replaced(self):
+        question = Programming.objects.create(title="Test 2", question_text="Print hello world on different lines using single print")
+        TestCaseProgram.objects.create(question=question, expected_output="hello\nworld\n")
+
+        user_code = 'print("hello\\nworld")'
+        self.get_the_output(user_code, 2, '"correct": [true]')   
+
     # functions
 
     def test_get_output_function(self):
@@ -136,8 +159,8 @@ class QuestionViewTest(DjangoTestCase):
 
     def test_get_output_print_and_return_function_multiple_test_cases(self):
         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Print and return given word", function_name="print_return")
-        TestCaseFunction.objects.create(question=question, function_params="hello", expected_output="hello\\n", expected_return="hello")
-        TestCaseFunction.objects.create(question=question, function_params="world", expected_output="world\\n", expected_return="world")
+        TestCaseFunction.objects.create(question=question, function_params="hello", expected_output="hello\n", expected_return="hello")
+        TestCaseFunction.objects.create(question=question, function_params="world", expected_output="world\n", expected_return="world")
 
         user_code = 'def print_return(word):\n    print(word)\n    return word'
         self.get_the_output(user_code, 2, '"correct": [true, true]')

@@ -10,7 +10,7 @@ test_outputs = {{outputs}}
 test_returns = {{returns}}
 
 
-N_test_cases = len(test_returns)
+N_test_cases = {{n_test_cases}}
 correct = [False] * N_test_cases
 printed = [''] * N_test_cases
 returned = [None] * N_test_cases
@@ -33,7 +33,7 @@ def input(prompt=""):
 def print(user_output):
     if T < N_test_cases:
         user_output = str(user_output)
-        user_output += '\\n'
+        user_output += '\n'
         printed[T] += user_output
 
 {% if is_func %}
@@ -48,7 +48,7 @@ for i in range(N_test_cases):
     if result == test_returns[i]:
         correct[i] = True
     expected_output = test_outputs[i]
-    if printed[i] != expected_output:
+    if printed[i].rstrip() != expected_output.rstrip():
         correct[i] = False
 {% else %}
 
@@ -61,7 +61,7 @@ for i in range(N_test_cases):
 
     correct[i] = True
     expected_output = test_outputs[i]
-    if printed[i] != expected_output:
+    if printed[i].rstrip() != expected_output.rstrip():
         correct[i] = False
 {% endif %}
 
