@@ -36,11 +36,11 @@
     {% for question in history %}
     <a href="/questions/{{question.id}}">
         {% if question.completed %}
-        <div style="color:#008b00">
+        <div class="completed">
             {{question.latest_attempt}} {{question.title}}. Attempts: {{question.n_attempts}}
         </div>
         {% else %}
-        <div style="color:#9b9b00">
+        <div class="attempted">
             {{question.latest_attempt}} {{question.title}}. Attempts: {{question.n_attempts}}
         </div>
         {% endif %}

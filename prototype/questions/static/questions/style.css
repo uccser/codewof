@@ -4,7 +4,7 @@ li a {
 
 a:hover {
     text-decoration: none;
-    color: #eed812;
+    color: #41005f;
 }
 
 ul {
@@ -109,4 +109,12 @@ a.right {
 
 .hidden {
     display: none !important;
+}
+
+.completed {
+    color: #008b00;
+}
+
+.attempted {
+    color: #9b9b00;
 }

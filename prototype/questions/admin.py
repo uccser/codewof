@@ -64,6 +64,7 @@ class CustomQuestionAdmin(CustomGenericQuestionAdmin):
             subclass = get_question_type(pk)
             is_correct_type = not isinstance(question, Buggy) and not isinstance(question, Programming)
         else:
+            subclass = ''
             is_correct_type = True
 
         extra = {
@@ -88,6 +89,7 @@ class CustomProgramQuestionAdmin(CustomGenericQuestionAdmin):
             subclass = get_question_type(pk)
             is_correct_type = not isinstance(question, ProgrammingFunction)
         else:
+            subclass = ''
             is_correct_type = True
 
         extra = {
@@ -111,6 +113,7 @@ class CustomBuggyAdmin(CustomGenericQuestionAdmin):
             subclass = get_question_type(pk)
             is_correct_type = not isinstance(question, BuggyFunction)
         else:
+            subclass = ''
             is_correct_type = True
 
         extra = {

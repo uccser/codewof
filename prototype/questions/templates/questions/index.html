@@ -13,4 +13,18 @@
 {% else %}
     <p>No skill areas are available (use admin site to add)</p>
 {% endif %}
+
+{% if history %}
+    <b>Recommended Questions</b>:
+    <br>
+    <ul>
+    {% for question in history %}
+    <li>
+        <a href="/questions/{{question.id}}">
+            {{question.title}}
+        </a>
+    </li>
+    {% endfor %}
+    </ul>
+{% endif %}
 {% endblock %}

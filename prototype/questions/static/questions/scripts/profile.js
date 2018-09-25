@@ -39,7 +39,7 @@ $('#goal_choice').change(function() {
     }
     var success = function(result) {
         var score = calculate_fitness_score(choice);
-        $('.gauge').kumaGauge('update', {
+        $('#gauge-0').kumaGauge('update', {
             value: score
         });
     }

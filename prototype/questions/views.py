@@ -273,12 +273,52 @@ class IndexView(LastAccessMixin, generic.ListView):
     def get_queryset(self):
         return SkillArea.objects.order_by('name')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.request.user.is_authenticated:
+            user = User.objects.get(username=self.request.user.username)
+            all_questions = Question.objects.all()
+            attempted_questions = user.profile.attempted_questions.all()
+            new_questions = all_questions.difference(attempted_questions)[:5]
+
+            history = []
+            for question in new_questions:
+                if question.title not in [question['title'] for question in history]:
+                    history.append({'title': question.title, 'id': question.pk})
+            context['history'] = history
+        return context
+
 
 class SkillView(LastAccessMixin, generic.DetailView):
     """displays list of questions which involve this skill"""
     template_name = 'questions/skill.html'
     context_object_name = 'skill'
     model = SkillArea
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        skill = self.get_object()
+        questions = skill.questions.all()
+        context['questions'] = questions
+
+        if self.request.user.is_authenticated:
+            user = User.objects.get(username=self.request.user.username)
+
+            history = []
+            for question in questions:
+                if question.title not in [question['title'] for question in history]:
+                    attempts = Attempt.objects.filter(profile=user.profile, question=question, is_save=False)
+                    attempted = False
+                    completed = False
+                    if len(attempts) > 0:
+                        attempted = True
+                        completed = any(attempt.passed_tests for attempt in attempts)
+                    history.append({'attempted': attempted, 'completed': completed,'title': question.title, 'id': question.pk})
+            context['questions'] = history
+        print(context['questions'])
+        return context
 
 
 class QuestionView(LastAccessMixin, generic.DetailView):
@@ -318,235 +358,11 @@ BASE_URL = "http://36adab90.compilers.sphere-engine.com/api/v3/submissions/"
 PYTHON = 116
 COMPLETED = 0
 
-COMMON_ABOVE = """
-import json
-from ast import literal_eval
-
-real_print = print
-T = 0
-n = 0
-
-"""
-
-COMMON_MID = """
-N_test_cases = len(test_returns)
-correct = [False] * N_test_cases
-printed = [''] * N_test_cases
-returned = [None] * N_test_cases
-
-def next_question():
-    global T, n
-    T += 1
-    n = 0
-
-def input(prompt=""):
-    global n
-    if n >= len(test_inputs[T]):
-        raise EOFError()
-    if len(prompt) > 1:
-        print(prompt)
-    test_input = test_inputs[T][n]
-    n += 1
-    return test_input
-
-def print(user_output):
-    if T < N_test_cases:
-        user_output = str(user_output)
-        user_output += '\\\\n'
-        printed[T] += user_output
-
-temp = []
-for params in test_params:
-    params = [literal_eval(p) if p != '' else p for p in params]
-    temp.append(params)
-
-test_params = temp
-
-temp = []
-for params in test_inputs:
-    params = [literal_eval(p) if p != '' else p for p in params]
-    temp.append(params)
-
-test_inputs = temp
-
-#test_outputs = [literal_eval(p) if p != '' else p for p in test_outputs]
-test_returns = [literal_eval(p) if p != '' else p for p in test_returns]
-"""
-
-COMMON_BELOW = """
-results = {
-    'correct': correct,
-    'printed': printed,
-    'returned': returned,
-    'inputs': test_inputs,
-    'params': test_params,
-    'expected_prints': test_outputs,
-    'expected_returns': test_returns,
-}
-real_print(json.dumps(results))
-
-"""
-
-DEBUGGY_ABOVE = """
-import json
-from ast import literal_eval
-
-real_print = print
-T = 0
-n = 0
-
-"""
-
-DEBUGGY_MID = """
-N_test_cases = 1
-printed = ['']
-returned = [None]
-
-def input(prompt=""):
-    global n
-    if n >= len(test_inputs[T]):
-        raise EOFError()
-    if len(prompt) > 1:
-        print(prompt)
-    test_input = test_inputs[T][n]
-    n += 1
-    return test_input
-
-def print(user_output):
-    if T < N_test_cases:
-        user_output = str(user_output)
-        user_output += '\\\\n'
-        printed[T] += user_output
-
-temp = []
-for params in test_params:
-    params = [literal_eval(p) if p != '' else p for p in params]
-    temp.append(params)
-
-test_params = temp
-"""
-
-DEBUGGY_BELOW = """
-results = {
-    'expected_print': printed,
-    'expected_return': returned,
-}
-real_print(json.dumps(results))
-"""
-
-
-def format_test_data(test_cases, is_function_type):
-    test_params = "\ntest_params = ["
-    test_inputs = "\ntest_inputs = ["
-    test_outputs = "\ntest_outputs = ["
-    test_returns = "\ntest_returns = ["
-
-    for case in test_cases:
-        if is_function_type:
-            param_str = repr(case.function_params.split(',')) + ","
-            return_str = repr(case.expected_return) + ","
-            test_params += param_str
-            test_returns += return_str
-
-        input_str = repr(case.test_input.split('\n')) + ","
-        output_str = repr(case.expected_output) + ","
-        test_inputs += input_str
-        test_outputs += output_str
-
-    if is_function_type:
-        test_params = test_params[:-1] + "]\n"
-        test_returns = test_returns[:-1] + "]\n"
-    else:
-        test_params += "]\n"
-        test_returns += "]\n"
-
-    test_inputs = test_inputs[:-1] + "]\n"
-    test_outputs = test_outputs[:-1] + "]\n"
-
-    test_data = test_params + test_inputs + test_outputs + test_returns
-    return test_data
-
-def add_program_test_code(question, user_code):
-    test_cases = question.programming.testcaseprogram_set.all()
-    test_data = format_test_data(test_cases, is_function_type=False)
-
-    repeated_user_code = ''
-    for case in test_cases:
-        repeated_user_code += user_code
-        repeated_user_code += '\nnext_question()\n'
-
-    processing = repeated_user_code + \
-        '\nfor i in range(N_test_cases):\n' + \
-        '    expected_output = test_outputs[i]\n' + \
-        '    if printed[i] != expected_output:\n' + \
-        '        correct[i] = False\n' + \
-        '    else:\n' + \
-        '        correct[i] = True\n'
-
-    complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
-    return complete_code
-
-def add_buggy_program_test_code(code):
-    # TODO
-    return code
-
-def add_function_test_code(question, user_code):
-    test_cases = question.programming.programmingfunction.testcasefunction_set.all()
-    test_data = format_test_data(test_cases, is_function_type=True)
-
-    processing = user_code + \
-        '\nfor i in range(N_test_cases):\n' + \
-        '    params = test_params[i]\n' + \
-        '    result = ' + question.programming.programmingfunction.function_name + '(*params)\n' + \
-        '    returned[i] = result\n' + \
-        '    if result == test_returns[i]:\n' + \
-        '        correct[i] = True\n' + \
-        '    next_question()\n' + \
-        '    expected_output = test_outputs[i]\n' + \
-        '    if printed[i] != expected_output:\n' + \
-        '        correct[i] = False\n'
-
-    complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
-    return complete_code
-
-def add_buggy_function_test_code(question, user_params, expected_output, expected_return):
-    test_data = "\ntest_params = [" + repr(user_params.split(',')) + "]\n" + \
-                "\ntest_returns = [" + repr(expected_return) + "]\n" + \
-                "\ntest_inputs = [[]]\n" + \
-                "\ntest_outputs = [" + repr(expected_output) + "]\n"
-
-    processing = question.buggy.buggy_program + \
-        '\nfor i in range(N_test_cases):\n' + \
-        '    params = test_params[i]\n' + \
-        '    result = ' + question.buggy.buggyfunction.function_name + '(*params)\n' + \
-        '    returned[i] = result\n' + \
-        '    if result != test_returns[i]:\n' + \
-        '        correct[i] = True\n' + \
-        '    expected_output = test_outputs[i]\n' + \
-        '    if printed[i] != expected_output:\n' + \
-        '        correct[i] = True\n'
-
-    complete_code = COMMON_ABOVE + test_data + COMMON_MID + processing + COMMON_BELOW
-    return complete_code
-
-
 def send_code(request):
     request_json = json.loads(request.body.decode('utf-8'))
     user_input = request_json['user_input']
     question_id = request_json['question']
     question = Question.objects.get_subclass(pk=question_id)
-
-    # ###
-    # if isinstance(question, ProgrammingFunction):
-    #     code = add_function_test_code(question, user_input)
-    # elif isinstance(question, Programming):
-    #     code = add_program_test_code(question, user_input)
-    # elif isinstance(question, BuggyFunction):
-    #     code = add_buggy_function_test_code(question, user_input, expected_output, expected_return)
-    # elif isinstance(question, Buggy):
-    #     code = add_buggy_program_test_code(user_input)
-
-    # ###
 
     template_loader = jinja2.FileSystemLoader(searchpath="questions/wrapper_templates")
     template_env = jinja2.Environment(loader=template_loader)
