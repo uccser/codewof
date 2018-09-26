@@ -7,17 +7,23 @@ from .forms import *
 
 def get_question_type(question_id):
     question = Question.objects.get_subclass(pk=question_id)
+    link = "/admin/questions/"
     if isinstance(question, ProgrammingFunction):
         subclass = "Function Programming Question"
+        link += "programmingfunction/"
     elif isinstance(question, Programming):
-        subclass = "Program Programming Question"
+        subclass = "Programming Question"
+        link += "programming/"
     elif isinstance(question, BuggyFunction):
         subclass = "Function Debugging Question"
+        link += "buggyfunction/"
     elif isinstance(question, Buggy):
-        subclass = "Program Debugging Question"
+        subclass = "Debugging Question"
+        link += "buggy/"
     else:
         subclass = "Parsons Problem"
-    return subclass
+        link += "question/"
+    return (subclass, link)
 
 class ProfileInline(admin.StackedInline):
     model = Profile
@@ -48,7 +54,8 @@ class CustomGenericQuestionAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
     def type_display(self, obj):
-        return get_question_type(obj.pk)
+        subclass, _ = get_question_type(obj.pk)
+        return subclass
 
     type_display.short_description = "Question Type"
 
@@ -61,15 +68,19 @@ class CustomQuestionAdmin(CustomGenericQuestionAdmin):
         if context['original']:
             pk = context['original'].pk
             question = Question.objects.get_subclass(pk=pk)
-            subclass = get_question_type(pk)
+            subclass, link = get_question_type(pk)
             is_correct_type = not isinstance(question, Buggy) and not isinstance(question, Programming)
         else:
             subclass = ''
+            link = ''
             is_correct_type = True
 
         extra = {
             'is_correct_type': is_correct_type,
-            'error_message': 'This page is intended for editing Parsons Problems only. Please go to the ' + subclass + ' page to edit this question.',
+            'error_message_part_1': 'This page is intended for editing Parsons Problems only. Please go to the ',
+            'subclass': subclass,
+            'link': link,
+            'error_message_part_2': ' page to edit this question.',
             'help_text': 'To define which blocks are displayed, write the program in the correct order in the solution box. Use 2 spaces for each level of indentation. A distractor can be added by ending the line with #distractor'
         }
         context.update(extra)
@@ -86,15 +97,19 @@ class CustomProgramQuestionAdmin(CustomGenericQuestionAdmin):
         if context['original']:
             pk = context['original'].pk
             question = Question.objects.get_subclass(pk=pk)
-            subclass = get_question_type(pk)
+            subclass, link = get_question_type(pk)
             is_correct_type = not isinstance(question, ProgrammingFunction)
         else:
             subclass = ''
+            link = ''
             is_correct_type = True
 
         extra = {
             'is_correct_type': is_correct_type,
-            'error_message': 'This page is intended for editing program-type programming questions only. Please go to the ' + subclass + ' page to edit this question.',
+            'error_message_part_1': 'This page is intended for editing program-type programming questions only. Please go to the ',
+            'subclass': subclass,
+            'link': link,
+            'error_message_part_2': ' page to edit this question.',
             'help_text': ''
         }
         context.update(extra)
@@ -110,15 +125,19 @@ class CustomBuggyAdmin(CustomGenericQuestionAdmin):
         if context['original']:
             pk = context['original'].pk
             question = Question.objects.get_subclass(pk=pk)
-            subclass = get_question_type(pk)
+            subclass, link = get_question_type(pk)
             is_correct_type = not isinstance(question, BuggyFunction)
         else:
             subclass = ''
+            link = ''
             is_correct_type = True
 
         extra = {
             'is_correct_type': is_correct_type,
-            'error_message': 'This page is intended for editing program-type debugging questions only. Please go to the ' + subclass + ' page to edit this question.',
+            'error_message_part_1': 'This page is intended for editing program-type debugging questions only. Please go to the ',
+            'subclass': subclass,
+            'link': link,
+            'error_message_part_2': ' page to edit this question.',
             'help_text': ''
         }
         context.update(extra)

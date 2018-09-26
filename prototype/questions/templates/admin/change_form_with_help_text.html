@@ -8,8 +8,8 @@
 
 {% block field_sets %}
 {% if not is_correct_type %}
-    {% if error_message %}
-        <p>{{error_message|linebreaks}}</p>
+    {% if error_message_part_1 %}
+        <p>{{error_message_part_1}}<a href="{{link}}">{{subclass}}</a>{{error_message_part_2}}</p>
     {% endif %}
 {% else %}
 {{block.super}}

@@ -87,31 +87,35 @@ class Question(models.Model):
 
     class Meta:
         verbose_name = "Parsons Problem"
+        verbose_name_plural = "All Questions & Parsons Problems"
 
 
 class Programming(Question):
     
     class Meta:
-        verbose_name = "Program Programming Question"
+        verbose_name = "Programming Question (Program)"
+        verbose_name_plural = "All Programming Questions"
 
 class ProgrammingFunction(Programming):
     function_name = models.CharField(max_length=SMALL)
 
     class Meta:
-        verbose_name = "Function Programming Question"
+        verbose_name = "Programming Question (Function)"
+        verbose_name_plural = "All Function Programming Questions"
 
 class Buggy(Question):
     buggy_program = models.TextField()
 
     class Meta:
-        verbose_name = "Program Debugging Question"
+        verbose_name = "Debugging Question (Program)"
+        verbose_name_plural = "All Debugging Questions"
 
 class BuggyFunction(Buggy):
     function_name = models.CharField(max_length=SMALL)
 
     class Meta:
-        verbose_name = "Function Debugging Question"
-
+        verbose_name = "Debugging Question (Function)"
+        verbose_name_plural = "All Function Debugging Questions"
 
 class TestCase(models.Model):
     test_input = models.CharField(max_length=LARGE, blank=True)
