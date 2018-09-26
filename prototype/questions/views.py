@@ -95,7 +95,7 @@ def get_random_question(request, current_question_id):
 
 def add_points(question, profile, passed_tests):
     max_points_from_attempts = 3
-    points_for_correct = 5
+    points_for_correct = 10
 
     n_attempts = len(Attempt.objects.filter(question=question, profile=profile, is_save=False))
     previous_corrects = Attempt.objects.filter(question=question, profile=profile, passed_tests=True, is_save=False)
@@ -360,7 +360,6 @@ COMPLETED = 0
 
 def send_code(request):
     request_json = json.loads(request.body.decode('utf-8'))
-    user_input = request_json['user_input']
     question_id = request_json['question']
     question = Question.objects.get_subclass(pk=question_id)
 
@@ -371,6 +370,11 @@ def send_code(request):
 
     is_func = isinstance(question, ProgrammingFunction) or isinstance(question, BuggyFunction)
     is_buggy = isinstance(question, Buggy)
+
+    if is_buggy and not is_func:
+        user_input = ''
+    else:
+        user_input = request_json['user_input']
 
     if is_func:
         if is_buggy:
@@ -440,24 +444,37 @@ def send_code(request):
 
 def send_solution(request):
     request_json = json.loads(request.body.decode('utf-8'))
-    test_input = request_json['user_input']
     question_id = request_json['question']
-
     question = Question.objects.get_subclass(pk=question_id)
     solution = question.solution
-    
+
+    is_func = isinstance(question, ProgrammingFunction) or isinstance(question, BuggyFunction)
+    if is_func:
+        test_params = request_json['user_input']
+        func_name = question.buggy.buggyfunction.function_name
+    else:
+        test_params = ''
+        func_name = ''
+    test_input = request_json['buggy_stdin']
+
     template_loader = jinja2.FileSystemLoader(searchpath="questions/wrapper_templates")
     template_env = jinja2.Environment(loader=template_loader)
-    template_file = "template.py"
+    template_file = "common.py"
     template = template_env.get_template(template_file)
 
     context_variables = {
-        'params': repr(test_input.split(',')),
-        'solution': solution,
-        'function_name': question.buggy.buggyfunction.function_name
+        'params': repr(test_params.split(',')),
+        'inputs': repr([test_input.split('\n')]), 
+        'outputs': repr(['']),
+        'returns': repr([]),
+        'n_test_cases': 1,
+        'is_func': is_func,
+        'is_buggy': False,
+        'user_code': solution.replace('\t', '    ').replace('\n', '\n    '),
+        'function_name': func_name
     }
     code = template.render(**context_variables)
-
+    print(code)
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
     response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})

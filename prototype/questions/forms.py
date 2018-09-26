@@ -15,28 +15,28 @@ class SignUpForm(UserCreationForm):
 
 
 class DebugInputForm(forms.Form):
-    params_input = forms.CharField(max_length=100)
-    debug_input = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}))
+    params_input = forms.CharField(max_length=100, required=False)
+    debug_input = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}), required=False)
 
 class TestCaseForm(forms.ModelForm):
-    test_input = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}))
-    expected_output = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}))
+    test_input = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}), required=False)
+    expected_output = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}), required=False)
 
     class Meta:
         model = TestCase
         fields = ('__all__')
 
 class TestCaseProgramForm(forms.ModelForm):
-    test_input = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}))
-    expected_output = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}))
+    test_input = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}), required=False)
+    expected_output = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}), required=False)
 
     class Meta:
         model = TestCaseProgram
         fields = ('__all__')
 
 class TestCaseFunctionForm(forms.ModelForm):
-    test_input = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}))
-    expected_output = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}))
+    test_input = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}), required=False)
+    expected_output = forms.CharField(max_length=500, widget=forms.Textarea({'rows': 2, 'cols': 30}), required=False)
 
     class Meta:
         model = TestCaseFunction

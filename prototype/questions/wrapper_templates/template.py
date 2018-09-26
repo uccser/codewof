@@ -5,7 +5,8 @@ real_print = print
 T = 0
 n = 0
 
-test_params = [{{params}}]
+test_params = {{params}}
+test_inputs = {{inputs}}
 
 N_test_cases = 1
 printed = ['']

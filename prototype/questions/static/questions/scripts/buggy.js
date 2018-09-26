@@ -51,7 +51,7 @@ var display_table = function(result) {
     if (actual_returned) {
         $("#function-got").html(actual_returned);
     } else {
-        if (user_input.length < 1) {
+        if (!user_input || user_input.length < 1) {
             $(".function-type-analysis").addClass('hidden');
         }
     }
@@ -80,8 +80,8 @@ var send_buggy_code = function(result) {
     console.log(result);
     console.log(result.output);
     var output = JSON.parse(result.output.slice(0, -1));
-    var expected_print = output["expected_print"][0];
-    var expected_return = output["expected_return"][0];
+    var expected_print = output["printed"][0];
+    var expected_return = output["returned"][0];
 
     // send buggy as normal but with single test case: user_input -> solution output
     var user_input = $("#id_params_input").val();
