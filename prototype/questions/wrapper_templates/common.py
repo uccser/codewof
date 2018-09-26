@@ -70,10 +70,10 @@ correct = [not bool_value for bool_value in correct]
 results = {
     'correct': correct,
     'printed': printed,
-    'returned': returned,
+    'returned': [repr(r) for r in returned],
     'inputs': test_inputs,
-    'params': test_params,
+    'params': [repr(t) for t in test_params],
     'expected_prints': test_outputs,
-    'expected_returns': test_returns,
+    'expected_returns': [repr(r) for r in test_returns],
 }
 real_print(json.dumps(results))

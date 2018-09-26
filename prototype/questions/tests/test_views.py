@@ -289,9 +289,9 @@ class QuestionViewTest(DjangoTestCase):
                 if result['completed'] == False:
                     time.sleep(3)
                     result = self.post_payload('/ajax/get_output/', payload)
-        #print(result['output'])
-        #print(result['stderr'])
-        #print(result['cmpinfo'])
+        print(result['output'])
+        print(result['stderr'])
+        print(result['cmpinfo'])
 
         self.assertTrue(result['completed'])
         self.assertTrue(assertion in result['output'])
@@ -357,44 +357,44 @@ class QuestionViewTest(DjangoTestCase):
 
     def test_get_output_function(self):
         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Return given word", function_name="direct_return")
-        TestCaseFunction.objects.create(question=question, function_params="hello", expected_return="hello")
+        TestCaseFunction.objects.create(question=question, function_params="'hello'", expected_return="'hello'")
 
         user_code = 'def direct_return(word):\n    return word'
         self.get_the_output(user_code, 2, '"correct": [true]')
 
     def test_get_output_print_function(self):
         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Print given word", function_name="direct_print")
-        TestCaseFunction.objects.create(question=question, function_params="hello", expected_output="hello\\n")
+        TestCaseFunction.objects.create(question=question, function_params="'hello'", expected_output="hello\n", expected_return="")
 
         user_code = 'def direct_print(word):\n    print(word)'
         self.get_the_output(user_code, 2, '"correct": [true]')
 
     def test_get_output_print_and_return_function_multiple_test_cases(self):
         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Print and return given word", function_name="print_return")
-        TestCaseFunction.objects.create(question=question, function_params="hello", expected_output="hello\n", expected_return="hello")
-        TestCaseFunction.objects.create(question=question, function_params="world", expected_output="world\n", expected_return="world")
+        TestCaseFunction.objects.create(question=question, function_params="'hello'", expected_output="hello\n", expected_return="'hello'")
+        TestCaseFunction.objects.create(question=question, function_params="'world'", expected_output="world\n", expected_return="'world'")
 
         user_code = 'def print_return(word):\n    print(word)\n    return word'
         self.get_the_output(user_code, 2, '"correct": [true, true]')
 
     def test_blank_test_function_multiple_test_cases(self):
         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Return the string doubled", function_name="return_double")
-        TestCaseFunction.objects.create(question=question, function_params="hello", expected_return="hellohello")
-        TestCaseFunction.objects.create(question=question, function_params="", expected_return="")
+        TestCaseFunction.objects.create(question=question, function_params="'hello'", expected_return="'hellohello'")
+        TestCaseFunction.objects.create(question=question, function_params="''", expected_return="''")
 
         user_code = 'def return_double(word):\n    return word + word'
         self.get_the_output(user_code, 2, '"correct": [true, true]')
 
     def test_function_multiple_params(self):
         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Add the strings", function_name="add_words")
-        TestCaseFunction.objects.create(question=question, function_params="good,night", expected_return="goodnight")
+        TestCaseFunction.objects.create(question=question, function_params="'good','night'", expected_return="'goodnight'")
 
         user_code = 'def add_words(word1, word2):\n    return word1 + word2'
         self.get_the_output(user_code, 2, '"correct": [true]')
 
     def test_function_false_for_incorrect_answer(self):
         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Add the strings", function_name="add_words")
-        TestCaseFunction.objects.create(question=question, function_params="good,night", expected_return="goodnight")
+        TestCaseFunction.objects.create(question=question, function_params="'good','night'", expected_return="'goodnight'")
 
         user_code = 'def add_words(word1, word2):\n    return word1'
         self.get_the_output(user_code, 2, '"correct": [false]')

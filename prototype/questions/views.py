@@ -358,6 +358,9 @@ BASE_URL = "http://36adab90.compilers.sphere-engine.com/api/v3/submissions/"
 PYTHON = 116
 COMPLETED = 0
 
+def literal_eval_params(params_text):
+    return literal_eval("[" + params_text + "]")
+
 def send_code(request):
     request_json = json.loads(request.body.decode('utf-8'))
     question_id = request_json['question']
@@ -401,7 +404,7 @@ def send_code(request):
                 return JsonResponse(result)
             params = [test_params]
             expected_return = request_json['expected_return']
-            returns = [expected_return]
+            returns = [literal_eval(expected_return) if expected_return != '' else None]
         else:
             params = [[]]
             returns = []
@@ -411,8 +414,8 @@ def send_code(request):
     else:
         if is_func:
             test_cases = question.programming.programmingfunction.testcasefunction_set.all()
-            params = [case.function_params.split(',') for case in test_cases]
-            returns = [case.expected_return for case in test_cases]
+            params = [literal_eval_params(case.function_params) for case in test_cases]
+            returns = [literal_eval(case.expected_return) if case.expected_return != '' else None for case in test_cases]
         else:
             test_cases = question.programming.testcaseprogram_set.all()
             params = [[]]
@@ -434,7 +437,7 @@ def send_code(request):
         'function_name': func_name
     }
     code = template.render(**context_variables)
-    #print(code)
+    print(code)
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
     response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})
@@ -462,11 +465,16 @@ def send_solution(request):
     template_file = "common.py"
     template = template_env.get_template(template_file)
 
+    params = [literal_eval_params(test_params)]
+    inputs = [test_input.split('\n')]
+    outputs = ['']
+    returns = [None]
+
     context_variables = {
-        'params': repr(test_params.split(',')),
-        'inputs': repr([test_input.split('\n')]), 
-        'outputs': repr(['']),
-        'returns': repr([]),
+        'params': repr(params),
+        'inputs': repr(inputs), 
+        'outputs': repr(outputs),
+        'returns': repr(returns),
         'n_test_cases': 1,
         'is_func': is_func,
         'is_buggy': False,
