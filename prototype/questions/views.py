@@ -437,7 +437,7 @@ def send_code(request):
         'function_name': func_name
     }
     code = template.render(**context_variables)
-    print(code)
+    #print(code)
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
     response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})
@@ -482,7 +482,7 @@ def send_solution(request):
         'function_name': func_name
     }
     code = template.render(**context_variables)
-    print(code)
+    #print(code)
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
     response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})
