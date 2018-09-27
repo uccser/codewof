@@ -12,7 +12,7 @@ $(document).ready(function(){
     var parson = new ParsonsWidget({
         sortableId: 'jsparsons-target',
         trashId: 'jsparsons-source',
-        max_wrong_lines: 1,
+        max_wrong_lines: 10,
         feedback_cb : displayErrors,
         can_indent: true
     });

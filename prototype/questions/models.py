@@ -77,7 +77,7 @@ class Attempt(models.Model):
 class Question(models.Model):
     title = models.CharField(max_length=SMALL)
     question_text = models.TextField()
-    solution = models.TextField(blank=True)
+    solution = models.TextField()
     skill_areas = models.ManyToManyField('SkillArea', related_name='questions')
     skills = models.ManyToManyField('Skill', blank=True)
     objects = InheritanceManager()

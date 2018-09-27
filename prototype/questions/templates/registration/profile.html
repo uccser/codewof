@@ -9,6 +9,8 @@
     <br>
     <b>Email</b>: {{user.email}}
     <br>
+    <b>Password</b>: <a href="/change_password">Change password</a>
+    <br>
     <b>Last login</b>: {{user.last_login|date:"M d, Y"}}
     <br>
     <b>Date joined</b>: {{user.date_joined}}
@@ -47,7 +49,6 @@
     </a>
     {% endfor %}
 </div>
-<a href="/change_password">Change password</a>
 <br>
 <b>Fitness goals</b>:
 <br>
