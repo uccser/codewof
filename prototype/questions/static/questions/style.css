@@ -72,7 +72,6 @@ a.right {
 
 #has_saved {
     height: 4%;
-    width: 4%;
 }
 
 #past-5-weeks {
@@ -117,4 +116,8 @@ a.right {
 
 .attempted {
     color: #9b9b00;
+}
+
+.errorlist {
+    color: red;
 }

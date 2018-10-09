@@ -20,6 +20,17 @@ var hide_results = function() {
     $('.function-type-analysis').removeClass('hidden');
 }
 
+var display_cross_and_show_error = function(error_message) {
+    var cross = "https://png.icons8.com/color/50/000000/close-window.png";
+    $("#correctness-img").attr("src", cross);
+    $(".program-type-analysis").addClass('hidden');
+    $(".function-type-analysis").addClass('hidden');
+    $('#result-table').removeClass('hidden');
+
+    $('#error').text(error_message);
+    $('#error').removeClass('hidden');
+}
+
 var display_table = function(result) {
     var output = JSON.parse(result.output.slice(0, -1));
     var actual_output = output["printed"][0];
@@ -68,10 +79,10 @@ var display_results = function(result) {
         display_table(result);
     } 
     if (result.stderr.length > 0) {
-        console.log(result.stderr);
+        display_cross_and_show_error(result.stderr);
     }
     if (result.cmpinfo.length > 0) {
-        console.log(result.cmpinfo);
+        display_cross_and_show_error(result.cmpinfo);
     }
 }
 
@@ -125,12 +136,10 @@ var check_for_errors = function(result) {
         send_buggy_code(result);
     }
     if (result.stderr.length > 0) {
-        $('#error').text(result.stderr);
-        $('#error').removeClass('hidden');
+        display_cross_and_show_error(result.stderr);
     }
     if (result.cmpinfo.length > 0) {
-        $('#error').text(result.cmpinfo);
-        $('#error').removeClass('hidden');
+        display_cross_and_show_error(result.cmpinfo);
     }
 }
 
@@ -144,14 +153,18 @@ $("#submit").click(function () {
         buggy_stdin: user_stdin,
         question: question_id
     }
-    var success = function(result) {
-        var submission_id = result.id;
-        console.log(submission_id);
-        $('#loading').removeClass('hidden');
-        hide_results();
-        poll_until_completed(submission_id, check_for_errors);
-    }
-    post('send_solution', data, success);
+    post('send_solution', data, function(result) {
+        if (result.error) {
+            $('#error').text(result.error);
+            $('#error').removeClass('hidden'); 
+        } else {
+            var submission_id = result.id;
+            console.log(submission_id);
+            $('#loading').removeClass('hidden');
+            hide_results();
+            poll_until_completed(submission_id, check_for_errors);
+        }
+    });
 });
 
 $('#show_solution').click(function () {

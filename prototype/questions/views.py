@@ -359,7 +359,20 @@ PYTHON = 116
 COMPLETED = 0
 
 def literal_eval_params(params_text):
-    return literal_eval("[" + params_text + "]")
+    params = "[" + params_text + "]"
+    try:
+        test_params = literal_eval(params)
+        result = {
+            'params': test_params,
+            'error': ''
+        }
+    except:
+        message = "Input formatted incorrectly. Must be valid comma-separated python. Strings must be surrounded by quotes."
+        result = {
+            'params': '',
+            'error': message
+        }
+    return result
 
 def send_code(request):
     request_json = json.loads(request.body.decode('utf-8'))
@@ -393,15 +406,11 @@ def send_code(request):
         expected_output = request_json['expected_print']
         outputs = [expected_output]
         if is_func:
-            user_input = "[" + user_input + "]"
-            try:
-                test_params = literal_eval(user_input)
-            except:
-                message = "Input formatted incorrectly. Must be valid comma-separated python."
-                result = {
-                    'error': message
-                }
-                return JsonResponse(result)
+            eval_result = literal_eval_params(user_input)
+            if len(eval_result['error']) > 0:
+                return JsonResponse(eval_result)
+            test_params = eval_result['params']
+
             params = [test_params]
             expected_return = request_json['expected_return']
             returns = [literal_eval(expected_return) if expected_return != '' else None]
@@ -414,7 +423,7 @@ def send_code(request):
     else:
         if is_func:
             test_cases = question.programming.programmingfunction.testcasefunction_set.all()
-            params = [literal_eval_params(case.function_params) for case in test_cases]
+            params = [literal_eval_params(case.function_params)['params'] for case in test_cases]
             returns = [literal_eval(case.expected_return) if case.expected_return != '' else None for case in test_cases]
         else:
             test_cases = question.programming.testcaseprogram_set.all()
@@ -425,6 +434,9 @@ def send_code(request):
         outputs = [literal_eval('"""' + case.expected_output + '"""') for case in test_cases]
         n_test_cases = len(test_cases)
 
+    if not is_func:
+        user_input = user_input.replace('\n', '\n    ')
+
     context_variables = {
         'params': repr(params),
         'inputs': repr(inputs), 
@@ -433,11 +445,11 @@ def send_code(request):
         'n_test_cases': n_test_cases,
         'is_func': is_func,
         'is_buggy': is_buggy,
-        'user_code': user_input.replace('\t', '    ').replace('\n', '\n    '),
+        'user_code': user_input.replace('\t', '    '),
         'function_name': func_name
     }
     code = template.render(**context_variables)
-    #print(code)
+    print(code)
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
     response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})
@@ -465,7 +477,12 @@ def send_solution(request):
     template_file = "common.py"
     template = template_env.get_template(template_file)
 
-    params = [literal_eval_params(test_params)]
+    eval_result = literal_eval_params(test_params)
+    if len(eval_result['error']) > 0:
+        return JsonResponse(eval_result)
+    test_params = eval_result['params']
+
+    params = [test_params]
     inputs = [test_input.split('\n')]
     outputs = ['']
     returns = [None]
