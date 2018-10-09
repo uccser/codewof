@@ -46,12 +46,22 @@
     <script> 
         var buggy_program = "{{question.buggy.buggy_program|escapejs}}";
         var solution = '{{question.solution|linebreaks}}';
+        {% if question_subclass == "buggy" %}
+        var is_func = false;
+        {% else %}
+        var is_func = true;
+        {% endif %}
     </script>
     <script src="{% static 'questions/scripts/buggy.js' %}"></script>
 {% elif question_subclass == "programming" or question_subclass == "programming_func" %}
     <script src="{% static 'questions/scripts/vendor/ace-builds-master/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
     <script> 
         var solution = '{{question.solution|linebreaks}}';
+        {% if question_subclass == "programming" %}
+        var is_func = false;
+        {% else %}
+        var is_func = true;
+        {% endif %}
     </script>
     <script src="{% static 'questions/scripts/programming.js' %}"></script>
 {% endif %}

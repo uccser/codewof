@@ -44,7 +44,7 @@ var display_table = function(result) {
             $("#program-got" + i).html(got_output_array[i]);
         }
         console.log(got_return_array);
-        if (got_return_array[i]) {
+        if (got_return_array[i] && is_func) {
             has_return_contents = true;
             $("#function-got" + i).html(got_return_array[i]);
         }

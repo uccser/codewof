@@ -66,6 +66,9 @@ var display_table = function(result) {
             $(".function-type-analysis").addClass('hidden');
         }
     }
+    if (!is_func) {
+        $(".function-type-analysis").addClass('hidden');
+    }
 
     $('#result-table').removeClass('hidden');
     $('#credit').removeClass('hidden');
