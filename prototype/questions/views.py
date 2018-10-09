@@ -20,6 +20,7 @@ from .models import *
 
 class LastAccessMixin(object):
     def dispatch(self, request, *args, **kwargs):
+        """update days logged in when user accesses a page with this mixin"""
         if request.user.is_authenticated:
             request.user.last_login = datetime.datetime.now()
             request.user.save(update_fields=['last_login'])
@@ -41,6 +42,7 @@ class LastAccessMixin(object):
 
 
 def signup(request):
+    """validate form and login and redirect to index if successful"""
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -58,6 +60,7 @@ def signup(request):
 
 @login_required
 def change_password(request):
+    """change password and redirect to profile if successful"""
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
@@ -65,7 +68,7 @@ def change_password(request):
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(request, 'Password successfully updated')
-            return redirect('/')
+            return redirect('/profile')
         else:
             messages.error(request, 'Please correct the error')
     else:
@@ -74,6 +77,7 @@ def change_password(request):
 
 
 def get_random_question(request, current_question_id):
+    """redirect to random question user hasn't done, or to index page if there aren't any"""
     valid_question_ids = []
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
@@ -94,6 +98,7 @@ def get_random_question(request, current_question_id):
 
 
 def add_points(question, profile, passed_tests):
+    """add appropriate number of points (if any) to user's account"""
     max_points_from_attempts = 3
     points_for_correct = 10
 
@@ -115,6 +120,7 @@ def add_points(question, profile, passed_tests):
 
 
 def save_attempt(request):
+    """save user's attempt and add points if necessary"""
     request_json = json.loads(request.body.decode('utf-8'))
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
@@ -137,6 +143,7 @@ def save_attempt(request):
 
 
 def save_goal_choice(request):
+    """update user's goal choice in database"""
     request_json = json.loads(request.body.decode('utf-8'))
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
@@ -151,6 +158,7 @@ def save_goal_choice(request):
 
 
 def get_consecutive_sections(days_logged_in):
+    """return a list of lists of consecutive days logged in"""
     consecutive_sections = []
 
     today = days_logged_in[0]
@@ -167,8 +175,10 @@ def get_consecutive_sections(days_logged_in):
 
 
 def check_badge_conditions(user):
+    """check badges for account creation, days logged in, and questions solved"""
     earned_badges = user.profile.earned_badges.all()
 
+    # account creation badge
     try:
         creation_badge = Badge.objects.get(id_name="create-account")
         if creation_badge not in earned_badges:
@@ -178,6 +188,7 @@ def check_badge_conditions(user):
     except (Badge.DoesNotExist):
         pass
 
+    # consecutive days logged in badges
     login_badges = Badge.objects.filter(id_name__contains="login")
     for login_badge in login_badges:
         if login_badge not in earned_badges:
@@ -194,6 +205,7 @@ def check_badge_conditions(user):
                 new_achievement.full_clean()
                 new_achievement.save()
 
+    # solved questions badges
     solve_badges = Badge.objects.filter(id_name__contains="solve")
     for solve_badge in solve_badges:
         if solve_badge not in earned_badges:
@@ -207,6 +219,7 @@ def check_badge_conditions(user):
 
 
 def get_past_5_weeks(user):
+    """get how many questions a user has done each week for the last 5 weeks"""
     t = datetime.date.today()
     today = datetime.datetime(t.year, t.month, t.day)
     last_monday = today - datetime.timedelta(days=today.weekday(), weeks=0)
@@ -359,6 +372,7 @@ PYTHON = 116
 COMPLETED = 0
 
 def literal_eval_params(params_text):
+    """attempts to convert params to literal list"""
     params = "[" + params_text + "]"
     try:
         test_params = literal_eval(params)
@@ -375,6 +389,7 @@ def literal_eval_params(params_text):
     return result
 
 def send_code(request):
+    """formats code using template then sends to SphereEngine"""
     request_json = json.loads(request.body.decode('utf-8'))
     question_id = request_json['question']
     question = Question.objects.get_subclass(pk=question_id)
@@ -449,7 +464,7 @@ def send_code(request):
         'function_name': func_name
     }
     code = template.render(**context_variables)
-    print(code)
+    #print(code)
     token = "?access_token=" + Token.objects.get(pk='sphere').token
 
     response = requests.post(BASE_URL + token, data = {"language": PYTHON, "sourceCode": code})
@@ -458,6 +473,7 @@ def send_code(request):
     return JsonResponse(result)
 
 def send_solution(request):
+    """formats correct solution for buggy question type then sends to SphereEngine"""
     request_json = json.loads(request.body.decode('utf-8'))
     question_id = request_json['question']
     question = Question.objects.get_subclass(pk=question_id)
@@ -509,6 +525,7 @@ def send_solution(request):
 
 
 def get_output(request):
+    """gets code output from SphereEngine (stdout, stderr, and compiler error)"""
     request_json = json.loads(request.body.decode('utf-8'))
     submission_id = request_json['id']
     question_id = request_json['question']

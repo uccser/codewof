@@ -1,8 +1,8 @@
 import json
 
 real_print = print
-T = 0
-n = 0
+T = 0 # index of test case
+I = 0 # index of input (for questions which ask for input more than once)
 
 test_params = {{params}}
 test_inputs = {{inputs}}
@@ -16,21 +16,24 @@ printed = [''] * N_test_cases
 returned = [None] * N_test_cases
 
 def update_globals():
-    global T, n
+    """reset I when moving onto next test case"""
+    global T, I
     T += 1
-    n = 0
+    I = 0
 
 def input(prompt=""):
-    global n
-    if n >= len(test_inputs[T]):
+    """overrides Python's built-in input function"""
+    global I
+    if I >= len(test_inputs[T]):
         raise EOFError()
     if len(prompt) > 1:
         print(prompt)
-    test_input = test_inputs[T][n]
-    n += 1
+    test_input = test_inputs[T][I]
+    I += 1
     return test_input
 
 def print(user_output):
+    """overrides Python's built-in print function"""
     if T < N_test_cases:
         user_output = str(user_output)
         user_output += '\n'

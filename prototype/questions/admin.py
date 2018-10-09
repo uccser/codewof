@@ -6,6 +6,7 @@ from .models import *
 from .forms import *
 
 def get_question_type(question_id):
+    """returns the type of question and the route to the appropriate admin page"""
     question = Question.objects.get_subclass(pk=question_id)
     link = "/admin/questions/"
     if isinstance(question, ProgrammingFunction):
@@ -25,6 +26,8 @@ def get_question_type(question_id):
         link += "question/"
     return (subclass, link)
 
+### INLINES ###
+
 class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
@@ -41,6 +44,8 @@ class FunctionTestCaseInline(admin.StackedInline):
     form = TestCaseFunctionForm
     extra = 1
 
+### CUSTOM ADMINS ###
+
 class CustomUserAdmin(UserAdmin):
     inlines = (ProfileInline, )
 
@@ -48,6 +53,9 @@ class CustomUserAdmin(UserAdmin):
         if not obj:
             return list()
         return super(CustomUserAdmin, self).get_inline_instances(request, obj)
+
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
 
 class CustomGenericQuestionAdmin(admin.ModelAdmin):
     list_display = ('title', 'type_display')
@@ -110,7 +118,7 @@ class CustomProgramQuestionAdmin(CustomGenericQuestionAdmin):
             'subclass': subclass,
             'link': link,
             'error_message_part_2': ' page to edit this question.',
-            'help_text': ''
+            'help_text': 'When creating test cases, test input (stdin) and expected output (stdout) will always be strings so you do not need to put quotes around them. Any quotes you enter will be escaped.'
         }
         context.update(extra)
         return super(CustomProgramQuestionAdmin, self).render_change_form(request, context, *args, **kwargs)
@@ -138,7 +146,7 @@ class CustomBuggyAdmin(CustomGenericQuestionAdmin):
             'subclass': subclass,
             'link': link,
             'error_message_part_2': ' page to edit this question.',
-            'help_text': ''
+            'help_text': 'The buggy program is the one that will be shown to the user. It is important that the correct solution works and is different in some way to the buggy program.\nPlease indent using four spaces (not tabs).'
         }
         context.update(extra)
         return super(CustomBuggyAdmin, self).render_change_form(request, context, *args, **kwargs)
@@ -147,31 +155,56 @@ class CustomBuggyAdmin(CustomGenericQuestionAdmin):
 @admin.register(ProgrammingFunction)
 class CustomFunctionQuestionAdmin(CustomGenericQuestionAdmin):
     inlines = [FunctionTestCaseInline, ]
+
+    def render_change_form(self, request, context, *args, **kwargs):
+        self.change_form_template = 'admin/change_form_with_help_text.html'
+
+        extra = {
+            'is_correct_type': True,
+            'error_message_part_1': 'This page is intended for editing function-type programming questions only. Please go to the ',
+            'subclass': "",
+            'link': "",
+            'error_message_part_2': ' page to edit this question.',
+            'help_text': 'Remember to tell the user the function name somewhere in the question text.\nWhen creating test cases, test input (stdin) and expected output (stdout) will always be strings so you do not need to put quotes around them. Any quotes you enter will be escaped.\nHowever, for function params and expected return, the value needs to be valid Python so quotes around strings are necessary.\nFunction params are comma separated.'
+        }
+        context.update(extra)
+        return super(CustomFunctionQuestionAdmin, self).render_change_form(request, context, *args, **kwargs)
    
 
 @admin.register(BuggyFunction)
 class CustomBuggyFunctionQuestionAdmin(CustomGenericQuestionAdmin):
-    pass
+    def render_change_form(self, request, context, *args, **kwargs):
+        self.change_form_template = 'admin/change_form_with_help_text.html'
 
-@admin.register(TestCase)
-class TestCaseAdmin(admin.ModelAdmin):
-    form = TestCaseForm
+        extra = {
+            'is_correct_type': True,
+            'error_message_part_1': 'This page is intended for editing function-type debugging questions only. Please go to the ',
+            'subclass': "",
+            'link': "",
+            'error_message_part_2': ' page to edit this question.',
+            'help_text': 'The buggy program is the one that will be shown to the user. It is important that the correct solution works and is different in some way to the buggy program.\nPlease indent using four spaces (not tabs).'
+        }
+        context.update(extra)
+        return super(CustomBuggyFunctionQuestionAdmin, self).render_change_form(request, context, *args, **kwargs)
 
-@admin.register(TestCaseProgram)
-class TestCaseProgramAdmin(admin.ModelAdmin):
-    form = TestCaseProgramForm
 
-@admin.register(TestCaseFunction)
-class TestCaseFunctionAdmin(admin.ModelAdmin):
-    form = TestCaseFunctionForm
+### FOR DEV PURPOSES ONLY ###
+# @admin.register(TestCase)
+# class TestCaseAdmin(admin.ModelAdmin):
+#     form = TestCaseForm
 
-admin.site.unregister(User)
-admin.site.register(User, CustomUserAdmin)
+# @admin.register(TestCaseProgram)
+# class TestCaseProgramAdmin(admin.ModelAdmin):
+#     form = TestCaseProgramForm
 
-admin.site.register(SkillArea)
-admin.site.register(Token)
-admin.site.register(Badge)
-admin.site.register(Earned)
-admin.site.register(Attempt)
-admin.site.register(Skill)
-admin.site.register(LoginDay)
+# @admin.register(TestCaseFunction)
+# class TestCaseFunctionAdmin(admin.ModelAdmin):
+#     form = TestCaseFunctionForm
+
+# admin.site.register(SkillArea)
+# admin.site.register(Token)
+# admin.site.register(Badge)
+# admin.site.register(Earned)
+# admin.site.register(Attempt)
+# admin.site.register(Skill)
+# admin.site.register(LoginDay)
