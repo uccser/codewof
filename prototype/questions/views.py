@@ -330,7 +330,6 @@ class SkillView(LastAccessMixin, generic.DetailView):
                         completed = any(attempt.passed_tests for attempt in attempts)
                     history.append({'attempted': attempted, 'completed': completed,'title': question.title, 'id': question.pk})
             context['questions'] = history
-        print(context['questions'])
         return context
 
 
