@@ -1,0 +1,30 @@
+<div id="navbar">
+    <div id="home_link">
+        <a class="left" href="/">Home</a>
+    </div>
+    
+    {% if request.user.is_authenticated %}
+    <div id="profile_link">
+        <a class="left" href="/profile">Profile</a>
+    </div>
+    {% endif %}
+
+    <div id="random_link">
+        {% if question %}
+        <a class="left" href="/random/{{question.id}}">Random Question</a>
+        {% else %}
+        <a class="left" href="/random/0">Random Question</a>
+        {% endif %}
+    </div>
+    
+    {% if request.user.is_authenticated %}
+    <div id="logout_link">
+        <a class="right" href="/logout">Logout</a>
+    </div>
+    {% else %}
+    <div id="login_link">
+        <a class="right" href="/signup">Sign Up</a>
+        <a class="right" href="/login">Login</a>
+    </div>
+    {% endif %}
+</div>

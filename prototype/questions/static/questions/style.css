@@ -1,0 +1,123 @@
+li a {
+    color: #793698;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #41005f;
+}
+
+ul {
+    list-style-type: circle;
+}
+
+#content {
+    margin: 2%;
+}
+
+#navbar {
+    background-color: #333;
+    overflow: hidden;
+}
+
+#navbar a {
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+a.left {
+    float: left;
+}
+a.right {
+    float: right;
+}
+
+#navbar a:hover {
+    background-color: #c18eda;
+    color: black;
+}
+
+#navbar a.active {
+    background-color: #4caf50;
+    color: white;
+}
+
+#profile-info {
+    margin-bottom: 2%;
+}
+
+#all-correct {
+    margin-bottom: 2%;
+}
+
+#result-table {
+    display: table;
+    border: solid 1px #8484ff;
+    width: 80%;
+}
+
+#editor {
+    position: relative;
+    font-size: 1em;
+    height: 40%;
+    width: 700px;
+}
+
+#credit {
+    font-size: 0.7em;
+}
+
+#has_saved {
+    height: 4%;
+}
+
+#past-5-weeks {
+    float: left; 
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.header {
+    display: table-row;
+    font-weight: bold;
+}
+.row {
+    display: table-row;
+}
+.cell {
+    display: table-cell;
+    padding: 1%;
+    border: solid 1px #e8bdfc;
+    border-collapse: collapse;
+}
+
+.numberCircle {
+    width: 70px;
+    line-height: 70px;
+    border-radius: 20%;
+    text-align: center;
+    font-size: 32px;
+    color: #793698;
+    border: 5px solid #333;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.completed {
+    color: #008b00;
+}
+
+.attempted {
+    color: #9b9b00;
+}
+
+.errorlist {
+    color: red;
+}

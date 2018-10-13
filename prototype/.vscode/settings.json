@@ -1,0 +1,25 @@
+{
+    "python.pythonPath": "~/.virtualenvs/django",
+    "python.linting.pep8Enabled": false,
+    "python.linting.pylintPath": "~/.virtualenvs/bin/pylint",
+    "python.linting.pylintArgs": [
+        "--load-plugins",
+        "pylint_django"
+    ],
+    "python.linting.pylintEnabled": true,
+    "editor.rulers": [
+        80,
+        120
+    ],
+    "files.exclude": {
+        "**/.git":true,
+        "**/.svn":true,
+        "**/.hg":true,
+        "**/CVS":true,
+        "**/.DS_Store":true,
+        ".vscode":true,
+        "**/*.pyc":true
+    },
+    "workbench.editor.enablePreview": false,
+    "python.linting.enabled": false,
+}

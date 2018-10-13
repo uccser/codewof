@@ -99,3 +99,8 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+prototype/token_file.txt
+prototype/db.sqlite3-dev
+prototype/db.sqlite3
+db.sqlite3-dev
