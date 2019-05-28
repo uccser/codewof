@@ -1,0 +1,16 @@
+.white-footer {
+  border-top: 2px $brand-colour solid;
+}
+#page-footer {
+  background-color: $brand-colour;
+  color: rgba($white, 0.6);
+  a {
+    color: $white;
+    // @include hover-focus {
+    //   color: $white;
+    // }
+  }
+  .footer-statement {
+    border-top: 1px $white solid;
+  }
+}

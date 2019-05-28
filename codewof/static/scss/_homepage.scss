@@ -1,0 +1,27 @@
+#welcome-jumbotron {
+  background-color: #2c4864;
+  color: #fff !important;
+  padding: 1.5rem;
+
+  svg {
+    width: 100%;
+    max-height: 5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .badge {
+    font-size: 1rem;
+  }
+
+  #messages .alert {
+    color: #ffffff;
+    background-color: #a51c29;
+  }
+}
+
+
+// Style featured event differently on homepage
+#featured-event-container .featured-header {
+  font-size: 1rem !important;
+}

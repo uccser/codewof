@@ -1,0 +1,27 @@
+sudo: required
+services:
+  - docker
+language: python
+python:
+  - '3.6'
+before_install:
+  # See https://github.com/travis-ci/travis-ci/issues/7940
+  - sudo rm -f /etc/boto.cfg
+install:
+  - sudo docker --version
+  - sudo docker-compose --version
+jobs:
+  include:
+    - stage: test
+      name: "Run test suite"
+      script: ./dev ci test_suite
+    - script: ./dev ci style
+      name: "Run style checker"
+notifications:
+  email: false
+  slack:
+    rooms: deptfunstuff:abJKvzApk5SKtcEyAgtswXAv
+    on_success: change
+    on_failure: change
+stages:
+  - name: test

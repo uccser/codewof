@@ -1,0 +1,8 @@
+@function get-text-colour($colour) {
+    @if (lightness( $colour ) > 65%) {
+      @return black;
+    }
+    @else {
+      @return white;
+    }
+}

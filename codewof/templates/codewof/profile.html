@@ -1,0 +1,52 @@
+{% extends 'codewof/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div id="profile-info">
+        <h1>Profile</h1>
+
+        <p>Change your name, email, password on your <a href="{% url 'users:detail' request.user.pk  %}">dthm4kaiako user profile</a>.</p>
+        <b>Name</b>: {{user.first_name}} {{user.last_name}}
+        <br>
+        <b>Last login</b>: {{user.last_login|date:"M d, Y"}}
+        <br>
+        <b>Date joined</b>: {{user.date_joined}}
+        <br>
+        <p>
+            <strong>Days logged in</strong>:
+        </p>
+        <ul>
+            {% for day in user.profile.loginday_set.all %}
+                <li>{{ day }}</li>
+            {% endfor %}
+        </ul>
+        <b>Points</b>: {{user.profile.points}}
+        <br>
+        <b>Achievements</b>:
+        <br>
+        {% for badge in all_badges %}
+            {% if badge in user.profile.earned_badges.all %}
+            <u>{{badge.name}} - {{badge.description}}</u>
+            {% else %}
+            <i>{{badge.name}} - {{badge.description}}</i>
+            {% endif %}
+            <br>
+        {% endfor %}
+        <b>History</b>:
+        <br>
+        {% for question in history %}
+        <a href="/questions/{{question.id}}">
+            {% if question.completed %}
+            <div class="completed">
+                {{question.latest_attempt}} {{question.title}}. Attempts: {{question.n_attempts}}
+            </div>
+            {% else %}
+            <div class="attempted">
+                {{question.latest_attempt}} {{question.title}}. Attempts: {{question.n_attempts}}
+            </div>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+{% endblock %}

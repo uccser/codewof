@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block page_heading %}
+    <h1>About</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    <p>
+        The <strong>DTHM for kaiako</strong> website aims to be a specialised website built for teachers of the Digital Technology and Hangarau Matihiko curricula content.
+        The website is initially being developed by three groups who have been worked collaboratively in this space for many years:
+    </p>
+
+    <ul>
+        <li>
+            <strong>University of Canterbury Computer Science Education Research Group</strong> - This group has built an enviable reputation for producing Computer Science education resources.
+            In particular: <a href="https://www.csunplugged.org/">CS Unplugged</a> and <a href="http://www.csfieldguide.org.nz/">CS Field Guide</a>.
+            These are used to teach computer science to school students in a variety of cultures and contexts around the world.
+        </li>
+        <li>
+            <strong>Digital Technologies Teachers Aotearoa</strong> - An association with the goal of advocating for our subjects.
+            The aim of the association is to create a community of teachers where we can share resources, communicate and speak with one voice to get our subject area recognised and
+            supported.
+        </li>
+        <li>
+            <strong>AATEA Solutions</strong> - Description coming soon.
+        </li>
+    </ul>
+
+    <p>
+        This website is currently in development so please bear with us as appearances and features change.
+        We have released this website in an alpha state as we value feedback and ideas from educators of the DTHM curricula content.
+        We have been planning this website since 2011 and are working on the following:
+    </p>
+
+    <ul>
+        <li>
+            A resource hub where educators can find resources which are easily searchable, taggable, and filtered.
+            Users can also download, remix, and reshare resources.
+        </li>
+        <li>
+            An event hub where educators can find and register for DTTA professional development events.
+            The website will prefill registration forms with your profile's basic details (for example dietary requirements).
+        </li>
+        <li>
+            A community hub for DTTA members to easily communicate with one another, manage their membership, and collobrate together to support their student's learning needs.
+        </li>
+    </ul>
+
+    <p>
+        If you have a question regarding the website, check out our <a href="{% url 'general:faq' %}">FAQ</a> page.
+    </p>
+
+    <p>
+        For details on how to contact us, see our <a href="{% url 'general:contact' %}">contact</a> page.
+    </p>
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends "codewof/base.html" %}
+
+{% block page_heading %}
+    <h1>Questions</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    <p>Currently all questions are Python questions.</p>
+
+    {% if questions %}
+        <ul>
+            {% for question in questions %}
+                <li>
+                    <a href="{{ question.get_absolute_url }}">
+                        {{ question.title }}
+                    </a>
+                    <em class="text-muted">
+                        ({{ question.QUESTION_TYPE }})
+                    </em>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

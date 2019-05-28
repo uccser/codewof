@@ -1,0 +1,32 @@
+pytz==2019.1
+python-slugify==3.0.2
+Pillow==6.0.0
+argon2-cffi==19.1.0
+redis>=2.10.6, < 3  # pyup: < 3
+filetype==1.0.4
+
+# Django
+django-model-utils==3.1.2
+django-anymail[mailgun]==6.0
+django-allauth==0.39.1
+django-crispy-forms==1.7.2
+django-redis==4.10.0
+django-activeurl==0.1.12
+django-autoslug-iplweb==1.9.4
+djangorestframework==3.9.4
+coreapi==2.3.3
+django-filter==2.1.0
+django-modeltranslation==0.13.1
+
+# Google Cloud Platform
+google-api-python-client==1.7.8
+
+# Search
+# django-haystack with ElasticSearch 5 support
+git+git://github.com/django-haystack/django-haystack.git@802b0f6f4b3b99314453261876a32bac2bbec94f
+elasticsearch==5.5.3  # pyup: >=5,<6
+
+# Content loading
+verto==0.10.0
+python-markdown-math==0.5
+PyYAML==5.1
