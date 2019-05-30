@@ -25,7 +25,7 @@
       <![endif]-->
   </head>
   {% block body_element %}<body>{% endblock body_element %}
-    <nav id="codewof-navbar" class="navbar navbar-expand-md navbar-dark">
+    <nav id="codewof-navbar" class="navbar navbar-expand-md navbar-light">
       <div class="container">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
           data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,7 @@
           {% if request %}
           {% activeurl %}
           <ul class="navbar-nav w-100">
-            <li class="nav-item resources-navbar">
+            <li class="nav-item mr-auto">
               <a class="nav-link" href="{% url 'codewof:question_list' %}">Questions</a>
             </li>
             {% if request and request.user.is_authenticated %}
