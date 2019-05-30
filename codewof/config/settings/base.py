@@ -111,7 +111,6 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'rest_framework',
     'django_activeurl',
-    'haystack',
     'svg',
 ]
 LOCAL_APPS = [
@@ -338,17 +337,6 @@ LOGGING = {
             'propagate': False,
             'level': 'DEBUG',
         },
-    },
-}
-
-
-# Search (django-haystack)
-# ------------------------------------------------------------------------------
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch5_backend.Elasticsearch5SearchEngine',
-        'URL': 'elasticsearch:9200/',
-        'INDEX_NAME': 'haystack',
     },
 }
 

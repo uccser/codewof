@@ -33,7 +33,3 @@ services:
       - django
     ports:
       - "83:80"
-
-  elasticsearch:
-    image: elasticsearch:5
-    restart: always

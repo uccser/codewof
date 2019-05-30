@@ -17,6 +17,31 @@ jobs:
       script: ./dev ci test_suite
     - script: ./dev ci style
       name: "Run style checker"
+    - stage: development deployment
+      script: skip
+      name: "Deploy development website to Google App Engine"
+      deploy:
+        - provider: script
+          script: bash ./infrastructure/dev-deploy/deploy-app.sh
+          skip_cleanup: true
+          on:
+            branch: develop
+    - script: skip
+      name: "Update Google Cloud SQL database"
+      deploy:
+        - provider: script
+          script: bash ./infrastructure/dev-deploy/update-content.sh
+          skip_cleanup: true
+          on:
+            branch: develop
+    - script: skip
+      name: "Copy static files to Google Storage Bucket"
+      deploy:
+        - provider: script
+          script: bash ./infrastructure/dev-deploy/deploy-static-files.sh
+          skip_cleanup: true
+          on:
+            branch: develop
 notifications:
   email: false
   slack:

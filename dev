@@ -77,7 +77,6 @@ cmd_update() {
 
   echo ""
   cmd_migrate
-  cmd_rebuild_index
 
   echo ""
   cmd_collect_static
@@ -187,13 +186,6 @@ cmd_reboot_django() {
   docker-compose restart django
 }
 defhelp reboot_django 'Reboot Django Docker container.'
-
-# Rebuild search index
-cmd_rebuild_index() {
-  echo "Rebuilding search index..."
-  docker-compose exec django /docker_venv/bin/python3 ./manage.py rebuild_index --noinput
-}
-defhelp rebuild_index 'Rebuild search index.'
 
 # Run style checks
 cmd_style() {

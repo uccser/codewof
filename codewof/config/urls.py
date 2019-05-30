@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.views import defaults as default_views
 from config.views import (
     health_check,
-    cron_rebuild_index,
 )
 admin.site.login = login_required(admin.site.login)
 admin.site.site_header = 'CodeWOF'
