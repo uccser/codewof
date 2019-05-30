@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 
-{% load static %}
+{% load static svg %}
 
 {% block body_container %}
     <div class="container">
         <div class="text-center">
-            <h1 id="codewof-title" class="display-2 mt-4 mb-0">CodeWOF</h1>
+            <h1 id="codewof-title" class="display-2 mt-4 mb-0">
+                {% svg 'logo' %}
+            </h1>
             <p class="lead">You know programming skills, now <strong>maintain</strong> them.</p>
         </div>
 
@@ -18,15 +20,6 @@
             We are currently actively developing this website in it's alpha state, in order to equip teachers and receive
             feedback.
             As we are developing the core principles and therefore the CodeWOF structure and content will change.
-            This includes but is not limited to:
         </p>
-
-        <ul>
-            Adding or removing the types of questions available.
-            Adding achievements or badges.
-
-            Changing the name of the website.
-
-        </ul>
     </div>
 {% endblock body_container %}

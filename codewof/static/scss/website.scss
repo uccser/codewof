@@ -51,6 +51,10 @@ body {
 }
 
 
+
+
+
+
 h1, h2, h3 {
     font-family: 'Righteous', sans-serif;
 }
@@ -183,4 +187,23 @@ $red: #b94a48;
   background-color: $pink;
   border-color: $dark-pink;
   color: $red;
+}
+
+
+// Logo SVG classes
+
+.logo_text {
+  fill: $brand-colour;
+}
+.logo_symbol {
+  fill: #fbe1a4;
+}
+
+.inverse-logo {
+  .logo_text {
+    fill: #505050;
+  }
+  .logo_symbol {
+    fill: #909090;
+}
 }

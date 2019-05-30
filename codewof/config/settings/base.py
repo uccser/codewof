@@ -112,6 +112,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'django_activeurl',
     'haystack',
+    'svg',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
@@ -242,7 +243,6 @@ TEMPLATES = [
                 'config.context_processors.version_number.version_number',
             ],
             'libraries': {
-                'markdown': 'config.filters.markdown',
                 'query_replace': 'config.templatetags.query_replace',
             },
         },

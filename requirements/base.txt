@@ -17,6 +17,7 @@ djangorestframework==3.9.4
 coreapi==2.3.3
 django-filter==2.1.0
 django-modeltranslation==0.13.1
+django-inline-svg==0.1.1
 
 # Google Cloud Platform
 google-api-python-client==1.7.8

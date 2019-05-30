@@ -1,4 +1,4 @@
-{% load static i18n activeurl %}
+{% load static i18n activeurl svg %}
 
 <!doctype html>
 <html lang="en">
@@ -31,8 +31,8 @@
           data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand mr-0" href="{% url 'codewof:home' %}">
-          CodeWOF
+        <a class="navbar-brand inverse-logo mr-0" href="{% url 'general:home' %}">
+          {% svg 'logo' %}
         </a>
 
         {% if DEPLOYMENT_TYPE == 'dev' %}
@@ -81,7 +81,7 @@
       </div>
       {% endfor %}
     </div>
-    {% endif %}
+  {% endif %}
 
     {% block body_container %}
     <div id="page-header" class="my-3">

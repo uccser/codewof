@@ -18,7 +18,7 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path('users/', include('users.urls', namespace='users'),),
     path('accounts/', include('allauth.urls')),
-    path('codewof/', include('codewof.urls', namespace='codewof'),),
+    path('', include('codewof.urls', namespace='codewof'),),
     path('_ah/health', health_check),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
