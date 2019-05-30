@@ -11,6 +11,12 @@
             <p class="lead">You know programming skills, now <strong>maintain</strong> them.</p>
         </div>
 
+        {% if DEPLOYMENT_TYPE == 'dev' %}
+            <div class="alert alert-warning d-inline-block" role="alert">
+                You are viewing the test server, which has all data wiped regularly.
+            </div>
+        {% endif %}
+
         <p>
             This website provides you with short programming exercises for you to complete daily.
             With a free account you can save your progress and track your programming fitness.
