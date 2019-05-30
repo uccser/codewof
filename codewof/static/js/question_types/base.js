@@ -2,7 +2,7 @@ require('skulpt');
 
 function ajax_request(url_name, data, success_function) {
     $.ajax({
-        url: '/codewof/ajax/' + url_name + '/',
+        url: '/ajax/' + url_name + '/',
         type: 'POST',
         method: 'POST',
         data: JSON.stringify(data),
@@ -94,7 +94,10 @@ function run_test_cases(test_cases, user_code, code_function) {
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
             var test_case = test_cases[id];
-            var code = user_code + '\n' + test_case.test_code;
+            var code = user_code;
+            if (test_case.hasOwnProperty('test_code')) {
+                code = code + '\n' + test_case.test_code;
+            }
             code_function(code, test_case);
             update_test_case_status(test_case);
         }

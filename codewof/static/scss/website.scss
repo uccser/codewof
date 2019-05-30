@@ -44,16 +44,12 @@
 @import "footer";
 
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Righteous&display=swap');
+@import "node_modules/codemirror/lib/codemirror";
 
 body {
   font-family: 'Noto Sans', sans-serif !important;
   background-color: #fffcf8;
 }
-
-
-
-
-
 
 h1, h2, h3 {
     font-family: 'Righteous', sans-serif;
