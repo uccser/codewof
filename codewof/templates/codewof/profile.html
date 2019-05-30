@@ -1,4 +1,4 @@
-{% extends 'codewof/base.html' %}
+{% extends 'base.html' %}
 
 {% load static %}
 
@@ -9,11 +9,10 @@
         <p>Change your name, email, password on your <a href="{% url 'users:detail' request.user.pk  %}">dthm4kaiako user profile</a>.</p>
         <b>Name</b>: {{user.first_name}} {{user.last_name}}
         <br>
-        <b>Last login</b>: {{user.last_login|date:"M d, Y"}}
-        <br>
+        <!-- <b>Last login</b>: {{user.last_login|date:"M d, Y"}} -->
         <b>Date joined</b>: {{user.date_joined}}
         <br>
-        <p>
+        <!-- <p>
             <strong>Days logged in</strong>:
         </p>
         <ul>
@@ -47,6 +46,6 @@
             </div>
             {% endif %}
         </a>
-        {% endfor %}
+        {% endfor %} -->
     </div>
 {% endblock %}

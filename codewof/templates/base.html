@@ -49,7 +49,7 @@
             {% if request and request.user.is_authenticated %}
             {# URL provided by django-allauth/account/urls.py #}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'codewof:profile' request.user.pk  %}">Welcome
+              <a class="nav-link" href="{% url 'codewof:profile'  %}">Welcome
                 {{ request.user.get_short_name }}</a>
             </li>
             {# URL provided by django-allauth/account/urls.py #}
@@ -103,15 +103,15 @@
     {% endblock body_container %}
 
     <div class="container mt-5 py-5 d-print-none white-footer">
-      <div class="row align-items-center">
-        <div class="col-12 col-sm-6 col-md-4">
+      <div class="row align-items-center text-center">
+        <div class="col-12 col-sm-6">
           <a href="https://www.canterbury.ac.nz/engineering/schools/csse/research/cse/">
-            <img class="img-fluid py-5" src="{% static 'img/logos/uc-computer-science-education-logo.png' %}">
+            <img class="img-fluid sponsor-logo" src="{% static 'img/logos/uc-computer-science-education-logo.png' %}">
           </a>
         </div>
-        <div class="col-12 col-sm-6 col-md-4{% block logo_reorder %}{% endblock logo_reorder %}">
+        <div class="col-12 col-sm-6">
           <a href="https://www.dthm4kaiako.ac.nz/dtta/">
-            <img class="img-fluid px-3" src="{% static 'img/logos/dtta-logo.png' %}">
+            <img class="img-fluid sponsor-logo" src="{% static 'img/logos/dtta-logo.png' %}">
           </a>
         </div>
       </div>
@@ -120,7 +120,7 @@
       <div class="row align-items-center justify-content-center text-center">
         <div class="col-12 col-sm-6 col-md-4">
           <a href="https://www.google.com/">
-            <img class="img-fluid" src="{% static 'img/logos/google-logo-colour.png' %}">
+            <img class="img-fluid sponsor-logo" src="{% static 'img/logos/google-logo-colour.png' %}">
           </a>
         </div>
       </div>
@@ -132,8 +132,7 @@
           <div class="col-12 col-md-6">
             <p>
               {% blocktrans trimmed %}
-              <strong>DTHM for kaiako</strong> is a website for all New Zealand Digital Technology educators,
-              where we aim to inform and equip you for teaching DTHM.
+              <strong>codeWOF</strong> is a website for beginner programmers to maintain their programming skill.
               {% endblocktrans %}
             </p>
           </div>
@@ -200,12 +199,12 @@
         <p>
           <small>
             {% blocktrans trimmed %}
-            CodeWOF is a project by the <a
+            <strong>codeWOF</strong> is a project by the <a
               href="https://www.canterbury.ac.nz/engineering/schools/csse/research/cse/">Computer
               Science Education Research Group</a> at the <a href="http://www.canterbury.ac.nz/">University of
               Canterbury</a> and the <a href="https://www.dthm4kaiako.ac.nz/dtta/">Digital Technologies Teachers Aotearoa</a>
             association.
-            The CodeWOF website is open source on <a href="https://github.com/uccser/codewof">GitHub</a>,
+            The <strong>codeWOF</strong> website is open source on <a href="https://github.com/uccser/codewof">GitHub</a>,
             and available under a <a href="https://github.com/uccser/codewof/blob/develop/LICENSE">MIT
               licence</a>.
             Icons provided generously by <a href="https://icons8.com/">icons8</a>.

@@ -3,12 +3,12 @@
 }
 #page-footer {
   background-color: $brand-colour;
-  color: rgba($white, 0.6);
+  color: rgba($black, 0.5);
   a {
-    color: $white;
-    // @include hover-focus {
-    //   color: $white;
-    // }
+    color: rgba($black, 0.9);
+    @include hover-focus {
+      color: $black;
+    }
   }
   .footer-statement {
     border-top: 1px $white solid;

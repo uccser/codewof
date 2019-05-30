@@ -124,7 +124,7 @@ class Question(TranslatableModel):
         Returns:
             URL as a string.
         """
-        return reverse('codewof`:question', kwargs={'pk': self.pk})
+        return reverse('codewof:question', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.title
