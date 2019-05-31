@@ -1,3 +1,5 @@
+"""Models for codeWOF application."""
+
 from random import shuffle
 from django.db import models
 from django.db.models.signals import post_save
@@ -14,6 +16,8 @@ User = get_user_model()
 
 
 class Profile(models.Model):
+    """Profile of a user."""
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     points = models.IntegerField(default=0)
     goal = models.IntegerField(
@@ -24,16 +28,21 @@ class Profile(models.Model):
     # attempted_questions = models.ManyToManyField('Question', through='Attempt')
 
     def __str__(self):
+        """Text representation of a profile."""
         return self.user.full_name()
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
+    """Create a profile when a user is created."""
     # TODO: This can be replaced by manual creation of profile on demand
     if created:
         Profile.objects.create(user=instance, points=0)
 
+
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
+    """Update a profile when a user is updated."""
     instance.profile.full_clean()
     instance.profile.save()
 
@@ -72,6 +81,8 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Attempt(models.Model):
+    """An user attempt for a question."""
+
     profile = models.ForeignKey(
         'Profile',
         on_delete=models.CASCADE
@@ -90,10 +101,13 @@ class Attempt(models.Model):
     # skills_hinted = models.ManyToManyField('Skill', blank=True)
 
     def __str__(self):
+        """Text representation of an attempt."""
         return "Attempted '" + str(self.question) + "' on " + str(self.datetime)
 
 
 class TestCaseAttempt(models.Model):
+    """An intermediate model for storing data of attempts on test cases."""
+
     attempt = models.ForeignKey('Attempt', on_delete=models.CASCADE)
     test_case = models.ForeignKey('TestCase', on_delete=models.CASCADE)
     passed = models.BooleanField()
@@ -127,6 +141,7 @@ class Question(TranslatableModel):
         return reverse('codewof:question', kwargs={'pk': self.pk})
 
     def __str__(self):
+        """Text representation of a question."""
         return self.title
 
     # class Meta:
@@ -151,15 +166,19 @@ class TestCase(TranslatableModel):
 # ----- Program question ------------------------------------------------------
 
 class QuestionTypeProgram(Question):
+    """A program based question."""
 
     QUESTION_TYPE = 'program'
 
     class Meta:
+        """Meta information for class."""
+
         verbose_name = 'Program Question'
         verbose_name_plural = 'Program Questions'
 
 
 class QuestionTypeProgramTestCase(TestCase):
+    """A test case for a program based question."""
 
     test_input = models.CharField(max_length=LARGE, blank=True)
     question = models.ForeignKey(
@@ -169,21 +188,27 @@ class QuestionTypeProgramTestCase(TestCase):
     )
 
     class Meta:
+        """Meta information for class."""
+
         verbose_name = 'Program Question Test Case'
 
 
 # ----- Function question -----------------------------------------------------
 
 class QuestionTypeFunction(Question):
+    """A function based question."""
 
     QUESTION_TYPE = 'function'
 
     class Meta:
+        """Meta information for class."""
+
         verbose_name = 'Function Question'
         verbose_name_plural = 'Function Questions'
 
 
 class QuestionTypeFunctionTestCase(TestCase):
+    """A test case for a function based question."""
 
     test_code = models.TextField()
     question = models.ForeignKey(
@@ -193,12 +218,15 @@ class QuestionTypeFunctionTestCase(TestCase):
     )
 
     class Meta:
+        """Meta information for class."""
+
         verbose_name = 'Function Question Test Case'
 
 
 # ----- Parsons problem question -----------------------------------------------------
 
 class QuestionTypeParsons(Question):
+    """A parson's problem question."""
 
     QUESTION_TYPE = 'parsons'
     lines = models.TextField()
@@ -210,10 +238,13 @@ class QuestionTypeParsons(Question):
         return lines
 
     class Meta:
+        """Meta information for class."""
+
         verbose_name = 'Parsons Problem Question'
 
 
 class QuestionTypeParsonsTestCase(TestCase):
+    """A test case for a parson's problem question."""
 
     test_code = models.TextField()
     question = models.ForeignKey(
@@ -223,6 +254,8 @@ class QuestionTypeParsonsTestCase(TestCase):
     )
 
     class Meta:
+        """Meta information for class."""
+
         verbose_name = 'Parsons Problem Question Test Case'
 
 

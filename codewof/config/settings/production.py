@@ -2,7 +2,6 @@
 
 from .base import *  # noqa
 from .base import env
-from google.oauth2 import service_account
 
 # GENERAL
 # ------------------------------------------------------------------------------

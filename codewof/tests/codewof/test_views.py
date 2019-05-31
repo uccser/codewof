@@ -1,3 +1,5 @@
+# flake8: noqa
+
 # from django.test import TestCase as DjangoTestCase
 # from django.contrib.auth.models import User
 # from django.contrib.auth import login

@@ -1,7 +1,6 @@
 """Views for the general application."""
 
 from django.http import HttpResponse
-from django.core.management import call_command
 
 
 def health_check(request):

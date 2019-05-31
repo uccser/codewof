@@ -6,7 +6,6 @@ from utils.TranslatableModelLoader import TranslatableModelLoader
 from utils.errors import (
     MissingRequiredFieldError,
     InvalidYAMLValueError,
-    CouldNotFindMarkdownFileError,
 )
 from utils.language_utils import get_available_languages
 from codewof.models import (
@@ -172,7 +171,8 @@ class QuestionsLoader(TranslatableModelLoader):
 
                     if test_case_class == QuestionTypeProgramTestCase:
                         required_fields = ['test_input', 'expected_output']
-                    elif test_case_class == QuestionTypeFunctionTestCase or test_case_class == QuestionTypeParsonsTestCase:
+                    elif (test_case_class == QuestionTypeFunctionTestCase or
+                            test_case_class == QuestionTypeParsonsTestCase):
                         required_fields = ['test_code', 'expected_output']
 
                     self.populate_translations(test_case, test_case_translations)

@@ -1,21 +1,9 @@
 """Module for the custom Django sampledata command."""
 
-import csv
-import random
 from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.gis.geos import Point
 from allauth.account.models import EmailAddress
-from codewof.models import (
-    QuestionTypeProgram,
-    QuestionTypeProgramTestCase,
-    QuestionTypeFunction,
-    QuestionTypeFunctionTestCase,
-    QuestionTypeParsons,
-    QuestionTypeParsonsTestCase,
-)
-
 
 LOG_HEADER = '\n{}\n' + ('-' * 20)
 

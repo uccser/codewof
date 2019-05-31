@@ -1,6 +1,8 @@
 """Module for errors raised in loaders."""
 
-from . import (
+# flake8: noqa
+
+from utils.errors import (
     CouldNotFindGlossaryTermError,
     CouldNotFindImageError,
     CouldNotFindMarkdownFileError,

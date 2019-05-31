@@ -1,7 +1,6 @@
 """Views for general application."""
 
 from django.urls import reverse_lazy
-from django.utils.timezone import now
 from django.views.generic import (
     TemplateView,
     FormView,
