@@ -10,13 +10,12 @@
             </h1>
             <p class="lead">You know programming skills, now <strong>maintain</strong> them.</p>
 
+            {% if DEPLOYMENT_TYPE == 'dev' %}
+                <div class="alert alert-warning d-inline-block" role="alert">
+                    You are viewing the test server, which has all data wiped regularly.
+                </div>
+            {% endif %}
         </div>
-
-        {% if DEPLOYMENT_TYPE == 'dev' %}
-            <div class="alert alert-warning d-inline-block" role="alert">
-                You are viewing the test server, which has all data wiped regularly.
-            </div>
-        {% endif %}
 
         <p>
             This website provides you with short programming exercises for you to complete daily.
