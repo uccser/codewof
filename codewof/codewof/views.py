@@ -110,7 +110,16 @@ class QuestionListView(generic.ListView):
         Returns:
             Question queryset.
         """
-        return Question.objects.all().select_subclasses()
+        questions = Question.objects.all().select_subclasses()
+        if self.request.user.is_authenticated:
+            # TODO: Check if passeed in last 90 days
+            for question in questions:
+                question.completed = Attempt.objects.filter(
+                    profile=self.request.user.profile,
+                    question=question,
+                    passed_tests=True,
+                ).exists()
+        return questions
 
 
 class QuestionView(generic.base.TemplateView):
