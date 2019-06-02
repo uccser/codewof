@@ -121,6 +121,7 @@ class QuestionListView(generic.ListView):
                 ).exists()
         return questions
 
+
 class QuestionView(generic.base.TemplateView):
     """Displays a question.
 
