@@ -9,9 +9,21 @@ User = get_user_model()
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
-    """View for a single user."""
+    """View for a user's profile."""
 
     model = User
+    context_object_name = 'user'
+
+    def get_object(self):
+        """Get object for template."""
+        if self.request.user.is_authenticated:
+            return User.objects.get(pk=self.request.user.pk)
+
+    def get_context_data(self, **kwargs):
+        """Get additional context data for template."""
+        context = super().get_context_data(**kwargs)
+        context['codewof_profile'] = self.object.profile
+        return context
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
@@ -22,7 +34,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         """URL to route to on successful update."""
-        return reverse("users:detail", kwargs={"pk": self.request.user.pk})
+        return reverse('users:profile')
 
     def get_object(self):
         """Object to perform update with."""
@@ -36,4 +48,4 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
     def get_redirect_url(self):
         """URL to redirect to."""
-        return reverse("users:detail", kwargs={"pk": self.request.user.pk})
+        return reverse("users:profile", kwargs={"pk": self.request.user.pk})

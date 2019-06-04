@@ -24,11 +24,13 @@
 
     {{ emailaddress.email }}
     {% if emailaddress.verified %}
-    <span class="verified">{% trans "Verified" %}</span>
+      <span class="badge badge-success">{% trans "Verified" %}</span>
     {% else %}
-    <span class="unverified">{% trans "Unverified" %}</span>
+      <span class="badge badge-secondary">{% trans "Unverified" %}</span>
     {% endif %}
-    {% if emailaddress.primary %}<span class="primary">{% trans "Primary" %}</span>{% endif %}
+    {% if emailaddress.primary %}
+      <span class="badge badge-primary">{% trans "Primary" %}</span>
+    {% endif %}
   </label>
 </div>
   {% endfor %}

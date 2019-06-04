@@ -87,11 +87,6 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
     template_name = 'codewof/profile.html'
     model = Profile
 
-    def get_object(self):
-        """Get object for template."""
-        if self.request.user.is_authenticated:
-            return Profile.objects.get(user=self.request.user)
-
     def get_context_data(self, **kwargs):
         """Get additional context data for template."""
         context = super().get_context_data(**kwargs)

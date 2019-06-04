@@ -7,7 +7,6 @@ from . import views
 app_name = 'codewof'
 urlpatterns = [
     path('', views.IndexView.as_view(), name="home"),
-    path('profile/', views.ProfileView.as_view(), name="profile"),
     path('questions/', views.QuestionListView.as_view(), name="question_list"),
     path('questions/<int:pk>/', views.QuestionView.as_view(), name="question"),
     path('ajax/save_question_attempt/', views.save_question_attempt, name='save_question_attempt'),
