@@ -25,6 +25,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context['codewof_profile'] = self.object.profile
         return context
 
+
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     """View for updating user data."""
 
