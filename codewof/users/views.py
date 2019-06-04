@@ -48,4 +48,4 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
     def get_redirect_url(self):
         """URL to redirect to."""
-        return reverse("users:profile", kwargs={"pk": self.request.user.pk})
+        return reverse("users:profile")

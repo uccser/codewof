@@ -8,16 +8,16 @@ pytestmark = pytest.mark.django_db
 def test_detail(user: settings.AUTH_USER_MODEL):
     assert (
         reverse("users:profile")
-        == f"/users/"
+        == f"/users/profile/"
     )
-    assert resolve(f"/users/").view_name == "users:profile"
+    assert resolve(f"/users/profile/").view_name == "users:profile"
 
 
 def test_update():
-    assert reverse("users:update") == "/users/~update/"
-    assert resolve("/users/~update/").view_name == "users:update"
+    assert reverse("users:update") == "/users/update/"
+    assert resolve("/users/update/").view_name == "users:update"
 
 
 def test_redirect():
-    assert reverse("users:redirect") == "/users/~redirect/"
-    assert resolve("/users/~redirect/").view_name == "users:redirect"
+    assert reverse("users:redirect") == "/users/redirect/"
+    assert resolve("/users/redirect/").view_name == "users:redirect"
