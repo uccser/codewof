@@ -31,3 +31,35 @@ double-evens:
     3: normal
     4: normal
     5: exceptional
+
+countdown:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for i in range(num):'
+    - 'while num > 1:'
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+
+repeated-add-10:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
+
+factorial:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
