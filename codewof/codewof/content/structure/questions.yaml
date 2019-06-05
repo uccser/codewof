@@ -63,3 +63,29 @@ factorial:
     3: normal
     4: normal
     5: normal
+
+triangle-pattern:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+diamond-pattern:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+divisible-by-three:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
