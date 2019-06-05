@@ -67,6 +67,12 @@ factorial:
 triangle-pattern:
   types:
     - function
+    - parsons
+  parsons-extra-lines:
+    - 'for i in range(1, x):'
+    - 'print(" ")'
+    - 'print("*")'
+    - 'print(i * " ")'
   test-cases:
     1: normal
     2: normal
@@ -85,6 +91,19 @@ diamond-pattern:
 divisible-by-three:
   types:
     - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+reverse-string:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for char in range(len(string), -1, -1):'
+    - 'for char in range(len(string) - 1, 1, 1):'
+    - 'print(string[char])'
   test-cases:
     1: normal
     2: normal
