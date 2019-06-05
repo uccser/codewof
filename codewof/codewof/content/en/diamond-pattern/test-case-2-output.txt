@@ -1,1 +1,1 @@
-That isn't a triangle!
+That isn't a diamond! Please enter a positive, odd integer.
