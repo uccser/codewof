@@ -5,6 +5,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from allauth.account.models import EmailAddress
 
+from codewof.models import Badge
+
 LOG_HEADER = '\n{}\n' + ('-' * 20)
 
 
@@ -62,3 +64,53 @@ class Command(management.base.BaseCommand):
         # Codewof
         management.call_command('load_questions')
         print('Programming question added.')
+
+        Badge.objects.create(
+            id_name='create-account',
+            display_name='Created an account!',
+            description='Created your very own account',
+            icon_name='img/icons/bitfit/icons8-badge-create-account-48.png'
+        )
+
+        Badge.objects.create(
+            id_name='questions-solved-1',
+            display_name='Solved one question!',
+            description='Solved your very first question',
+            icon_name='img/icons/bitfit/icons8-question-solved-black-50.png'
+        )
+
+        Badge.objects.create(
+            id_name='questions-solved-3',
+            display_name='Solved three questions!',
+            description='Solved three questions',
+            icon_name='img/icons/bitfit/icons8-question-solved-bronze-50.png'
+        )
+
+        Badge.objects.create(
+            id_name='attempts-made-1',
+            display_name='Made your first attempt at a question!',
+            description='Attempted one question',
+            icon_name='img/icons/bitfit/icons8-attempt-made-black-50.png'
+        )
+
+        Badge.objects.create(
+            id_name='attempts-made-10',
+            display_name='Made 10 question attempts!',
+            description='Attempted ten questions',
+            icon_name='img/icons/bitfit/icons8-attempt-made-bronze-50.png'
+        )
+
+        Badge.objects.create(
+            id_name='attempts-made-100',
+            display_name='Made 100 question attempts!',
+            description='Attempted one hundred questions',
+            icon_name='img/icons/bitfit/icons8-attempt-made-silver-50.png'
+        )
+
+        Badge.objects.create(
+            id_name='attempts-made-1000',
+            display_name='Made 1000 question attempts!',
+            description='Attempted one thousand questions',
+            icon_name='img/icons/bitfit/icons8-attempt-made-gold-50.png'
+        )
+        print("Badges added.")
