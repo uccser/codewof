@@ -1,43 +1,43 @@
 # flake8: noqa
 
-# from django.test import TestCase as DjangoTestCase
-# from django.contrib.auth.models import User
-# from django.contrib.auth import login
-# from unittest import skip
-# import json
-# import time
-# import datetime
+from django.test import TestCase as DjangoTestCase
+from django.contrib.auth.models import User
+from django.contrib.auth import login
+from unittest import skip
+import json
+import time
+import datetime
 
-# from questions.models import *
-# from questions.views import *
+from codewof.models import *
+from codewof.views import *
 
 
-# class ProfileViewTest(DjangoTestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         # never modify this object in tests
-#         User.objects.create_user(username='john', email='john@uclive.ac.nz', password='onion')
+class ProfileViewTest(DjangoTestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        User.objects.create_user(username='john', email='john@uclive.ac.nz', password='onion')
 
-#     def login_user(self):
-#         login = self.client.login(username='john', password='onion')
-#         self.assertTrue(login)
+    def login_user(self):
+        login = self.client.login(username='john', password='onion')
+        self.assertTrue(login)
 
-#     ### tests begin ###
+    ### tests begin ###
 
-#     def test_redirect_if_not_logged_in(self):
-#         resp = self.client.get('/profile/')
-#         self.assertRedirects(resp, '/login/?next=/profile/')
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get('/users/profile/')
+        self.assertRedirects(resp, '/accounts/login/?next=/users/profile/')
 
-#     def test_view_url_exists(self):
-#         self.login_user()
-#         resp = self.client.get('/profile/')
-#         self.assertEqual(resp.status_code, 200)
+    def test_view_url_exists(self):
+        self.login_user()
+        resp = self.client.get('/users/profile/')
+        self.assertEqual(resp.status_code, 200)
 
-#     def test_view_uses_correct_template(self):
-#         self.login_user()
-#         resp = self.client.get('/profile/')
-#         self.assertEqual(resp.status_code, 200)
-#         self.assertTemplateUsed(resp, 'registration/profile.html')
+    def test_view_uses_correct_template(self):
+        self.login_user()
+        resp = self.client.get('/users/profile/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'registration/profile.html')
 
 
 # class BadgeViewTest(DjangoTestCase):

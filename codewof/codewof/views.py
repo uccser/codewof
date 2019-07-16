@@ -157,7 +157,10 @@ def get_consecutive_sections(days_logged_in):
 def check_badge_conditions(user):
     """check badges for account creation, days logged in, and questions solved"""
     earned_badges = user.profile.earned_badges.all()
-
+    logger.warning(len(Badge.objects.all()))
+    logger.error(len(Badge.objects.all()))
+    logger.info(len(Badge.objects.all()))
+    logger.critical(len(Badge.objects.all()))
     # account creation badge
     try:
         creation_badge = Badge.objects.get(id_name="create-account")
@@ -258,12 +261,14 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
         context = super().get_context_data(**kwargs)
 
         user = self.request.user
-
         check_badge_conditions(user)
 
         context['goal'] = user.profile.goal
         context['all_badges'] = Badge.objects.all()
         logger.warning(len(Badge.objects.all()))
+        logger.error(len(Badge.objects.all()))
+        logger.info(len(Badge.objects.all()))
+        logger.critical(len(Badge.objects.all()))
         context['past_5_weeks'] = get_past_5_weeks(user)
         return context
 
