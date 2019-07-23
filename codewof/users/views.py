@@ -5,7 +5,34 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import DetailView, RedirectView, UpdateView
 
+
+from codewof.models import (
+    Profile,
+    Question,
+    TestCase,
+    Attempt,
+    TestCaseAttempt,
+    Badge,
+    Earned
+)
+
+from codewof.codewof_utils import check_badge_conditions, get_past_5_weeks, add_points
+
+import logging
+
 User = get_user_model()
+
+logger = logging.getLogger(__name__)
+del logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'incremental': True,
+    'root': {
+        'level': 'DEBUG',
+    },
+}
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -16,13 +43,18 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         """Get object for template."""
-        if self.request.user.is_authenticated:
-            return User.objects.get(pk=self.request.user.pk)
+        return self.request.user
 
     def get_context_data(self, **kwargs):
         """Get additional context data for template."""
+        user = self.request.user
         context = super().get_context_data(**kwargs)
         context['codewof_profile'] = self.object.profile
+        context['goal'] = user.profile.goal
+        context['all_badges'] = Badge.objects.all()
+        check_badge_conditions(user)
+        context["a"] = "b"
+        context['past_5_weeks'] = get_past_5_weeks(user)
         return context
 
 

@@ -80,10 +80,24 @@ class Command(management.base.BaseCommand):
         )
 
         Badge.objects.create(
-            id_name='questions-solved-3',
-            display_name='Solved three questions!',
-            description='Solved three questions',
+            id_name='questions-solved-5',
+            display_name='Solved five questions!',
+            description='Solved five questions',
             icon_name='img/icons/badges/icons8-question-solved-bronze-50.png'
+        )
+
+        Badge.objects.create(
+            id_name='questions-solved-10',
+            display_name='Solved ten questions!',
+            description='Solved ten questions',
+            icon_name='img/icons/badges/icons8-question-solved-silver-50.png'
+        )
+
+        Badge.objects.create(
+            id_name='questions-solved-100',
+            display_name='Solved one hundred questions!',
+            description='Solved one hundred questions',
+            icon_name='img/icons/badges/icons8-question-solved-silver-50.png'
         )
 
         Badge.objects.create(
@@ -94,23 +108,23 @@ class Command(management.base.BaseCommand):
         )
 
         Badge.objects.create(
-            id_name='attempts-made-10',
-            display_name='Made 10 question attempts!',
-            description='Attempted ten questions',
+            id_name='attempts-made-5',
+            display_name='Made five question attempts!',
+            description='Attempted five questions',
             icon_name='img/icons/badges/icons8-attempt-made-bronze-50.png'
         )
 
         Badge.objects.create(
-            id_name='attempts-made-100',
-            display_name='Made 100 question attempts!',
-            description='Attempted one hundred questions',
+            id_name='attempts-made-10',
+            display_name='Made ten question attempts!',
+            description='Attempted ten questions',
             icon_name='img/icons/badges/icons8-attempt-made-silver-50.png'
         )
 
         Badge.objects.create(
-            id_name='attempts-made-1000',
-            display_name='Made 1000 question attempts!',
-            description='Attempted one thousand questions',
+            id_name='attempts-made-100',
+            display_name='Made one hundred question attempts!',
+            description='Attempted one hundred questions',
             icon_name='img/icons/badges/icons8-attempt-made-gold-50.png'
         )
         print("Badges added.")
