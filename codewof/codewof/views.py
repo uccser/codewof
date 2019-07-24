@@ -4,6 +4,7 @@ from django.http import JsonResponse, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 import json
+import datetime
 import logging
 
 from codewof.models import (
@@ -13,7 +14,7 @@ from codewof.models import (
     Attempt,
     TestCaseAttempt,
     Badge,
-    Earned
+    DayWithAttempt
 )
 
 from codewof.codewof_utils import check_badge_conditions, get_past_5_weeks, add_points
@@ -80,6 +81,12 @@ def save_question_attempt(request):
                 user_code=user_code,
                 passed_tests=total_passed == total_tests,
             )
+
+            # if DayWithAttempt.objects.filter(pub_date__gte=datetime.date.today()).count < 1:
+            #     new_attempt_day = DayWithAttempt(request.user.profile)
+            #     new_attempt_day.full_clean()
+            #     new_attempt_day.save()
+            #     logger.warning(new_attempt_day)
 
             # Create test case attempt objects
             for test_case_id, test_case_data in test_cases.items():

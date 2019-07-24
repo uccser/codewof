@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import json
 import logging
 
@@ -9,7 +9,8 @@ from codewof.models import (
     Attempt,
     TestCaseAttempt,
     Badge,
-    Earned
+    Earned,
+    DayWithAttempt
 )
 from django.http import JsonResponse
 
@@ -83,6 +84,25 @@ def get_consecutive_sections(days_logged_in):
     return consecutive_sections
 
 
+def get_days_consecutively_answered(user):
+    attempts = Attempt.objects.all()
+    i = 0
+    logger.warning(attempts)
+    logger.warning(len(attempts))
+
+    consec_days = 0
+    current_date = datetime.now()
+
+    while i < len(attempts):
+        attempt = attempts[i]
+
+        logger.warning(attempt)
+
+        i += 1
+    # logger.warning(attempts)
+    return 10
+
+
 def check_badge_conditions(user):
     """check badges for account creation, days logged in, and questions solved"""
     earned_badges = user.profile.earned_badges.all()
@@ -130,32 +150,40 @@ def check_badge_conditions(user):
 
 
     # consecutive days logged in badges
-    # login_badges = Badge.objects.filter(id_name__contains="login")
-    # for login_badge in login_badges:
-    #     if login_badge not in earned_badges:
-    #         n_days = int(login_badge.id_name.split("-")[1])
-    #
-    #         days_logged_in = LoginDay.objects.filter(profile=user.profile)
-    #         days_logged_in = sorted(days_logged_in, key=lambda k: k.day, reverse=True)
-    #         sections = get_consecutive_sections([d.day for d in days_logged_in])
-    #
-    #         max_consecutive = len(max(sections, key=lambda k: len(k)))
-    #
-    #         if max_consecutive >= n_days:
-    #             new_achievement = Earned(profile=user.profile, badge=login_badge)
-    #             new_achievement.full_clean()
-    #             new_achievement.save()
+
+    num_consec_days = -1
+    consec_badges = Badge.objects.filter(id_name__contains="consecutive-days")
+    for consec_badge in consec_badges:
+        if consec_badge not in earned_badges:
+            if num_consec_days == -1:
+                num_consec_days = get_days_consecutively_answered(user)
+            n_days = int(consec_badge.id_name.split("-")[2])
+            if n_days <= num_consec_days:
+                new_achievement = Earned(profile=user.profile, badge=consec_badge)
+                new_achievement.full_clean()
+                new_achievement.save()
+
+            # days_logged_in = LoginDay.objects.filter(profile=user.profile)
+            # days_logged_in = sorted(days_logged_in, key=lambda k: k.day, reverse=True)
+            # sections = get_consecutive_sections([d.day for d in days_logged_in])
+
+            # max_consecutive = len(max(sections, key=lambda k: len(k)))
+            #
+            # if max_consecutive >= n_days:
+            #     new_achievement = Earned(profile=user.profile, badge=login_badge)
+            #     new_achievement.full_clean()
+            #     new_achievement.save()
 
 
 def get_past_5_weeks(user):
     """get how many questions a user has done each week for the last 5 weeks"""
-    t = datetime.date.today()
-    today = datetime.datetime(t.year, t.month, t.day)
-    last_monday = today - datetime.timedelta(days=today.weekday(), weeks=0)
-    last_last_monday = today - datetime.timedelta(days=today.weekday(), weeks=1)
+    # t = datetime.date.today()
+    # today = datetime.datetime(t.year, t.month, t.day)
+    # last_monday = today - datetime.timedelta(days=today.weekday(), weeks=0)
+    # last_last_monday = today - datetime.timedelta(days=today.weekday(), weeks=1)
 
     past_5_weeks = []
-    to_date = today
+    # to_date = today
     # for week in range(0, 5):
     #     from_date = today - datetime.timedelta(days=today.weekday(), weeks=week)
     #     attempts = Attempt.objects.filter(profile=user.profile, date__range=(from_date, to_date + datetime.timedelta(days=1)), is_save=False)

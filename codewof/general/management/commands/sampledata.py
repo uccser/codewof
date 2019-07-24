@@ -127,4 +127,41 @@ class Command(management.base.BaseCommand):
             description='Attempted one hundred questions',
             icon_name='img/icons/badges/icons8-attempt-made-gold-50.png'
         )
+
+        Badge.objects.create(
+            id_name='consecutive-days-2',
+            display_name='Worked on coding for two days in a row!',
+            description='Attempted at least one question two days in a row',
+            icon_name='img/icons/badges/icons8-calendar-2-50.png'
+        )
+
+        Badge.objects.create(
+            id_name='consecutive-days-7',
+            display_name='Worked on coding every day for one week!',
+            description='Attempted at least one question every day for one week',
+            icon_name='img/icons/badges/icons8-calendar-7-50.png'
+        )
+
+        Badge.objects.create(
+            id_name='consecutive-days-14',
+            display_name='Worked on coding every day for two weeks!',
+            description='Attempted at least one question every day for two weeks',
+            icon_name='img/icons/badges/icons8-calendar-14-50.png'
+        )
+
+        Badge.objects.create(
+            id_name='consecutive-days-21',
+            display_name='Worked on coding every day for three weeks!',
+            description='Attempted at least one question every day for three weeks',
+            icon_name='img/icons/badges/icons8-calendar-21-50.png'
+        )
+
+        Badge.objects.create(
+            id_name='consecutive-days-28',
+            display_name='Worked on coding every day for four weeks!',
+            description='Attempted at least one question every day for four weeks',
+            icon_name='img/icons/badges/icons8-calendar-28-50.png'
+        )
+
+
         print("Badges added.")

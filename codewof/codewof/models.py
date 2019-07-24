@@ -47,7 +47,7 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-class LoginDay(models.Model):
+class DayWithAttempt(models.Model):
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
     day = models.DateField(auto_now_add=True)
 
