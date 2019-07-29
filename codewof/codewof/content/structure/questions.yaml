@@ -63,3 +63,25 @@ factorial:
     3: normal
     4: normal
     5: normal
+
+rectangle-area:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+where-is:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+
+pieces-of-chocolate:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
