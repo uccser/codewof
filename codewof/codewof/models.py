@@ -7,12 +7,17 @@ from django.contrib.auth import get_user_model
 from django.dispatch import receiver
 from django.urls import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 from model_utils.managers import InheritanceManager
 from utils.TranslatableModel import TranslatableModel
 
 SMALL = 100
 LARGE = 500
 User = get_user_model()
+
+
+def get_local_time():
+    return timezone.localtime(timezone.now())
 
 
 class Profile(models.Model):
@@ -47,14 +52,6 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-class DayWithAttempt(models.Model):
-    profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
-    day = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return str(self.day)
-
-
 class Badge(models.Model):
     id_name = models.CharField(max_length=SMALL, unique=True)
     display_name = models.CharField(max_length=SMALL)
@@ -68,7 +65,7 @@ class Badge(models.Model):
 class Earned(models.Model):
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
     badge = models.ForeignKey('Badge', on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.date)
@@ -98,7 +95,7 @@ class Attempt(models.Model):
         'TestCase',
         through='TestCaseAttempt'
     )
-    datetime = models.DateTimeField(auto_now_add=True)
+    datetime = models.DateTimeField(default=timezone.now)
     user_code = models.TextField()
     passed_tests = models.BooleanField(default=False)
     # skills_hinted = models.ManyToManyField('Skill', blank=True)

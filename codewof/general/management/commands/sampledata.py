@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from allauth.account.models import EmailAddress
 
-from codewof.models import Badge
+from codewof.models import Badge, Attempt
 
 LOG_HEADER = '\n{}\n' + ('-' * 20)
 

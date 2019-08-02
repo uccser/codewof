@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 import json
 import logging
 
@@ -10,9 +10,11 @@ from codewof.models import (
     TestCaseAttempt,
     Badge,
     Earned,
-    DayWithAttempt
 )
 from django.http import JsonResponse
+from django.conf import settings
+
+time_zone = settings.TIME_ZONE
 
 logger = logging.getLogger(__name__)
 del logging
@@ -85,22 +87,20 @@ def get_consecutive_sections(days_logged_in):
 
 
 def get_days_consecutively_answered(user):
-    attempts = Attempt.objects.all()
+    # get datetimes from attempts in date form)
+    attempts = Attempt.objects.filter(profile=user.profile).datetimes('datetime', 'day', 'DESC')
+    # get current day as date
     i = 0
-    logger.warning(attempts)
-    logger.warning(len(attempts))
-
-    consec_days = 0
-    current_date = datetime.now()
+    today = datetime.datetime.now().replace(tzinfo=None).date()
 
     while i < len(attempts):
         attempt = attempts[i]
-
-        logger.warning(attempt)
-
+        expected_date = today - datetime.timedelta(days=i)
+        if attempt.date() != expected_date:
+            break
         i += 1
-    # logger.warning(attempts)
-    return 10
+
+    return i
 
 
 def check_badge_conditions(user):
@@ -110,7 +110,7 @@ def check_badge_conditions(user):
     try:
         creation_badge = Badge.objects.get(id_name="create-account")
         if creation_badge not in earned_badges:
-            #create a new account creation
+            # create a new account creation
             new_achievement = Earned(profile=user.profile, badge=creation_badge)
             new_achievement.full_clean()
             new_achievement.save()
@@ -118,7 +118,7 @@ def check_badge_conditions(user):
         logger.warning("No such badge: create-account")
         pass
 
-    #check questions solved badges
+    # check questions solved badges
     try:
         question_badges = Badge.objects.filter(id_name__contains="questions-solved")
         solved = Attempt.objects.filter(profile=user.profile, passed_tests=True)
@@ -133,7 +133,7 @@ def check_badge_conditions(user):
         logger.warning("No such badges: questions-solved")
         pass
 
-    #checked questions attempted badges
+    # checked questions attempted badges
     try:
         attempt_badges = Badge.objects.filter(id_name__contains="attempts-made")
         attempted = Attempt.objects.filter(profile=user.profile)
@@ -148,7 +148,6 @@ def check_badge_conditions(user):
         logger.warning("No such badges: attempts-made")
         pass
 
-
     # consecutive days logged in badges
 
     num_consec_days = -1
@@ -158,7 +157,8 @@ def check_badge_conditions(user):
             if num_consec_days == -1:
                 num_consec_days = get_days_consecutively_answered(user)
             n_days = int(consec_badge.id_name.split("-")[2])
-            if n_days <= num_consec_days:
+            if n_days == num_consec_days:
+                logger.warning("make new consec badge")
                 new_achievement = Earned(profile=user.profile, badge=consec_badge)
                 new_achievement.full_clean()
                 new_achievement.save()

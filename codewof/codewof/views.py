@@ -14,7 +14,6 @@ from codewof.models import (
     Attempt,
     TestCaseAttempt,
     Badge,
-    DayWithAttempt
 )
 
 from codewof.codewof_utils import check_badge_conditions, get_past_5_weeks, add_points
