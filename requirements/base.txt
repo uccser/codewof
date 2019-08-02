@@ -13,7 +13,7 @@ django-crispy-forms==1.7.2
 django-redis==4.10.0
 django-activeurl==0.1.12
 django-autoslug-iplweb==1.9.4
-djangorestframework==3.9.4
+djangorestframework==3.10.2
 coreapi==2.3.3
 django-filter==2.1.0
 django-modeltranslation==0.13.1
