@@ -85,3 +85,85 @@ pieces-of-chocolate:
   test-cases:
     1: normal
     2: normal
+
+print-codewof:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for i in range(num):'
+    - 'print("Welcome to codeWOF")'
+    - 'print_out("Welcome to codeWOF!")'
+    - 'display("Welcome to codeWOF!")'
+    - 'print{"Welcome to codeWOF!"}'
+    - 'return "Welcome to codeWOF!"'
+  test-cases:
+    1: normal
+
+greeting:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print("Hello" + name + "!")'
+    - 'print["Hello " + name + "!")'
+    - 'print("Hello " + name)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+string-concatenation:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+
+bus-info:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print("Service " + bus_id + " is due in " + str(minutes_away) + " minutes time.")'
+    - 'return "Service " + bus_id + " is due in " + minutes_away + " minutes time."'
+    - 'print("Service " + bus_id + " is due in " + minutes_away + " minutes time.")'
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: exceptional
+
+voting-age:
+  types:
+    - program
+    - parsons
+  parsons-extra-lines:
+    - 'age = input("How old are you? ")'
+    - 'if age > 18:'
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: exceptional
+    6: exceptional
+
+over-the-limit:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'return "True"'
+    - 'return "False"'
+    - 'if mcg_per_litre >= 250:'
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: exceptional
+    6: exceptional
+    7: exceptional
