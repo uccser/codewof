@@ -13,6 +13,7 @@ $(document).ready(function () {
                 test_case.received_output = '';
                 test_case.passed = false;
                 test_case.runtime_error = false;
+                test_case.test_input_list = test_case.test_input.split('\n')
             }
         }
         var user_code = editor.getValue();
@@ -23,8 +24,7 @@ $(document).ready(function () {
                 user_input: user_code,
                 question: question_id,
                 test_cases: test_cases,
-            },
-            function (result) { console.log(result); }
+            }
         );
 
         base.display_submission_feedback(test_cases);
@@ -61,7 +61,11 @@ function run_python_code(user_code, test_case) {
             return Sk.builtinFiles["files"][x];
         },
         inputfun: function (str) {
-            return test_case['test_input_list'].shift();
+            if (test_case.test_input_list.length > 0) {
+                return test_case['test_input_list'].shift();
+            } else {
+                return '';
+            }
         },
         inputfunTakesPrompt: true,
         // Append print() statements for test case
