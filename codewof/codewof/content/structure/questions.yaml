@@ -91,11 +91,7 @@ print-codewof:
     - function
     - parsons
   parsons-extra-lines:
-    - 'for i in range(num):'
     - 'print("Welcome to codeWOF")'
-    - 'print_out("Welcome to codeWOF!")'
-    - 'display("Welcome to codeWOF!")'
-    - 'print{"Welcome to codeWOF!"}'
     - 'return "Welcome to codeWOF!"'
   test-cases:
     1: normal
@@ -106,7 +102,6 @@ greeting:
     - parsons
   parsons-extra-lines:
     - 'print("Hello" + name + "!")'
-    - 'print["Hello " + name + "!")'
     - 'print("Hello " + name)'
   test-cases:
     1: normal
@@ -129,7 +124,6 @@ bus-info:
   parsons-extra-lines:
     - 'print("Service " + bus_id + " is due in " + str(minutes_away) + " minutes time.")'
     - 'return "Service " + bus_id + " is due in " + minutes_away + " minutes time."'
-    - 'print("Service " + bus_id + " is due in " + minutes_away + " minutes time.")'
   test-cases:
     1: normal
     2: exceptional
@@ -139,10 +133,6 @@ bus-info:
 voting-age:
   types:
     - program
-    - parsons
-  parsons-extra-lines:
-    - 'age = input("How old are you? ")'
-    - 'if age > 18:'
   test-cases:
     1: normal
     2: normal
@@ -167,3 +157,19 @@ over-the-limit:
     5: exceptional
     6: exceptional
     7: exceptional
+
+low-battery:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'if percent <= 20:'
+    - 'is_low = "True"'
+    - 'is_low = "False"'
+  test-cases:
+    1: normal
+    2: exceptional
+    3: exceptional
+    4: normal
+    5: exceptional
+    6: exceptional

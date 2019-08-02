@@ -1,1 +1,1 @@
-print(bus_info("H", 12)
+print(bus_info("H", 12))
