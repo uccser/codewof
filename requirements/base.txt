@@ -20,7 +20,7 @@ django-modeltranslation==0.13.3
 django-inline-svg==0.1.1
 
 # Google Cloud Platform
-google-api-python-client==1.7.8
+google-api-python-client==1.7.10
 
 # Content loading
 verto==0.10.0
