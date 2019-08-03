@@ -259,27 +259,36 @@ class QuestionTypeParsonsTestCase(TestCase):
         verbose_name = 'Parsons Problem Question Test Case'
 
 
-# ----- Buggy program question ------------------------------------------------
+# ----- Debugging problem question -----------------------------------------------------
 
-# class Buggy(Question):
+class QuestionTypeDebugging(Question):
+    """A debugging problem question."""
 
-#     QUESTION_TYPE = 'buggy_program'
-#     buggy_program = models.TextField()
+    QUESTION_TYPE = 'debugging'
+    read_only_lines_top = models.PositiveSmallIntegerField(default=0)
+    read_only_lines_bottom = models.PositiveSmallIntegerField(default=0)
 
-#     class Meta:
-#         verbose_name = "Debugging Question (Program)"
-#         verbose_name_plural = "All Debugging Questions"
+    class Meta:
+        """Meta information for class."""
 
-# ----- Buggy function question -----------------------------------------------
+        verbose_name = 'Debugging Problem Question'
 
-# class BuggyFunction(Buggy):
 
-#     QUESTION_TYPE = 'buggy_function'
-#     function_name = models.CharField(max_length=SMALL)
+class QuestionTypeDebuggingTestCase(TestCase):
+    """A test case for a debugging problem question."""
 
-#     class Meta:
-#         verbose_name = "Debugging Question (Function)"
-#         verbose_name_plural = "All Function Debugging Questions"
+    test_code = models.TextField()
+    question = models.ForeignKey(
+        QuestionTypeDebugging,
+        related_name='test_cases',
+        on_delete=models.CASCADE
+    )
+
+    class Meta:
+        """Meta information for class."""
+
+        verbose_name = 'Debugging Problem Question Test Case'
+
 
 # class Skill(models.Model):
 #     name = models.CharField(max_length=SMALL)
