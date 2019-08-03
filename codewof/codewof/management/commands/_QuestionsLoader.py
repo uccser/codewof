@@ -146,7 +146,6 @@ class QuestionsLoader(TranslatableModelLoader):
                     slug=slug,
                     defaults=defaults,
                 )
-                print(defaults)
 
                 self.populate_translations(question, question_translations)
                 self.mark_translation_availability(question, required_fields=required_fields)
