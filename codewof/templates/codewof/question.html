@@ -22,7 +22,16 @@
             {% include "codewof/question_components/editor-python.html" %}
         {% endif %}
 
-        <input id="run_code" type="button" value="Run code" class="btn btn-primary mb-3" />
+        <div class="d-flex justify-content-between mb-3">
+            <button id="run_code" type="button" class="btn btn-primary">
+                Run code
+            </button>
+            {% if question.QUESTION_TYPE == QUESTION_TYPE_DEBUGGING %}
+                <button type="button" id="reset_to_initial" class="btn btn-secondary">
+                    Reset to initial code
+                </button>
+            {% endif %}
+        </div>
         <div id="submission_feedback"></div>
     </div>
 
@@ -41,7 +50,12 @@
     <script>
         var csrf_token = jQuery("[name=csrfmiddlewaretoken]").val();
         var question_id = {{ question.id }};
-        var test_cases_list = {{ test_cases_json| safe }};
+        var test_cases_list = {{ test_cases_json|safe }};
+        {% if question.QUESTION_TYPE == QUESTION_TYPE_DEBUGGING %}
+            var read_only_lines_top = {{ question.read_only_lines_top }};
+            var read_only_lines_bottom = {{ question.read_only_lines_bottom }};
+            var initial_code = `{{ question.initial_code|escapejs }}`;
+        {% endif %}
     </script>
     <script src="{% static question_js %}"></script>
 {% endblock scripts %}

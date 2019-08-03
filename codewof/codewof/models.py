@@ -265,6 +265,7 @@ class QuestionTypeDebugging(Question):
     """A debugging problem question."""
 
     QUESTION_TYPE = 'debugging'
+    initial_code = models.TextField()
     read_only_lines_top = models.PositiveSmallIntegerField(default=0)
     read_only_lines_bottom = models.PositiveSmallIntegerField(default=0)
 
