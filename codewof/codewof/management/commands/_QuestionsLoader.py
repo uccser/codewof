@@ -15,6 +15,8 @@ from codewof.models import (
     QuestionTypeFunctionTestCase,
     QuestionTypeParsons,
     QuestionTypeParsonsTestCase,
+    QuestionTypeDebugging,
+    QuestionTypeDebuggingTestCase,
 )
 
 VALID_QUESTION_TYPES = {
@@ -29,6 +31,10 @@ VALID_QUESTION_TYPES = {
     QuestionTypeParsons.QUESTION_TYPE: {
         'question_class': QuestionTypeParsons,
         'test_case_class': QuestionTypeParsonsTestCase,
+    },
+    QuestionTypeDebugging.QUESTION_TYPE: {
+        'question_class': QuestionTypeDebugging,
+        'test_case_class': QuestionTypeDebuggingTestCase,
     },
 }
 VALID_QUESTION_TYPE_SETS = [
@@ -82,6 +88,7 @@ class QuestionsLoader(TranslatableModelLoader):
                             'Invalid pairing of types, must be one of {}'.format(VALID_QUESTION_TYPE_SETS)
                         )
 
+            # Check test cases exist
             try:
                 question_test_cases = question_data['test-cases']
             except KeyError:
@@ -95,22 +102,32 @@ class QuestionsLoader(TranslatableModelLoader):
 
             question_translations = self.get_blank_translation_dictionary()
 
+            # Read title and question text
             content_filename = join(question_slug, 'question.md')
             content_translations = self.get_markdown_translations(content_filename)
             for language, content in content_translations.items():
                 question_translations[language]['title'] = content.title
                 question_translations[language]['question_text'] = content.html_string
 
+            # Read solution
             solution_filename = join(question_slug, 'solution.py')
             for language in get_available_languages():
                 solution = open(self.get_localised_file(language, solution_filename), encoding='UTF-8').read()
                 question_translations[language]['solution'] = solution
-                if question_type == 'parsons':
+                if question_type == QuestionTypeParsons.QUESTION_TYPE:
                     lines = clean_parsons_lines(solution.split('\n'))
                     extra_lines = question_data.get('parsons-extra-lines', [])
                     lines += clean_parsons_lines(extra_lines)
                     lines_as_text = '\n'.join(lines)
                     question_translations[language]['lines'] = lines_as_text
+
+            # If debugging question, get initial code,
+            if QuestionTypeDebugging.QUESTION_TYPE in question_types:
+                initial_code_filename = join(question_slug, 'initial.py')
+                for language in get_available_languages():
+                    initial_code = open(self.get_localised_file(
+                        language, initial_code_filename), encoding='UTF-8').read()
+                    question_translations[language]['initial_code'] = initial_code
 
             for question_type in question_types:
                 slug = '{}-{}'.format(question_slug, question_type)
@@ -120,8 +137,12 @@ class QuestionsLoader(TranslatableModelLoader):
 
                 if question_class == QuestionTypeParsons:
                     required_fields += ['lines']
+                elif question_class == QuestionTypeDebugging:
+                    required_fields += ['initial_code']
+                    defaults['read_only_lines_top'] = int(question_data.get('number_of_read_only_lines_top', 0))
+                    defaults['read_only_lines_bottom'] = int(question_data.get('number_of_read_only_lines_bottom', 0))
 
-                question, created = question_class.objects.get_or_create(
+                question, created = question_class.objects.update_or_create(
                     slug=slug,
                     defaults=defaults,
                 )
@@ -143,7 +164,7 @@ class QuestionsLoader(TranslatableModelLoader):
                             test_case_input = open(self.get_localised_file(
                                 language, test_case_input_filename), encoding='UTF-8').read()
                             test_case_translations[language]['test_input'] = test_case_input
-                    elif question_class == QuestionTypeFunction or question_class == QuestionTypeParsons:
+                    elif question_class in (QuestionTypeFunction, QuestionTypeParsons, QuestionTypeDebugging):
                         test_case_code_filename = join(
                             question_slug,
                             TEST_CASE_FILE_TEMPLATE.format(id=test_case_id, type='code')
@@ -163,7 +184,7 @@ class QuestionsLoader(TranslatableModelLoader):
                         test_case_translations[language]['expected_output'] = test_case_output
 
                     # Create test case
-                    test_case, created = test_case_class.objects.get_or_create(
+                    test_case, created = test_case_class.objects.update_or_create(
                         question=question,
                         number=test_case_id,
                         defaults={},
@@ -171,8 +192,7 @@ class QuestionsLoader(TranslatableModelLoader):
 
                     if test_case_class == QuestionTypeProgramTestCase:
                         required_fields = ['test_input', 'expected_output']
-                    elif (test_case_class == QuestionTypeFunctionTestCase or
-                            test_case_class == QuestionTypeParsonsTestCase):
+                    elif test_case_class in (QuestionTypeFunctionTestCase, QuestionTypeParsonsTestCase, QuestionTypeDebuggingTestCase):
                         required_fields = ['test_code', 'expected_output']
 
                     self.populate_translations(test_case, test_case_translations)
