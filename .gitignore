@@ -270,3 +270,6 @@ pip-selfcheck.json
 .env
 
 .pytest_cache/
+
+### Project template
+codewof/media/

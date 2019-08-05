@@ -61,4 +61,4 @@ class Command(management.base.BaseCommand):
 
         # Codewof
         management.call_command('load_questions')
-        print('Programming question added.')
+        print('Programming questions loaded.')

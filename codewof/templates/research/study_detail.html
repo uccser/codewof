@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block page_heading %}
+    <h1>
+        <span class="text-muted">Research Study:</span><br>
+        {{ study.title }}
+    </h1>
+{% endblock page_heading %}
+
+{% block content %}
+    <div class="mb-3">
+        {{ study.description|safe }}
+
+        {% if study.consent_form %}
+
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                This study is not currently taking registrations.
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
