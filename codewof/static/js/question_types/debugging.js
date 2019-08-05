@@ -13,7 +13,6 @@ $(document).ready(function () {
                 test_case.received_output = '';
                 test_case.passed = false;
                 test_case.runtime_error = false;
-                test_case.test_input_list = test_case.test_input.split('\n')
             }
         }
         var user_code = editor.getValue();
@@ -30,6 +29,11 @@ $(document).ready(function () {
         base.display_submission_feedback(test_cases);
     });
 
+    $('#reset_to_initial').click(function () {
+        editor.setValue(initial_code);
+        mark_lines_as_read_only(editor);
+    });
+
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         mode: {
             name: "python",
@@ -44,11 +48,49 @@ $(document).ready(function () {
         viewportMargin: Infinity
     });
 
+    mark_lines_as_read_only(editor);
+
     for (let i = 0; i < test_cases_list.length; i++) {
         data = test_cases_list[i];
         test_cases[data.id] = data
     }
 });
+
+
+function mark_lines_as_read_only(editor) {
+    // Lock top lines
+    if (read_only_lines_top) {
+        // Minus one as line count is zero indexed
+        editor.markText(
+            { line: 0, ch: 0 },
+            { line: read_only_lines_top - 1 },
+            {
+                readOnly: true,
+                className: 'code-read-only',
+                atomic: true,
+                selectLeft: true,
+                inclusiveLeft: true
+            }
+        );
+    }
+
+    // Lock bottom lines
+    if (read_only_lines_bottom) {
+        var line_count = editor.lineCount();
+        // Minus one as line count is zero indexed
+        editor.markText(
+            { line: line_count - read_only_lines_bottom - 1, ch: 0 },
+            { line: line_count - 1 },
+            {
+                readOnly: true,
+                className: 'code-read-only',
+                atomic: true,
+                selectRight: true,
+                inclusiveRight: true
+            }
+        );
+    }
+}
 
 
 function run_python_code(user_code, test_case) {
@@ -61,11 +103,7 @@ function run_python_code(user_code, test_case) {
             return Sk.builtinFiles["files"][x];
         },
         inputfun: function (str) {
-            if (test_case.test_input_list.length > 0) {
-                return test_case['test_input_list'].shift();
-            } else {
-                return '';
-            }
+            return prompt(str);
         },
         inputfunTakesPrompt: true,
         // Append print() statements for test case

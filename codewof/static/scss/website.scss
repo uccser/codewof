@@ -70,6 +70,10 @@ svg {
     color: $brand-colour;
 }
 
+.code-read-only {
+  cursor: not-allowed;
+  background-color: #dfdfdf;
+}
 
 #test-case-table {
     white-space: nowrap;
