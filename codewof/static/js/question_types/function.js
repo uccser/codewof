@@ -23,8 +23,7 @@ $(document).ready(function () {
                 user_input: user_code,
                 question: question_id,
                 test_cases: test_cases,
-            },
-            function (result) {console.log(result);}
+            }
         );
 
         base.display_submission_feedback(test_cases);

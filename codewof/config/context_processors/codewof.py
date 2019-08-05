@@ -4,6 +4,7 @@ from codewof.models import (
     QuestionTypeProgram,
     QuestionTypeFunction,
     QuestionTypeParsons,
+    QuestionTypeDebugging,
 )
 
 
@@ -17,4 +18,5 @@ def question_types(request):
         "QUESTION_TYPE_PROGRAM": QuestionTypeProgram.QUESTION_TYPE,
         "QUESTION_TYPE_FUNCTION": QuestionTypeFunction.QUESTION_TYPE,
         "QUESTION_TYPE_PARSONS": QuestionTypeParsons.QUESTION_TYPE,
+        "QUESTION_TYPE_DEBUGGING": QuestionTypeDebugging.QUESTION_TYPE,
     }

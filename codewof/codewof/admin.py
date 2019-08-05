@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from codewof.models import Attempt
+from codewof.models import Attempt, QuestionTypeDebugging
 
 User = get_user_model()
 
@@ -15,3 +15,4 @@ class AttemptAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Attempt, AttemptAdmin)
+admin.site.register(QuestionTypeDebugging)
