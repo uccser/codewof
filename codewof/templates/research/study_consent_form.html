@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load static %}
+{% load static crispy_forms_tags %}
 
 {% block page_heading %}
     <h1>
@@ -11,14 +11,9 @@
 
 {% block content %}
     <div class="mb-3">
-        {{ study.description|safe }}
-
         {% if study.consent_form %}
-            <div class="text-center my-3">
-                <a href="{{ study.get_absolute_consent_url }}" class="btn btn-success">
-                    Register for study
-                </a>
-            </div>
+            <h2>Consent Form</h2>
+            {% crispy form %}
         {% else %}
             <div class="alert alert-info" role="alert">
                 This study is not currently taking registrations.

@@ -4,7 +4,7 @@ import importlib
 from research import settings
 
 
-def get_consent_form(form_class_name):
+def get_consent_form_class(form_class_name):
     """Return form class for research consent form.
 
     Args:
@@ -15,4 +15,4 @@ def get_consent_form(form_class_name):
     """
     form_module = importlib.import_module(settings.RESEARCH_FORMS_MODULE)
     form_class = getattr(form_module, form_class_name)
-    return form_class()
+    return form_class

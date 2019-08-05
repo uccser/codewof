@@ -1,6 +1,7 @@
 """Models for research application."""
 
 from django.db import models
+from django.db.models import Count
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from autoslug import AutoSlugField
@@ -28,6 +29,11 @@ class Study(models.Model):
         blank=True,
     )
 
+    def get_next_group(self):
+        groups = self.groups.annotate(
+            Count('registrations')).order_by('registrations__count')
+        return groups[0]
+
     def get_absolute_url(self):
         """Return URL of study on the website.
 
@@ -35,6 +41,14 @@ class Study(models.Model):
             URL as a string.
         """
         return reverse('research:study', kwargs={'pk': self.pk})
+
+    def get_absolute_consent_url(self):
+        """Return URL of study on the website.
+
+        Returns:
+            URL as a string.
+        """
+        return reverse('research:study_consent_form', kwargs={'pk': self.pk})
 
     def __str__(self):
         """Text representation of a study."""
@@ -48,24 +62,6 @@ class Study(models.Model):
         ordering = ['start_date', 'end_date']
 
 
-
-class StudyRegistration(models.Model):
-    """An registration for an research study."""
-
-    datetime = models.DateTimeField(auto_now_add=True)
-    send_study_results = models.BooleanField(default=False)
-    study = models.ForeignKey(
-        Study,
-        related_name='study_registrations',
-        on_delete=models.CASCADE
-    )
-    user = models.ForeignKey(
-        User,
-        related_name='study_registrations',
-        on_delete=models.CASCADE
-    )
-
-
 class StudyGroup(models.Model):
     """A group for a research study."""
 
@@ -75,16 +71,28 @@ class StudyGroup(models.Model):
     )
     study = models.ForeignKey(
         Study,
-        related_name='study_groups',
-        on_delete=models.CASCADE
-    )
-    users = models.ForeignKey(
-        User,
-        related_name='study_groups',
+        related_name='groups',
         on_delete=models.CASCADE
     )
     questions = models.ManyToManyField(
         Question,
-        related_name='study_groups',
+        related_name='groups',
         blank=True,
+    )
+
+
+class StudyRegistration(models.Model):
+    """An registration for an research study."""
+
+    datetime = models.DateTimeField(auto_now_add=True)
+    send_study_results = models.BooleanField(default=False)
+    study_group = models.ForeignKey(
+        StudyGroup,
+        related_name='registrations',
+        on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        User,
+        related_name='registrations',
+        on_delete=models.CASCADE
     )

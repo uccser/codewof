@@ -75,6 +75,21 @@ svg {
   background-color: #dfdfdf;
 }
 
+// Forms
+
+form {
+  .asteriskField {
+      color: #ff3f34;
+      font-weight: bold;
+  }
+  .invalid-feedback {
+    display: block !important;
+}
+}
+
+
+// Forms end
+
 #test-case-table {
     white-space: nowrap;
 }
