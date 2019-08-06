@@ -16,7 +16,7 @@
         {% if study.consent_form %}
             {% if registration %}
                 <div class="alert alert-info my-3" role="alert">
-                    You registered for this study at {{ registration.datetime|time:"h:i A" }} on {{ registration.datetime|date:"l j F Y" }}.
+                    You registered for this study at {{ registration.datetime|time:"g:i A" }} on {{ registration.datetime|date:"l j F Y" }}.
                     A copy of your signed consent form was emailed to you at this time.
                     If you wish to withdraw from this study please contact the researcher listed above.
                 </div>

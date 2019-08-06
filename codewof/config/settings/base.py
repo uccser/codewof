@@ -106,6 +106,7 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'anymail',
+    'mail_templated',
     'crispy_forms',
     'allauth',
     'allauth.account',

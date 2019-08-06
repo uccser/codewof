@@ -3,11 +3,13 @@
 from django.views import generic
 from django.contrib import messages
 from django.urls import reverse
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import Context
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
 from django.shortcuts import redirect
+from mail_templated import send_mail
 from research.models import (
     Study,
     StudyRegistration,
@@ -51,13 +53,12 @@ class StudyDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         """Get additional context data for template."""
         context = super().get_context_data(**kwargs)
-        try:
-            registration = StudyRegistration.objects.get(
+        registration = None
+        if self.request.user.is_authenticated:
+            registration = StudyRegistration.objects.filter(
                 user=self.request.user,
                 study_group__in=self.object.groups.all(),
-            )
-        except ObjectDoesNotExist:
-            registration = None
+            ).first()
         context['registration'] = registration
         return context
 
@@ -69,15 +70,17 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         self.study = Study.objects.get(
             pk=self.kwargs.get('pk'),
         )
-        try:
-            StudyRegistration.objects.get(
+        registration = None
+        if self.request.user.is_authenticated:
+            registration = StudyRegistration.objects.filter(
                 user=self.request.user,
                 study_group__in=self.study.groups.all(),
-            )
-        except ObjectDoesNotExist:
-            return super().dispatch(request, *args, **kwargs)
-        else:
+            ).first()
+
+        if registration:
             return redirect(self.study)
+        else:
+            return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         """Get additional context data for template."""
@@ -100,18 +103,22 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         )
         group = study.get_next_group()
         # Create study registration object
-        StudyRegistration.objects.create(
+        registration = StudyRegistration.objects.create(
             study_group=group,
             user=self.request.user,
             send_study_results=form.cleaned_data.get('send_study_results', False)
         )
-        # send_mail(
-        #     SUBJECT_TEMPLATE.format(subject),
-        #     MESSAGE_TEMPLATE.format(message, name),
-        #     settings.DEFAULT_FROM_EMAIL,
-        #     [from_email],
-        #     fail_silently=False,
-        # )
+        send_mail(
+            'research/email/consent_confirm.tpl',
+            {
+                'user': self.request.user,
+                'study': study,
+                'form': form,
+                'registration': registration,
+            },
+            settings.DEFAULT_FROM_EMAIL,
+            [self.request.user.email],
+        )
         messages.success(
             self.request,
             'You are successfully enrolled into this study. You have been emailed a copy of your signed consent form.'.format(study.title)
