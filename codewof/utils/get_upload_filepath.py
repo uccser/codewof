@@ -10,6 +10,7 @@ TIME_ZONE = 'NZ'
 
 def get_upload_path_for_date(category):
     """Create upload path for file by date.
+
     Args:
         category (str): Name for directory to upload to.
 

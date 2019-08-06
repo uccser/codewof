@@ -2,10 +2,7 @@
 
 from django.views import generic
 from django.contrib import messages
-from django.urls import reverse
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
-from django.template import Context
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
 from django.shortcuts import redirect
@@ -15,7 +12,6 @@ from research.models import (
     StudyRegistration,
 )
 from research.utils import get_consent_form_class
-from research.forms import MaintainingProgrammingSkills2019Form
 
 
 class StudyListView(generic.ListView):
@@ -36,7 +32,7 @@ class StudyListView(generic.ListView):
 
 
 class StudyDetailView(generic.DetailView):
-    """Homepage for research studies."""
+    """Page for a research study."""
 
     model = Study
     context_object_name = 'study'
@@ -62,11 +58,14 @@ class StudyDetailView(generic.DetailView):
         context['registration'] = registration
         return context
 
+
 class StudyConsentFormView(LoginRequiredMixin, FormView):
+    """Consent form for a research study."""
 
     template_name = 'research/study_consent_form.html'
 
     def dispatch(self, request, *args, **kwargs):
+        """Check if consent form can be viewed."""
         self.study = Study.objects.get(
             pk=self.kwargs.get('pk'),
         )
@@ -88,16 +87,16 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         context['study'] = self.study
         return context
 
-    def get_initial(self):
-        initial = {
-            'email_address': self.request.user.email
-        }
-        return initial
-
     def get_form_class(self):
+        """Get class for form."""
         return get_consent_form_class(self.study.consent_form)
 
     def form_valid(self, form):
+        """Additional steps after form is validated.
+
+        Args:
+            form (Form): The valid form object.
+        """
         study = Study.objects.get(
             pk=self.kwargs.get('pk'),
         )
@@ -121,6 +120,6 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         )
         messages.success(
             self.request,
-            'You are successfully enrolled into this study. You have been emailed a copy of your signed consent form.'.format(study.title)
+            'You are successfully enrolled into this study. You have been emailed a copy of your signed consent form.'.format(study.title)  # noqa: E501
         )
         return redirect(study)

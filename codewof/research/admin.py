@@ -11,12 +11,16 @@ from research.utils import get_consent_form_class
 
 
 class StudyAdminForm(forms.ModelForm):
+    """Form for admin view for a study."""
 
     class Meta:
+        """Meta attributes for class."""
+
         model = Study
         fields = '__all__'
 
     def clean(self):
+        """Validate admin model submission."""
         try:
             get_consent_form_class(self.cleaned_data.get('consent_form'))
         except AttributeError:
@@ -40,12 +44,14 @@ class StudyGroupAdmin(admin.ModelAdmin):
 class StudyRegistrationAdmin(admin.ModelAdmin):
     """Admin view for a study registration."""
 
-    list_display = ('datetime', 'send_study_results', 'get_study', 'get_user_pk')
+    list_display = ('datetime', 'send_study_results', 'study_name', 'user_id')
 
-    def get_study(self, obj):
+    def study_name(self, obj):
+        """Get name of study."""
         return obj.study_group.study.title
 
-    def get_user_pk(self, obj):
+    def user_id(self, obj):
+        """Get ID of user."""
         return obj.user.pk
 
 

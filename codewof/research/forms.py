@@ -1,3 +1,5 @@
+"""Forms for the research application."""
+
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, HTML, Submit, Div
@@ -22,19 +24,19 @@ class MaintainingProgrammingSkills2019Form(forms.Form):
     )
     condition_3 = forms.BooleanField(
         required=True,
-        label='I understand that participation is voluntary and I may withdraw at any time without penalty. Withdrawal of participation will also include the withdrawal of any information I have provided should this remain practically achievable.'
+        label='I understand that participation is voluntary and I may withdraw at any time without penalty. Withdrawal of participation will also include the withdrawal of any information I have provided should this remain practically achievable.'  # noqa: E501
     )
     condition_4 = forms.BooleanField(
         required=True,
-        label='I understand that any information or opinions I provide will be kept confidential to the researcher and her supervisor and that any published or reported results will not identify the participants. I understand that the report for this research project will be made available on the UC website.'
+        label='I understand that any information or opinions I provide will be kept confidential to the researcher and her supervisor and that any published or reported results will not identify the participants. I understand that the report for this research project will be made available on the UC website.'  # noqa: E501
     )
     condition_5 = forms.BooleanField(
         required=True,
-        label='I understand that all data collected for the study will be kept in password protected electronic form and will be destroyed after five years.'
+        label='I understand that all data collected for the study will be kept in password protected electronic form and will be destroyed after five years.'  # noqa: E501
     )
     condition_6 = forms.BooleanField(
         required=True,
-        label='I understand that I can contact the researcher Lucy Turner at ltt19@uclive.ac.nz or supervisor Tim Bell at tim.bell@canterbury.ac.nz for further information. If I have any complaints, I can contact the Chair of the University of Canterbury Educational Research Human Ethics Committee, Private Bag 4800, Christchurch (human-ethics@canterbury.ac.nz).'
+        label='I understand that I can contact the researcher Lucy Turner at ltt19@uclive.ac.nz or supervisor Tim Bell at tim.bell@canterbury.ac.nz for further information. If I have any complaints, I can contact the Chair of the University of Canterbury Educational Research Human Ethics Committee, Private Bag 4800, Christchurch (human-ethics@canterbury.ac.nz).'  # noqa: E501
     )
     condition_7 = forms.BooleanField(
         required=True,

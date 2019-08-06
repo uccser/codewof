@@ -30,6 +30,7 @@ class Study(models.Model):
     )
 
     def get_next_group(self):
+        """Get group with lowest user count for next user to join."""
         groups = self.groups.annotate(
             Count('registrations')).order_by('registrations__count')
         return groups[0]

@@ -5,14 +5,12 @@ from factory import (
     DjangoModelFactory,
     Faker,
     Iterator,
-    LazyFunction,
     post_generation,
 )
 from codewof.models import Question
 from research.models import (
     Study,
     StudyGroup,
-    StudyRegistration,
 )
 
 
