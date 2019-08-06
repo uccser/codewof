@@ -30,56 +30,6 @@ class IndexView(generic.base.TemplateView):
         return context
 
 
-def save_question_attempt(request):
-    """Save user's attempt for a question.
-
-    If the attempt is successful: add points if these haven't already
-    been added.
-
-    Args:
-        request (Request): AJAX request from user.
-
-    Returns:
-        JSON response with result.
-    """
-    result = {
-        'success': False,
-    }
-    if request.is_ajax():
-        if request.user.is_authenticated:
-            request_json = json.loads(request.body.decode('utf-8'))
-            profile = request.user.profile
-            question = Question.objects.get(pk=request_json['question'])
-            user_code = request_json['user_input']
-
-            test_cases = request_json['test_cases']
-            total_tests = len(test_cases)
-            total_passed = 0
-            for test_case in test_cases.values():
-                if test_case['passed']:
-                    total_passed += 1
-
-            attempt = Attempt.objects.create(
-                profile=profile,
-                question=question,
-                user_code=user_code,
-                passed_tests=total_passed == total_tests,
-            )
-
-            # Create test case attempt objects
-            for test_case_id, test_case_data in test_cases.items():
-                test_case = TestCase.objects.get(pk=test_case_id)
-                TestCaseAttempt.objects.create(
-                    attempt=attempt,
-                    test_case=test_case,
-                    passed=test_case_data['passed'],
-                )
-
-            result['success'] = True
-
-    return JsonResponse(result)
-
-
 class ProfileView(LoginRequiredMixin, generic.DetailView):
     """Displays a user's profile."""
 
@@ -186,3 +136,53 @@ class QuestionView(LoginRequiredMixin, generic.DetailView):
                 previous_attempt = None
             context['previous_attempt'] = previous_attempt
         return context
+
+
+def save_question_attempt(request):
+    """Save user's attempt for a question.
+
+    If the attempt is successful: add points if these haven't already
+    been added.
+
+    Args:
+        request (Request): AJAX request from user.
+
+    Returns:
+        JSON response with result.
+    """
+    result = {
+        'success': False,
+    }
+    if request.is_ajax():
+        if request.user.is_authenticated:
+            request_json = json.loads(request.body.decode('utf-8'))
+            profile = request.user.profile
+            question = Question.objects.get(pk=request_json['question'])
+            user_code = request_json['user_input']
+
+            test_cases = request_json['test_cases']
+            total_tests = len(test_cases)
+            total_passed = 0
+            for test_case in test_cases.values():
+                if test_case['passed']:
+                    total_passed += 1
+
+            attempt = Attempt.objects.create(
+                profile=profile,
+                question=question,
+                user_code=user_code,
+                passed_tests=total_passed == total_tests,
+            )
+
+            # Create test case attempt objects
+            for test_case_id, test_case_data in test_cases.items():
+                test_case = TestCase.objects.get(pk=test_case_id)
+                TestCaseAttempt.objects.create(
+                    attempt=attempt,
+                    test_case=test_case,
+                    passed=test_case_data['passed'],
+                )
+
+            result['success'] = True
+
+    return JsonResponse(result)
