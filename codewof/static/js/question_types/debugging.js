@@ -6,27 +6,7 @@ var test_cases = {};
 
 $(document).ready(function () {
     $('#run_code').click(function () {
-        base.clear_submission_feedback();
-        for (var id in test_cases) {
-            if (test_cases.hasOwnProperty(id)) {
-                var test_case = test_cases[id];
-                test_case.received_output = '';
-                test_case.passed = false;
-                test_case.runtime_error = false;
-            }
-        }
-        var user_code = editor.getValue();
-        test_cases = base.run_test_cases(test_cases, user_code, run_python_code);
-        base.ajax_request(
-            'save_question_attempt',
-            {
-                user_input: user_code,
-                question: question_id,
-                test_cases: test_cases,
-            }
-        );
-
-        base.display_submission_feedback(test_cases);
+        run_code(editor, true);
     });
 
     $('#reset_to_initial').click(function () {
@@ -54,7 +34,37 @@ $(document).ready(function () {
         data = test_cases_list[i];
         test_cases[data.id] = data
     }
+
+    if (editor.getValue()) {
+        run_code(editor, false);
+    }
 });
+
+
+function run_code(editor, submit) {
+    base.clear_submission_feedback();
+    for (var id in test_cases) {
+        if (test_cases.hasOwnProperty(id)) {
+            var test_case = test_cases[id];
+            test_case.received_output = '';
+            test_case.passed = false;
+            test_case.runtime_error = false;
+        }
+    }
+    var user_code = editor.getValue();
+    test_cases = base.run_test_cases(test_cases, user_code, run_python_code);
+    if (submit) {
+        base.ajax_request(
+            'save_question_attempt',
+            {
+                user_input: user_code,
+                question: question_id,
+                test_cases: test_cases,
+            }
+        );
+    }
+    base.display_submission_feedback(test_cases);
+}
 
 
 function mark_lines_as_read_only(editor) {

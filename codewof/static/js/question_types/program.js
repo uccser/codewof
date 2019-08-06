@@ -6,28 +6,7 @@ var test_cases = {};
 
 $(document).ready(function () {
     $('#run_code').click(function () {
-        base.clear_submission_feedback();
-        for (var id in test_cases) {
-            if (test_cases.hasOwnProperty(id)) {
-                var test_case = test_cases[id];
-                test_case.received_output = '';
-                test_case.passed = false;
-                test_case.runtime_error = false;
-                test_case.test_input_list = test_case.test_input.split('\n')
-            }
-        }
-        var user_code = editor.getValue();
-        test_cases = base.run_test_cases(test_cases, user_code, run_python_code);
-        base.ajax_request(
-            'save_question_attempt',
-            {
-                user_input: user_code,
-                question: question_id,
-                test_cases: test_cases,
-            }
-        );
-
-        base.display_submission_feedback(test_cases);
+        run_code(editor, true);
     });
 
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
@@ -48,7 +27,36 @@ $(document).ready(function () {
         data = test_cases_list[i];
         test_cases[data.id] = data
     }
+
+    if (editor.getValue()) {
+        run_code(editor, false)
+    }
 });
+
+function run_code(editor, submit) {
+    base.clear_submission_feedback();
+    for (var id in test_cases) {
+        if (test_cases.hasOwnProperty(id)) {
+            var test_case = test_cases[id];
+            test_case.received_output = '';
+            test_case.passed = false;
+            test_case.runtime_error = false;
+            test_case.test_input_list = test_case.test_input.split('\n')
+        }
+    }
+    var user_code = editor.getValue();
+    test_cases = base.run_test_cases(test_cases, user_code, run_python_code);
+    if (submit) {
+        base.ajax_request(
+            'save_question_attempt',
+            {
+                user_input: user_code,
+                question: question_id,
+                test_cases: test_cases,
+            }
+        );
+    }
+}
 
 
 function run_python_code(user_code, test_case) {
