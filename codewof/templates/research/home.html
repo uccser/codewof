@@ -3,15 +3,13 @@
 {% load static %}
 
 {% block page_heading %}
-    <h1>Research</h1>
+    <h1>Research Studies</h1>
 {% endblock page_heading %}
 
 {% block content %}
-    <p>Description to be added.</p>
-
     {% if studies %}
         {% for study in studies %}
-            <div class="card" class="mb-3">
+            <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">{{ study.title }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">
