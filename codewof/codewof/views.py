@@ -94,7 +94,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class QuestionListView(generic.ListView):
+class QuestionListView(LoginRequiredMixin, generic.ListView):
     """View for listing questions."""
 
     model = Question
@@ -134,7 +134,7 @@ class QuestionListView(generic.ListView):
         return questions
 
 
-class QuestionView(generic.DetailView):
+class QuestionView(LoginRequiredMixin, generic.DetailView):
     """Displays a question.
 
     This view requires to retrieve the object first in the context,
