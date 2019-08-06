@@ -119,7 +119,7 @@ class QuestionListView(LoginRequiredMixin, generic.ListView):
                 study_registration = None
 
         if study_registration:
-            questions = study_registration.study_group.questions.all().select_subclasses()
+            questions = study_registration.study_group.questions.select_subclasses()
         else:
             questions = Question.objects.all().select_subclasses()
 
@@ -163,8 +163,7 @@ class QuestionView(LoginRequiredMixin, generic.DetailView):
                 )
             except StudyRegistration.DoesNotExist:
                 study_registration = None
-
-            if study_registration and question not in study_registration.study_group.questions.all():
+            if study_registration and question not in study_registration.study_group.questions.select_subclasses():
                 raise PermissionDenied
         return question
 
