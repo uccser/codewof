@@ -16,20 +16,16 @@ $(document).ready(function(){
     });
 
     $('#run_code').click(function () {
-        run_code(editor, true);
+        run_code(true);
     });
 
     for (let i = 0; i < test_cases_list.length; i++) {
         data = test_cases_list[i];
         test_cases[data.id] = data
     }
-
-    if (editor.getValue()) {
-        run_code(editor, false);
-    }
 });
 
-function run_code(editor, submit) {
+function run_code(submit) {
     base.clear_submission_feedback();
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
