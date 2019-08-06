@@ -80,6 +80,10 @@ class StudyGroup(models.Model):
         blank=True,
     )
 
+    def __str__(self):
+        """Text representation of a study."""
+        return "{} - {}".format(self.study.title, self.title)
+
 
 class StudyRegistration(models.Model):
     """An registration for an research study."""
