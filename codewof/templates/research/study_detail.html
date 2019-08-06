@@ -14,11 +14,19 @@
         {{ study.description|safe }}
 
         {% if study.consent_form %}
-            <div class="text-center my-3">
-                <a href="{{ study.get_absolute_consent_url }}" class="btn btn-success">
-                    Register for study
-                </a>
-            </div>
+            {% if registration %}
+                <div class="alert alert-info my-3" role="alert">
+                    You registered for this study at {{ registration.datetime|time:"h:i A" }} on {{ registration.datetime|date:"l j F Y" }}.
+                    A copy of your signed consent form was emailed to you at this time.
+                    If you wish to withdraw from this study please contact the researcher listed above.
+                </div>
+            {% else %}
+                <div class="text-center my-3">
+                    <a href="{{ study.get_absolute_consent_url }}" class="btn btn-success">
+                        Register for study
+                    </a>
+                </div>
+            {% endif %}
         {% else %}
             <div class="alert alert-info" role="alert">
                 This study is not currently taking registrations.
