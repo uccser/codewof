@@ -184,3 +184,35 @@ low-battery:
     4: normal
     5: exceptional
     6: exceptional
+
+full-name:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+hours-to-seconds:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+how-many-dozens:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: exceptional
