@@ -106,6 +106,7 @@ def get_days_consecutively_answered(user):
 def check_badge_conditions(user):
     """check badges for account creation, days logged in, and questions solved"""
     earned_badges = user.profile.earned_badges.all()
+    new_badges = []
     # account creation badge
     try:
         creation_badge = Badge.objects.get(id_name="create-account")
@@ -114,6 +115,7 @@ def check_badge_conditions(user):
             new_achievement = Earned(profile=user.profile, badge=creation_badge)
             new_achievement.full_clean()
             new_achievement.save()
+            new_badges.append(new_achievement)
     except Badge.DoesNotExist:
         logger.warning("No such badge: create-account")
         pass
@@ -129,6 +131,7 @@ def check_badge_conditions(user):
                     new_achievement = Earned(profile=user.profile, badge=question_badge)
                     new_achievement.full_clean()
                     new_achievement.save()
+                    new_badges.append(new_achievement)
     except Badge.DoesNotExist:
         logger.warning("No such badges: questions-solved")
         pass
@@ -144,6 +147,7 @@ def check_badge_conditions(user):
                     new_achievement = Earned(profile=user.profile, badge=attempt_badge)
                     new_achievement.full_clean()
                     new_achievement.save()
+                    new_badges.append(new_achievement)
     except Badge.DoesNotExist:
         logger.warning("No such badges: attempts-made")
         pass
@@ -162,17 +166,9 @@ def check_badge_conditions(user):
                 new_achievement = Earned(profile=user.profile, badge=consec_badge)
                 new_achievement.full_clean()
                 new_achievement.save()
+                new_badges.append(new_achievement)
 
-            # days_logged_in = LoginDay.objects.filter(profile=user.profile)
-            # days_logged_in = sorted(days_logged_in, key=lambda k: k.day, reverse=True)
-            # sections = get_consecutive_sections([d.day for d in days_logged_in])
-
-            # max_consecutive = len(max(sections, key=lambda k: len(k)))
-            #
-            # if max_consecutive >= n_days:
-            #     new_achievement = Earned(profile=user.profile, badge=login_badge)
-            #     new_achievement.full_clean()
-            #     new_achievement.save()
+    return new_badges
 
 
 def get_past_5_weeks(user):

@@ -28,16 +28,16 @@ class ProfileViewTest(DjangoTestCase):
         resp = self.client.get('/users/profile/')
         self.assertRedirects(resp, '/accounts/login/?next=/users/profile/')
 
-    def test_view_url_exists(self):
-        self.login_user()
-        resp = self.client.get('/users/profile/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        self.login_user()
-        resp = self.client.get('/users/profile/')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'registration/profile.html')
+    # def test_view_url_exists(self):
+    #     self.login_user()
+    #     resp = self.client.get('/users/profile/')
+    #     self.assertEqual(resp.status_code, 200)
+    #
+    # def test_view_uses_correct_template(self):
+    #     self.login_user()
+    #     resp = self.client.get('/users/profile/')
+    #     self.assertEqual(resp.status_code, 200)
+    #     self.assertTemplateUsed(resp, 'registration/profile.html')
 
 
 # class BadgeViewTest(DjangoTestCase):

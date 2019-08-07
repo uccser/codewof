@@ -81,11 +81,6 @@ def save_question_attempt(request):
                 passed_tests=total_passed == total_tests,
             )
 
-            # if DayWithAttempt.objects.filter(pub_date__gte=datetime.date.today()).count < 1:
-            #     new_attempt_day = DayWithAttempt(request.user.profile)
-            #     new_attempt_day.full_clean()
-            #     new_attempt_day.save()
-            #     logger.warning(new_attempt_day)
 
             # Create test case attempt objects
             for test_case_id, test_case_data in test_cases.items():
@@ -97,6 +92,8 @@ def save_question_attempt(request):
                 )
 
             add_points(question, profile, attempt)
+
+
 
             result['success'] = True
 

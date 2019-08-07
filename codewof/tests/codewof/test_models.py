@@ -3,6 +3,8 @@ from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.contrib.auth import get_user_model
 
+from .test_data_generator import *
+
 User = get_user_model()
 
 from codewof.models import Token, Badge, Profile, Question
@@ -20,7 +22,7 @@ class TokenModelTests(TestCase):
 class BadgeModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        Badge.objects.create(id_name='solve-40', display_name='first', description='first')
+        generate_badges()
 
     def test_id_name_unique(self):
         with self.assertRaises(IntegrityError):
@@ -30,8 +32,7 @@ class ProfileModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         # never modify this object in tests - read only
-        User.objects.create_user(username='john', email='john@uclive.ac.nz', password='onion')
-        User.objects.create_user(username='sally', email='sally@uclive.ac.nz', password='onion')
+        generate_users()
 
     def test_profile_starts_with_no_points(self):
         user = User.objects.get(id=1)
@@ -74,7 +75,7 @@ class QuestionModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         # never modify this object in tests - read only
-        Question.objects.create(title='Test', question_text='Hello')
+        generate_questions()
 
     def test_question_text_label(self):
         question = Question.objects.get(id=1)

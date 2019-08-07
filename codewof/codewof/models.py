@@ -30,6 +30,7 @@ class Profile(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(7)]
     )
     earned_badges = models.ManyToManyField('Badge', through='Earned')
+
     # attempted_questions = models.ManyToManyField('Question', through='Attempt')
 
     def __str__(self):
@@ -79,7 +80,6 @@ class Token(models.Model):
         return self.name
 
 
-
 class Attempt(models.Model):
     """An user attempt for a question."""
 
@@ -98,6 +98,7 @@ class Attempt(models.Model):
     datetime = models.DateTimeField(default=timezone.now)
     user_code = models.TextField()
     passed_tests = models.BooleanField(default=False)
+
     # skills_hinted = models.ManyToManyField('Skill', blank=True)
 
     def __str__(self):
@@ -145,8 +146,8 @@ class Question(TranslatableModel):
         return self.title
 
     # class Meta:
-        # verbose_name = "Parsons Problem"
-        # verbose_name_plural = "All Questions & Parsons Problems"
+    # verbose_name = "Parsons Problem"
+    # verbose_name_plural = "All Questions & Parsons Problems"
 
 
 class TestCase(TranslatableModel):
@@ -257,7 +258,6 @@ class QuestionTypeParsonsTestCase(TestCase):
         """Meta information for class."""
 
         verbose_name = 'Parsons Problem Question Test Case'
-
 
 # ----- Buggy program question ------------------------------------------------
 
