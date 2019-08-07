@@ -16,7 +16,9 @@ Below is a copy of the information sheet, and your signed consent form.
 Signed Consent Form
 -------------------------------------------------------
 
-{% for field in form %}{% if field.value %}I AGREE{% else %}I DO NOT AGREE{% endif %} - {{ field.label }}{% endfor %}
+{% for field in form %}
+{% if field.value %}I AGREE{% else %}I DO NOT AGREE{% endif %} - {{ field.label }}
+{% endfor %}
 - Email address: {{ user.email }}
 - Date: {{ registration.datetime|time:"g:i A" }} {{ registration.datetime|date:"l j F Y" }}
 
@@ -37,14 +39,22 @@ The codeWOF team
 
     <h2>Consent Form</h2>
 
-    {{ form.as_p }}
+    {% for field in form %}
+        <p>
+            {% if field.value %}
+                <strong>I AGREE</strong>
+            {% else %}
+                <strong>I DO NOT AGREE</strong>
+            {% endif %}
+             - {{ field.label }}
+        </p>
+    {% endfor %}
     <p>
-        <label>Email address</label>: {{ user.email }}
+        <strong>Email address</strong>: {{ user.email }}
     </p>
     <p>
-        <label>Date</label>: {{ registration.datetime|time:"g:i A" }} {{ registration.datetime|date:"l j F Y" }}
+        <strong>Date</strong>: {{ registration.datetime|time:"g:i A" }} {{ registration.datetime|date:"l j F Y" }}
     </p>
-
 
     <p>Thank you,</p>
 
