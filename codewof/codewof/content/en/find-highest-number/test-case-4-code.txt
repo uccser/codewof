@@ -1,0 +1,1 @@
+print(find_highest_number([0, 0, 0, -1]))

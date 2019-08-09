@@ -256,3 +256,14 @@ price-in-budget:
     4: normal
     5: normal
     6: normal
+
+find-highest-number:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+    5: exceptional
