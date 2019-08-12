@@ -1,7 +1,6 @@
 """Module for the custom Django load_user_types command."""
 
 from django.core.management.base import BaseCommand
-from django.conf import settings
 from users.models import UserType
 from django.utils.translation import gettext as _
 
@@ -19,6 +18,7 @@ USER_TYPES = [
         'name': _('Other'),
     },
 ]
+
 
 class Command(BaseCommand):
     """Required command class for the custom Django load_user_types command."""

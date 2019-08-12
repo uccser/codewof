@@ -37,7 +37,6 @@ class SignupForm(forms.Form):
         empty_label=None,
     )
 
-
     def signup(self, request, user):
         """Extra logic when a user signs up.
 

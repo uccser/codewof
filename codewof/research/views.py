@@ -1,7 +1,6 @@
 """Views for research application."""
 
 from django.views import generic
-from django.db.models import Q
 from django.contrib import messages
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin

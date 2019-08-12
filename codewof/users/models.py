@@ -22,6 +22,7 @@ class UserType(models.Model):
 
     class Meta:
         """Meta options for class."""
+
         ordering = ['order']
 
 

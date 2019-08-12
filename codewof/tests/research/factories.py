@@ -33,7 +33,6 @@ class StudyFactory(DjangoModelFactory):
     @post_generation
     def add_detail(self, create, extracted, **kwargs):
         """Add detail to study."""
-
         # Set user types
         # 25% chance all types, otherwise one type
         if random.randint(1, 4) == 1:
