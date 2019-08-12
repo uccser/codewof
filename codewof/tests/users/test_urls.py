@@ -5,7 +5,7 @@ from django.urls import reverse, resolve
 pytestmark = pytest.mark.django_db
 
 
-def test_detail(user: settings.AUTH_USER_MODEL):
+def test_detail():
     assert (
         reverse("users:profile")
         == f"/users/profile/"
