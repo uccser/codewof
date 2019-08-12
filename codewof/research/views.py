@@ -29,6 +29,12 @@ class StudyListView(LoginRequiredMixin, generic.ListView):
             Study queryset.
         """
         studies = self.request.user.user_type.studies.all()
+        # TODO: Simplify to one database query
+        for study in studies:
+            study.registered = StudyRegistration.objects.filter(
+                user=self.request.user,
+                study_group__in=study.groups.all(),
+            ).exists()
         return studies
 
 

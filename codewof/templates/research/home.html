@@ -11,7 +11,11 @@
         {% for study in studies %}
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">{{ study.title }}</h5>
+                    <h5 class="card-title">{{ study.title }}
+                        {% if study.registered %}
+                            <span class="badge badge-success float-right">Registered</span>
+                        {% endif %}
+                    </h5>
                     <h6 class="card-subtitle mb-2 text-muted">
                         {{ study.start_date }} to {{ study.end_date }}
                     </h6>
