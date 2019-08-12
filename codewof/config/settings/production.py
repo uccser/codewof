@@ -1,5 +1,6 @@
 """Settings for production environment, built upon base settings."""
 
+import sys
 from .base import *  # noqa
 from .base import env
 from google.cloud import logging as google_cloud_logging
