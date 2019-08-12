@@ -4,4 +4,3 @@ def find_highest_number(numbers):
         if num > highest_number:
             highest_number = num
     return highest_number
-

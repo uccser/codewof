@@ -267,3 +267,13 @@ find-highest-number:
     3: normal
     4: exceptional
     5: exceptional
+
+shutdown-machine:
+  type: program
+  test-cases:
+    1: exceptional
+    2: exceptional
+    3: normal
+    4: normal
+    5: exceptional
+    6: exceptional
