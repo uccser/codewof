@@ -2,11 +2,13 @@
 
 from django import forms
 from django.contrib import admin
+from django.contrib.admin.widgets import FilteredSelectMultiple
 from research.models import (
     Study,
     StudyGroup,
     StudyRegistration,
 )
+from codewof.models import Question
 from research.utils import get_consent_form_class
 
 
@@ -33,12 +35,33 @@ class StudyAdmin(admin.ModelAdmin):
 
     form = StudyAdminForm
     list_display = ('title', 'start_date', 'end_date', 'visible')
+    filter_horizontal = ('user_types', )
+
+
+class StudyGroupForm(forms.ModelForm):
+    """Form for admin view for a study group."""
+
+    questions = forms.ModelMultipleChoiceField(
+        queryset=Question.objects.select_subclasses(),
+        widget=FilteredSelectMultiple(
+            verbose_name='Questions',
+            is_stacked=False,
+        ),
+    )
+
+    class Meta:
+        """Meta attributes for class."""
+
+        model = StudyGroup
+        fields = '__all__'
 
 
 class StudyGroupAdmin(admin.ModelAdmin):
     """Admin view for a study group."""
 
+    form = StudyGroupForm
     list_display = ('title', 'study')
+    filter_horizontal = ('questions', )
 
 
 class StudyRegistrationAdmin(admin.ModelAdmin):
