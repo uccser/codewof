@@ -116,6 +116,7 @@ THIRD_PARTY_APPS = [
     'svg',
     'ckeditor',
     'ckeditor_uploader',
+    'captcha',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
@@ -382,3 +383,14 @@ SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
 SVG_DIRS = [
     os.path.join(str(STATIC_ROOT), 'svg')
 ]
+
+# reCAPTCHA
+# ------------------------------------------------------------------------------
+if DEPLOYMENT_TYPE == 'local':
+    # Use test keys
+    RECAPTCHA_PUBLIC_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+    RECAPTCHA_PRIVATE_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
+    SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+else:
+    RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
+    RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')

@@ -4,6 +4,7 @@ from django import forms
 from django.contrib import auth
 from users.models import UserType
 from django.utils.translation import gettext as _
+from captcha.fields import ReCaptchaField
 
 User = auth.get_user_model()
 
@@ -36,6 +37,7 @@ class SignupForm(forms.Form):
         label='Are you a student or teacher?',
         empty_label=None,
     )
+    captcha = ReCaptchaField()
 
     def signup(self, request, user):
         """Extra logic when a user signs up.
