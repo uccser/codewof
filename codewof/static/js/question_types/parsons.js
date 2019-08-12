@@ -10,7 +10,7 @@ $(document).ready(function(){
         new Sortable(element, {
             group: 'parsons', // set both lists to same group
             animation: 150,
-            swapThreshold: 0.5,
+            swapThreshold: 0.4,
             fallbackOnBody: true
         });
     });

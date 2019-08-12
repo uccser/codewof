@@ -107,13 +107,15 @@ form {
 
 .parsons-drag-container {
     padding: 0.7rem 0;
+    .parsons-drag-container {
+        margin-left: 2rem;
+    }
 }
 .parsons-draggable-line {
     font-family: $font-family-monospace;
     background: #f2f3f5;
     border: 2px solid #dee2e6;
     border-radius: 5px;
-    margin-left: 2rem;
     margin-bottom: 0.3rem;
     cursor: grab;
     padding-left: 0.5rem;
