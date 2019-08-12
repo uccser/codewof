@@ -1,19 +1,42 @@
 """Forms for user application."""
 
-from django.forms import ModelForm
-from django.contrib.auth import get_user_model, forms
+from django import forms
+from django.contrib import auth
+from users.models import UserType
+from django.utils.translation import gettext as _
 
-User = get_user_model()
+User = auth.get_user_model()
 
 
-class SignupForm(ModelForm):
+class SignupForm(forms.Form):
     """Sign up for user registration."""
 
-    class Meta:
-        """Metadata for SignupForm class."""
+    first_name = forms.CharField(
+        max_length=50,
+        label='First name',
+        widget=forms.TextInput(
+            attrs={
+                'type': 'text',
+                'placeholder': _('First name'),
+            },
+        ),
+    )
+    last_name = forms.CharField(
+        max_length=150,
+        label='Last name',
+        widget=forms.TextInput(
+            attrs={
+                'type': 'text',
+                'placeholder': _('Last name'),
+            },
+        ),
+    )
+    user_type = forms.ModelChoiceField(
+        queryset=UserType.objects.all(),
+        label='Are you a student or teacher?',
+        empty_label=None,
+    )
 
-        model = get_user_model()
-        fields = ['first_name', 'last_name', 'user_type']
 
     def signup(self, request, user):
         """Extra logic when a user signs up.
@@ -26,20 +49,20 @@ class SignupForm(ModelForm):
         user.save()
 
 
-class UserChangeForm(forms.UserChangeForm):
+class UserChangeForm(auth.forms.UserChangeForm):
     """Form class for changing user."""
 
-    class Meta(forms.UserChangeForm.Meta):
+    class Meta(auth.forms.UserChangeForm.Meta):
         """Metadata for UserChangeForm class."""
 
         model = User
         fields = ('email', 'last_name', 'user_type')
 
 
-class UserCreationForm(forms.UserCreationForm):
+class UserCreationForm(auth.forms.UserCreationForm):
     """Form class for creating user."""
 
-    class Meta(forms.UserCreationForm.Meta):
+    class Meta(auth.forms.UserCreationForm.Meta):
         """Metadata for UserCreationForm class."""
 
         model = User

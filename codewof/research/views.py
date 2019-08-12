@@ -1,6 +1,7 @@
 """Views for research application."""
 
 from django.views import generic
+from django.db.models import Q
 from django.contrib import messages
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -14,7 +15,7 @@ from research.models import (
 from research.utils import get_consent_form_class
 
 
-class StudyListView(generic.ListView):
+class StudyListView(LoginRequiredMixin, generic.ListView):
     """Homepage for research studies."""
 
     model = Study
@@ -27,11 +28,11 @@ class StudyListView(generic.ListView):
         Returns:
             Study queryset.
         """
-        studies = Study.objects.filter(visible=True).order_by('start_date')
+        studies = self.request.user.user_type.studies.all()
         return studies
 
 
-class StudyDetailView(generic.DetailView):
+class StudyDetailView(LoginRequiredMixin, generic.DetailView):
     """Page for a research study."""
 
     model = Study

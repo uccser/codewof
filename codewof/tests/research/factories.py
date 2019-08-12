@@ -12,6 +12,7 @@ from research.models import (
     Study,
     StudyGroup,
 )
+from users.models import UserType
 
 
 class StudyFactory(DjangoModelFactory):
@@ -28,6 +29,17 @@ class StudyFactory(DjangoModelFactory):
         """Metadata for class."""
 
         model = Study
+
+    @post_generation
+    def add_detail(self, create, extracted, **kwargs):
+        """Add detail to study."""
+
+        # Set user types
+        # 25% chance all types, otherwise one type
+        if random.randint(1, 4) == 1:
+            self.user_types.add(*UserType.objects.all())
+        else:
+            self.user_types.add(random.choice(UserType.objects.all()))
 
 
 class StudyGroupFactory(DjangoModelFactory):

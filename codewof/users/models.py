@@ -5,6 +5,26 @@ from django.db import models
 from django.urls import reverse
 
 
+class UserType(models.Model):
+    """Group of a type of users on website."""
+
+    slug = models.SlugField(
+        unique=True,
+    )
+    name = models.CharField(
+        max_length=50,
+    )
+    order = models.PositiveSmallIntegerField(default=1)
+
+    def __str__(self):
+        """Name of user type."""
+        return self.name
+
+    class Meta:
+        """Meta options for class."""
+        ordering = ['order']
+
+
 class User(AbstractUser):
     """User of website."""
 
@@ -20,17 +40,10 @@ class User(AbstractUser):
         max_length=150,
         verbose_name='last name',
     )
-
-    STUDENT = 1
-    TEACHER = 2
-    USER_TYPE_CHOICES = [
-        (STUDENT, 'Student'),
-        (TEACHER, 'Teacher'),
-    ]
-    user_type = models.PositiveSmallIntegerField(
-        choices=USER_TYPE_CHOICES,
-        default=STUDENT,
-        blank=False,
+    user_type = models.ForeignKey(
+        UserType,
+        related_name='users',
+        on_delete=models.CASCADE,
     )
 
     USERNAME_FIELD = 'id'

@@ -3,6 +3,7 @@
 from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from users.models import UserType
 from allauth.account.models import EmailAddress
 from tests.users.factories import UserFactory
 from tests.research.factories import (
@@ -30,6 +31,7 @@ class Command(management.base.BaseCommand):
         management.call_command('flush', interactive=False)
         print('Database wiped.')
 
+        management.call_command('load_user_types')
         print(LOG_HEADER.format('Create sample users'))
         User = get_user_model()
         # Create admin account
@@ -38,7 +40,8 @@ class Command(management.base.BaseCommand):
             'admin@codewof.co.nz',
             password=settings.SAMPLE_DATA_ADMIN_PASSWORD,
             first_name='Admin',
-            last_name='Account'
+            last_name='Account',
+            user_type=UserType.objects.get(slug='teacher')
         )
         EmailAddress.objects.create(
             user=admin,
@@ -54,7 +57,8 @@ class Command(management.base.BaseCommand):
             'user@codewof.co.nz',
             password=settings.SAMPLE_DATA_USER_PASSWORD,
             first_name='Alex',
-            last_name='Doe'
+            last_name='Doe',
+            user_type=UserType.objects.get(slug='student')
         )
         EmailAddress.objects.create(
             user=user,

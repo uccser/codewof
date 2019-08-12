@@ -7,6 +7,7 @@ from django.urls import reverse
 from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
 from codewof.models import Question
+from users.models import UserType
 
 User = get_user_model()
 
@@ -27,6 +28,13 @@ class Study(models.Model):
         max_length=200,
         help_text='Name of class for consent form.',
         blank=True,
+    )
+    user_types = models.ManyToManyField(
+        UserType,
+        related_name='studies',
+        blank=True,
+        verbose_name='Open to user types',
+        help_text='Which types of users is this research study visible and open to.',
     )
 
     def get_next_group(self):

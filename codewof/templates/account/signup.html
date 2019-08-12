@@ -10,10 +10,6 @@
 
   <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 
-  <div class="alert alert-danger" role="alert">
-    <strong>Warning!</strong> Due to the alpha state of the website as it undergoes development, user accounts may be removed without warning.
-  </div>
-
   <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
     {% csrf_token %}
     {{ form|crispy }}
