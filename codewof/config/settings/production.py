@@ -2,6 +2,7 @@
 
 from .base import *  # noqa
 from .base import env
+from google.cloud import logging as google_cloud_logging
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -130,6 +131,9 @@ INSTALLED_APPS += ['gunicorn']  # noqa F405
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See https://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+
+log_client = google_cloud_logging.Client()
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -154,11 +158,21 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
+            'stream': sys.stdout,
+        },
+        'stackdriver_logging': {
+            'class': 'google.cloud.logging.handlers.CloudLoggingHandler',
+            'client': log_client
         },
     },
     'loggers': {
+        'django': {
+            'handlers': ['console', 'stackdriver_logging'],
+            'level': 'INFO',
+            'propagate': True,
+        },
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['stackdriver_logging', 'mail_admins'],
             'level': 'ERROR',
             'propagate': True
         },

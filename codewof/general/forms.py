@@ -7,7 +7,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
 SUBJECT_TEMPLATE = "[CodeWOF] - {}"
-MESSAGE_TEMPLATE = "{}\n\n-----\nMessage sent from {}\n{}"
+MESSAGE_TEMPLATE = "{}\n\n-----\nMessage sent from {}\n-----\ncodeWOF"
 
 
 class ContactForm(forms.Form):
@@ -32,7 +32,7 @@ class ContactForm(forms.Form):
         if self.cleaned_data.get('cc_sender'):
             send_mail(
                 SUBJECT_TEMPLATE.format(subject),
-                MESSAGE_TEMPLATE.format(message, name),
+                MESSAGE_TEMPLATE.format(message, name, from_email),
                 settings.DEFAULT_FROM_EMAIL,
                 [from_email],
                 fail_silently=False,
