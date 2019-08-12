@@ -142,7 +142,10 @@ class Question(TranslatableModel):
 
     def __str__(self):
         """Text representation of a question."""
-        return self.title
+        if hasattr(self, 'QUESTION_TYPE'):
+            return '{}: {}'.format(self.QUESTION_TYPE, self.title)
+        else:
+            return self.title
 
     # class Meta:
         # verbose_name = "Parsons Problem"

@@ -41,7 +41,7 @@
           data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand inverse-logo mr-0" href="{% url 'general:home' %}">
+        <a class="navbar-brand inverse-logo mr-0 pt-0" href="{% url 'general:home' %}">
           {% svg 'logo' %}
         </a>
 
@@ -153,6 +153,16 @@
               <li>
                 <a href="{% url 'general:about' %}">
                   {% trans "About" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'codewof:home' %}">
+                  {% trans "Questions" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'research:home' %}">
+                  {% trans "Research" %}
                 </a>
               </li>
             </ul>

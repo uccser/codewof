@@ -192,8 +192,11 @@ class QuestionsLoader(TranslatableModelLoader):
 
                     if test_case_class == QuestionTypeProgramTestCase:
                         required_fields = ['test_input', 'expected_output']
-                    elif test_case_class in (QuestionTypeFunctionTestCase, QuestionTypeParsonsTestCase,
-                                             QuestionTypeDebuggingTestCase):
+                    elif test_case_class in (
+                        QuestionTypeFunctionTestCase,
+                        QuestionTypeParsonsTestCase,
+                        QuestionTypeDebuggingTestCase,
+                    ):
                         required_fields = ['test_code', 'expected_output']
 
                     self.populate_translations(test_case, test_case_translations)

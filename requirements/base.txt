@@ -8,6 +8,7 @@ filetype==1.0.4
 # Django
 django-model-utils==3.2.0
 django-anymail[mailgun]==6.1.0
+django-mail-templated==2.6.5
 django-allauth==0.39.1
 django-crispy-forms==1.7.2
 django-redis==4.10.0
@@ -18,6 +19,7 @@ coreapi==2.3.3
 django-filter==2.2.0
 django-modeltranslation==0.13.3
 django-inline-svg==0.1.1
+django-ckeditor==5.7.1
 
 # Google Cloud Platform
 google-api-python-client==1.7.10

@@ -1,11 +1,11 @@
 """Views for codeWOF application."""
 
 from django.views import generic
+from django.utils import timezone
 from django.http import JsonResponse, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 import json
-
 from codewof.models import (
     Profile,
     Question,
@@ -13,6 +13,7 @@ from codewof.models import (
     Attempt,
     TestCaseAttempt,
 )
+from research.models import StudyRegistration
 
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 
@@ -26,6 +27,114 @@ class IndexView(generic.base.TemplateView):
         """Get additional context data for template."""
         context = super().get_context_data(**kwargs)
         context['questions'] = Question.objects.select_subclasses()
+        return context
+
+
+class ProfileView(LoginRequiredMixin, generic.DetailView):
+    """Displays a user's profile."""
+
+    login_url = '/login/'
+    redirect_field_name = 'next'
+    template_name = 'codewof/profile.html'
+    model = Profile
+
+    def get_context_data(self, **kwargs):
+        """Get additional context data for template."""
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class QuestionListView(LoginRequiredMixin, generic.ListView):
+    """View for listing questions."""
+
+    model = Question
+    context_object_name = 'questions'
+
+    def get_queryset(self):
+        """Return questions objects for page.
+
+        Returns:
+            Question queryset.
+        """
+        now = timezone.now()
+        if self.request.user.is_authenticated:
+            # Look for active study registration
+            try:
+                study_registration = StudyRegistration.objects.get(
+                    user=self.request.user,
+                    study_group__study__start_date__lte=now,
+                    study_group__study__end_date__gte=now,
+                )
+            except ObjectDoesNotExist:
+                study_registration = None
+
+        if study_registration:
+            questions = study_registration.study_group.questions.select_subclasses()
+        else:
+            questions = Question.objects.all().select_subclasses()
+
+        if self.request.user.is_authenticated:
+            # TODO: Check if passed in last 90 days
+            for question in questions:
+                question.completed = Attempt.objects.filter(
+                    profile=self.request.user.profile,
+                    question=question,
+                    passed_tests=True,
+                ).exists()
+        return questions
+
+
+class QuestionView(LoginRequiredMixin, generic.DetailView):
+    """Displays a question.
+
+    This view requires to retrieve the object first in the context,
+    in order to determine the required template to render.
+    """
+
+    template_name = 'codewof/question.html'
+
+    def get_object(self, **kwargs):
+        """Get question object for view."""
+        try:
+            question = Question.objects.get_subclass(
+                pk=self.kwargs['pk']
+            )
+        except Question.DoesNotExist:
+            raise Http404("No question matches the given ID.")
+
+        if self.request.user.is_authenticated:
+            # Look for active study registration
+            now = timezone.now()
+            try:
+                study_registration = StudyRegistration.objects.get(
+                    user=self.request.user,
+                    study_group__study__start_date__lte=now,
+                    study_group__study__end_date__gte=now,
+                )
+            except StudyRegistration.DoesNotExist:
+                study_registration = None
+            if study_registration and question not in study_registration.study_group.questions.select_subclasses():
+                raise PermissionDenied
+        return question
+
+    def get_context_data(self, **kwargs):
+        """Get additional context data for template."""
+        context = super().get_context_data(**kwargs)
+        context['question'] = self.object
+        test_cases = self.object.test_cases.values()
+        context['test_cases'] = test_cases
+        context['test_cases_json'] = json.dumps(list(test_cases))
+        context['question_js'] = QUESTION_JAVASCRIPT.format(self.object.QUESTION_TYPE)
+
+        if self.request.user.is_authenticated:
+            try:
+                previous_attempt = Attempt.objects.filter(
+                    profile=self.request.user.profile,
+                    question=self.object,
+                ).latest('datetime')
+            except ObjectDoesNotExist:
+                previous_attempt = None
+            context['previous_attempt'] = previous_attempt
         return context
 
 
@@ -77,77 +186,3 @@ def save_question_attempt(request):
             result['success'] = True
 
     return JsonResponse(result)
-
-
-class ProfileView(LoginRequiredMixin, generic.DetailView):
-    """Displays a user's profile."""
-
-    login_url = '/login/'
-    redirect_field_name = 'next'
-    template_name = 'codewof/profile.html'
-    model = Profile
-
-    def get_context_data(self, **kwargs):
-        """Get additional context data for template."""
-        context = super().get_context_data(**kwargs)
-        return context
-
-
-class QuestionListView(generic.ListView):
-    """View for listing questions."""
-
-    model = Question
-    context_object_name = 'questions'
-
-    def get_queryset(self):
-        """Return questions objects for page.
-
-        Returns:
-            Question queryset.
-        """
-        questions = Question.objects.all().select_subclasses()
-        if self.request.user.is_authenticated:
-            # TODO: Check if passeed in last 90 days
-            for question in questions:
-                question.completed = Attempt.objects.filter(
-                    profile=self.request.user.profile,
-                    question=question,
-                    passed_tests=True,
-                ).exists()
-        return questions
-
-
-class QuestionView(generic.base.TemplateView):
-    """Displays a question.
-
-    This view requires to retrieve the object first in the context,
-    in order to determine the required template to render.
-    """
-
-    template_name = 'codewof/question.html'
-
-    def get_context_data(self, **kwargs):
-        """Get additional context data for template."""
-        context = super().get_context_data(**kwargs)
-        try:
-            self.question = Question.objects.get_subclass(
-                pk=self.kwargs['pk']
-            )
-        except Question.DoesNotExist:
-            raise Http404("No question matches the given ID.")
-        context['question'] = self.question
-        test_cases = self.question.test_cases.values()
-        context['test_cases'] = test_cases
-        context['test_cases_json'] = json.dumps(list(test_cases))
-        context['question_js'] = QUESTION_JAVASCRIPT.format(self.question.QUESTION_TYPE)
-
-        if self.request.user.is_authenticated:
-            try:
-                previous_attempt = Attempt.objects.filter(
-                    profile=self.request.user.profile,
-                    question=self.question,
-                ).latest('datetime')
-            except ObjectDoesNotExist:
-                previous_attempt = None
-            context['previous_attempt'] = previous_attempt
-        return context

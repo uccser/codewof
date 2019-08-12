@@ -2,6 +2,7 @@
 
 import os.path
 import environ
+from utils.get_upload_filepath import get_upload_path_for_date
 
 
 # codewof/codewof/config/settings/base.py - 3 = codewof/codewof/
@@ -105,6 +106,7 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'anymail',
+    'mail_templated',
     'crispy_forms',
     'allauth',
     'allauth.account',
@@ -112,11 +114,14 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'django_activeurl',
     'svg',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
     'users.apps.UsersAppConfig',
     'codewof.apps.CodeWOFConfig',
+    'research.apps.ResearchConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -338,6 +343,33 @@ LOGGING = {
             'level': 'DEBUG',
         },
     },
+}
+
+# ckeditor
+# ------------------------------------------------------------------------------
+CKEDITOR_UPLOAD_PATH = get_upload_path_for_date('text-editor')
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',
+        'clipboard_defaultContentType': 'text',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join([
+            # 'devtools',  # Used for development
+            'a11yhelp',
+            'uploadimage',
+            'image2',
+            'div',
+            'autolink',
+            'autogrow',
+            'clipboard',
+            'codesnippet',
+            'pastefromword',
+            'widget',
+            'dialog',
+            'dialogui',
+        ]),
+    }
 }
 
 # Other
