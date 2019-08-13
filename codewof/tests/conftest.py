@@ -5,6 +5,8 @@ from django.conf import settings
 from django.test import RequestFactory
 from django.core import management
 from tests.users.factories import UserFactory
+from users.models import UserType
+
 
 @pytest.fixture(autouse=True)
 def media_storage(settings, tmpdir):
@@ -13,8 +15,15 @@ def media_storage(settings, tmpdir):
 
 
 @pytest.fixture
-def user():
+def user(request):
     """Pytest setup for user model."""
+    management.call_command('load_user_types')
+
+    def fin():
+        print("teardown")
+        UserType.objects.all().delete()
+
+    request.addfinalizer(fin)
     return UserFactory()
 
 
