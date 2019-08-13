@@ -14,6 +14,18 @@ class AccountAdapter(DefaultAccountAdapter):
         """Check if registrations are allowed for normal accounts."""
         return getattr(settings, "ACCOUNT_ALLOW_REGISTRATION", True)
 
+    def save_user(self, request, user, form, commit=False):
+        """
+        Saves a new `User` instance using information provided.
+
+        Key difference to built in function is not commiting
+        until user type is added.
+        """
+        user = super().save_user(request, user, form, False)
+        user.user_type = form.cleaned_data.get('user_type')
+        user.save()
+        return user
+
 
 class SocialAccountAdapter(DefaultSocialAccountAdapter):
     """Custom adapter for social accounts."""
