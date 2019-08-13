@@ -1,10 +1,9 @@
 @mixin question-card-colour-variant($colour) {
-    color: hsl(hue($colour), saturation($colour), 35%);
+    color: hsl(hue($colour), saturation($colour), 30%);
     border-color: hsl(hue($colour), saturation($colour), 80%);
-    background-color: hsl(hue($colour), saturation($colour), 96%);
     &:hover {
         border-color: hsl(hue($colour), saturation($colour), 70%);
-        background-color: hsl(hue($colour), saturation($colour), 75%);
+        background-color: hsl(hue($colour), saturation($colour), 93%);
     }
     &.qc-complete {
         border-color: hsl(hue($colour), saturation($colour), 70%);
