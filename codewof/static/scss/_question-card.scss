@@ -2,12 +2,16 @@
     color: hsl(hue($colour), saturation($colour), 35%);
     border-color: hsl(hue($colour), saturation($colour), 80%);
     background-color: hsl(hue($colour), saturation($colour), 96%);
-    &.qc-complete {
-        border-color: hsl(hue($colour), saturation($colour), 60%);
-        background-color: hsl(hue($colour), saturation($colour), 90%);
-    }
     &:hover {
-        background-color: hsl(hue($colour), saturation($colour), 85%);
+        border-color: hsl(hue($colour), saturation($colour), 70%);
+        background-color: hsl(hue($colour), saturation($colour), 75%);
+    }
+    &.qc-complete {
+        border-color: hsl(hue($colour), saturation($colour), 70%);
+        background-color: hsl(hue($colour), saturation($colour), 75%);
+        &:hover {
+            border-color: hsl(hue($colour), saturation($colour), 50%);
+        }
     }
 }
 
@@ -59,6 +63,7 @@
 .qc-type {
     grid-area: qc-type;
     font-size: 0.8rem;
+    color: #3e4347;
 }
 
 .qc-title {
