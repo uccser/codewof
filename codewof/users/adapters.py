@@ -15,8 +15,7 @@ class AccountAdapter(DefaultAccountAdapter):
         return getattr(settings, "ACCOUNT_ALLOW_REGISTRATION", True)
 
     def save_user(self, request, user, form, commit=False):
-        """
-        Saves a new `User` instance using information provided.
+        """Save a new `User` instance using information provided.
 
         Key difference to built in function is not commiting
         until user type is added.
