@@ -1,0 +1,1 @@
+print(find_highest_number([15, 50, 10, 45]))
