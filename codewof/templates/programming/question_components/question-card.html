@@ -1,0 +1,24 @@
+{% load static %}
+
+<div class="qc-container col-12 col-md-6 col-lg-4">
+    <a class="qc-card qc-{{ question.QUESTION_TYPE }} {% if question.completed %}qc-complete{% endif %}" href="{{ question.get_absolute_url }}">
+        <div class="qc-checkbox">
+            {% if question.completed %}
+                <img class="question-checkbox" src="{% static 'img/icons/icons8-checked-checkbox-50.png' %}" />
+            {% else %}
+                <img class="question-checkbox" src="{% static 'img/icons/icons8-unchecked-checkbox-50.png' %}" />
+            {% endif %}
+        </div>
+        <div class="qc-icon">
+
+        </div>
+        <div class="qc-type">
+            <em>
+                {{ question.QUESTION_TYPE|capfirst }}
+            </em>
+        </div>
+        <div class="qc-title">
+            {{ question.title }}
+        </div>
+    </a>
+</div>

@@ -8,7 +8,7 @@ from research.models import (
     StudyGroup,
     StudyRegistration,
 )
-from codewof.models import Question
+from programming.models import Question
 from research.utils import get_consent_form_class
 
 

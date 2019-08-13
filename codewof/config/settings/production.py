@@ -3,6 +3,7 @@
 import sys
 from .base import *  # noqa
 from .base import env
+from google.oauth2 import service_account
 from google.cloud import logging as google_cloud_logging
 
 # GENERAL
@@ -41,7 +42,7 @@ DATABASES = {
     }
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
-DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=60)  # noqa F405
+DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=0)  # noqa F405
 
 # SECURITY
 # ------------------------------------------------------------------------------

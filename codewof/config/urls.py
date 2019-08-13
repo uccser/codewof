@@ -18,7 +18,7 @@ urlpatterns = [
     path('research/', include('research.urls', namespace='research')),
     path('users/', include('users.urls', namespace='users'),),
     path('accounts/', include('allauth.urls')),
-    path('', include('codewof.urls', namespace='codewof'),),
+    path('', include('programming.urls', namespace='programming'),),
     path('_ah/health', health_check),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ] + static(

@@ -1,0 +1,1 @@
+print(dozens_of_eggs(0))

@@ -7,7 +7,7 @@ from factory import (
     Iterator,
     post_generation,
 )
-from codewof.models import Question
+from programming.models import Question
 from research.models import (
     Study,
     StudyGroup,

@@ -1,0 +1,3 @@
+Temperature OK
+Temperature OK
+Shutting down...
