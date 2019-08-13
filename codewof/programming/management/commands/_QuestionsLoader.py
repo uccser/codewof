@@ -1,4 +1,4 @@
-"""Custom loader for loading CodeWOF questions."""
+"""Custom loader for loading programming questions."""
 
 from os.path import join
 from django.db import transaction
@@ -8,7 +8,7 @@ from utils.errors import (
     InvalidYAMLValueError,
 )
 from utils.language_utils import get_available_languages
-from codewof.models import (
+from programming.models import (
     QuestionTypeProgram,
     QuestionTypeProgramTestCase,
     QuestionTypeFunction,

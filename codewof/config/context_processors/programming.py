@@ -1,6 +1,6 @@
 """Context processor for loading type variables for questions."""
 
-from codewof.models import (
+from programming.models import (
     QuestionTypeProgram,
     QuestionTypeFunction,
     QuestionTypeParsons,

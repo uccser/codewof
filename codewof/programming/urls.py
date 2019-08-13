@@ -1,10 +1,10 @@
-"""URL routing for codeWOF application."""
+"""URL routing for programming application."""
 
 from django.urls import path
 
 from . import views
 
-app_name = 'codewof'
+app_name = 'programming'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='home'),
     path('questions/', views.QuestionListView.as_view(), name='question_list'),

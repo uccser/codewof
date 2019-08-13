@@ -6,7 +6,7 @@
         <ul>
         {% for question in questions %}
             <li>
-                <a href="{% url 'codewof:question' question.id %}" class="{% if question.completed %}completed {% elif question.attempted %} attempted {% endif %}">
+                <a href="{% url 'programming:question' question.id %}" class="{% if question.completed %}completed {% elif question.attempted %} attempted {% endif %}">
                     {{ question.title }}
                 </a>
             </li>

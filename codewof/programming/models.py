@@ -1,4 +1,4 @@
-"""Models for codeWOF application."""
+"""Models for programming application."""
 
 from random import shuffle
 from django.db import models
@@ -138,7 +138,7 @@ class Question(TranslatableModel):
         Returns:
             URL as a string.
         """
-        return reverse('codewof:question', kwargs={'pk': self.pk})
+        return reverse('programming:question', kwargs={'pk': self.pk})
 
     def __str__(self):
         """Text representation of a question."""

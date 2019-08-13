@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
-from codewof.models import Question
+from programming.models import Question
 from users.models import UserType
 
 User = get_user_model()

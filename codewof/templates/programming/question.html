@@ -17,7 +17,7 @@
 
     <div class="col-12">
         {% if question.QUESTION_TYPE == QUESTION_TYPE_PARSONS %}
-            {% include "codewof/question_components/editor-parsons.html" %}
+            {% include "programming/question_components/editor-parsons.html" %}
         {% else %}
             {% if question.QUESTION_TYPE == QUESTION_TYPE_DEBUGGING %}
                 {% if question.read_only_lines_top or question.read_only_lines_bottom %}
@@ -26,7 +26,7 @@
                     </div>
                 {% endif %}
             {% endif %}
-            {% include "codewof/question_components/editor-python.html" %}
+            {% include "programming/question_components/editor-python.html" %}
         {% endif %}
 
         <div class="d-flex justify-content-between mb-3">
@@ -44,9 +44,9 @@
 
     <div class="col-12">
         {% if question.QUESTION_TYPE == QUESTION_TYPE_PROGRAM %}
-            {% include "codewof/question_components/test-case-programs-table.html" %}
+            {% include "programming/question_components/test-case-programs-table.html" %}
         {% else %}
-            {% include "codewof/question_components/test-case-functions-table.html" %}
+            {% include "programming/question_components/test-case-functions-table.html" %}
         {% endif %}
     </div>
 {% endblock %}

@@ -121,7 +121,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
     'users.apps.UsersAppConfig',
-    'codewof.apps.CodeWOFConfig',
+    'programming.apps.ProgrammingConfig',
     'research.apps.ResearchConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -244,7 +244,7 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 'config.context_processors.deployed.deployed',
-                'config.context_processors.codewof.question_types',
+                'config.context_processors.programming.question_types',
                 'config.context_processors.version_number.version_number',
             ],
             'libraries': {
@@ -376,7 +376,7 @@ CKEDITOR_CONFIGS = {
 # Other
 # ------------------------------------------------------------------------------
 DEPLOYMENT_TYPE = 'local'
-QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path("codewof")), "content")
+QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path("programming")), "content")
 CUSTOM_VERTO_TEMPLATES = os.path.join(str(ROOT_DIR.path("utils")), "custom_converter_templates", "")
 SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
 SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')

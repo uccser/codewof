@@ -54,7 +54,7 @@
           {% activeurl %}
           <ul class="navbar-nav w-100">
             <li class="nav-item mr-auto">
-              <a class="nav-link" href="{% url 'codewof:question_list' %}">Questions</a>
+              <a class="nav-link" href="{% url 'programming:question_list' %}">Questions</a>
             </li>
             {% if request and request.user.is_authenticated %}
             {# URL provided by django-allauth/account/urls.py #}
@@ -156,7 +156,7 @@
                 </a>
               </li>
               <li>
-                <a href="{% url 'codewof:home' %}">
+                <a href="{% url 'programming:home' %}">
                   {% trans "Questions" %}
                 </a>
               </li>

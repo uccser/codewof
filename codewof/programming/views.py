@@ -1,4 +1,4 @@
-"""Views for codeWOF application."""
+"""Views for programming application."""
 
 from django.views import generic
 from django.utils import timezone
@@ -6,7 +6,7 @@ from django.http import JsonResponse, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 import json
-from codewof.models import (
+from programming.models import (
     Profile,
     Question,
     TestCase,
@@ -19,9 +19,9 @@ QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 
 
 class IndexView(generic.base.TemplateView):
-    """Homepage for CodeWOF."""
+    """Homepage for programming."""
 
-    template_name = 'codewof/index.html'
+    template_name = 'programming/index.html'
 
     def get_context_data(self, **kwargs):
         """Get additional context data for template."""
@@ -35,7 +35,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
 
     login_url = '/login/'
     redirect_field_name = 'next'
-    template_name = 'codewof/profile.html'
+    template_name = 'programming/profile.html'
     model = Profile
 
     def get_context_data(self, **kwargs):
@@ -91,7 +91,7 @@ class QuestionView(LoginRequiredMixin, generic.DetailView):
     in order to determine the required template to render.
     """
 
-    template_name = 'codewof/question.html'
+    template_name = 'programming/question.html'
 
     def get_object(self, **kwargs):
         """Get question object for view."""

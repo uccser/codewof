@@ -1,8 +1,8 @@
-"""Admin configuration for codeWOF."""
+"""Admin configuration for programming."""
 
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from codewof.models import Attempt, QuestionTypeDebugging
+from programming.models import Attempt, QuestionTypeDebugging
 
 User = get_user_model()
 
