@@ -1,6 +1,6 @@
 """Views for users application."""
 
-from random import choices
+from random import Random
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,7 +9,8 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView, RedirectView, UpdateView
 from users.forms import UserChangeForm
-from programming.models import Question
+from programming.models import Question, Attempt
+from programming import settings
 from research.models import StudyRegistration
 
 User = get_user_model()
@@ -24,13 +25,14 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         """Get object for template."""
-        if self.request.user.is_authenticated:
-            return User.objects.get(pk=self.request.user.pk)
+        return self.request.user
 
     def get_context_data(self, **kwargs):
         """Get additional context data for template."""
         context = super().get_context_data(**kwargs)
-        now = timezone.now()
+        now = timezone.localtime()
+        today = now.date()
+
         if self.request.user.is_authenticated:
             # Look for active study registration
             try:
@@ -42,15 +44,38 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             except ObjectDoesNotExist:
                 study_registration = None
 
+        # Get questions not attempted before today
         if study_registration:
             questions = study_registration.study_group.questions()
         else:
             questions = Question.objects.all()
-
+        # TODO: Also filter by questions added before today
         questions = questions.filter(
-            Q(attempt__passed_tests=False)|Q(attempt__isnull=True)
-        ).distinct('pk').select_subclasses()
-        context['questions_to_do'] = choices(questions, k=3)
+            Q(attempt__isnull=True) |
+            (Q(attempt__passed_tests=False) & Q(attempt__datetime__date__lte=today)) |
+            (Q(attempt__passed_tests=True) & Q(attempt__datetime__date=today))
+        ).order_by('pk').distinct('pk').select_subclasses()
+        questions = list(questions)
+
+        # Randomly pick 3 based off seed of todays date
+        if len(questions) > 0:
+            random_seeded = Random(today)
+            number_to_do = min(len(questions), settings.QUESTIONS_PER_DAY)
+            todays_questions = random_seeded.sample(questions, number_to_do)
+            all_complete = True
+            for question in todays_questions:
+                question.completed = Attempt.objects.filter(
+                    profile=self.request.user.profile,
+                    question=question,
+                    passed_tests=True,
+                ).exists()
+                if all_complete and not question.completed:
+                    all_complete = False
+        else:
+            todays_questions = list()
+            all_complete = False
+        context['questions_to_do'] = todays_questions
+        context['all_complete'] = all_complete
 
         # Show studies
         studies = self.request.user.user_type.studies.filter(
