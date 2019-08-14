@@ -11,11 +11,16 @@
       <div class="col-12 col-md-8 mb-3">
         <h2>Your questions for today</h2>
         <p>We recommend doing one or two questions per day, to maintain your programming skill over a long period of time.</p>
-        <div class="row">
-          {% for question in questions_to_do %}
-            {% include "programming/question_components/question-card.html" %}
-          {% endfor %}
-        </div>
+
+        {% if questions_to_do %}
+          <div class="row">
+            {% for question in questions_to_do %}
+              {% include "programming/question_components/question-card.html" %}
+            {% endfor %}
+          </div>
+        {% else %}
+          <p><strong>Congratulations!</strong> No more questions today!</p>
+        {% endif %}
       </div>
 
       <div class="col-12 col-md-4 mb-3">
