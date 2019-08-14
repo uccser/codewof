@@ -277,3 +277,39 @@ shutdown-machine:
     4: normal
     5: exceptional
     6: exceptional
+
+triangle-pattern:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for i in range(1, x):'
+    - 'print(" ")'
+    - 'print("*")'
+    - 'print(i * " ")'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+divisible-by-3:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+reverse-string:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for char in range(len(string), -1, -1):'
+    - 'for char in range(len(string) - 1, 1, 1):'
+    - 'print(string[char])'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
