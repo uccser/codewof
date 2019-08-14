@@ -51,8 +51,8 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['first_name', 'user_type']
 
     def get_absolute_url(self):
-        """Return URL for user's webpage."""
-        return reverse('users:profile')
+        """Return URL for user's dashboard."""
+        return reverse('users:dashboard')
 
     def __str__(self):
         """Name of the user."""

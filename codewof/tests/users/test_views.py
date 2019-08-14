@@ -25,7 +25,7 @@ class TestUserUpdateView:
 
         view.request = request
 
-        assert view.get_success_url() == f"/users/profile/"
+        assert view.get_success_url() == f"/users/dashboard/"
 
     def test_get_object(
         self, user: settings.AUTH_USER_MODEL, request_factory: RequestFactory
@@ -50,4 +50,4 @@ class TestUserRedirectView:
 
         view.request = request
 
-        assert view.get_redirect_url() == f"/users/profile/"
+        assert view.get_redirect_url() == f"/users/dashboard/"

@@ -30,20 +30,6 @@ class IndexView(generic.base.TemplateView):
         return context
 
 
-class ProfileView(LoginRequiredMixin, generic.DetailView):
-    """Displays a user's profile."""
-
-    login_url = '/login/'
-    redirect_field_name = 'next'
-    template_name = 'programming/profile.html'
-    model = Profile
-
-    def get_context_data(self, **kwargs):
-        """Get additional context data for template."""
-        context = super().get_context_data(**kwargs)
-        return context
-
-
 class QuestionListView(LoginRequiredMixin, generic.ListView):
     """View for listing questions."""
 

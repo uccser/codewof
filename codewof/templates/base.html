@@ -59,7 +59,7 @@
             {% if request and request.user.is_authenticated %}
             {# URL provided by django-allauth/account/urls.py #}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:profile'  %}">Welcome
+              <a class="nav-link" href="{% url 'users:dashboard'  %}">Welcome
                 {{ request.user.get_short_name }}</a>
             </li>
             {# URL provided by django-allauth/account/urls.py #}
