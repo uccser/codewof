@@ -1,6 +1,6 @@
 """Factory for creating loader objects."""
 
-from codewof.management.commands._QuestionsLoader import QuestionsLoader
+from programming.management.commands._QuestionsLoader import QuestionsLoader
 
 
 class LoaderFactory:

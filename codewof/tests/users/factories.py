@@ -3,6 +3,7 @@
 from typing import Any, Sequence
 from django.contrib.auth import get_user_model
 import factory
+from users.models import UserType
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -11,6 +12,7 @@ class UserFactory(factory.DjangoModelFactory):
     email = factory.Faker("email")
     first_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
+    user_type = factory.Iterator(UserType.objects.all())
 
     @factory.post_generation
     def password(self, create: bool, extracted: Sequence[Any], **kwargs):

@@ -10,34 +10,13 @@ $(document).ready(function(){
         new Sortable(element, {
             group: 'parsons', // set both lists to same group
             animation: 150,
-            swapThreshold: 0.5,
+            swapThreshold: 0.4,
             fallbackOnBody: true
         });
     });
 
     $('#run_code').click(function () {
-        base.clear_submission_feedback();
-        for (var id in test_cases) {
-            if (test_cases.hasOwnProperty(id)) {
-                var test_case = test_cases[id];
-                test_case.received_output = '';
-                test_case.passed = false;
-                test_case.runtime_error = false;
-            }
-        }
-        var user_code = get_user_code();
-        test_cases = base.run_test_cases(test_cases, user_code, run_python_code);
-        base.ajax_request(
-            'save_question_attempt',
-            {
-                user_input: user_code,
-                question: question_id,
-                test_cases: test_cases,
-            },
-            function (result) { console.log(result); }
-        );
-
-        base.display_submission_feedback(test_cases);
+        run_code(true);
     });
 
     for (let i = 0; i < test_cases_list.length; i++) {
@@ -45,6 +24,31 @@ $(document).ready(function(){
         test_cases[data.id] = data
     }
 });
+
+function run_code(submit) {
+    base.clear_submission_feedback();
+    for (var id in test_cases) {
+        if (test_cases.hasOwnProperty(id)) {
+            var test_case = test_cases[id];
+            test_case.received_output = '';
+            test_case.passed = false;
+            test_case.runtime_error = false;
+        }
+    }
+    var user_code = get_user_code();
+    test_cases = base.run_test_cases(test_cases, user_code, run_python_code);
+    if (submit) {
+        base.ajax_request(
+            'save_question_attempt',
+            {
+                user_input: user_code,
+                question: question_id,
+                test_cases: test_cases,
+            }
+        );
+    }
+    base.display_submission_feedback(test_cases);
+}
 
 function get_user_code() {
     var indent = '';

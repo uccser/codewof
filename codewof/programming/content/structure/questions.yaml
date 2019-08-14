@@ -1,0 +1,279 @@
+say-hello:
+  type: program
+  test-cases:
+    1: normal
+
+add-10:
+  type: program
+  test-cases:
+    1: normal
+    2: normal
+
+doubler:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
+
+double-evens:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'if number // 2 == 0:'
+    - 'return number x 2'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
+
+countdown:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for i in range(num):'
+    - 'while num > 1:'
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+
+repeated-add-10:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
+
+factorial:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+ticket-calculator:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+rectangle-area:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+where-is:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+
+pieces-of-chocolate:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+
+print-codewof:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print("Welcome to codeWOF")'
+    - 'return "Welcome to codeWOF!"'
+  test-cases:
+    1: normal
+
+greeting:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print("Hello" + name + "!")'
+    - 'print("Hello " + name)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+string-concatenation:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+
+bus-info:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print("Service " + bus_id + " is due in " + str(minutes_away) + " minutes time.")'
+    - 'return "Service " + bus_id + " is due in " + minutes_away + " minutes time."'
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: exceptional
+
+voting-age:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: exceptional
+    6: exceptional
+
+over-the-limit:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'return "True"'
+    - 'return "False"'
+    - 'if mcg_per_litre >= 250:'
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: exceptional
+    6: exceptional
+    7: exceptional
+
+low-battery:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'if percent <= 20:'
+    - 'is_low = "True"'
+    - 'is_low = "False"'
+  test-cases:
+    1: normal
+    2: exceptional
+    3: exceptional
+    4: normal
+    5: exceptional
+    6: exceptional
+
+full-name:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+hours-to-seconds:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+how-many-dozens:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: exceptional
+
+favourite-number:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+    6: normal
+    7: normal
+    8: normal
+
+string-too-long:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+    6: normal
+    7: normal
+
+
+price-in-budget:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+    6: normal
+
+find-highest-number:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+    5: exceptional
+
+shutdown-machine:
+  type: program
+  test-cases:
+    1: exceptional
+    2: exceptional
+    3: normal
+    4: normal
+    5: exceptional
+    6: exceptional
