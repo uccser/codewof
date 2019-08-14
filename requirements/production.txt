@@ -1,0 +1,9 @@
+# PRECAUTION: avoid production dependencies that aren't in development
+
+-r ./base.txt
+
+# Django
+# ------------------------------------------------------------------------------
+django-storages[google]==1.7.1  # https://github.com/jschneier/django-storages
+google-auth==1.6.3  # https://github.com/googleapis/google-auth-library-python
+google-cloud-logging==1.12.1

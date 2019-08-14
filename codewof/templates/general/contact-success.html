@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+
+{% block page_heading %}
+    <h1>Thank you for your message</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    <p>
+        We aim to respond within 10 working days.
+    </p>
+
+    <a href="{% url 'general:home' %}" class="btn btn-primary">
+        Back to homepage
+    </a>
+{% endblock content %}

@@ -1,0 +1,26 @@
+.navbar {
+    padding-top: 0;
+    padding-bottom: 0;
+    .navbar-brand {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        svg {
+            height: 1.3rem;
+            width: auto;
+        }
+    }
+    .navbar-toggler {
+        border: 0;
+    }
+}
+
+#primary-navbar {
+    background-color: $brand-colour-dark !important;
+    .nav-link:hover,
+    .navbar-brand:hover {
+        background-color: $brand-colour-light;
+    }
+    &.navbar-dark .navbar-nav .nav-link {
+        color: rgba(255, 255, 255, .75);
+    }
+}

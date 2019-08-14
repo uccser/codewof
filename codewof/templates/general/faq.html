@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block page_heading %}
+    <h1>Frequently Asked Questions</h1>
+{% endblock page_heading %}
+
+
+{% block content %}
+    <p class="mb-4">
+        If your question is not answered below, please <a href="{% url 'general:contact' %}">contact us</a> with your question so we can add to this page.
+    </p>
+
+    <div class="form-row align-items-center mb-4">
+        <div class="col mb-1">
+            <input type="text" class="form-control" id="faq-search" placeholder="Enter search terms">
+        </div>
+        <div class="col-12 col-sm-3 mb-1">
+            <button id="clear-search" type="button" class="btn btn-outline-danger">
+                Clear search terms
+            </button>
+        </div>
+    </div>
+
+    <div id="faq-search-results">
+    </div>
+
+    <div id="faq-all">
+        <div class="faq">
+            <h5>Why was this website built?</h5>
+            <p>
+                This website was built to support Digital Technology and Hangarau Matihiko educators throughout New Zealand.
+                We have been planning this website since 2015, and now have the resources and skills available to bring this to reality.
+            </p>
+        </div>
+
+        <div class="faq">
+            <h5>It would be great if you could add a feature to the website that...</h5>
+            <p>
+                Please let me know any ideas, feature requests, or other feedback by <a href="{% url 'general:contact' %}">sending us an email</a>.
+                This website is built for you, so we would love to improve it in any way possible.
+            </p>
+        </div>
+
+        <div class="faq">
+            <h5>I have found a bug on the website!</h5>
+            <p>
+                Please <a href="{% url 'general:contact' %}">sending us an email</a> explaining the bug you found.
+                If it's an interface issue then please attach a screenshot.
+            </p>
+        </div>
+
+        <div class="faq">
+            <h5>Is this website open source?</h5>
+            <p>
+                The software powering this website is open source on <a href="https://github.com/uccser/codewof">GitHub</a>.
+                The website is hosted on Google Cloud Platform.
+            </p>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/faq.js' %}"></script>
+{% endblock scripts %}

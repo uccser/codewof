@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load static svg %}
+
+{% block body_container %}
+    <div class="container">
+        <div class="text-center">
+            <h1 id="codewof-title" class="display-2 mt-4 mb-3">
+                {% svg 'logo' %}
+            </h1>
+            <p class="lead">You know programming skills, now <strong>maintain</strong> them.</p>
+
+            {% if DEPLOYMENT_TYPE == 'dev' %}
+                <div class="alert alert-warning d-inline-block" role="alert">
+                    You are viewing the test server, which has all data wiped regularly.
+                </div>
+            {% endif %}
+        </div>
+
+        <p>
+            This website provides you with short programming exercises for you to complete daily.
+            With a free account you can save your progress and track your programming fitness.
+        </p>
+
+        <p>
+            We are currently actively developing this website in it's alpha state, in order to equip teachers and receive
+            feedback.
+            As we are developing the core principles and therefore the CodeWOF structure and content will change.
+        </p>
+    </div>
+{% endblock body_container %}

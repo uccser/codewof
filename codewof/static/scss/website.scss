@@ -1,0 +1,237 @@
+
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/mixins";
+@import "core-variables";
+@import "functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/root";
+@import "node_modules/bootstrap/scss/reboot";
+@import "node_modules/bootstrap/scss/type";
+@import "node_modules/bootstrap/scss/images";
+@import "node_modules/bootstrap/scss/code";
+@import "node_modules/bootstrap/scss/grid";
+@import "node_modules/bootstrap/scss/tables";
+@import "node_modules/bootstrap/scss/forms";
+@import "node_modules/bootstrap/scss/buttons";
+@import "node_modules/bootstrap/scss/transitions";
+@import "node_modules/bootstrap/scss/dropdown";
+@import "node_modules/bootstrap/scss/button-group";
+@import "node_modules/bootstrap/scss/input-group";
+@import "node_modules/bootstrap/scss/custom-forms";
+@import "node_modules/bootstrap/scss/nav";
+@import "node_modules/bootstrap/scss/navbar";
+@import "node_modules/bootstrap/scss/card";
+@import "node_modules/bootstrap/scss/breadcrumb";
+@import "node_modules/bootstrap/scss/pagination";
+@import "node_modules/bootstrap/scss/badge";
+@import "node_modules/bootstrap/scss/jumbotron";
+@import "node_modules/bootstrap/scss/alert";
+@import "node_modules/bootstrap/scss/progress";
+@import "node_modules/bootstrap/scss/media";
+@import "node_modules/bootstrap/scss/list-group";
+@import "node_modules/bootstrap/scss/close";
+@import "node_modules/bootstrap/scss/toasts";
+@import "node_modules/bootstrap/scss/modal";
+@import "node_modules/bootstrap/scss/tooltip";
+@import "node_modules/bootstrap/scss/popover";
+@import "node_modules/bootstrap/scss/carousel";
+@import "node_modules/bootstrap/scss/spinners";
+@import "node_modules/bootstrap/scss/utilities";
+@import "node_modules/bootstrap/scss/print";
+@import "details";
+@import "navbar";
+@import "homepage";
+@import "footer";
+@import "question-card";
+
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Righteous&display=swap');
+@import "node_modules/codemirror/lib/codemirror";
+
+body {
+  font-family: 'Noto Sans', sans-serif !important;
+  background-color: #fffcf8;
+}
+
+h1, h2, h3 {
+    font-family: 'Righteous', sans-serif;
+    color: hsl(hue($brand-colour), saturation($brand-colour), 25%);
+}
+
+svg {
+  width: 100%;
+}
+
+#codewof-navbar {
+    background-color: $brand-colour;
+    .navbar-brand {
+        font-family: 'Righteous', sans-serif;
+    }
+}
+#codewof-title {
+    font-size: 6rem;
+    color: $brand-colour;
+}
+
+.code-read-only {
+  cursor: not-allowed;
+  background-color: #dfdfdf;
+}
+
+// Forms
+
+form {
+  .asteriskField {
+      color: #ff3f34;
+      font-weight: bold;
+  }
+  .invalid-feedback {
+    display: block !important;
+}
+}
+
+
+// Forms end
+
+#test-case-table {
+    white-space: nowrap;
+}
+
+.error {
+    color: #b80000;
+    font-weight: bold;
+}
+
+.question-checkbox {
+  width: 30px;
+}
+
+// Parsons problems
+
+.parsons-drag-container {
+    padding: 0.7rem 0;
+    .parsons-drag-container {
+        margin-left: 2rem;
+    }
+}
+.parsons-draggable-line {
+    font-family: $font-family-monospace;
+    background: #f2f3f5;
+    border: 2px solid #dee2e6;
+    border-radius: 5px;
+    margin-bottom: 0.3rem;
+    cursor: grab;
+    padding-left: 0.5rem;
+    padding-right: 0.2rem;
+}
+#user-code-lines,
+#available-lines {
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    padding: 0.3rem 0.3rem 3rem;
+    min-height: 5rem;
+    > .parsons-draggable-line {
+        margin-left: 0 !important;
+    }
+    > .parsons-draggable-line:last-child {
+        margin-bottom: 0 !important;
+    }
+}
+.parsons-line-content {
+    position: relative;
+    top: 0.5rem;
+}
+.sortable-chosen {
+    opacity: 0.5;
+}
+
+// Other
+
+strong {
+  font-weight: bold;
+}
+
+.logo-header {
+  max-height: 10rem;
+}
+#svg-logo-inline {
+  width: 12rem;
+  vertical-align: 3px;
+}
+
+.footer-logo {
+    max-height: 5rem;
+}
+
+// Create badge CSS rules off colour names
+@each $color, $value in $colors {
+  .badge-#{$color} {
+    @include badge-variant($value);
+  }
+}
+
+.img-inline {
+    max-height: 1.5rem;
+}
+
+.img-y1 {
+  max-height: 1rem;
+}
+.img-y2 {
+  max-height: 2rem;
+}
+.img-y3 {
+  max-height: 3rem;
+}
+.img-y4 {
+  max-height: 4rem;
+}
+.img-y5 {
+  max-height: 5rem;
+}
+////////////////////////////////
+		//Variables//
+////////////////////////////////
+
+// Alert colors
+
+$white: #fff;
+$mint-green: #d6e9c6;
+$black: #000;
+$pink: #f2dede;
+$dark-pink: #eed3d7;
+$red: #b94a48;
+
+////////////////////////////////
+		//Alerts//
+////////////////////////////////
+
+// bootstrap alert CSS, translated to the django-standard levels of
+// debug, info, success, warning, error
+
+.alert-debug {
+  background-color: $white;
+  border-color: $mint-green;
+  color: $black;
+}
+
+.alert-error {
+  background-color: $pink;
+  border-color: $dark-pink;
+  color: $red;
+}
+
+
+// Logo SVG classes
+
+.logo_text {
+  fill: $brand-colour;
+}
+.logo_symbol {
+  fill: #ffbf29;
+}
+
+.inverse-logo {
+  .logo_text {
+    fill: white;
+  }
+}

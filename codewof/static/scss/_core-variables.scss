@@ -1,0 +1,21 @@
+$brand-colour: #70a1ff;
+$brand-colour-dark: darken($brand-colour, 10%);
+$brand-colour-light: lighten($brand-colour, 10%);
+
+// Question types
+$question-type-program: #6AAD6F;
+$question-type-function: #639ACA;
+$question-type-parsons: #FFC107;
+$question-type-debugging: #D03A71;
+
+// Bootstrap
+// See: https://getbootstrap.com/docs/4.2/getting-started/theming/
+$theme-colors: (
+  "primary": $brand-colour
+);
+$link-color: #007bff;
+$link-colour: $link-color;
+
+.flex-grow {
+  flex-grow: 1;
+}

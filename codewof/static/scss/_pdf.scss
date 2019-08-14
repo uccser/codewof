@@ -1,0 +1,39 @@
+
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/mixins";
+@import "core-variables";
+@import "functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/root";
+@import "node_modules/bootstrap/scss/reboot";
+@import "node_modules/bootstrap/scss/type";
+@import "node_modules/bootstrap/scss/utilities";
+
+body {
+  font-family: 'Noto Sans', sans-serif !important;
+}
+
+@page {
+    size: A4;
+    margin: 10mm 10mm 20mm 10mm;
+}
+footer {
+    bottom: -13mm;
+}
+.fixed-running-element{
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8em;
+    color: #888;
+    img {
+        max-height: 1.5em;
+        vertical-align: text-bottom;
+    }
+}
+
+.page-break {
+    page-break-after: always;
+}
