@@ -1,0 +1,1 @@
+print(smallest_number([4, 5, 8, 3, 2, 1]))

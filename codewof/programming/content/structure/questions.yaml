@@ -341,3 +341,15 @@ shopping-list:
     2: normal
     3: normal
     4: normal
+
+find-smallest-number:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: exceptional
+    2: normal
+    3: exceptional
+    4: normal
+    5: normal
