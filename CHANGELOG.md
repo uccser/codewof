@@ -6,9 +6,11 @@
 - Add user dashboard listing daily questions.
 - Add 9 new questions.
 - Redesign homepage.
-- Fix reCAPTCHA checkers.
 - Add privacy policy, terms of service, and cookie policy.
+- Fix reCAPTCHA checkers.
 - Fix bug where users could register for a research study with no groups.
+- Provide link to dashboard after questions.
+- Simplify available navbar items.
 
 ## 1.0.0
 
