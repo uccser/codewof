@@ -58,7 +58,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
         # Randomly pick 3 based off seed of todays date
         if len(questions) > 0:
-            random_seeded = Random(today)
+            random_seeded = Random('{}{}'.format(self.request.user.pk, today))
             number_to_do = min(len(questions), settings.QUESTIONS_PER_DAY)
             todays_questions = random_seeded.sample(questions, number_to_do)
             all_complete = True
