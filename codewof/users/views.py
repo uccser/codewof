@@ -45,7 +45,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
         # Get questions not attempted before today
         if study_registration:
-            questions = study_registration.study_group.questions()
+            questions = study_registration.study_group.questions.all()
         else:
             questions = Question.objects.all()
         # TODO: Also filter by questions added before today
