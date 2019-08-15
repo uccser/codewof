@@ -82,7 +82,7 @@ cmd_update() {
   cmd_collect_static
   echo ""
   echo -e "\n${GREEN}Content is loaded!${NC}"
-  echo "Open your preferred web browser to the URL 'localhost:82'"
+  echo "Open your preferred web browser to the URL 'localhost:83'"
 }
 defhelp update 'Update system ready for use.'
 
