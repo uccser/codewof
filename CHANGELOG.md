@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0
+
+- Add 'How to use' section and dropzone highlighting for Parson's Problems. Fixes #35.
+- Pick different daily questions for each user. Fixes #43.
+- Add title attributes for each webpage.
+- Prevent users from removing user type. Fixes #41.
+- Add logging for choosing user daily questions.
+
 ## 1.1.1
 
 - Fix bug where home link in navbar didn't highlight.
