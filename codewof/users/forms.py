@@ -71,21 +71,37 @@ class SignupForm(forms.Form):
         user.save()
 
 
-class UserChangeForm(auth.forms.UserChangeForm):
+class UserChangeForm(forms.ModelForm):
+    """Form class for changing user."""
+
+    user_type = forms.ModelChoiceField(
+        queryset=UserType.objects.all(),
+        label='Are you a student or teacher?',
+        empty_label=None,
+    )
+
+    class Meta:
+        """Metadata for UserChangeForm class."""
+
+        model = User
+        fields = ('first_name', 'last_name', 'user_type')
+
+
+class UserAdminChangeForm(auth.forms.UserChangeForm):
     """Form class for changing user."""
 
     class Meta(auth.forms.UserChangeForm.Meta):
-        """Metadata for UserChangeForm class."""
+        """Metadata for UserAdminChangeForm class."""
 
         model = User
         fields = ('email', 'last_name', 'user_type')
 
 
-class UserCreationForm(auth.forms.UserCreationForm):
+class UserAdminCreationForm(auth.forms.UserCreationForm):
     """Form class for creating user."""
 
     class Meta(auth.forms.UserCreationForm.Meta):
-        """Metadata for UserCreationForm class."""
+        """Metadata for UserAdminCreationForm class."""
 
         model = User
         fields = ('email', 'first_name', 'last_name', 'user_type')

@@ -8,8 +8,9 @@ from django.urls import reverse
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView, RedirectView, UpdateView
-from programming.models import Question, Attempt
 from programming import settings
+from programming.models import Question, Attempt
+from users.forms import UserChangeForm
 from research.models import StudyRegistration
 
 User = get_user_model()
@@ -95,7 +96,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     """View for updating user data."""
 
     model = User
-    fields = ['first_name', 'last_name', 'user_type']
+    form_class = UserChangeForm
 
     def get_success_url(self):
         """URL to route to on successful update."""
