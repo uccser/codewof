@@ -1,5 +1,6 @@
 """Views for users application."""
 
+import logging
 from random import Random
 from django.utils import timezone
 from django.contrib.auth import get_user_model
@@ -8,11 +9,13 @@ from django.urls import reverse
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView, RedirectView, UpdateView
-from programming.models import Question, Attempt
 from programming import settings
+from programming.models import Question, Attempt
+from users.forms import UserChangeForm
 from research.models import StudyRegistration
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -48,6 +51,12 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             questions = study_registration.study_group.questions.all()
         else:
             questions = Question.objects.all()
+
+        log_message = 'Questions for user {} on {} ({}):\n'.format(self.request.user, now, today)
+        for i, question in enumerate(questions):
+            log_message += '{}: {}\n'.format(i, question)
+        logging.info(log_message)
+
         # TODO: Also filter by questions added before today
         questions = questions.filter(
             Q(attempt__isnull=True) |
@@ -56,9 +65,14 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         ).order_by('pk').distinct('pk').select_subclasses()
         questions = list(questions)
 
+        log_message = 'Filtered questions for user {}:\n'.format(self.request.user)
+        for i, question in enumerate(questions):
+            log_message += '{}: {}\n'.format(i, question)
+        logging.info(log_message)
+
         # Randomly pick 3 based off seed of todays date
         if len(questions) > 0:
-            random_seeded = Random(today)
+            random_seeded = Random('{}{}'.format(self.request.user.pk, today))
             number_to_do = min(len(questions), settings.QUESTIONS_PER_DAY)
             todays_questions = random_seeded.sample(questions, number_to_do)
             all_complete = True
@@ -73,6 +87,12 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         else:
             todays_questions = list()
             all_complete = False
+
+        log_message = 'Chosen questions for user {}:\n'.format(self.request.user)
+        for i, question in enumerate(todays_questions):
+            log_message += '{}: {}\n'.format(i, question)
+        logging.info(log_message)
+
         context['questions_to_do'] = todays_questions
         context['all_complete'] = all_complete
 
@@ -95,7 +115,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     """View for updating user data."""
 
     model = User
-    fields = ['first_name', 'last_name', 'user_type']
+    form_class = UserChangeForm
 
     def get_success_url(self):
         """URL to route to on successful update."""
