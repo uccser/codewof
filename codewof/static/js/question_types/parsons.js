@@ -11,7 +11,13 @@ $(document).ready(function(){
             group: 'parsons', // set both lists to same group
             animation: 150,
             swapThreshold: 0.4,
-            fallbackOnBody: true
+            fallbackOnBody: true,
+            onStart: function (event) {
+                $('.parsons-drag-top-container').addClass('dragging');
+            },
+            onEnd: function (event) {
+                $('.parsons-drag-top-container').removeClass('dragging');
+            },
         });
     });
 

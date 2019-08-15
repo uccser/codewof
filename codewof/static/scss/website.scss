@@ -113,6 +113,15 @@ form {
         margin-left: 2rem;
     }
 }
+
+$parsons-hover-colour: #2196f35c;
+.parsons-drag-top-container.dragging,
+.parsons-drag-top-container.dragging .parsons-drag-container {
+      background-image: radial-gradient($parsons-hover-colour 20%, transparent 20%), radial-gradient($parsons-hover-colour 20%, transparent 20%);
+    background-position: 0px 0, 5px 5px;
+    background-size: 10px 10px;
+}
+
 .parsons-draggable-line {
     font-family: $font-family-monospace;
     background: #f2f3f5;
