@@ -100,7 +100,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         """URL to route to on successful update."""
-        return reverse('users:profile')
+        return reverse('users:dashboard')
 
     def get_object(self):
         """Object to perform update with."""
@@ -114,4 +114,4 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
     def get_redirect_url(self):
         """URL to redirect to."""
-        return reverse("users:profile")
+        return reverse("users:dashboard")
