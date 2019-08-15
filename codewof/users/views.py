@@ -8,7 +8,6 @@ from django.urls import reverse
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView, RedirectView, UpdateView
-from users.forms import UserChangeForm
 from programming.models import Question, Attempt
 from programming import settings
 from research.models import StudyRegistration
