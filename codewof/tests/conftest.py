@@ -5,7 +5,7 @@ from django.conf import settings
 from django.test import RequestFactory
 from django.core import management
 from tests.users.factories import UserFactory
-from users.models import UserType
+from users.models import User, UserType
 
 
 @pytest.fixture(autouse=True)
@@ -21,6 +21,7 @@ def user(request):
 
     def fin():
         print("teardown")
+        User.objects.all().delete()
         UserType.objects.all().delete()
 
     request.addfinalizer(fin)
