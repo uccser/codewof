@@ -1,7 +1,11 @@
 # Changelog
 
-## 1.1.0
+## 1.1.1
 
+- Fix bug where home link in navbar didn't highlight.
+- Set automated production deployment to master branch.
+
+## 1.1.0
 
 - Add user dashboard listing daily questions.
 - Add 9 new questions.

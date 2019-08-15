@@ -50,7 +50,7 @@ jobs:
           script: bash ./infrastructure/prod-deploy/deploy-app.sh
           skip_cleanup: true
           on:
-            branch: release/1.0.0
+            branch: master
     - script: skip
       name: "Update Google Cloud SQL database"
       deploy:
@@ -58,7 +58,7 @@ jobs:
           script: bash ./infrastructure/prod-deploy/update-content.sh
           skip_cleanup: true
           on:
-            branch: release/1.0.0
+            branch: master
     - script: skip
       name: "Copy static files to Google Storage Bucket"
       deploy:
@@ -66,7 +66,7 @@ jobs:
           script: bash ./infrastructure/prod-deploy/deploy-static-files.sh
           skip_cleanup: true
           on:
-            branch: release/1.0.0
+            branch: master
 notifications:
   email: false
   slack:
@@ -78,4 +78,4 @@ stages:
   - name: development deployment
     if: branch = develop
   - name: production deployment
-    if: branch = release/1.0.0
+    if: branch = master
