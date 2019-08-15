@@ -7,7 +7,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 import json
 from programming.models import (
-    Profile,
     Question,
     TestCase,
     Attempt,
@@ -27,20 +26,6 @@ class IndexView(generic.base.TemplateView):
         """Get additional context data for template."""
         context = super().get_context_data(**kwargs)
         context['questions'] = Question.objects.select_subclasses()
-        return context
-
-
-class ProfileView(LoginRequiredMixin, generic.DetailView):
-    """Displays a user's profile."""
-
-    login_url = '/login/'
-    redirect_field_name = 'next'
-    template_name = 'programming/profile.html'
-    model = Profile
-
-    def get_context_data(self, **kwargs):
-        """Get additional context data for template."""
-        context = super().get_context_data(**kwargs)
         return context
 
 

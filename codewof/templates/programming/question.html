@@ -49,6 +49,10 @@
             {% include "programming/question_components/test-case-functions-table.html" %}
         {% endif %}
     </div>
+
+    <div class="text-center">
+        <a class="btn btn-outline-primary" href="{% url 'users:dashboard' %}">Return to dashboard</a>
+    </div>
 {% endblock %}
 
 {% block scripts %}

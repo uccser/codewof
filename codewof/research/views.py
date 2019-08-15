@@ -27,7 +27,10 @@ class StudyListView(LoginRequiredMixin, generic.ListView):
         Returns:
             Study queryset.
         """
-        studies = self.request.user.user_type.studies.all()
+        studies = self.request.user.user_type.studies.filter(
+            visible=True,
+            groups__isnull=False,
+        ).distinct()
         # TODO: Simplify to one database query
         for study in studies:
             study.registered = StudyRegistration.objects.filter(
@@ -44,12 +47,15 @@ class StudyDetailView(LoginRequiredMixin, generic.DetailView):
     context_object_name = 'study'
 
     def get_queryset(self):
-        """Return studies objects for page.
+        """Return studies objects to select study from.
 
         Returns:
             Study queryset.
         """
-        studies = Study.objects.filter(visible=True).order_by('start_date')
+        studies = Study.objects.filter(
+            visible=True,
+            groups__isnull=False,
+        ).distinct()
         return studies
 
     def get_context_data(self, **kwargs):
@@ -74,6 +80,8 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         """Check if consent form can be viewed."""
         self.study = Study.objects.get(
             pk=self.kwargs.get('pk'),
+            visible=True,
+            groups__isnull=False,
         )
         registration = None
         if self.request.user.is_authenticated:

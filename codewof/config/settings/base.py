@@ -375,7 +375,7 @@ CKEDITOR_CONFIGS = {
 
 # Other
 # ------------------------------------------------------------------------------
-DEPLOYMENT_TYPE = 'local'
+DEPLOYMENT_TYPE = env("DEPLOYMENT", default='local')
 QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path("programming")), "content")
 CUSTOM_VERTO_TEMPLATES = os.path.join(str(ROOT_DIR.path("utils")), "custom_converter_templates", "")
 SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
