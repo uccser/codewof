@@ -1,6 +1,6 @@
 {% load static %}
 
-<div class="qc-container col-12 col-md-6 col-lg-4">
+<div class="qc-container">
     <a class="qc-card qc-{{ question.QUESTION_TYPE }} {% if question.completed %}qc-complete{% endif %}" href="{{ question.get_absolute_url }}">
         <div class="qc-checkbox">
             {% if question.completed %}

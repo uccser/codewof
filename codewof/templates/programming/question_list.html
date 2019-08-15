@@ -10,7 +10,9 @@
     {% if questions %}
         <div class="row">
             {% for question in questions %}
-                {% include "programming/question_components/question-card.html" %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    {% include "programming/question_components/question-card.html" %}
+                </div>
             {% endfor %}
         </div>
     {% endif %}
