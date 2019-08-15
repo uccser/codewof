@@ -14,5 +14,4 @@ source ./codewof/load-dev-envs.sh
 # Update the database and website sample content
 ./dev start
 ./dev migrate
-docker-compose exec django /docker_venv/bin/python3 ./manage.py load_user_types
 ./dev sampledata
