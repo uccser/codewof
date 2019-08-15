@@ -227,11 +227,15 @@ $red: #b94a48;
   fill: $brand-colour;
 }
 .logo_symbol {
-  fill: #ffbf29;
+  fill: $brand-secondary-colour;
 }
 
 .inverse-logo {
   .logo_text {
     fill: white;
   }
+}
+
+.orange-underline {
+  border-bottom: 0.5rem $brand-secondary-colour solid;
 }
