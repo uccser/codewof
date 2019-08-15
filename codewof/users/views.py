@@ -30,7 +30,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         """Get additional context data for template."""
         context = super().get_context_data(**kwargs)
-        now = timezone.localtime()
+        now = timezone.now()
         today = now.date()
 
         if self.request.user.is_authenticated:
