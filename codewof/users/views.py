@@ -1,5 +1,6 @@
 """Views for users application."""
 
+import logging
 from random import Random
 from django.utils import timezone
 from django.contrib.auth import get_user_model
@@ -14,6 +15,7 @@ from users.forms import UserChangeForm
 from research.models import StudyRegistration
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -49,6 +51,12 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             questions = study_registration.study_group.questions.all()
         else:
             questions = Question.objects.all()
+
+        log_message = 'Questions for user {} on {} ({}):\n'.format(self.request.user, now, today)
+        for i, question in enumerate(questions):
+            log_message += '{}: {}\n'.format(i, question)
+        logging.info(log_message)
+
         # TODO: Also filter by questions added before today
         questions = questions.filter(
             Q(attempt__isnull=True) |
@@ -56,6 +64,11 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             (Q(attempt__passed_tests=True) & Q(attempt__datetime__date=today))
         ).order_by('pk').distinct('pk').select_subclasses()
         questions = list(questions)
+
+        log_message = 'Filtered questions for user {}:\n'.format(self.request.user)
+        for i, question in enumerate(questions):
+            log_message += '{}: {}\n'.format(i, question)
+        logging.info(log_message)
 
         # Randomly pick 3 based off seed of todays date
         if len(questions) > 0:
@@ -74,6 +87,12 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         else:
             todays_questions = list()
             all_complete = False
+
+        log_message = 'Chosen questions for user {}:\n'.format(self.request.user)
+        for i, question in enumerate(todays_questions):
+            log_message += '{}: {}\n'.format(i, question)
+        logging.info(log_message)
+
         context['questions_to_do'] = todays_questions
         context['all_complete'] = all_complete
 
