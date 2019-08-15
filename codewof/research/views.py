@@ -78,11 +78,11 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
 
     def dispatch(self, request, *args, **kwargs):
         """Check if consent form can be viewed."""
-        self.study = Study.objects.get(
+        self.study = Study.objects.filter(
             pk=self.kwargs.get('pk'),
             visible=True,
             groups__isnull=False,
-        )
+        ).distinct().first()
         registration = None
         if self.request.user.is_authenticated:
             registration = StudyRegistration.objects.filter(
