@@ -52,7 +52,7 @@
         <div class="collapse navbar-collapse" id="navbarContent">
           {% if request %}
             {% activeurl %}
-            <ul class="navbar-nav w-100 d-lg-flex align-items-stretch">
+            <ul class="navbar-nav w-100 d-lg-flex justify-content-end align-items-stretch">
               {% if request and request.user.is_authenticated %}
                 <a class="nav-item nav-link mr-auto" href="{% url 'programming:question_list' %}">Questions</a>
                 {# URL provided by django-allauth/account/urls.py #}
