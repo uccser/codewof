@@ -1,6 +1,6 @@
 # Ticket Calculator
 
-The following function `get_ticket_price(age)` takes an age and returns the ticket cost for a person of that age.
+The following function `get_ticket_price(age)` takes an age and **returns** the ticket cost for a person of that age.
 
 Ticket prices are:
 
