@@ -145,29 +145,37 @@ def save_question_attempt(request):
             question = Question.objects.get(pk=request_json['question'])
             user_code = request_json['user_input']
 
-            test_cases = request_json['test_cases']
-            total_tests = len(test_cases)
-            total_passed = 0
-            for test_case in test_cases.values():
-                if test_case['passed']:
-                    total_passed += 1
-
-            attempt = Attempt.objects.create(
+            # If same as previous attempt, don't save to database
+            previous_attempt = Attempt.objects.filter(
                 profile=profile,
                 question=question,
-                user_code=user_code,
-                passed_tests=total_passed == total_tests,
-            )
+            ).order_by('-datetime').first()
+            if not previous_attempt or user_code != previous_attempt.user_code:
+                test_cases = request_json['test_cases']
+                total_tests = len(test_cases)
+                total_passed = 0
+                for test_case in test_cases.values():
+                    if test_case['passed']:
+                        total_passed += 1
 
-            # Create test case attempt objects
-            for test_case_id, test_case_data in test_cases.items():
-                test_case = TestCase.objects.get(pk=test_case_id)
-                TestCaseAttempt.objects.create(
-                    attempt=attempt,
-                    test_case=test_case,
-                    passed=test_case_data['passed'],
+                attempt = Attempt.objects.create(
+                    profile=profile,
+                    question=question,
+                    user_code=user_code,
+                    passed_tests=total_passed == total_tests,
                 )
 
-            result['success'] = True
+                # Create test case attempt objects
+                for test_case_id, test_case_data in test_cases.items():
+                    test_case = TestCase.objects.get(pk=test_case_id)
+                    TestCaseAttempt.objects.create(
+                        attempt=attempt,
+                        test_case=test_case,
+                        passed=test_case_data['passed'],
+                    )
+                result['success'] = True
+            else:
+                result['success'] = False
+                result['message'] = 'Attempt not saved, same as previous attempt.'
 
     return JsonResponse(result)
