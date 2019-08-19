@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% block title %}{{ question.title }}{% endblock %}
+
 {% block content %}
     <div class="col-12 my-3">
         <h3>{{ question.title }}</h3>

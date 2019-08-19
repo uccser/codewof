@@ -1,3 +1,3 @@
 # Say Hello!
 
-Write a program that prints `Hello world!`.
+Write a program that **prints** `Hello world!`.

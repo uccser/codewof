@@ -6,7 +6,7 @@
     <!-- Metadata -->
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}codeWOF{% endblock title %}</title>
+    <title>{% block custom_title %}{% block title %}{% endblock title %} - codeWOF{% endblock custom_title %}</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -137,7 +137,7 @@
           <div class="col-12 col-md-6">
             <p>
               {% blocktrans trimmed %}
-              <strong>codeWOF</strong> is a website for beginner programmers to maintain their programming skill.
+              <strong>codeWOF</strong> is a website for beginner programmers to maintain their programming skills.
               {% endblocktrans %}
             </p>
           </div>
@@ -151,7 +151,7 @@
                 </a>
               </li>
               <li>
-                <a href="{% url 'programming:home' %}">
+                <a href="{% url 'programming:question_list' %}">
                   {% trans "Questions" %}
                 </a>
               </li>
@@ -193,11 +193,6 @@
               <li>
                 <a href="{% url 'general:faq' %}">
                   {% trans "FAQ" %}
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  {% trans "Feedback" %}
                 </a>
               </li>
               <li>

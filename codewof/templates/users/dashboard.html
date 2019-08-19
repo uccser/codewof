@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}User: {{ user.get_full_name }}{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block content %}
   <div class="container">
-    <h1 class="display-3 text-center">Kia ora {{ user.first_name }}!</h1>
+    <h1 class="display-3 orange-underline text-center">Kia ora {{ user.first_name }}!</h1>
 
     <div class="row">
       <div class="col-12 col-md-8 mb-3">
         <h2>Your questions for today</h2>
-        <p>We recommend doing one or two questions per day, to maintain your programming skill over a long period of time.</p>
+        <p>We recommend doing one or two questions per day, to maintain your programming skills over a long period of time.</p>
 
         {% if questions_to_do %}
           <div class="row">

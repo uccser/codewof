@@ -1,5 +1,6 @@
 """Base settings to build other settings files upon."""
 
+import sys
 import os.path
 import environ
 from utils.get_upload_filepath import get_upload_path_for_date
@@ -334,13 +335,14 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'simple'
+            'formatter': 'simple',
+            'stream': sys.stdout,
         },
     },
     'loggers': {
         'root': {
             'handlers': ['console'],
-            'propagate': False,
+            'propagate': True,
             'level': 'DEBUG',
         },
     },
