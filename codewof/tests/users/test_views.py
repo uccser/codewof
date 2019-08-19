@@ -1,8 +1,8 @@
 import pytest
 from django.conf import settings
 from django.test import RequestFactory
-
 from users.views import UserRedirectView, UserUpdateView
+from users.models import UserType
 
 pytestmark = pytest.mark.django_db
 
@@ -16,38 +16,28 @@ class TestUserUpdateView:
         https://github.com/pytest-dev/pytest-django/pull/258
     """
 
-    def test_get_success_url(
-        self, user: settings.AUTH_USER_MODEL, request_factory: RequestFactory
-    ):
+    def test_get_success_url(self, user, request_factory):
         view = UserUpdateView()
         request = request_factory.get("/fake-url/")
         request.user = user
-
         view.request = request
 
         assert view.get_success_url() == f"/users/dashboard/"
 
-    def test_get_object(
-        self, user: settings.AUTH_USER_MODEL, request_factory: RequestFactory
-    ):
+    def test_get_object(self, user, request_factory):
         view = UserUpdateView()
         request = request_factory.get("/fake-url/")
         request.user = user
-
         view.request = request
-
         assert view.get_object() == user
 
 
 class TestUserRedirectView:
 
-    def test_get_redirect_url(
-        self, user: settings.AUTH_USER_MODEL, request_factory: RequestFactory
-    ):
+    def test_get_redirect_url(self, user, request_factory):
         view = UserRedirectView()
         request = request_factory.get("/fake-url")
         request.user = user
-
         view.request = request
 
         assert view.get_redirect_url() == f"/users/dashboard/"

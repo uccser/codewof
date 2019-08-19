@@ -3,6 +3,7 @@
 from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
 from django.contrib.auth import get_user_model
+from users.models import UserType
 from users.forms import UserAdminChangeForm, UserAdminCreationForm
 
 User = get_user_model()
@@ -21,3 +22,6 @@ class UserAdmin(auth_admin.UserAdmin):
         'user_type',
         'is_superuser',
     ]
+
+
+admin.site.register(UserType)
