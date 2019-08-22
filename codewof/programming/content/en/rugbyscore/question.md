@@ -1,4 +1,4 @@
-# Ride Share
+# Rugby Score
 
 Write a function rugbyscore(tries,conversions,penalties) that processes a teams score, then **prints** it out.
 

@@ -3,6 +3,24 @@ say-hello:
   test-cases:
     1: normal
 
+rideshare:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+
+rugbyscore:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+
+carpark:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+
 add-10:
   type: program
   test-cases:
