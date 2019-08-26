@@ -1,7 +1,6 @@
 """Module for configuring pytest."""
 
 import pytest
-from django.conf import settings
 from django.test import RequestFactory
 from django.core import management
 from tests.users.factories import UserFactory

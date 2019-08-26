@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Create{% endblock %}
+
+{% block page_heading %}
+    <h1>Create Question</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    <p>
+        This page enables content creators to see the distribution of questions across types, and which types require new questions.
+        In a future update, users will be able to submit question ideas.
+    </p>
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col" class="align-top">Question type</th>
+                <th scope="col" class="align-top">Number of questions</th>
+                <th scope="col" class="align-top">
+                    Number available<br>
+                    <small>Lowest number of unanswered<br>questions for a single user</small>
+                </th>
+                <th scope="col" class="align-top">Submit new question</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question_type in question_types %}
+                <tr>
+                    <th scope="row" class="align-middle">
+                        {{ question_type.name }}
+                    </th>
+                    <td class="align-middle">
+                        {{ question_type.count }}
+                    </td>
+                    <td  class="align-middle {% if question_type.unanswered_count == 0 %}bg-danger text-white{% elif question_type.unanswered_count <= 5 %}table-danger{% endif %}">
+                        {{ question_type.unanswered_count }}
+                    </td>
+                    <td class="align-middle">
+                        <a href="#" class="btn btn-secondary btn-sm disabled" tabindex="-1" role="button" aria-disabled="true">Coming in future update</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

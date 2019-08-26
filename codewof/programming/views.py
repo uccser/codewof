@@ -1,12 +1,15 @@
 """Views for programming application."""
 
+import json
 from django.views import generic
 from django.utils import timezone
+from django.db.models import Count, Max
+from django.db.models.functions import Coalesce
 from django.http import JsonResponse, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-import json
 from programming.models import (
+    Profile,
     Question,
     TestCase,
     Attempt,
@@ -179,3 +182,30 @@ def save_question_attempt(request):
                 result['message'] = 'Attempt not saved, same as previous attempt.'
 
     return JsonResponse(result)
+
+
+class CreateView(generic.base.TemplateView):
+    """Page for creation programming questions."""
+
+    template_name = 'programming/create.html'
+
+    def get_context_data(self, **kwargs):
+        """Get additional context data for template."""
+        context = super().get_context_data(**kwargs)
+        question_types = list()
+        for question_type_class in Question.__subclasses__():
+            data = dict()
+            data['name'] = question_type_class.QUESTION_TYPE.capitalize()
+            data['count'] = question_type_class.objects.count()
+            max_answered = Profile.objects.filter(
+                attempt__question__in=question_type_class.objects.all(),
+                attempt__passed_tests=True,
+            ).annotate(
+                max_answered_by_user=Count('attempt__question', distinct=True)
+            ).aggregate(
+                max_answered=Coalesce(Max('max_answered_by_user'), 0)
+            )
+            data['unanswered_count'] = data['count'] - max_answered['max_answered']
+            question_types.append(data)
+        context['question_types'] = question_types
+        return context
