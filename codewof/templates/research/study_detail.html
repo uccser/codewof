@@ -18,9 +18,24 @@
         {% if study.consent_form %}
             {% if registration %}
                 <div class="alert alert-info my-3" role="alert">
-                    You registered for this study at {{ registration.datetime|time:"g:i A" }} on {{ registration.datetime|date:"l j F Y" }}.
-                    A copy of your signed consent form was emailed to you at this time.
-                    If you wish to withdraw from this study please contact the researcher listed above.
+                    <p class="mb-0">
+                        You registered for this study at {{ registration.datetime|time:"g:i A" }} on {{ registration.datetime|date:"l j F Y" }}.
+                        A copy of your signed consent form was emailed to you at this time.
+                        If you wish to withdraw from this study please contact the researcher{{ study.researchers.count|pluralize }}.
+                    </p>
+
+                    {% if study.researchers.all %}
+                        <p class="my-2"><strong>Researcher{{ study.researchers.count|pluralize }}</strong></p>
+                        <ul class="mb-0">
+                            {% for researcher in study.researchers.all %}
+                                <li>
+                                    <a href="mailto:{{ researcher.email }}">
+                                        {{ researcher.get_full_name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
             {% else %}
                 <div class="text-center my-3">
