@@ -353,3 +353,29 @@ find-smallest-number:
     3: exceptional
     4: normal
     5: normal
+
+book-titles:
+  types:
+   - function
+   - parsons
+  parsons-extra-lines:
+    - 'print(name.upper())'
+    - 'print(name.lower())'
+    - 'print(name)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+total-under-10:
+  types:
+   - function
+   - parsons
+  parsons-extra-lines:
+    - 'if number > 10:'
+    - 'total = number'
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
