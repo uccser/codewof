@@ -55,9 +55,14 @@ class User(AbstractUser):
         return reverse('users:dashboard')
 
     def __str__(self):
-        """Name of the user."""
-        return self.first_name
+        """Label of the user."""
+        return "{} {} ({})".format(self.first_name, self.last_name, self.email)
 
     def full_name(self):
         """Full name of the user."""
         return '{} {}'.format(self.first_name, self.last_name)
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['first_name', 'last_name']
