@@ -49,4 +49,8 @@
     {% else %}
         <p>No study groups specified for this study.</p>
     {% endif %}
+
+    <h3>Download data</h3>
+    <a href="{% url 'research:study_admin_csv' study.pk %}" download target="_blank" class="btn btn-outline-primary">Download CSV of attempts</a>
+
 {% endblock content %}

@@ -8,6 +8,8 @@ User = get_user_model()
 
 
 class TestCaseAttemptInline(admin.TabularInline):
+    """Configuration for displaying test case attempts inline in admin."""
+
     model = TestCaseAttempt
     fields = ()
     extra = 0
