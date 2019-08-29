@@ -451,3 +451,17 @@ print-squares:
     3: normal
     4: exceptional
     5: exceptional
+
+drawn-out-string:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(letter + letter)'
+    - 'print(length)'
+    - 'print(letter)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
