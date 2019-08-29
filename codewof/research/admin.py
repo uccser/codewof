@@ -35,7 +35,7 @@ class StudyAdmin(admin.ModelAdmin):
 
     form = StudyAdminForm
     list_display = ('title', 'start_date', 'end_date', 'visible')
-    filter_horizontal = ('user_types', )
+    filter_horizontal = ('user_types', 'researchers')
 
 
 class StudyGroupForm(forms.ModelForm):
