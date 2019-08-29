@@ -424,3 +424,16 @@ h-words:
     2: normal
     3: normal
     4: exceptional
+
+print-pet:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(name + "is a " + age + "-year-old " + species + ".")'
+    - 'print(name + "is a " + "age" + "-year-old " + species + ".")'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal    
