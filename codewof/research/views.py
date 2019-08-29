@@ -71,6 +71,17 @@ class StudyDetailView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
+class StudyAdminView(LoginRequiredMixin, generic.DetailView):
+    """Admin page for a research study."""
+
+    model = Study
+    context_object_name = 'study'
+    template_name = 'research/study_admin.html'
+
+    def get_queryset(self):
+        return self.request.user.studies_researching.all()
+
+
 class StudyConsentFormView(LoginRequiredMixin, FormView):
     """Consent form for a research study."""
 
