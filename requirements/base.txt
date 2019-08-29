@@ -20,7 +20,7 @@ django-filter==2.2.0
 django-modeltranslation==0.13.3
 django-inline-svg==0.1.1
 django-ckeditor==5.7.1
-django-recaptcha==2.0.4
+django-recaptcha==2.0.5
 
 # Google Cloud Platform
 google-api-python-client==1.7.11
