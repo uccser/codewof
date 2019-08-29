@@ -436,4 +436,18 @@ print-pet:
     1: normal
     2: normal
     3: normal
-    4: normal    
+    4: normal
+
+print-squares:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(num ^ 2)'
+    - 'print(num x num)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+    5: exceptional
