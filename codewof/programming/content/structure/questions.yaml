@@ -380,7 +380,7 @@ total-under-10:
     3: exceptional
     4: normal
 
-voting-age:
+go-tramping:
   types:
     - program
   test-cases:
@@ -388,5 +388,16 @@ voting-age:
     2: normal
     3: normal
     4: exceptional
+    5: exceptional
+    6: exceptional
+
+make-even:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
     5: exceptional
     6: exceptional
