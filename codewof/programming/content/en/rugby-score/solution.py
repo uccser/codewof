@@ -1,2 +1,2 @@
-def rugbyscore(tries, conversions, penalties):
+def rugby_score(tries, conversions, penalties):
     print(tries * 5 + conversions * 2 + penalties * 3)

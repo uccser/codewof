@@ -1,0 +1,1 @@
+rugby_score(5, 3, 2)

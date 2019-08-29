@@ -1,11 +1,12 @@
 # Ride Share
 
-Write a function rideshare(km,airportfee) that processes a users rideshare fee, then **prints** it out.
-airport fee is either "yes" or "no"
-you will need to use the round() function
+Write a function `calculate_ride_share(km, airport_fee)` that calculates a users rideshare fee, then **prints** it out.
+The `airport_fee` is either `True` or `False`.
 
+**Details:**
 
-$2.70 per km
-airportfee is $6.50 if applied
-all payments need to include GST of 15%
+- The rideshare fee is $2.70 per kilometer.
+- The airport fee is $6.50.
+- All payments need to include GST of 15%.
 
+*Hint: You will need to use the `round()` function. For example, `round(1.11111, 1)` will result in `1.1`.*
