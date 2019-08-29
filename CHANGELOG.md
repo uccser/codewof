@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.1
+
+- Don't save question attempt if same as previous attempt. Fixes #37.
+- Emphasise whether functions should return or print. Fixes #47.
+- Replace sign up button on homepage to link to dashboard if user is logged in.
+- Remove default ACL for media files as permissions set with bucket policy.
+
 ## 1.2.0
 
 - Add 'How to use' section and dropzone highlighting for Parson's Problems. Fixes #35.
