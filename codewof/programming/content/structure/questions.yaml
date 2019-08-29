@@ -379,3 +379,14 @@ total-under-10:
     2: normal
     3: exceptional
     4: normal
+
+voting-age:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+    5: exceptional
+    6: exceptional
