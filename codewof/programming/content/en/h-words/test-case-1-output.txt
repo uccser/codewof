@@ -1,0 +1,2 @@
+Yes, hello starts with H.
+No, goodbye doesn't start with H!

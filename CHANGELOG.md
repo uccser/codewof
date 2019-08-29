@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.3.0
+
+- Add 16 new questions.
+- Add summary page for question creators.
+- Improve access to information for research studies:
+    - Provide links to study researchers for easy contacting.
+    - Add summary page for researchers.
+    - Allow download of research study attempts for researchers.
+- Fix bug where whitespace of user code in attempt wasn't shown in admin interface.
+- Fix bug where sender's email address is not listed on contact us forms sent to admin.
+- General typo fixes and question clarifications.
+- Dependencies changes:
+    - Update django-recaptcha from 2.0.4 to 2.0.5.
+    - Update google-api-python-client from 1.7.10 to 1.7.11.
+    - Update pydocstyle from 4.0.0 to 4.0.1.
+    - Update pytest from 5.0.1 to 5.1.1.
+    - Update Sphinx from 2.1.2 to 2.2.0.
+
 ## 1.2.1
 
 - Don't save question attempt if same as previous attempt. Fixes #37.

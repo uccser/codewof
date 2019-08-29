@@ -1,0 +1,1 @@
+draw_out_string("hi")

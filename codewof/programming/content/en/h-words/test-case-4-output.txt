@@ -1,0 +1,5 @@
+Yes, HATS starts with H.
+Yes, HANDS starts with H.
+Yes, HEROES starts with H.
+Yes, HAMMERS starts with H.
+No, NAILS doesn't start with H!

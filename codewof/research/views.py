@@ -1,12 +1,15 @@
 """Views for research application."""
 
+import csv
 from django.views import generic
+from django.http import HttpResponse
 from django.contrib import messages
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from mail_templated import send_mail
+from programming.models import Attempt
 from research.models import (
     Study,
     StudyRegistration,
@@ -67,8 +70,64 @@ class StudyDetailView(LoginRequiredMixin, generic.DetailView):
                 user=self.request.user,
                 study_group__in=self.object.groups.all(),
             ).first()
+        if self.request.user in self.object.researchers.all():
+            context['researcher'] = True
         context['registration'] = registration
         return context
+
+
+class StudyAdminView(LoginRequiredMixin, generic.DetailView):
+    """Admin page for a research study."""
+
+    model = Study
+    context_object_name = 'study'
+    template_name = 'research/study_admin.html'
+
+    def get_queryset(self):
+        """Return queryset for selecting study from."""
+        return self.request.user.studies_researching.all()
+
+
+def study_admin_csv_download_view(request, pk):
+    """Admin view for downloading research study data as a CSV."""
+    study = get_object_or_404(
+        request.user.studies_researching,
+        pk=pk,
+    )
+    field_order = [
+        'datetime',
+        'id',
+        'question_id',
+        'user_code',
+        'passed_tests',
+        'profile__user__pk',
+        'profile__user__email',
+    ]
+    filename = 'somefilename.csv'
+
+    # Create HttpResponse object with CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
+    writer = csv.DictWriter(response, fieldnames=field_order)
+    writer.writeheader()
+
+    for group in study.groups.all():
+        for registration in group.registrations.all():
+            attempts = Attempt.objects.filter(
+                profile=registration.user.profile,
+                datetime__gt=registration.datetime,
+                datetime__date__lte=study.end_date,
+            ).values(
+                'datetime',
+                'id',
+                'question_id',
+                'user_code',
+                'passed_tests',
+                'profile__user__pk',
+                'profile__user__email',
+            )
+            writer.writerows(attempts)
+    return response
 
 
 class StudyConsentFormView(LoginRequiredMixin, FormView):

@@ -36,6 +36,13 @@ class Study(models.Model):
         verbose_name='Open to user types',
         help_text='Which types of users is this research study visible and open to.',
     )
+    # Following M2M related_name is convoluted to avoid confusion
+    # of studies user is participating in.
+    researchers = models.ManyToManyField(
+        User,
+        related_name='studies_researching',
+        blank=True,
+    )
 
     def get_next_group(self):
         """Get group with lowest user count for next user to join."""

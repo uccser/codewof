@@ -3,6 +3,26 @@ say-hello:
   test-cases:
     1: normal
 
+ride-share:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+
+# TODO: Skulpt has issues with round function compared to Python so needs further testing
+# rugby-score:
+#   type: function
+#   test-cases:
+#     1: normal
+#     2: normal
+
+# TODO: Skulpt has issues with round function compared to Python so needs further testing
+# car-park:
+#   type: function
+#   test-cases:
+#     1: normal
+#     2: normal
+
 add-10:
   type: program
   test-cases:
@@ -353,3 +373,115 @@ find-smallest-number:
     3: exceptional
     4: normal
     5: normal
+
+book-titles:
+  types:
+   - function
+   - parsons
+  parsons-extra-lines:
+    - 'print(name.upper())'
+    - 'print(name.lower())'
+    - 'print(name)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+total-under-10:
+  types:
+   - function
+   - parsons
+  parsons-extra-lines:
+    - 'if number > 10:'
+    - 'total = number'
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
+
+go-tramping:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+    5: exceptional
+    6: exceptional
+
+make-even:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
+    6: exceptional
+
+print-score:
+  types:
+   - function
+   - parsons
+  parsons-extra-lines:
+    - 'score = points / total_possible'
+    - 'score = points * total_possible / 100'
+    - 'print(score)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+h-words:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+
+print-pet:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(name + "is a " + age + "-year-old " + species + ".")'
+    - 'print(name + "is a " + "age" + "-year-old " + species + ".")'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+print-squares:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(num ^ 2)'
+    - 'print(num x num)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+    5: exceptional
+
+drawn-out-string:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(letter + letter)'
+    - 'print(length)'
+    - 'print(letter)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal

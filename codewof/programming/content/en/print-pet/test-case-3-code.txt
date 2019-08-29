@@ -1,0 +1,1 @@
+print_pet("Daisy", 4, "cow")
