@@ -1,0 +1,1 @@
+print_score(9, 9)

@@ -1,0 +1,1 @@
+print_score(0, 30)

@@ -401,3 +401,17 @@ make-even:
     4: normal
     5: exceptional
     6: exceptional
+
+print-score:
+  types:
+   - function
+   - parsons
+  parsons-extra-lines:
+    - 'score = points / total_possible'
+    - 'score = points * total_possible / 100'
+    - 'print(score)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
