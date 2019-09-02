@@ -583,3 +583,11 @@ roll-call:
     3: normal
     4: exceptional
 
+lunch:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
