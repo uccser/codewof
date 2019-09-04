@@ -1,16 +1,15 @@
 import pytest
-from django.conf import settings
 from django.urls import reverse, resolve
 
 pytestmark = pytest.mark.django_db
 
 
-def test_detail(user: settings.AUTH_USER_MODEL):
+def test_detail():
     assert (
-        reverse("users:profile")
-        == f"/users/profile/"
+        reverse("users:dashboard")
+        == f"/users/dashboard/"
     )
-    assert resolve(f"/users/profile/").view_name == "users:profile"
+    assert resolve(f"/users/dashboard/").view_name == "users:dashboard"
 
 
 def test_update():

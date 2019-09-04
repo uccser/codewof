@@ -1,0 +1,1 @@
+print(type(battery_is_low(15)))

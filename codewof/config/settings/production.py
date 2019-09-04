@@ -1,7 +1,10 @@
 """Settings for production environment, built upon base settings."""
 
+import sys
 from .base import *  # noqa
 from .base import env
+from google.oauth2 import service_account
+from google.cloud import logging as google_cloud_logging
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -39,7 +42,7 @@ DATABASES = {
     }
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
-DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=60)  # noqa F405
+DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=0)  # noqa F405
 
 # SECURITY
 # ------------------------------------------------------------------------------
@@ -63,7 +66,15 @@ SECURE_HSTS_PRELOAD = env.bool('DJANGO_SECURE_HSTS_PRELOAD', default=True)
 SECURE_CONTENT_TYPE_NOSNIFF = env.bool('DJANGO_SECURE_CONTENT_TYPE_NOSNIFF', default=True)
 
 # STORAGES
-#
+# ------------------------------------------------------------------------------
+# https://django-storages.readthedocs.io/en/latest/#installation
+INSTALLED_APPS += ['storages']  # noqa F405
+# https://django-storages.readthedocs.io/en/latest/backends/gcloud.html
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = env('GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME')
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(env('GOOGLE_APPLICATION_CREDENTIALS'))  # noqa: F405,E501
+GS_FILE_OVERWRITE = False
+
 STATIC_URL = 'https://storage.googleapis.com/' + env('GOOGLE_CLOUD_STORAGE_BUCKET_STATIC_NAME') + '/static/'  # noqa: F405,E501
 
 # TEMPLATES
@@ -122,6 +133,9 @@ INSTALLED_APPS += ['gunicorn']  # noqa F405
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See https://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+
+log_client = google_cloud_logging.Client()
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -146,11 +160,21 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
+            'stream': sys.stdout,
+        },
+        'stackdriver_logging': {
+            'class': 'google.cloud.logging.handlers.CloudLoggingHandler',
+            'client': log_client
         },
     },
     'loggers': {
+        'django': {
+            'handlers': ['console', 'stackdriver_logging'],
+            'level': 'INFO',
+            'propagate': True,
+        },
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['stackdriver_logging', 'mail_admins'],
             'level': 'ERROR',
             'propagate': True
         },

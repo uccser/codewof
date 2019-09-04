@@ -1,0 +1,39 @@
+{% load static %}
+
+<div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">How to use Parson's Problems editor</h4>
+    <p class="mb-0">
+        To solve a Parson's Problem you must create your solution code from the available lines.
+        You can drag lines between 'Available lines' and 'Your solution', and also drag lines within each other to create nesting (see image below).
+        Not all lines may be needed for the solution.
+    </p>
+    <div class="text-center">
+        <img src="{% static 'img/homepage/editor.png' %}" class="img-fluid">
+    </div>
+    <hr>
+    <p class="mb-0">
+        The Parson's Problem editor is still being developed to provide the best user experience, so please <a href="{% url 'general:contact' %}"  class="alert-link">send us your feedback</a> if you have suggestions or comments.
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-6 mb-3">
+        <h3>Available lines</h3>
+        <div id="available-lines" class="parsons-drag-container parsons-drag-top-container">
+            {% for line in question.lines_as_list %}
+                <div class="parsons-draggable-line">
+                    <div class="parsons-line-content">
+                        {{ line }}
+                    </div>
+                    <div class="parsons-drag-container"></div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 mb-3">
+        <h3>Your solution</h3>
+        <div id="user-code-lines" class="parsons-drag-container parsons-drag-top-container">
+        </div>
+    </div>
+</div>

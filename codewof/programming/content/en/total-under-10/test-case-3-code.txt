@@ -1,0 +1,1 @@
+print(total_under_ten([33, 900, 5280]))

@@ -6,7 +6,7 @@
     <!-- Metadata -->
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}codeWOF{% endblock title %}</title>
+    <title>{% block custom_title %}{% block title %}{% endblock title %} - codeWOF{% endblock custom_title %}</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -35,13 +35,13 @@
       <![endif]-->
   </head>
   {% block body_element %}<body>{% endblock body_element %}
-    <nav id="codewof-navbar" class="navbar navbar-expand-md navbar-light">
+    <nav id="codewof-navbar" class="navbar navbar-expand-md navbar-dark">
       <div class="container">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
           data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand inverse-logo mr-0" href="{% url 'general:home' %}">
+        <a class="navbar-brand inverse-logo mr-0 pt-0" href="{% url 'general:home' %}">
           {% svg 'logo' %}
         </a>
 
@@ -51,29 +51,24 @@
 
         <div class="collapse navbar-collapse" id="navbarContent">
           {% if request %}
-          {% activeurl %}
-          <ul class="navbar-nav w-100">
-            <li class="nav-item mr-auto">
-              <a class="nav-link" href="{% url 'codewof:question_list' %}">Questions</a>
-            </li>
-            {% if request and request.user.is_authenticated %}
-            {# URL provided by django-allauth/account/urls.py #}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:profile'  %}">Welcome
-                {{ request.user.get_short_name }}</a>
-            </li>
-            {# URL provided by django-allauth/account/urls.py #}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
-            </li>
-            {% else %}
-            {# URL provided by django-allauth/account/urls.py #}
-            <a id="sign-up-link" class="nav-item nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
-            {# URL provided by django-allauth/account/urls.py #}
-            <a id="log-in-link" class="nav-item nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
-            {% endif %}
-          </ul>
-          {% endactiveurl %}
+            {% activeurl %}
+            <ul class="navbar-nav w-100 d-lg-flex justify-content-end align-items-stretch">
+              {% if request and request.user.is_authenticated %}
+                <a class="nav-item nav-link mr-auto" href="{% url 'programming:question_list' %}">Questions</a>
+                {# URL provided by django-allauth/account/urls.py #}
+                <a class="nav-item nav-link" href="{% url 'users:dashboard'  %}">
+                  {% svg 'icons8-user' %}
+                  {{ request.user.get_short_name }}'s Dashboard</a>
+                {# URL provided by django-allauth/account/urls.py #}
+                <a class="nav-item nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
+              {% else %}
+                {# URL provided by django-allauth/account/urls.py #}
+                <a id="sign-up-link" class="nav-item nav-link mr-left" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+                {# URL provided by django-allauth/account/urls.py #}
+                <a id="log-in-link" class="nav-item nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+              {% endif %}
+            </ul>
+            {% endactiveurl %}
           {% endif %}
         </div>
       </div>
@@ -142,7 +137,7 @@
           <div class="col-12 col-md-6">
             <p>
               {% blocktrans trimmed %}
-              <strong>codeWOF</strong> is a website for beginner programmers to maintain their programming skill.
+              <strong>codeWOF</strong> is a website for beginner programmers to maintain their programming skills.
               {% endblocktrans %}
             </p>
           </div>
@@ -151,8 +146,18 @@
             <p class="mb-1 font-weight-bold">{% trans "Useful Links" %}</p>
             <ul class="list-unstyled list-unstyled-i18n">
               <li>
-                <a href="{% url 'general:about' %}">
-                  {% trans "About" %}
+                <a href="{% url 'users:dashboard' %}">
+                  {% trans "Your Dashboard" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'programming:question_list' %}">
+                  {% trans "Questions" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'research:home' %}">
+                  {% trans "Research" %}
                 </a>
               </li>
             </ul>
@@ -181,11 +186,6 @@
             <p class="mb-1 font-weight-bold">{% trans "Help" %}</p>
             <ul class="list-unstyled list-unstyled-i18n">
               <li>
-                <a href="{% url 'general:about' %}">
-                  {% trans "About" %}
-                </a>
-              </li>
-              <li>
                 <a href="{% url 'general:contact' %}">
                   {% trans "Contact Us" %}
                 </a>
@@ -196,8 +196,8 @@
                 </a>
               </li>
               <li>
-                <a href="#">
-                  {% trans "Feedback" %}
+                <a href="{% url 'general:policies' %}">
+                  {% trans "Policies" %}
                 </a>
               </li>
             </ul>

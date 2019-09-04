@@ -1,0 +1,1 @@
+print(battery_is_low(19))

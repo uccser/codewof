@@ -26,7 +26,7 @@ defhelp() {
 
 # Print out help information
 cmd_help() {
-  echo "Script for performing tasks related to the codewof repository."
+  echo "Script for performing tasks related to the codeWOF repository."
   echo
   echo "Usage: ./dev [COMMAND]"
   echo "Replace [COMMAND] with a word from the list below."

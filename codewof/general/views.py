@@ -20,6 +20,12 @@ class AboutView(TemplateView):
     template_name = 'general/about.html'
 
 
+class PolicyView(TemplateView):
+    """View for website policies page."""
+
+    template_name = 'general/policies.html'
+
+
 class ContactView(FormView):
     """View for website contact page."""
 

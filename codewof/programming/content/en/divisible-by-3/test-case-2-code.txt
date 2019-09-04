@@ -1,0 +1,1 @@
+divisible_by_three([1,4,98])

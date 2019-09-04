@@ -1,7 +1,9 @@
 """Base settings to build other settings files upon."""
 
+import sys
 import os.path
 import environ
+from utils.get_upload_filepath import get_upload_path_for_date
 
 # codewof/codewof/config/settings/base.py - 3 = codewof/codewof/
 ROOT_DIR = environ.Path(__file__) - 3
@@ -104,6 +106,7 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'anymail',
+    'mail_templated',
     'crispy_forms',
     'allauth',
     'allauth.account',
@@ -111,11 +114,15 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'django_activeurl',
     'svg',
+    'ckeditor',
+    'ckeditor_uploader',
+    'captcha',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
     'users.apps.UsersAppConfig',
-    'codewof.apps.CodeWOFConfig',
+    'programming.apps.ProgrammingConfig',
+    'research.apps.ResearchConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -237,7 +244,7 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 'config.context_processors.deployed.deployed',
-                'config.context_processors.codewof.question_types',
+                'config.context_processors.programming.question_types',
                 'config.context_processors.version_number.version_number',
             ],
             'libraries': {
@@ -327,25 +334,64 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'simple'
+            'formatter': 'simple',
+            'stream': sys.stdout,
         },
     },
     'loggers': {
         'root': {
             'handlers': ['console'],
-            'propagate': False,
+            'propagate': True,
             'level': 'DEBUG',
         },
     },
 }
 
+# ckeditor
+# ------------------------------------------------------------------------------
+CKEDITOR_UPLOAD_PATH = get_upload_path_for_date('text-editor')
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',
+        'clipboard_defaultContentType': 'text',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join([
+            # 'devtools',  # Used for development
+            'a11yhelp',
+            'uploadimage',
+            'image2',
+            'div',
+            'autolink',
+            'autogrow',
+            'clipboard',
+            'codesnippet',
+            'pastefromword',
+            'widget',
+            'dialog',
+            'dialogui',
+        ]),
+    }
+}
+
 # Other
 # ------------------------------------------------------------------------------
-DEPLOYMENT_TYPE = 'local'
-QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path("codewof")), "content")
+DEPLOYMENT_TYPE = env("DEPLOYMENT", default='local')
+QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path("programming")), "content")
 CUSTOM_VERTO_TEMPLATES = os.path.join(str(ROOT_DIR.path("utils")), "custom_converter_templates", "")
 SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
 SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
 SVG_DIRS = [
     os.path.join(str(STATIC_ROOT), 'svg')
 ]
+
+# reCAPTCHA
+# ------------------------------------------------------------------------------
+if DEPLOYMENT_TYPE == 'local':
+    # Use test keys
+    RECAPTCHA_PUBLIC_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+    RECAPTCHA_PRIVATE_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
+    SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+else:
+    RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
+    RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')

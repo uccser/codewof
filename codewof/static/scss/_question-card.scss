@@ -1,0 +1,72 @@
+@mixin question-card-colour-variant($colour) {
+    color: hsl(hue($colour), saturation($colour), 30%);
+    border-color: hsl(hue($colour), saturation($colour), 80%);
+    &:hover {
+        border-color: hsl(hue($colour), saturation($colour), 70%);
+        background-color: hsl(hue($colour), saturation($colour), 93%);
+    }
+    &.qc-complete {
+        border-color: hsl(hue($colour), saturation($colour), 70%);
+        background-color: hsl(hue($colour), saturation($colour), 75%);
+        &:hover {
+            border-color: hsl(hue($colour), saturation($colour), 50%);
+        }
+    }
+}
+
+.qc-container {
+    height: 100%;
+    padding-bottom: 1rem;
+}
+
+.qc-card {
+    display: grid;
+    grid-template-areas:
+        "qc-checkbox qc-type qc-icon"
+        "qc-checkbox qc-title qc-icon";
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    border: 3px solid grey;
+    border-radius: 5px;
+    padding: 0.5rem;
+    width: 100%;
+    height: 100%;
+    &:hover {
+        text-decoration: none;
+    }
+    &.qc-program {
+        @include question-card-colour-variant($question-type-program);
+    }
+    &.qc-function {
+        @include question-card-colour-variant($question-type-function);
+    }
+    &.qc-parsons {
+        @include question-card-colour-variant($question-type-parsons);
+    }
+    &.qc-debugging {
+        @include question-card-colour-variant($question-type-debugging);
+    }
+}
+
+.qc-checkbox {
+    grid-area: qc-checkbox;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0.5rem;
+}
+
+.qc-icon {
+    grid-area: qc-icon;
+}
+
+.qc-type {
+    align-self: end;
+    grid-area: qc-type;
+    font-size: 0.8rem;
+    color: #3e4347;
+}
+
+.qc-title {
+    grid-area: qc-title;
+}

@@ -1,0 +1,1 @@
+print(type(is_string_too_long("Short")))

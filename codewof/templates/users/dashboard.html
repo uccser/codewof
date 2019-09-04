@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="display-3 orange-underline text-center">Kia ora {{ user.first_name }}!</h1>
+
+    <div class="row">
+      <div class="col-12 col-md-8 mb-3">
+        <h2>Your questions for today</h2>
+        <p>We recommend doing one or two questions per day, to maintain your programming skills over a long period of time.</p>
+
+        {% if questions_to_do %}
+          <div class="row">
+            {% for question in questions_to_do %}
+              <div class="col-12 col-md-6">
+                {% include "programming/question_components/question-card.html" %}
+              </div>
+            {% endfor %}
+          </div>
+          {% if all_complete %}
+            <div class="alert alert-success" role="alert">
+              Great work completing today's questions! Come back tomorrow for a new set.
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="alert alert-secondary" role="alert">
+            <strong>Sorry!</strong> We currently don't have questions for you to do today.
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="col-12 col-md-4 mb-3">
+        <h2>Achievements</h2>
+        <p><em>Coming soon!</em></p>
+      </div>
+
+      <div class="col-12 col-md-8 mb-3">
+        <h2>Research</h2>
+
+        {% if studies %}
+          <p>The following studies are open for you to register for, to help improve programming education.</p>
+          {% for study in studies %}
+            {% include "research/components/research-card.html" %}
+          {% endfor %}
+        {% else %}
+          <p>Currently no studies are listed.</p>
+        {% endif %}
+      </div>
+
+      <div class="col-12 col-md-4 mb-3">
+        <h2>Settings</h2>
+        <div class="list-group">
+          <a href="{% url 'users:update' %}" class="list-group-item list-group-item-action">
+            Manage your profile
+          </a>
+          <a href="{% url 'account_email' %}" class="list-group-item list-group-item-action">
+            Manage your emails
+          </a>
+          {% if user.is_staff %}
+            <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
+              Open admin website
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

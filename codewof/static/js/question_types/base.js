@@ -50,14 +50,10 @@ function display_submission_feedback(test_cases) {
 
 function update_test_case_status(test_case) {
     var test_case_id = test_case.id;
+    var expected_output = test_case.expected_output.replace(/\s*$/, '');
+    var received_output = test_case.received_output.replace(/\s*$/, '');
 
-    var expected_output = test_case.expected_output;
-    // Add trailing newline to expected output
-    // TODO: Move to database step
-    if (!expected_output.endsWith('\n')) {
-        expected_output += '\n';
-    }
-    test_case.passed = (test_case.received_output === expected_output) && !test_case.runtime_error;
+    test_case.passed = (received_output === expected_output) && !test_case.runtime_error;
 
     // Update status cell
     var status_element = $('#test-case-' + test_case_id + '-status');
@@ -71,7 +67,7 @@ function update_test_case_status(test_case) {
 
     // Update output cell
     var output_element = $('#test-case-' + test_case_id + '-output');
-    output_element.text(test_case.received_output);
+    output_element.text(received_output);
     if (test_case.runtime_error) {
         output_element.addClass('error')
     } else {

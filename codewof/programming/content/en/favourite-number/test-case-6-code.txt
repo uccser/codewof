@@ -1,0 +1,1 @@
+print(type(is_favourite_number(11)))

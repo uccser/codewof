@@ -3,7 +3,13 @@
 from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from users.models import UserType
 from allauth.account.models import EmailAddress
+from tests.users.factories import UserFactory
+from tests.research.factories import (
+    StudyFactory,
+    StudyGroupFactory,
+)
 
 from codewof.models import Badge, Attempt
 
@@ -27,6 +33,7 @@ class Command(management.base.BaseCommand):
         management.call_command('flush', interactive=False)
         print('Database wiped.')
 
+        management.call_command('load_user_types')
         print(LOG_HEADER.format('Create sample users'))
         User = get_user_model()
         # Create admin account
@@ -35,7 +42,8 @@ class Command(management.base.BaseCommand):
             'admin@codewof.co.nz',
             password=settings.SAMPLE_DATA_ADMIN_PASSWORD,
             first_name='Admin',
-            last_name='Account'
+            last_name='Account',
+            user_type=UserType.objects.get(slug='teacher')
         )
         EmailAddress.objects.create(
             user=admin,
@@ -51,7 +59,8 @@ class Command(management.base.BaseCommand):
             'user@codewof.co.nz',
             password=settings.SAMPLE_DATA_USER_PASSWORD,
             first_name='Alex',
-            last_name='Doe'
+            last_name='Doe',
+            user_type=UserType.objects.get(slug='student')
         )
         EmailAddress.objects.create(
             user=user,
@@ -59,11 +68,17 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        print('User created.')
+        UserFactory.create_batch(size=100)
+        print('Users created.')
 
         # Codewof
         management.call_command('load_questions')
-        print('Programming question added.')
+        print('Programming questions loaded.')
+
+        # Research
+        StudyFactory.create_batch(size=5)
+        StudyGroupFactory.create_batch(size=15)
+        print('Research studies loaded.')
 
         Badge.objects.create(
             id_name='create-account',

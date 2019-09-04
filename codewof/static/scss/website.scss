@@ -42,6 +42,7 @@
 @import "navbar";
 @import "homepage";
 @import "footer";
+@import "question-card";
 
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Righteous&display=swap');
 @import "node_modules/codemirror/lib/codemirror";
@@ -53,6 +54,7 @@ body {
 
 h1, h2, h3 {
     font-family: 'Righteous', sans-serif;
+    color: hsl(hue($brand-colour), saturation($brand-colour), 25%);
 }
 
 svg {
@@ -70,6 +72,25 @@ svg {
     color: $brand-colour;
 }
 
+.code-read-only {
+  cursor: not-allowed;
+  background-color: #dfdfdf;
+}
+
+// Forms
+
+form {
+  .asteriskField {
+      color: #ff3f34;
+      font-weight: bold;
+  }
+  .invalid-feedback {
+    display: block !important;
+}
+}
+
+
+// Forms end
 
 #test-case-table {
     white-space: nowrap;
@@ -88,13 +109,24 @@ svg {
 
 .parsons-drag-container {
     padding: 0.7rem 0;
+    .parsons-drag-container {
+        margin-left: 2rem;
+    }
 }
+
+$parsons-hover-colour: #2196f35c;
+.parsons-drag-top-container.dragging,
+.parsons-drag-top-container.dragging .parsons-drag-container {
+      background-image: radial-gradient($parsons-hover-colour 20%, transparent 20%), radial-gradient($parsons-hover-colour 20%, transparent 20%);
+    background-position: 0px 0, 5px 5px;
+    background-size: 10px 10px;
+}
+
 .parsons-draggable-line {
     font-family: $font-family-monospace;
     background: #f2f3f5;
     border: 2px solid #dee2e6;
     border-radius: 5px;
-    margin-left: 2rem;
     margin-bottom: 0.3rem;
     cursor: grab;
     padding-left: 0.5rem;
@@ -204,14 +236,15 @@ $red: #b94a48;
   fill: $brand-colour;
 }
 .logo_symbol {
-  fill: #fbe1a4;
+  fill: $brand-secondary-colour;
 }
 
 .inverse-logo {
   .logo_text {
-    fill: #505050;
+    fill: white;
   }
-  .logo_symbol {
-    fill: #909090;
 }
+
+.orange-underline {
+  border-bottom: 0.5rem $brand-secondary-colour solid;
 }
