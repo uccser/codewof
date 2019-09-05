@@ -611,3 +611,18 @@ print-bigger-number:
     3: normal
     4: exceptional
     5: exceptional
+
+rectangle-pattern:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for i in range(width):'
+    - 'print("height * "#")'
+    - 'print("#")'
+    - 'print(width * height)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
