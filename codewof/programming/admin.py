@@ -2,7 +2,14 @@
 
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from programming.models import Attempt, TestCaseAttempt
+from programming.models import (
+    Attempt,
+    TestCaseAttempt,
+    QuestionTypeProgram,
+    QuestionTypeFunction,
+    QuestionTypeParsons,
+    QuestionTypeDebugging
+)
 
 User = get_user_model()
 
@@ -32,3 +39,7 @@ class AttemptAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Attempt, AttemptAdmin)
+admin.site.register(QuestionTypeProgram)
+admin.site.register(QuestionTypeFunction)
+admin.site.register(QuestionTypeParsons)
+admin.site.register(QuestionTypeDebugging)

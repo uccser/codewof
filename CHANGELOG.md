@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.1
+
+- Remove ride share question.
+- Enable modification of questions via admin interface.
+
 ## 1.3.0
 
 - Add 16 new questions.
