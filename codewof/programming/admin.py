@@ -2,7 +2,14 @@
 
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from programming.models import Attempt, TestCaseAttempt, QuestionTypeProgram, QuestionTypeFunction, QuestionTypeParsons, QuestionTypeDebugging
+from programming.models import (
+    Attempt,
+    TestCaseAttempt,
+    QuestionTypeProgram,
+    QuestionTypeFunction,
+    QuestionTypeParsons,
+    QuestionTypeDebugging
+)
 
 User = get_user_model()
 
