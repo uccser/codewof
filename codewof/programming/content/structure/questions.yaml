@@ -494,3 +494,17 @@ leap-year:
     2: normal
     3: normal
     4: normal
+
+to-celsius:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'celsius = (fahrenheit + 32) * (5/9)'
+    - 'print(celsius)'
+    - 'round(fahrenheit)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
