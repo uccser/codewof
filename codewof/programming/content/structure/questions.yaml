@@ -580,3 +580,41 @@ inside-25-to-50:
     2: normal
     3: normal
     4: normal
+
+
+merge-lists-odd-even:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+eight-is-great:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'elif a - b == 8:'
+    - 'if a or b == 8:'
+    - 'elif b - a == 8:'
+    - "return 'True'"
+    - "return 'False'"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+sum-lucky-7:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
