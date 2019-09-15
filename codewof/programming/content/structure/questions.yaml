@@ -522,3 +522,18 @@ driver-speed:
     2: normal
     3: normal
     4: normal
+
+fizz-buzz:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'divisible_by_3 = num / 3 == 0'
+    - 'divisible_by_5 = num / 5 == 0'
+    - "print('fizzbuzz')"
+    - 'if divisible_by_3 or divisible_by_5:'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
