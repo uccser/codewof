@@ -6,11 +6,11 @@ def sum_lucky_7(list):
             double_next = True
             total += num * 2
         else:
-            if double_next == True:
+            if double_next:
                 to_add = num * 2
                 double_next = False
             else:
                 to_add = num
             total += to_add
-    
+
     print(total)
