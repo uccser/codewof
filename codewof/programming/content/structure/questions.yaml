@@ -618,3 +618,21 @@ sum-lucky-7:
     3: normal
     4: normal
     5: normal
+
+duck-goose:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'string = lower(string)'
+    - 'num_goose += 1'
+    - 'num_duck += 1'
+    - 'return True'
+    - 'return False'
+    - 'if num_duck == num_goose:'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
