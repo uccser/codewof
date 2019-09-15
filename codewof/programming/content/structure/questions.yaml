@@ -546,3 +546,13 @@ sum-multiples-3-5:
     2: normal
     3: normal
     4: normal
+
+prime-numbers:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
