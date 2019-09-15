@@ -537,3 +537,12 @@ fizz-buzz:
     2: normal
     3: normal
     4: normal
+
+sum-multiples-3-5:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
