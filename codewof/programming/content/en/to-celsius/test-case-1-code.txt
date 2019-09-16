@@ -1,1 +1,1 @@
-to_celsius(100)
+to_celsius(32)
