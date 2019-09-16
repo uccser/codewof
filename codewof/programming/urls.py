@@ -1,12 +1,18 @@
 """URL routing for programming application."""
 
 from django.urls import path
+from rest_framework import routers
 
 from . import views
+
+router = routers.DefaultRouter()
+router.register(r'api', views.QuestionAPIViewSet)
 
 app_name = 'programming'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='home'),
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('questions/', views.QuestionListView.as_view(), name='question_list'),
     path('questions/create/', views.CreateView.as_view(), name='create'),
     path('questions/<int:pk>/', views.QuestionView.as_view(), name='question'),
