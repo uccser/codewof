@@ -512,3 +512,11 @@ how-many-dogs:
     2: normal
     3: normal
     4: normal
+
+total-evens:
+  types:
+    - debugging
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
