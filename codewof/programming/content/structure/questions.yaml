@@ -503,3 +503,12 @@ drawn-out-string:
     2: normal
     3: normal
     4: normal
+
+how-many-dogs:
+  types:
+    - debugging
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
