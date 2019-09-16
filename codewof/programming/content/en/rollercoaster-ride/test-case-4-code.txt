@@ -1,1 +1,1 @@
-ride_the_rollercoaster(10, False)
+ride_the_rollercoaster(42, False)

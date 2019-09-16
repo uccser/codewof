@@ -1,10 +1,7 @@
 def ride_the_rollercoaster(age, with_an_adult):
-    if age >= 12:
+    if age >= 10:
         print("You can ride the rollercoaster")
-    elif age <= 5:
-        print("Sorry, you cannot ride the rollercoaster")
+    elif with_an_adult is True:
+        print("You can ride the rollercoaster")
     else:
-        if with_an_adult is True:
-            print("You can ride the rollercoaster")
-        else:
-            print("Sorry, you cannot ride the rollercoaster")
+        print("Sorry, you cannot ride the rollercoaster")
