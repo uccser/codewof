@@ -646,3 +646,53 @@ discounted-cost:
     2: normal
     3: normal
     4: normal
+
+celsius-to-fahrenheit:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+fahrenheit-to-celsius:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+rollercoaster-ride:
+  types:
+    - function
+    - parsons
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+how-many-dogs:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 2
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+total-evens:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
