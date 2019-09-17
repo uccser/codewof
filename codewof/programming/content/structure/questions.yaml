@@ -490,10 +490,6 @@ driver-speed:
   types:
     - function
     - parsons
-  parsons-extra-lines:
-    - 'if points > 5'
-    - 'if speed < 50'
-    - 'int(speed / 5)'
   test-cases:
     1: normal
     2: normal

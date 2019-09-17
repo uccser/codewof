@@ -1,1 +1,1 @@
-check_speed(70)
+check_speed(45)
