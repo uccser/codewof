@@ -627,15 +627,6 @@ rectangle-pattern:
     3: normal
     4: normal
 
-fibonacci-sequence:
-  types:
-    - function
-  test-cases:
-    1: normal
-    2: normal
-    3: normal
-    4: exceptional
-
 leap-year:
   types:
     - function
