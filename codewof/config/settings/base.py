@@ -4,9 +4,6 @@ import sys
 import os.path
 import environ
 from utils.get_upload_filepath import get_upload_path_for_date
-import markdown
-print('Markdown module path', markdown.__file__)
-print('Markdown version:', markdown.version)
 
 
 # codewof/codewof/config/settings/base.py - 3 = codewof/codewof/
@@ -323,7 +320,8 @@ ACTIVE_URL_KWARGS = {
 # ------------------------------------------------------------------------------
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'VIEW_DESCRIPTION_FUNCTION': 
 }
 
 LOGGING = {
