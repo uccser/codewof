@@ -1,0 +1,1 @@
+print(remove_bugs(['bug', 'bug']))
