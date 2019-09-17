@@ -3,11 +3,11 @@ say-hello:
   test-cases:
     1: normal
 
-ride-share:
-  type: function
-  test-cases:
-    1: normal
-    2: normal
+# ride-share:
+#   type: function
+#   test-cases:
+#     1: normal
+#     2: normal
 
 # TODO: Skulpt has issues with round function compared to Python so needs further testing
 # rugby-score:
