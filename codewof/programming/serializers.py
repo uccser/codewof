@@ -14,5 +14,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = (
             'slug',
             'title',
+            'question_text',
+            'solution',
             'objects',
         )
