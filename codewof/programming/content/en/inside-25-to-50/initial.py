@@ -1,5 +1,5 @@
-def inside_25_to_50(number, outside_mode):
-    if outside_mode:
+def inside_or_outside(number, is_inside):
+    if is_inside is True:
         if number >= 25 and number <= 50:
             print('True')
         else:

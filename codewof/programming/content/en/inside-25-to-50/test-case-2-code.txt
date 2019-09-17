@@ -1,1 +1,1 @@
-inside_25_to_50(24, True)
+print(inside_or_outside(24, True))
