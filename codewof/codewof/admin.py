@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from codewof.models import Attempt, Badge
+from programming.models import Attempt, Badge
 
 User = get_user_model()
 

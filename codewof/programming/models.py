@@ -62,6 +62,7 @@ class Badge(models.Model):
     def __str__(self):
         return self.display_name
 
+
 class Earned(models.Model):
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
     badge = models.ForeignKey('Badge', on_delete=models.CASCADE)

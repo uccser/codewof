@@ -33,8 +33,19 @@
       </div>
 
       <div class="col-12 col-md-4 mb-3">
+        <h2>Points earned: {{user.profile.points}}</h2>
         <h2>Achievements</h2>
-        <p><em>Coming soon!</em></p>
+<!--        <p><em>Coming soon!</em></p>-->
+        <br>
+        {% for badge in all_badges %}
+            {% if badge in user.profile.earned_badges.all %}
+              <img src="{% static badge.icon_name %}">
+              <u>{{badge.display_name}}</u>
+            {% else %}
+            <i>{{badge.display_name}}</i>
+            {% endif %}
+            <br>
+        {% endfor %}
       </div>
 
       <div class="col-12 col-md-8 mb-3">

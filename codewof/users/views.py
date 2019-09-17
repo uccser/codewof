@@ -10,12 +10,11 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView, RedirectView, UpdateView
 from programming import settings
-from programming.models import Question, Attempt
 from users.forms import UserChangeForm
 from research.models import StudyRegistration
 
 
-from codewof.models import (
+from programming.models import (
     Profile,
     Question,
     TestCase,
@@ -25,7 +24,7 @@ from codewof.models import (
     Earned
 )
 
-from codewof.codewof_utils import check_badge_conditions, get_past_5_weeks, add_points
+from codewof.codewof_utils import check_badge_conditions, add_points
 
 import logging
 
@@ -82,7 +81,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         log_message = 'Questions for user {} on {} ({}):\n'.format(self.request.user, now, today)
         for i, question in enumerate(questions):
             log_message += '{}: {}\n'.format(i, question)
-        logging.info(log_message)
+        logger.info(log_message)
 
         # TODO: Also filter by questions added before today
         questions = questions.filter(
@@ -95,7 +94,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         log_message = 'Filtered questions for user {}:\n'.format(self.request.user)
         for i, question in enumerate(questions):
             log_message += '{}: {}\n'.format(i, question)
-        logging.info(log_message)
+        logger.info(log_message)
 
         # Randomly pick 3 based off seed of todays date
         if len(questions) > 0:
@@ -118,7 +117,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         log_message = 'Chosen questions for user {}:\n'.format(self.request.user)
         for i, question in enumerate(todays_questions):
             log_message += '{}: {}\n'.format(i, question)
-        logging.info(log_message)
+        logger.info(log_message)
 
         context['questions_to_do'] = todays_questions
         context['all_complete'] = all_complete
@@ -139,8 +138,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context['goal'] = user.profile.goal
         context['all_badges'] = Badge.objects.all()
         check_badge_conditions(user)
-        context["a"] = "b"
-        context['past_5_weeks'] = get_past_5_weeks(user)
         return context
 
 

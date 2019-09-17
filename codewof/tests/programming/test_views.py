@@ -8,7 +8,7 @@ import json
 import time
 import datetime
 
-from codewof.models import *
+from programming.models import *
 from codewof.views import *
 
 

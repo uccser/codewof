@@ -9,7 +9,7 @@ function ajax_request(url_name, data, success_function) {
         contentType: 'application/json; charset=utf-8',
         headers: { "X-CSRFToken": csrf_token },
         dataType: 'json',
-        success: success_function
+        success: update_points
     });
 }
 
@@ -23,6 +23,12 @@ function create_alert(type, text) {
 
 function clear_submission_feedback() {
     $('#submission_feedback').empty();
+}
+
+function update_points(data) {
+    curr_points = data.curr_points;
+    $('#user_points_navbar').innerText = curr_points;
+    $("#user_points_navbar").load(location.href + " #user_points_navbar"); // Add space between URL and selector.
 }
 
 function display_submission_feedback(test_cases) {
@@ -43,7 +49,7 @@ function display_submission_feedback(test_cases) {
         text = 'Great work! All the tests passed.';
         container.append(create_alert('success', text));
     } else {
-        text = 'Oh no! It seems like some of the tests failed. Try to figure out why, and then try again.';
+        text = 'Oh no! It seems like some of the tests did not pass. Try to figure out why, and then try again.';
         container.append(create_alert('danger', text));
     }
 }

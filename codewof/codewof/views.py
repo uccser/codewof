@@ -7,7 +7,7 @@ import json
 import datetime
 import logging
 
-from codewof.models import (
+from programming.models import (
     Profile,
     Question,
     TestCase,

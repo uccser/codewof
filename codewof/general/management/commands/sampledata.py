@@ -11,7 +11,7 @@ from tests.research.factories import (
     StudyGroupFactory,
 )
 
-from codewof.models import Badge, Attempt
+from programming.models import Badge, Attempt
 
 LOG_HEADER = '\n{}\n' + ('-' * 20)
 
@@ -68,6 +68,22 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
+
+        user2 = User.objects.create_user(
+            'user2',
+            'user2@codewof.co.nz',
+            password="password",
+            first_name='Alex',
+            last_name='Doe',
+            user_type=UserType.objects.get(slug='student')
+        )
+        EmailAddress.objects.create(
+            user=user2,
+            email=user2.email,
+            primary=True,
+            verified=True
+        )
+
         UserFactory.create_batch(size=100)
         print('Users created.')
 

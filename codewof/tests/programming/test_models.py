@@ -7,7 +7,7 @@ from .test_data_generator import *
 
 User = get_user_model()
 
-from codewof.models import Token, Badge, Profile, Question
+from programming.models import Token, Badge, Profile, Question
 
 
 class TokenModelTests(TestCase):

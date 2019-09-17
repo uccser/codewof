@@ -2,7 +2,7 @@ import datetime
 import json
 import logging
 
-from codewof.models import (
+from programming.models import (
     Profile,
     Question,
     TestCase,
@@ -33,25 +33,21 @@ def add_points(question, profile, attempt):
     """add appropriate number of points (if any) to user's account after a question is answered"""
     max_points_from_attempts = 3
     points_for_correct = 10
-
-    num_attempts = len(Attempt.objects.filter(question=question, profile=profile))
-    previous_corrects = Attempt.objects.filter(question=question, profile=profile, passed_tests=True)
-    is_first_correct = len(previous_corrects) == 1
-
+    num_attempts = Attempt.objects.filter(question=question, profile=profile)
+    is_first_correct = len(Attempt.objects.filter(question=question, profile=profile, passed_tests=True)) == 1
     points_to_add = 0
 
     # check if first passed
     if attempt.passed_tests and is_first_correct:
-        # deduct one point for up to three failed attempts
-        attempt_deductions = (num_attempts - 1) * 2
-        points_to_add = points_for_correct - attempt_deductions
-    else:
-        # add up to three points immediately for attempts
-        if num_attempts <= max_points_from_attempts:
+        points_to_add += 10
+        if num_attempts == 1:
+            # correct first try
             points_to_add += 1
+
     profile.points += points_to_add
     profile.full_clean()
     profile.save()
+    return profile.points
 
 
 def save_goal_choice(request):
@@ -69,24 +65,8 @@ def save_goal_choice(request):
     return JsonResponse({})
 
 
-def get_consecutive_sections(days_logged_in):
-    """return a list of lists of consecutive days logged in"""
-    consecutive_sections = []
-
-    today = days_logged_in[0]
-    previous_section = [today]
-    for day in days_logged_in[1:]:
-        if day == previous_section[-1] - datetime.timedelta(days=1):
-            previous_section.append(day)
-        else:
-            consecutive_sections.append(previous_section)
-            previous_section = [day]
-
-    consecutive_sections.append(previous_section)
-    return consecutive_sections
-
-
 def get_days_consecutively_answered(user):
+    """Gets the number of consecutive days with questions attempted"""
     # get datetimes from attempts in date form)
     attempts = Attempt.objects.filter(profile=user.profile).datetimes('datetime', 'day', 'DESC')
     # get current day as date
@@ -103,8 +83,17 @@ def get_days_consecutively_answered(user):
     return i
 
 
+def get_days_with_solutions(user):
+    """Gets a list of dates with questions successfully answered."""
+    today = datetime.datetime.now().replace(tzinfo=None).date()
+    attempts = Attempt.objects.filter(profile=user.profile, datetime__year=today.year, passed_tests=True).datetimes(
+        'datetime', 'day', 'DESC')
+    return attempts
+
+
 def check_badge_conditions(user):
-    """check badges for account creation, days logged in, and questions solved"""
+    """check badges for account creation, consecutive days with questions answered, attempts made, points earned,
+     and questions solved"""
     earned_badges = user.profile.earned_badges.all()
     new_badges = []
     # account creation badge
@@ -153,7 +142,6 @@ def check_badge_conditions(user):
         pass
 
     # consecutive days logged in badges
-
     num_consec_days = -1
     consec_badges = Badge.objects.filter(id_name__contains="consecutive-days")
     for consec_badge in consec_badges:
@@ -162,35 +150,37 @@ def check_badge_conditions(user):
                 num_consec_days = get_days_consecutively_answered(user)
             n_days = int(consec_badge.id_name.split("-")[2])
             if n_days == num_consec_days:
-                logger.warning("make new consec badge")
                 new_achievement = Earned(profile=user.profile, badge=consec_badge)
                 new_achievement.full_clean()
                 new_achievement.save()
                 new_badges.append(new_achievement)
-
     return new_badges
 
 
-def get_past_5_weeks(user):
-    """get how many questions a user has done each week for the last 5 weeks"""
-    # t = datetime.date.today()
-    # today = datetime.datetime(t.year, t.month, t.day)
-    # last_monday = today - datetime.timedelta(days=today.weekday(), weeks=0)
-    # last_last_monday = today - datetime.timedelta(days=today.weekday(), weeks=1)
+def backdate():
+    """Performs backdate of all points and badges for each profile in the system."""
+    profiles = Profile.objects.all()
+    for profile in profiles:
+        backdate_badges(profile)
+        backdate_points(profile)
 
-    past_5_weeks = []
-    # to_date = today
-    # for week in range(0, 5):
-    #     from_date = today - datetime.timedelta(days=today.weekday(), weeks=week)
-    #     attempts = Attempt.objects.filter(profile=user.profile, date__range=(from_date, to_date + datetime.timedelta(days=1)), is_save=False)
-    #     distinct_questions_attempted = attempts.values("question__pk").distinct().count()-
-    #
-    #     label = str(week) + " weeks ago"
-    #     if week == 0:
-    #         label = "This week"
-    #     elif week == 1:
-    #         label = "Last week"
-    #
-    #     past_5_weeks.append({'week': from_date, 'n_attempts': distinct_questions_attempted, 'label': label})
-    #     to_date = from_date
-    return past_5_weeks
+
+def backdate_points(profile):
+    """Re-calculates points for the user profile."""
+    questions = Question.objects.all()
+    profile.points = 0
+    for question in questions:
+        has_passed = len(Attempt.objects.filter(profile=profile, question=question, passed_tests=True)) > 0
+        user_attempts = Attempt.objects.filter(profile=profile, question=question)
+        first_passed = False
+        if len(user_attempts) > 0:
+            first_passed = user_attempts[0].passed_tests
+        if has_passed:
+            profile.points += 10
+        if first_passed:
+            profile.points += 1
+
+
+def backdate_badges(profile):
+    """Re-checks the profile for badges earned."""
+    check_badge_conditions(profile.user)

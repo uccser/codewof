@@ -5,7 +5,7 @@ Class to generate test data required for testing codewof system
 
 from django.contrib.auth import get_user_model
 
-from codewof.models import Profile, Badge, Question, Attempt
+from programming.models import Profile, Badge, Question, Attempt
 
 User = get_user_model()
 

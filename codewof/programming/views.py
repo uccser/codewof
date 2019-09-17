@@ -17,6 +17,8 @@ from programming.models import (
 )
 from research.models import StudyRegistration
 
+from codewof.codewof_utils import add_points
+
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 
 
@@ -177,6 +179,8 @@ def save_question_attempt(request):
                         passed=test_case_data['passed'],
                     )
                 result['success'] = True
+                points = add_points(question, profile, attempt)
+                result['curr_points'] = points
             else:
                 result['success'] = False
                 result['message'] = 'Attempt not saved, same as previous attempt.'
