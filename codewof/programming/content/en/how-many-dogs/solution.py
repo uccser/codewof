@@ -3,4 +3,4 @@ def number_of_dogs(pets):
     for i in range(len(pets)):
         if pets[i].lower() == "dog":
             total += 1
-        return total
+    return total
