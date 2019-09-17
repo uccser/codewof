@@ -3,11 +3,11 @@ say-hello:
   test-cases:
     1: normal
 
-ride-share:
-  type: function
-  test-cases:
-    1: normal
-    2: normal
+# ride-share:
+#   type: function
+#   test-cases:
+#     1: normal
+#     2: normal
 
 celsius-to-farenheit:
   type: function
