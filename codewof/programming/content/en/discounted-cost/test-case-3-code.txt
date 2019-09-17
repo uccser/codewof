@@ -1,0 +1,1 @@
+print("${:.2f}".format(discounted_cost(100, 15)))
