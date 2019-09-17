@@ -9,24 +9,6 @@ say-hello:
 #     1: normal
 #     2: normal
 
-celsius-to-fahrenheit:
-  type: function
-  test-cases:
-    1: normal
-    2: normal
-    3: normal
-    4: normal
-    5: normal
-
-fahrenheit-to-celsius:
-  type: function
-  test-cases:
-    1: normal
-    2: normal
-    3: normal
-    4: normal
-    5: normal
-
 # TODO: Skulpt has issues with round function compared to Python so needs further testing
 # rugby-score:
 #   type: function
@@ -504,6 +486,195 @@ drawn-out-string:
     3: normal
     4: normal
 
+add-up-numbers:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: normal
+
+evens-out:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: normal
+
+happy-birthday:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
+
+give-me-5:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: normal
+    5: normal
+
+while-away:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 2
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: normal
+
+times-2:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: exceptional
+    5: normal
+    6: exceptional
+
+days-to-target:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'population * 2'
+    - 'population = population ** 2'
+    - 'print(days)'
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
+    5: normal
+
+roll-call:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(name.title())'
+    - 'print(name.capitalize())'
+    - 'print(name.swapcase())'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+
+lunch:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+signature:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+print-bigger-number:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+    5: exceptional
+
+rectangle-pattern:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for i in range(width):'
+    - 'print("height * "#")'
+    - 'print("#")'
+    - 'print(width * height)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+leap-year:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+
+discounted-cost:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 2
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+celsius-to-fahrenheit:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+fahrenheit-to-celsius:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+rollercoaster-ride:
+  types:
+    - function
+    - parsons
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
 how-many-dogs:
   types:
     - debugging
@@ -520,15 +691,6 @@ total-evens:
     - debugging
   number_of_read_only_lines_top: 1
   number_of_read_only_lines_bottom: 0
-  test-cases:
-    1: normal
-    2: normal
-    3: normal
-
-rollercoaster-ride:
-  types:
-    - function
-    - parsons
   test-cases:
     1: normal
     2: normal
