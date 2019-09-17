@@ -154,7 +154,7 @@ def check_badge_conditions(user):
                 new_achievement.full_clean()
                 new_achievement.save()
                 new_badges.append(new_achievement)
-    user.profile = backdate_points(user.profile)
+    # user.profile = backdate_points(user.profile)
     # backdate_badges(user.profile)
     return new_badges
 
