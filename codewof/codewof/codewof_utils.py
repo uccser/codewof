@@ -31,16 +31,16 @@ LOGGING = {
 
 def add_points(question, profile, attempt):
     """add appropriate number of points (if any) to user's account after a question is answered"""
-    max_points_from_attempts = 3
-    points_for_correct = 10
     num_attempts = Attempt.objects.filter(question=question, profile=profile)
     is_first_correct = len(Attempt.objects.filter(question=question, profile=profile, passed_tests=True)) == 1
+    logger.warning(num_attempts)
+    logger.warning(is_first_correct)
     points_to_add = 0
 
     # check if first passed
     if attempt.passed_tests and is_first_correct:
         points_to_add += 10
-        if num_attempts == 1:
+        if len(num_attempts) == 1:
             # correct first try
             points_to_add += 1
 
@@ -154,15 +154,20 @@ def check_badge_conditions(user):
                 new_achievement.full_clean()
                 new_achievement.save()
                 new_badges.append(new_achievement)
+    user.profile = backdate_points(user.profile)
+    # backdate_badges(user.profile)
     return new_badges
 
 
-def backdate():
+def backdate_points_and_badges():
     """Performs backdate of all points and badges for each profile in the system."""
     profiles = Profile.objects.all()
     for profile in profiles:
-        backdate_badges(profile)
-        backdate_points(profile)
+        profile = backdate_badges(profile)
+        profile = backdate_points(profile)
+        # save profile when update is completed
+        profile.full_clean()
+        profile.save()
 
 
 def backdate_points(profile):
@@ -179,8 +184,10 @@ def backdate_points(profile):
             profile.points += 10
         if first_passed:
             profile.points += 1
+    return profile
 
 
 def backdate_badges(profile):
     """Re-checks the profile for badges earned."""
     check_badge_conditions(profile.user)
+    return profile

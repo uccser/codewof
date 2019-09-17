@@ -326,6 +326,11 @@ cmd_dev() {
   fi
 }
 
+cmd_backdate() {
+  docker-compose exec django /docker_venv/bin/python3 ./codewof/codewof_utils.py backdate_points_and_badges
+}
+defhelp backdate 'Re-calculates points and badges earned for all user profiles.'
+
 # If no command given
 if [ $# -eq 0 ]; then
   echo -e "${RED}ERROR: This script requires a command!${NC}"
