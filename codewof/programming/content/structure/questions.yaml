@@ -537,11 +537,7 @@ eight-is-great:
     - function
     - parsons
   parsons-extra-lines:
-    - 'elif a - b == 8:'
     - 'if a or b == 8:'
-    - 'elif b - a == 8:'
-    - "return 'True'"
-    - "return 'False'"
   test-cases:
     1: normal
     2: normal
