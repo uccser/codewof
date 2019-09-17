@@ -9,7 +9,7 @@ say-hello:
 #     1: normal
 #     2: normal
 
-celsius-to-farenheit:
+celsius-to-fahrenheit:
   type: function
   test-cases:
     1: normal
@@ -18,7 +18,7 @@ celsius-to-farenheit:
     4: normal
     5: normal
 
-farenheit-to-celsius:
+fahrenheit-to-celsius:
   type: function
   test-cases:
     1: normal

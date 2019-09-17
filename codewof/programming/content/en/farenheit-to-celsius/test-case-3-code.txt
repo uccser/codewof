@@ -1,1 +1,0 @@
-print(farenheit_to_celsius(23))
