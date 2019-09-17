@@ -486,29 +486,6 @@ drawn-out-string:
     3: normal
     4: normal
 
-leap-year:
-  types:
-    -program
-  test-cases:
-    1: normal
-    2: normal
-    3: normal
-    4: normal
-
-to-celsius:
-  types:
-    - function
-    - parsons
-  parsons-extra-lines:
-    - 'celsius = (fahrenheit + 32) * (5/9)'
-    - 'print(celsius)'
-    - 'round(fahrenheit)'
-  test-cases:
-    1: normal
-    2: normal
-    3: normal
-    4: normal
-
 driver-speed:
   types:
     - function
@@ -521,7 +498,6 @@ driver-speed:
     1: normal
     2: normal
     3: normal
-    4: normal
 
 fizz-buzz:
   types:
@@ -546,16 +522,6 @@ sum-multiples-3-5:
     2: normal
     3: normal
     4: normal
-
-prime-numbers:
-  types:
-    - program
-  test-cases:
-    1: normal
-    2: normal
-    3: normal
-    4: normal
-    5: normal
 
 merge-lists-odd-even:
   types:
