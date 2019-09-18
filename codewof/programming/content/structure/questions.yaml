@@ -704,3 +704,9 @@ marco-polo:
     1: normal
     2: normal
     3: normal
+
+say-kia-ora:
+  types:
+    - program
+  test-cases:
+    1: normal
