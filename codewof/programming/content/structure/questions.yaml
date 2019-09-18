@@ -710,3 +710,11 @@ say-kia-ora:
     - program
   test-cases:
     1: normal
+
+favourite-food:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
