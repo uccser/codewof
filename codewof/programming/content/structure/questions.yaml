@@ -697,6 +697,72 @@ total-evens:
     3: normal
     4: normal
 
+
+driver-speed:
+  types:
+    - function
+    - parsons
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+fizz-buzz:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "elif num / 3 == 0:"
+    - "elif num / 5 == 0:"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+inside-outside:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+eight-is-great:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'if a or b == 8:'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+sum-lucky-7:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+duck-goose:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
 is-this-the-end:
   types:
     - function
