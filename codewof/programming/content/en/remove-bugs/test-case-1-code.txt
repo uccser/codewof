@@ -1,0 +1,1 @@
+print(remove_bugs(['def hello_world():', 'bug', 'print("hello world")']))

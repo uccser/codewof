@@ -761,3 +761,70 @@ duck-goose:
     2: normal
     3: normal
     4: normal
+
+remove-bugs:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+nth-to-last:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+factorial-debug:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 3
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+sum-unlucky-7:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+pass-the-parcel:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+end-of-file:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'return(file)'
+    - 'file += "EOF"'
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
