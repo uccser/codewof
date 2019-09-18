@@ -722,3 +722,12 @@ long-count:
     2: normal
     3: normal
     4: normal
+
+playing-card:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
