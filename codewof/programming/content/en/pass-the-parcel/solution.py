@@ -5,5 +5,4 @@ def pass_the_parcel(parcel):
         gift = parcel[i - 1]
         print("Person " + str(person_to_receive_gift) + " got " + gift + "!")
         person_to_receive_gift += 1
-
     print("The parcel is empty!")
