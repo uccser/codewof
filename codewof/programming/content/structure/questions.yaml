@@ -696,3 +696,11 @@ total-evens:
     2: normal
     3: normal
     4: normal
+
+marco-polo:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
