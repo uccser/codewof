@@ -745,7 +745,7 @@ sum-unlucky-7:
 pass-the-parcel:
   types:
     - debugging
-  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_top: 1
   number_of_read_only_lines_bottom: 1
   test-cases:
     1: normal
