@@ -1,1 +1,0 @@
-print(inside_or_outside(24, True))
