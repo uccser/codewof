@@ -774,12 +774,3 @@ duck-goose:
     2: normal
     3: normal
     4: normal
-
-smallest-number:
-  type: debugging
-  number_of_read_only_lines_top: 0
-  number_of_read_only_lines_bottom: 1
-  test-cases:
-    1: normal
-    2: normal
-    3: normal

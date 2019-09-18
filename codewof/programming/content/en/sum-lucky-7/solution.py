@@ -3,5 +3,5 @@ for num in list:
     if num == 7:
         total += num * 2
     else:
-         total += num
+        total += num
 print(total)
