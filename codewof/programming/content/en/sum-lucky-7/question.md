@@ -1,6 +1,6 @@
 # Sum lucky 7
 
-Create a function `sum_lucky_7(list)` that takes a list of numbers and **prints** the sum of these numbers.
+Create a function `sum_lucky_7(numbers)` that takes a list of numbers and **prints** the sum of these numbers.
 
 However, the number 7 is a lucky number!
 All 7's should be doubled before being added to the sum.
