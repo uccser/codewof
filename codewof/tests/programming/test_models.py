@@ -3,11 +3,11 @@ from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.contrib.auth import get_user_model
 
-from .test_data_generator import *
+from codewof.tests.codewof_test_data_generator import *
 
 User = get_user_model()
 
-from programming.models import Token, Badge, Profile, Question
+from programming.models import Token, Badge, Question
 
 
 class TokenModelTests(TestCase):
@@ -19,14 +19,19 @@ class TokenModelTests(TestCase):
         with self.assertRaises(IntegrityError):
             Token.objects.create(name='sphere', token='def')
 
+
 class BadgeModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
+        # generate_users()
+        # generate_questions()
         generate_badges()
+        # generate_attempts()
 
     def test_id_name_unique(self):
         with self.assertRaises(IntegrityError):
-            Badge.objects.create(id_name='solve-40', display_name='second', description='second')
+            Badge.objects.create(id_name='questions_solved_1', display_name='second', description='second')
+
 
 class ProfileModelTests(TestCase):
     @classmethod

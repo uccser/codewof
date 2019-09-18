@@ -9,7 +9,7 @@ import time
 import datetime
 
 from programming.models import *
-from codewof.views import *
+from programming.views import *
 
 
 class ProfileViewTest(DjangoTestCase):

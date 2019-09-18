@@ -17,7 +17,7 @@ from programming.models import (
 )
 from research.models import StudyRegistration
 
-from codewof.codewof_utils import add_points
+from codewof.codewof_utils import add_points, check_badge_conditions
 
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 
@@ -180,7 +180,9 @@ def save_question_attempt(request):
                     )
                 result['success'] = True
                 points = add_points(question, profile, attempt)
+                badges = check_badge_conditions(profile.user)
                 result['curr_points'] = points
+                result['badges'] = badges
             else:
                 result['success'] = False
                 result['message'] = 'Attempt not saved, same as previous attempt.'

@@ -104,7 +104,7 @@ def check_badge_conditions(user):
             new_achievement = Earned(profile=user.profile, badge=creation_badge)
             new_achievement.full_clean()
             new_achievement.save()
-            new_badges.append(new_achievement)
+            new_badges.append(creation_badge.display_name)
     except Badge.DoesNotExist:
         logger.warning("No such badge: create-account")
         pass
@@ -120,7 +120,7 @@ def check_badge_conditions(user):
                     new_achievement = Earned(profile=user.profile, badge=question_badge)
                     new_achievement.full_clean()
                     new_achievement.save()
-                    new_badges.append(new_achievement)
+                    new_badges.append(question_badge.display_name)
     except Badge.DoesNotExist:
         logger.warning("No such badges: questions-solved")
         pass
@@ -136,7 +136,7 @@ def check_badge_conditions(user):
                     new_achievement = Earned(profile=user.profile, badge=attempt_badge)
                     new_achievement.full_clean()
                     new_achievement.save()
-                    new_badges.append(new_achievement)
+                    new_badges.append(attempt_badge.display_name)
     except Badge.DoesNotExist:
         logger.warning("No such badges: attempts-made")
         pass
@@ -153,7 +153,7 @@ def check_badge_conditions(user):
                 new_achievement = Earned(profile=user.profile, badge=consec_badge)
                 new_achievement.full_clean()
                 new_achievement.save()
-                new_badges.append(new_achievement)
+                new_badges.append(consec_badge.display_name)
     # user.profile = backdate_points(user.profile)
     # backdate_badges(user.profile)
     return new_badges

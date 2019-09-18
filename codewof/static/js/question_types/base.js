@@ -9,7 +9,7 @@ function ajax_request(url_name, data, success_function) {
         contentType: 'application/json; charset=utf-8',
         headers: { "X-CSRFToken": csrf_token },
         dataType: 'json',
-        success: update_points
+        success: update_gamification
     });
 }
 
@@ -25,10 +25,19 @@ function clear_submission_feedback() {
     $('#submission_feedback').empty();
 }
 
-function update_points(data) {
+function update_gamification(data) {
     curr_points = data.curr_points;
     $('#user_points_navbar').innerText = curr_points;
     $("#user_points_navbar").load(location.href + " #user_points_navbar"); // Add space between URL and selector.
+    console.log("pointsed")
+    badges = data.badges;
+    console.log(badges);
+    $("#toast-header").innerText = "New badges!";
+    $("#toast-body").innerText = badges;
+    $("#badge-toast").toast({
+        delay: 3000
+    });
+    console.log("toasted");
 }
 
 function display_submission_feedback(test_cases) {
