@@ -1,0 +1,1 @@
+print(long_count(list('Computer science')))

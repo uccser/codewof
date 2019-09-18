@@ -1,0 +1,2 @@
+x = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+print(long_count(x) == len(x))
