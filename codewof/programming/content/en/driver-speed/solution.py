@@ -1,7 +1,7 @@
 def check_speed(speed):
     if speed <= 50:
-        print('Ok.')
+        print("Ok.")
     else:
         print("Too fast!")
     if speed >= 75:
-        print("License suspended.")
+        print("Licence suspended.")
