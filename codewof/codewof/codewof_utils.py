@@ -95,7 +95,8 @@ def check_badge_conditions(user):
     """check badges for account creation, consecutive days with questions answered, attempts made, points earned,
      and questions solved"""
     earned_badges = user.profile.earned_badges.all()
-    new_badges = []
+    new_badge_names = []
+    new_badge_objects = []
     # account creation badge
     try:
         creation_badge = Badge.objects.get(id_name="create-account")
@@ -104,7 +105,8 @@ def check_badge_conditions(user):
             new_achievement = Earned(profile=user.profile, badge=creation_badge)
             new_achievement.full_clean()
             new_achievement.save()
-            new_badges.append(creation_badge.display_name)
+            new_badge_names.append(creation_badge.display_name)
+            new_badge_objects.append(creation_badge)
     except Badge.DoesNotExist:
         logger.warning("No such badge: create-account")
         pass
@@ -120,7 +122,8 @@ def check_badge_conditions(user):
                     new_achievement = Earned(profile=user.profile, badge=question_badge)
                     new_achievement.full_clean()
                     new_achievement.save()
-                    new_badges.append(question_badge.display_name)
+                    new_badge_names.append(question_badge.display_name)
+                    new_badge_objects.append(question_badge)
     except Badge.DoesNotExist:
         logger.warning("No such badges: questions-solved")
         pass
@@ -136,7 +139,8 @@ def check_badge_conditions(user):
                     new_achievement = Earned(profile=user.profile, badge=attempt_badge)
                     new_achievement.full_clean()
                     new_achievement.save()
-                    new_badges.append(attempt_badge.display_name)
+                    new_badge_names.append(attempt_badge.display_name)
+                    new_badge_objects.append(attempt_badge)
     except Badge.DoesNotExist:
         logger.warning("No such badges: attempts-made")
         pass
@@ -153,10 +157,19 @@ def check_badge_conditions(user):
                 new_achievement = Earned(profile=user.profile, badge=consec_badge)
                 new_achievement.full_clean()
                 new_achievement.save()
-                new_badges.append(consec_badge.display_name)
-    # user.profile = backdate_points(user.profile)
-    # backdate_badges(user.profile)
-    return new_badges
+                new_badge_names.append(consec_badge.display_name)
+                new_badge_objects.append(consec_badge)
+                
+    calculate_badge_points(user, new_badge_objects)
+    return new_badge_names
+
+
+def calculate_badge_points(user, badges):
+    for badge in badges:
+        points = badge.badge_tier * 10
+        user.profile.points += points
+    user.full_clean()
+    user.save()
 
 
 def backdate_points_and_badges():
