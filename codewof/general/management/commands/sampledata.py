@@ -101,7 +101,7 @@ class Command(management.base.BaseCommand):
             display_name='Created an account!',
             description='Created your very own account',
             icon_name='img/icons/badges/icons8-badge-create-account-48.png',
-            badge_tier=1
+            badge_tier=0
         )
 
         Badge.objects.create(
