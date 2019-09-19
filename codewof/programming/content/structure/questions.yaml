@@ -848,7 +848,7 @@ long-count:
     - parsons
   parsons-extra-lines:
     - 'length = 1'
-    - 'return list'
+    - 'return items'
   test-cases:
     1: normal
     2: normal
