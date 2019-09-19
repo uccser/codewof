@@ -4,9 +4,11 @@ from django.urls import include, path
 from rest_framework import routers
 
 from . import views
+from users import views as user_views
 
 router = routers.DefaultRouter()
-router.register(r'api', views.QuestionAPIViewSet)
+router.register(r'api-questions', views.QuestionAPIViewSet)
+router.register(r'api-users', user_views.UserAPIViewSet)
 
 app_name = 'programming'
 urlpatterns = [

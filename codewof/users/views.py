@@ -13,6 +13,8 @@ from programming import settings
 from programming.models import Question, Attempt
 from users.forms import UserChangeForm
 from research.models import StudyRegistration
+from rest_framework import viewsets
+from users.serializers import UserSerializer
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -134,3 +136,10 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self):
         """URL to redirect to."""
         return reverse("users:dashboard")
+
+
+class UserAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows questions to be viewed."""
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
