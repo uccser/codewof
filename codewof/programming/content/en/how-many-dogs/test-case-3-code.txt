@@ -1,0 +1,1 @@
+print(number_of_dogs(["Dog", "dog", "dog", "Dog", "dog", "Dog", "Dog", "Dog", "dog", "dog"]))

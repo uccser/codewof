@@ -1,0 +1,5 @@
+parcel = ['chocolate',
+          'candy',
+          'a funny hat'
+]
+pass_the_parcel(parcel)
