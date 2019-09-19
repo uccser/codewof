@@ -1,7 +1,7 @@
-def sum_unlucky_7(list):
+def sum_unlucky_7(numbers):
     total = 0
     ignore_next = False
-    for num in list:
+    for num in numbers:
         if num == 7:
             ignore_next = True
         else:
