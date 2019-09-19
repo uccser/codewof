@@ -1,5 +1,5 @@
 def long_count(list):
     length = 0
-    for _ in list:
+    for item in list:
         length += 1
     return length
