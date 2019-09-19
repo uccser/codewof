@@ -4,6 +4,7 @@ from django.db.utils import IntegrityError
 from django.contrib.auth import get_user_model
 
 from codewof.tests.codewof_test_data_generator import *
+from codewof.tests.conftest import user
 
 User = get_user_model()
 
@@ -37,7 +38,7 @@ class ProfileModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         # never modify this object in tests - read only
-        generate_users()
+        generate_users(user)
 
     def test_profile_starts_with_no_points(self):
         user = User.objects.get(id=1)

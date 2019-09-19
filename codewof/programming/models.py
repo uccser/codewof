@@ -58,6 +58,7 @@ class Badge(models.Model):
     display_name = models.CharField(max_length=SMALL)
     description = models.CharField(max_length=LARGE)
     icon_name = models.CharField(null=True, max_length=SMALL)
+    badge_tier = models.IntegerField(default=0)
 
     def __str__(self):
         return self.display_name
