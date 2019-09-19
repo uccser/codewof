@@ -12,7 +12,7 @@ app_name = 'programming'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='home'),
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-auth/', include('rest_framework.urls')),
     path('questions/', views.QuestionListView.as_view(), name='question_list'),
     path('questions/create/', views.CreateView.as_view(), name='create'),
     path('questions/<int:pk>/', views.QuestionView.as_view(), name='question'),

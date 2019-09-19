@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
 from model_utils.managers import InheritanceManager
 from utils.TranslatableModel import TranslatableModel
+from polymorphic.models import PolymorphicModel
 
 SMALL = 100
 LARGE = 500
