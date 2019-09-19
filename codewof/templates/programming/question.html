@@ -55,12 +55,15 @@
     <div class="text-center">
         <a class="btn btn-outline-primary" href="{% url 'users:dashboard' %}">Return to dashboard</a>
     </div>
-    <div id="badge-toast" class="toast">
-      <div class="toast-header" id="toast-header">
-        Badge!
-      </div>
-      <div class="toast-body" id="toast-body">
-        badge!
+    <div style="position: absolute; top: 0; right: 0;">
+      <div id="badge_toast"  class="toast" role="alert" data-delay=3000 aria-live="assertive" aria-atomic="true">
+        <div class="toast-header" id="badge_toast_header">
+          <strong>You earned a new badge!</strong>
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="badge_toast_body">
+          Check your dashboard for details!
+        </div>
       </div>
     </div>
 {% endblock %}

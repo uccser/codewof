@@ -1,4 +1,7 @@
+$ = jQuery = require('jquery');
 require('skulpt');
+require('bootstrap');
+require('details-element-polyfill');
 
 function ajax_request(url_name, data, success_function) {
     $.ajax({
@@ -32,10 +35,11 @@ function update_gamification(data) {
     console.log("pointsed")
     badges = data.badges;
     console.log(badges);
-    $("#toast-header").innerText = "New badges!";
-    $("#toast-body").innerText = badges;
-    $("#badge-toast").toast({
-        delay: 3000
+
+    $("#badge_toast_header").text = "New badges!";
+    $("#badge_toast_body").text = badges;
+    $(document).ready(function(){
+        $(".toast").toast('show');
     });
     console.log("toasted");
 }
