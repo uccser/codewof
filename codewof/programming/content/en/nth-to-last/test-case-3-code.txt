@@ -1,0 +1,2 @@
+array = ['a', 'e', 'i', 'o', 'u']
+print(nth_to_last(array, 4))
