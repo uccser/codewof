@@ -1,0 +1,3 @@
+file = []
+end_of_file(file)
+print(file)

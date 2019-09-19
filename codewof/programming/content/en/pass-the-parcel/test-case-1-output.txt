@@ -1,0 +1,4 @@
+Person 1 got chocolate!
+Person 2 got candy!
+Person 3 got a funny hat!
+The parcel is empty!
