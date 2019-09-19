@@ -829,6 +829,41 @@ end-of-file:
     2: normal
     3: exceptional
 
+is-this-the-end:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(x == y)'
+    - 'y -= 1'
+    - 'y = items[index]'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+
+long-count:
+  types:
+    - parsons
+  parsons-extra-lines:
+    - 'length = 1'
+    - 'return items'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+playing-card:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
 marco-polo:
   types:
     - program
