@@ -836,7 +836,7 @@ is-this-the-end:
   parsons-extra-lines:
     - 'print(x == y)'
     - 'y -= 1'
-    - 'y = list[index]'
+    - 'y = items[index]'
   test-cases:
     1: normal
     2: normal
