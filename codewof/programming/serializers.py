@@ -6,9 +6,11 @@ from programming.models import Question
 
 class QuestionSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF questions."""
+
     question_type = serializers.SerializerMethodField(read_only=True)
 
     def get_question_type(self, obj):
+        """Get question type for the question."""
         #  TODO: avoid hitting database for every question
         # obj is model instance
         obj = Question.objects.get_subclass(pk=obj.pk)
