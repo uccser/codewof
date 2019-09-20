@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <style>
+  .grid-container {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    background-color: #FFFFFF;
+    padding: 10px;
+  }
+
+  .grid-item {
+    background-color: rgba(0, 0, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 30px;
+    color: #FFFFFF;
+    text-align: center;
+  }
+  </style>
+  </head>
+  <body>
+  <div class="grid-container">
+    {% for day in days_used %}
+      {% if day is False %}
+        <div class="grid-item"></div>
+      {% else %}
+        <div class="grid-item" style="">1</div>
+      {% endif %}
+      <br>
+    {% endfor %}
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+  </div>
+
+
+  </body>
+</html>

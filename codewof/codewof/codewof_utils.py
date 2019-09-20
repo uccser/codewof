@@ -1,6 +1,7 @@
 import datetime
 import json
 import logging
+from dateutil.relativedelta import relativedelta
 
 from programming.models import (
     Profile,
@@ -42,7 +43,7 @@ def add_points(question, profile, attempt):
         points_to_add += 10
         if len(num_attempts) == 1:
             # correct first try
-            points_to_add += 1
+            points_to_add += 2
 
     profile.points += points_to_add
     profile.full_clean()
@@ -85,17 +86,17 @@ def get_days_consecutively_answered(user):
 
 def get_days_with_solutions(user):
     """Gets a list of dates with questions successfully answered."""
-    today = datetime.datetime.now().replace(tzinfo=None).date()
-    attempts = Attempt.objects.filter(profile=user.profile, datetime__year=today.year, passed_tests=True).datetimes(
-        'datetime', 'day', 'DESC')
-    return attempts
+    today = datetime.datetime.now().replace(tzinfo=None) + relativedelta(days=1)
+    four_weeks_ago = today - relativedelta(months=1)
+    attempts = Attempt.objects.filter(profile=user.profile, datetime__gte=four_weeks_ago.date(), passed_tests=True)
+    return len(attempts)
 
 
 def check_badge_conditions(user):
     """check badges for account creation, consecutive days with questions answered, attempts made, points earned,
      and questions solved"""
     earned_badges = user.profile.earned_badges.all()
-    new_badge_names = []
+    new_badge_names = ""
     new_badge_objects = []
     # account creation badge
     try:
@@ -105,7 +106,7 @@ def check_badge_conditions(user):
             new_achievement = Earned(profile=user.profile, badge=creation_badge)
             new_achievement.full_clean()
             new_achievement.save()
-            new_badge_names.append(creation_badge.display_name)
+            new_badge_names = new_badge_names + "- " + creation_badge.display_name + "\n"
             new_badge_objects.append(creation_badge)
     except Badge.DoesNotExist:
         logger.warning("No such badge: create-account")
@@ -122,7 +123,7 @@ def check_badge_conditions(user):
                     new_achievement = Earned(profile=user.profile, badge=question_badge)
                     new_achievement.full_clean()
                     new_achievement.save()
-                    new_badge_names.append(question_badge.display_name)
+                    new_badge_names = new_badge_names + "- " + question_badge.display_name + "\n"
                     new_badge_objects.append(question_badge)
     except Badge.DoesNotExist:
         logger.warning("No such badges: questions-solved")
@@ -139,7 +140,7 @@ def check_badge_conditions(user):
                     new_achievement = Earned(profile=user.profile, badge=attempt_badge)
                     new_achievement.full_clean()
                     new_achievement.save()
-                    new_badge_names.append(attempt_badge.display_name)
+                    new_badge_names = new_badge_names + "- " + attempt_badge.display_name + "\n"
                     new_badge_objects.append(attempt_badge)
     except Badge.DoesNotExist:
         logger.warning("No such badges: attempts-made")
@@ -157,9 +158,9 @@ def check_badge_conditions(user):
                 new_achievement = Earned(profile=user.profile, badge=consec_badge)
                 new_achievement.full_clean()
                 new_achievement.save()
-                new_badge_names.append(consec_badge.display_name)
+                new_badge_names = new_badge_names + "- " + consec_badge.display_name + "\n"
                 new_badge_objects.append(consec_badge)
-                
+
     calculate_badge_points(user, new_badge_objects)
     return new_badge_names
 

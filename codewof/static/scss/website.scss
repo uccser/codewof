@@ -248,3 +248,27 @@ $red: #b94a48;
 .orange-underline {
   border-bottom: 0.5rem $brand-secondary-colour solid;
 }
+
+.toast {
+  border: 1px solid $brand-colour;
+  background-colour: brand-colour-light;
+  text-align: center;
+}
+
+.toast-header {
+  border: 1px solid $brand-colour;
+  background-colour: brand-colour-light;
+  width: 100%;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.toast-header strong {
+  color: black;
+  font-weight: bold;
+}
+
+.toast-body {
+  border: 1px solid $brand-colour;
+  background-colour: brand-colour-light;
+}

@@ -30,12 +30,13 @@
             <strong>Sorry!</strong> We currently don't have questions for you to do today.
           </div>
         {% endif %}
+        <p>You've solved {{number_days_used}} questions in the last month!</p>
+<!--        {% include "users/activity_graph.html" %}-->
       </div>
 
       <div class="col-12 col-md-4 mb-3">
         <h2>Points earned: {{user.profile.points}}</h2>
         <h2>Achievements</h2>
-<!--        <p><em>Coming soon!</em></p>-->
         <br>
         {% for badge in all_badges %}
             {% if badge in user.profile.earned_badges.all %}
@@ -45,7 +46,6 @@
             <i>{{badge.display_name}}</i>
             {% endif %}
 <!--            {% include "programming/badge_card.html" %}-->
-
             <br>
         {% endfor %}
       </div>

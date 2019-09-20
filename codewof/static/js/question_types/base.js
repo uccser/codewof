@@ -32,16 +32,15 @@ function update_gamification(data) {
     curr_points = data.curr_points;
     $('#user_points_navbar').innerText = curr_points;
     $("#user_points_navbar").load(location.href + " #user_points_navbar"); // Add space between URL and selector.
-    console.log("pointsed")
-    badges = data.badges;
-    console.log(badges);
 
-    $("#badge_toast_header").text = "New badges!";
-    $("#badge_toast_body").text = badges;
-    $(document).ready(function(){
-        $(".toast").toast('show');
-    });
-    console.log("toasted");
+    badges = data.badges;
+    if (badges.length > 0){
+        $("#badge_toast_header").text("New badges!");
+        $("#badge_toast_body").text(badges);
+        $(document).ready(function(){
+            $("#badge_toast").toast('show');
+        });
+    }
 }
 
 function display_submission_feedback(test_cases) {
