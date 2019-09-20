@@ -1,7 +1,7 @@
-"""Serializers for programming models."""
+"""Serializers for user models."""
 
 from rest_framework import serializers
-from programming.models import User
+from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):

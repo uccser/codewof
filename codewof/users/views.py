@@ -12,8 +12,9 @@ from django.views.generic import DetailView, RedirectView, UpdateView
 from programming import settings
 from programming.models import Question, Attempt
 from users.forms import UserChangeForm
-from research.models import StudyRegistration
+from research.models import StudyRegistration, Study
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from users.serializers import UserSerializer
 
 User = get_user_model()
@@ -139,7 +140,18 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 class UserAPIViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint that allows questions to be viewed."""
+    """API endpoint that allows users to be viewed."""
 
-    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
+    queryset = Study.objects
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the users in research studies that
+        the currently authenticated researcher is researching.
+        """
+        user = self.request.user
+        return Study.objects.filter(researchers__in=user)
+        # get users in studies    
+        # return User.objects.filter()

@@ -196,3 +196,17 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
             'You are successfully enrolled into this study. You have been emailed a copy of your signed consent form.'.format(study.title)  # noqa: E501
         )
         return redirect(study)
+
+
+# class StudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
+#     """API endpoint that allows users to be viewed."""
+
+#     serializer_class = StudySerializer
+
+#     def get_queryset(self):
+#         """
+#         This view should return a list of all the studies that
+#         the currently authenticated researcher is researching.
+#         """
+#         user = self.request.user
+#         return Study.objects.filter(researcher__in=user)
