@@ -38,9 +38,18 @@ Scenario: User attempts a question
   Then the user's points equal 10
 
 #Test for points earned with first attempt badge
-Scenario: User earns badge for one
+Scenario: User earns badge for one attempt
   Given a user with ID 1 is logged in
   And their profile points are 0
   And they have not earned the badge for attempting one question
   When they attempt the "Print CodeWOF" question
   Then the user's points equal 10
+
+  #Test for points earned with five attempts badge
+  Scenario: User earns badge for five attempts
+    Given a user with ID 1 is logged in
+    And their profile points are 10
+    And they have not earned the badge for attempting five questions
+    And they have made 4 attempts in total
+    When they attempt the "Print CodeWOF" question
+    Then the user's points equal 30
