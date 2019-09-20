@@ -885,3 +885,71 @@ favourite-food:
     1: normal
     2: normal
     3: normal
+
+even-or-odd:
+  types:
+    - function
+  test-cases:
+    1: exceptional
+    2: normal
+    3: normal
+    4: exceptional
+    5: normal
+
+less-than-6:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: exceptional
+    5: exceptional
+
+best-paper-scissors-rock:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+guessing-game:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
+    5: normal
+    6: exceptional
+
+rectangle-perimeter:
+  types:
+    - debugging
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+square-perimeter:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+square-area:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
