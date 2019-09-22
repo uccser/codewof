@@ -198,15 +198,8 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         return redirect(study)
 
 
-# class StudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
-#     """API endpoint that allows users to be viewed."""
+class StudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows users to be viewed."""
 
-#     serializer_class = StudySerializer
-
-#     def get_queryset(self):
-#         """
-#         This view should return a list of all the studies that
-#         the currently authenticated researcher is researching.
-#         """
-#         user = self.request.user
-#         return Study.objects.filter(researcher__in=user)
+    queryset = self.request.user.studies_researching.all()
+    serializer_class = QuestionSerializer
