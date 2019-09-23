@@ -8,6 +8,8 @@ from django.db.models.functions import Coalesce
 from django.http import JsonResponse, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from rest_framework import viewsets
+from programming.serializers import QuestionSerializer
 from programming.models import (
     Profile,
     Question,
@@ -209,3 +211,10 @@ class CreateView(generic.base.TemplateView):
             question_types.append(data)
         context['question_types'] = question_types
         return context
+
+
+class QuestionAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows questions to be viewed."""
+
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
