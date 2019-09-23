@@ -202,4 +202,4 @@ class StudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows users to be viewed."""
 
     queryset = self.request.user.studies_researching.all()
-    serializer_class = QuestionSerializer
+    serializer_class = StudySerializer
