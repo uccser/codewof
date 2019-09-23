@@ -139,19 +139,19 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
         return reverse("users:dashboard")
 
 
-class UserAPIViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint that allows users to be viewed."""
+# class UserAPIViewSet(viewsets.ReadOnlyModelViewSet):
+#     """API endpoint that allows users to be viewed."""
 
-    permission_classes = [IsAuthenticated]
-    serializer_class = UserSerializer
-    queryset = Study.objects
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = UserSerializer
+#     queryset = Study.objects
 
-    def get_queryset(self):
-        """
-        This view should return a list of all the users in research studies that
-        the currently authenticated researcher is researching.
-        """
-        user = self.request.user
-        return Study.objects.filter(researchers__in=user)
+#     def get_queryset(self):
+#         """
+#         This view should return a list of all the users in research studies that
+#         the currently authenticated researcher is researching.
+#         """
+#         user = self.request.user
+#         return Study.objects.filter(researchers__in=user)
         # get users in studies    
         # return User.objects.filter()

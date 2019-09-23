@@ -1,4 +1,4 @@
-"""Serializers for programming models."""
+"""Serializers for research models."""
 
 from rest_framework import serializers
 from research.models import Study
