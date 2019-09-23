@@ -1,0 +1,1 @@
+print(number_of_dogs(["Chinchilla", "Cat", "Dog", "Puppy", "Cat", "Cat", "Dog", "Goldfish"]))

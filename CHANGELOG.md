@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0
+
+- Add 37 new questions.
+- Add API.
+
 ## 1.3.1
 
 - Remove ride share question.

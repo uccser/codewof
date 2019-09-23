@@ -1,0 +1,1 @@
+print(is_leap_year(1900))

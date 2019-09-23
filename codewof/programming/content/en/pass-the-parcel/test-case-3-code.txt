@@ -1,0 +1,8 @@
+parcel = ['a nice pen',
+          'a giant novelty pencil (how did it fit?)',
+          'a whiteboard marker',
+          'two blue crayons',
+          'a giant novelty pencil (another one?)',
+          'a toy dolphin'
+]
+pass_the_parcel(parcel)

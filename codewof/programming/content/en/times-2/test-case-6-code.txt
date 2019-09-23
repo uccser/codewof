@@ -1,0 +1,1 @@
+print(times_two("50"))
