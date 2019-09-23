@@ -1,3 +1,5 @@
+"""Utility functions for codeWOF system. Involves points, badges, and backdating points and badges per user."""
+
 import datetime
 import json
 import logging
@@ -6,9 +8,7 @@ from dateutil.relativedelta import relativedelta
 from programming.models import (
     Profile,
     Question,
-    TestCase,
     Attempt,
-    TestCaseAttempt,
     Badge,
     Earned,
 )
@@ -31,7 +31,13 @@ LOGGING = {
 
 
 def add_points(question, profile, attempt):
-    """add appropriate number of points (if any) to user's account after a question is answered"""
+    """
+    Add appropriate number of points (if any) to user's profile after a question is answered.
+
+    Adds 10 points to a user's profile for when the user answers a question correctly for the first time. If the user
+    answers the question correctly the first time they answer, the user gains two bonus points, as checked with the
+    variable "is_first_correct".
+    """
     num_attempts = Attempt.objects.filter(question=question, profile=profile)
     is_first_correct = len(Attempt.objects.filter(question=question, profile=profile, passed_tests=True)) == 1
     logger.warning(num_attempts)
@@ -52,7 +58,7 @@ def add_points(question, profile, attempt):
 
 
 def save_goal_choice(request):
-    """update user's goal choice in database"""
+    """Update user's goal choice in database."""
     request_json = json.loads(request.body.decode('utf-8'))
     if request.user.is_authenticated:
         user = request.user
@@ -67,7 +73,12 @@ def save_goal_choice(request):
 
 
 def get_days_consecutively_answered(user):
-    """Gets the number of consecutive days with questions attempted"""
+    """
+    Get the number of consecutive days with questions attempted.
+
+    Gets all datetimes of attempts for the given user's profile, and checks for the longest continuous "streak" of
+    days where attempts were made. Returns an integer of the longest attempt "streak".
+    """
     # get datetimes from attempts in date form)
     attempts = Attempt.objects.filter(profile=user.profile).datetimes('datetime', 'day', 'DESC')
     # get current day as date
@@ -85,7 +96,7 @@ def get_days_consecutively_answered(user):
 
 
 def get_days_with_solutions(user):
-    """Gets a list of dates with questions successfully answered."""
+    """Get the number of days in the past month with questions successfully answered."""
     today = datetime.datetime.now().replace(tzinfo=None) + relativedelta(days=1)
     four_weeks_ago = today - relativedelta(months=1)
     attempts = Attempt.objects.filter(profile=user.profile, datetime__gte=four_weeks_ago.date(), passed_tests=True)
@@ -93,8 +104,13 @@ def get_days_with_solutions(user):
 
 
 def check_badge_conditions(user):
-    """check badges for account creation, consecutive days with questions answered, attempts made, points earned,
-     and questions solved"""
+    """
+    Check if the user has earned new badges for their profile.
+
+    Checks if the user has received each available badge. If not, check if the user has earned these badges. Badges
+    available to be checked for are profile creation, numebr of attempts made, number of questions answered, and
+    number of days with consecutive attempts.
+    """
     earned_badges = user.profile.earned_badges.all()
     new_badge_names = ""
     new_badge_objects = []
@@ -166,6 +182,7 @@ def check_badge_conditions(user):
 
 
 def calculate_badge_points(user, badges):
+    """Calculate points earned by the user for new badges earned by multiplying the badge tier by 10."""
     for badge in badges:
         points = badge.badge_tier * 10
         user.profile.points += points
@@ -174,7 +191,7 @@ def calculate_badge_points(user, badges):
 
 
 def backdate_points_and_badges():
-    """Performs backdate of all points and badges for each profile in the system."""
+    """Perform backdate of all points and badges for each profile in the system."""
     profiles = Profile.objects.all()
     for profile in profiles:
         profile = backdate_badges(profile)
@@ -185,7 +202,7 @@ def backdate_points_and_badges():
 
 
 def backdate_points(profile):
-    """Re-calculates points for the user profile."""
+    """Re-calculate points for the user profile."""
     questions = Question.objects.all()
     profile.points = 0
     for question in questions:
@@ -202,6 +219,6 @@ def backdate_points(profile):
 
 
 def backdate_badges(profile):
-    """Re-checks the profile for badges earned."""
+    """Re-check the profile for badges earned."""
     check_badge_conditions(profile.user)
     return profile

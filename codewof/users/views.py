@@ -15,18 +15,12 @@ from research.models import StudyRegistration
 
 
 from programming.models import (
-    Profile,
     Question,
-    TestCase,
     Attempt,
-    TestCaseAttempt,
-    Badge,
-    Earned
+    Badge
 )
 
-from codewof.codewof_utils import check_badge_conditions, add_points, get_days_with_solutions
-
-import logging
+from codewof.codewof_utils import check_badge_conditions, get_days_with_solutions
 
 User = get_user_model()
 

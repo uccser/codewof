@@ -11,7 +11,7 @@ from tests.research.factories import (
     StudyGroupFactory,
 )
 
-from programming.models import Badge, Attempt
+from programming.models import Badge
 
 LOG_HEADER = '\n{}\n' + ('-' * 20)
 
@@ -207,6 +207,5 @@ class Command(management.base.BaseCommand):
             icon_name='img/icons/badges/icons8-calendar-28-50.png',
             badge_tier=5
         )
-
 
         print("Badges added.")

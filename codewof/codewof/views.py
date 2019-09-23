@@ -4,7 +4,6 @@ from django.http import JsonResponse, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 import json
-import datetime
 import logging
 
 from programming.models import (
@@ -45,6 +44,7 @@ class IndexView(generic.base.TemplateView):
         context['questions'] = Question.objects.select_subclasses()
         return context
 
+
 def save_question_attempt(request):
     """Save user's attempt for a question.
 
@@ -81,7 +81,6 @@ def save_question_attempt(request):
                 passed_tests=total_passed == total_tests,
             )
 
-
             # Create test case attempt objects
             for test_case_id, test_case_data in test_cases.items():
                 test_case = TestCase.objects.get(pk=test_case_id)
@@ -93,11 +92,10 @@ def save_question_attempt(request):
 
             add_points(question, profile, attempt)
 
-
-
             result['success'] = True
 
     return JsonResponse(result)
+
 
 class ProfileView(LoginRequiredMixin, generic.DetailView):
     """Displays a user's profile."""

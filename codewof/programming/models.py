@@ -17,6 +17,7 @@ User = get_user_model()
 
 
 def get_local_time():
+    """Get local time in current time zone, rather than UTC."""
     return timezone.localtime(timezone.now())
 
 
@@ -54,6 +55,8 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Badge(models.Model):
+    """Badge that can be earned by a user."""
+
     id_name = models.CharField(max_length=SMALL, unique=True)
     display_name = models.CharField(max_length=SMALL)
     description = models.CharField(max_length=LARGE)
@@ -61,28 +64,35 @@ class Badge(models.Model):
     badge_tier = models.IntegerField(default=0)
 
     def __str__(self):
+        """Text representation of a badge."""
         return self.display_name
 
 
 class Earned(models.Model):
+    """Model that documents when a badge is earned by a user in their profile."""
+
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
     badge = models.ForeignKey('Badge', on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
+        """Text representation of an Earned object."""
         return str(self.date)
 
 
 class Token(models.Model):
+    """Token model for codeWOF."""
+
     name = models.CharField(max_length=SMALL, primary_key=True)
     token = models.CharField(max_length=LARGE)
 
     def __str__(self):
+        """Text representation of a Token."""
         return self.name
 
 
 class Attempt(models.Model):
-    """An user attempt for a question."""
+    """A user attempt for a question."""
 
     profile = models.ForeignKey(
         'Profile',
