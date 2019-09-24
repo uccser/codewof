@@ -95,12 +95,12 @@ def get_days_consecutively_answered(user):
     return i
 
 
-def get_days_with_solutions(user):
-    """Get the number of days in the past month with questions successfully answered."""
+def get_questions_answered_in_past_month(user):
+    """Get the number questions successfully answered in the past month."""
     today = datetime.datetime.now().replace(tzinfo=None) + relativedelta(days=1)
-    four_weeks_ago = today - relativedelta(months=1)
-    attempts = Attempt.objects.filter(profile=user.profile, datetime__gte=four_weeks_ago.date(), passed_tests=True)
-    return len(attempts)
+    last_month = today - relativedelta(months=1)
+    solved = Attempt.objects.filter(profile=user.profile, datetime__gte=last_month.date(), passed_tests=True)
+    return len(solved)
 
 
 def check_badge_conditions(user):

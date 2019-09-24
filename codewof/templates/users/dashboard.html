@@ -30,7 +30,7 @@
             <strong>Sorry!</strong> We currently don't have questions for you to do today.
           </div>
         {% endif %}
-        <p>You've solved {{number_days_used}} questions in the last month!</p>
+        <p>You've solved {{num_questions_answered}} question{{ num_questions_answered|pluralize }} in the last month!</p>
 <!--        {% include "users/activity_graph.html" %}-->
       </div>
 
