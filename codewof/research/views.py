@@ -210,7 +210,6 @@ class StudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
     #     """
     #     Fill this out.....
     #     """
-        # if self.request.user is a researcher....
-            # return all studies that researcher is researching?
-            # return self.request.user.studies_researching.all()
-        
+    # if self.request.user is a researcher....
+    # return all studies that researcher is researching?
+    # return self.request.user.studies_researching.all()

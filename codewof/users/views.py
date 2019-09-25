@@ -12,10 +12,10 @@ from django.views.generic import DetailView, RedirectView, UpdateView
 from programming import settings
 from programming.models import Question, Attempt
 from users.forms import UserChangeForm
-from research.models import StudyRegistration, Study
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
-from users.serializers import UserSerializer
+from research.models import StudyRegistration  # , Study
+# from rest_framework import viewsets
+# from rest_framework.permissions import IsAuthenticated
+# from users.serializers import UserSerializer
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -153,5 +153,5 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 #         """
 #         user = self.request.user
 #         return Study.objects.filter(researchers__in=user)
-        # get users in studies    
+        # get users in studies
         # return User.objects.filter()
