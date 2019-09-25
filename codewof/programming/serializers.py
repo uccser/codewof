@@ -1,7 +1,7 @@
 """Serializers for programming models."""
 
 from rest_framework import serializers
-from programming.models import Question
+from programming.models import Question, Attempt
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -22,4 +22,20 @@ class QuestionSerializer(serializers.ModelSerializer):
             'pk',
             'title',
             'question_type'
+        )
+
+
+class AttemptSerializer(serializers.ModelSerializer):
+    """Serializer for codeWOF attempts."""
+
+    class Meta:
+        """Meta settings for serializer."""
+
+        model = Attempt
+        fields = (
+            'datetime',
+            'pk',
+            'question',
+            'user_code',
+            'passed_tests'
         )

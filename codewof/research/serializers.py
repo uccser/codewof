@@ -14,4 +14,6 @@ class StudySerializer(serializers.ModelSerializer):
         fields = (
             'pk',
             'title',
+            'user_types',
+            'researchers'
         )
