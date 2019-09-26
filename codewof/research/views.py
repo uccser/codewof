@@ -11,6 +11,7 @@ from django.shortcuts import redirect, get_object_or_404
 from mail_templated import send_mail
 from programming.models import Attempt
 from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser
 from research.serializers import StudySerializer
 from research.models import (
     Study,
@@ -201,15 +202,8 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
 
 
 class StudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint that allows users to be viewed."""
+    """API endpoint that allows studies to be viewed."""
 
+    permission_classes = [IsAdminUser]
     queryset = Study.objects.all()
     serializer_class = StudySerializer
-
-    # def get_queryset(self):
-    #     """
-    #     Fill this out.....
-    #     """
-    # if self.request.user is a researcher....
-    # return all studies that researcher is researching?
-    # return self.request.user.studies_researching.all()

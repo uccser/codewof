@@ -1,4 +1,4 @@
-"""Module for factories for tesing programming application."""
+"""Module for factories for testing programming application."""
 
 import random
 from factory import (
