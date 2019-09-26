@@ -14,7 +14,6 @@ from programming.models import Question, Attempt
 from users.forms import UserChangeForm
 from research.models import StudyRegistration
 
-
 User = get_user_model()
 logger = logging.getLogger(__name__)
 
