@@ -42,10 +42,11 @@ class ProfileSerializer(serializers.ModelSerializer):
 class AttemptSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF attempts."""
 
+    # rename pk field so that it is clear it represents attempt id
+    attempt_id = serializers.IntegerField(source='pk')
     profile = ProfileSerializer()
     user_id = serializers.ReadOnlyField(source='profile.user.pk')
     user_email = serializers.ReadOnlyField(source='profile.user.email')
-
 
     class Meta:
         """Meta settings for serializer."""
@@ -53,7 +54,7 @@ class AttemptSerializer(serializers.ModelSerializer):
         model = Attempt
         fields = (
             'datetime',
-            'pk',
+            'attempt_id',
             'question',
             'user_code',
             'passed_tests',
