@@ -226,7 +226,11 @@ class QuestionAPIViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ProfileAPIViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint that allows profiles to be viewed."""
+    """API endpoint that allows profiles to be viewed.
+
+    There is currently no URL set up to access this.
+    Helper for AttemptAPIViewSet.
+    """
 
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer

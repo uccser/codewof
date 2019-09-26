@@ -3,11 +3,11 @@ say-hello:
   test-cases:
     1: normal
 
-ride-share:
-  type: function
-  test-cases:
-    1: normal
-    2: normal
+# ride-share:
+#   type: function
+#   test-cases:
+#     1: normal
+#     2: normal
 
 # TODO: Skulpt has issues with round function compared to Python so needs further testing
 # rugby-score:
@@ -485,3 +485,403 @@ drawn-out-string:
     2: normal
     3: normal
     4: normal
+
+add-up-numbers:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: normal
+
+evens-out:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: normal
+
+happy-birthday:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
+
+give-me-5:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: normal
+    5: normal
+
+while-away:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 2
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: normal
+
+times-2:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: exceptional
+    5: normal
+    6: exceptional
+
+days-to-target:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'population * 2'
+    - 'population = population ** 2'
+    - 'print(days)'
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
+    5: normal
+
+roll-call:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(name.title())'
+    - 'print(name.capitalize())'
+    - 'print(name.swapcase())'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+
+lunch:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+signature:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+print-bigger-number:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+    5: exceptional
+
+rectangle-pattern:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for i in range(width):'
+    - 'print("height * "#")'
+    - 'print("#")'
+    - 'print(width * height)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+leap-year:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+
+discounted-cost:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 2
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+celsius-to-fahrenheit:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+fahrenheit-to-celsius:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+rollercoaster-ride:
+  types:
+    - function
+    - parsons
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+how-many-dogs:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 2
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+total-evens:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+driver-speed:
+  types:
+    - function
+    - parsons
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+fizz-buzz:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "elif num / 3 == 0:"
+    - "elif num / 5 == 0:"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+inside-outside:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+eight-is-great:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'if a or b == 8:'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+sum-lucky-7:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+duck-goose:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+remove-bugs:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+nth-to-last:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+factorial-debug:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 3
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+sum-unlucky-7:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+pass-the-parcel:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+end-of-file:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'return(file)'
+    - 'file += "EOF"'
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+
+is-this-the-end:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(x == y)'
+    - 'y -= 1'
+    - 'y = items[index]'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+
+long-count:
+  types:
+    - parsons
+  parsons-extra-lines:
+    - 'length = 1'
+    - 'return items'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+playing-card:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+marco-polo:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+say-kia-ora:
+  types:
+    - program
+  test-cases:
+    1: normal
+
+favourite-food:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal

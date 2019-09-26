@@ -12,7 +12,7 @@ from research.models import (
     Study,
     StudyGroup,
 )
-from users.models import User, UserType
+from users.models import UserType
 
 
 class StudyFactory(DjangoModelFactory):

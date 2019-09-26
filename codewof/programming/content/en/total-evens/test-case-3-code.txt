@@ -1,0 +1,1 @@
+print(total_of_even_numbers([-7, 4, 42, -12, 0, 0, 18]))
