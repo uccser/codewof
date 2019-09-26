@@ -12,7 +12,7 @@ from research.models import (
     Study,
     StudyGroup,
 )
-from users.models import UserType
+from users.models import User, UserType
 
 
 class StudyFactory(DjangoModelFactory):
@@ -24,6 +24,7 @@ class StudyFactory(DjangoModelFactory):
     end_date = Faker('date_between', start_date="+1m", end_date="+3m")
     visible = True
     consent_form = 'MaintainingProgrammingSkills2019Form'
+    # researchers = User.objects.get(pk=1) # admin account
 
     class Meta:
         """Metadata for class."""

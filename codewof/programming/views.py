@@ -9,6 +9,7 @@ from django.http import JsonResponse, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser
 from programming.serializers import (
     QuestionSerializer,
     ProfileSerializer,
@@ -234,5 +235,6 @@ class ProfileAPIViewSet(viewsets.ReadOnlyModelViewSet):
 class AttemptAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows attempts to be viewed."""
 
+    permission_classes = [IsAdminUser]
     queryset = Attempt.objects.all()
     serializer_class = AttemptSerializer
