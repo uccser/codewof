@@ -1,7 +1,7 @@
 """Serializers for programming models."""
 
 from rest_framework import serializers
-from programming.models import Question, Attempt
+from programming.models import Question, Attempt, Profile
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -27,8 +27,25 @@ class QuestionSerializer(serializers.ModelSerializer):
         )
 
 
+class ProfileSerializer(serializers.ModelSerializer):
+    """Serializer for codeWOF profiles."""
+
+    class Meta:
+        """Meta settings for serializer."""
+
+        model = Profile
+        fields = (
+            'user',
+        )
+
+
 class AttemptSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF attempts."""
+
+    profile = ProfileSerializer()
+    user_id = serializers.ReadOnlyField(source='profile.user.pk')
+    user_email = serializers.ReadOnlyField(source='profile.user.email')
+
 
     class Meta:
         """Meta settings for serializer."""
@@ -39,5 +56,8 @@ class AttemptSerializer(serializers.ModelSerializer):
             'pk',
             'question',
             'user_code',
-            'passed_tests'
+            'passed_tests',
+            'profile',
+            'user_id',
+            'user_email',
         )

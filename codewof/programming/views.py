@@ -9,7 +9,11 @@ from django.http import JsonResponse, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from rest_framework import viewsets
-from programming.serializers import QuestionSerializer, AttemptSerializer
+from programming.serializers import (
+    QuestionSerializer,
+    ProfileSerializer,
+    AttemptSerializer,
+)
 from programming.models import (
     Profile,
     Question,
@@ -218,6 +222,13 @@ class QuestionAPIViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+
+
+class ProfileAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows profiles to be viewed."""
+
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
 
 
 class AttemptAPIViewSet(viewsets.ReadOnlyModelViewSet):
