@@ -232,6 +232,7 @@ class ProfileAPIViewSet(viewsets.ReadOnlyModelViewSet):
     Helper for AttemptAPIViewSet.
     """
 
+    permission_classes = [IsAdminUser]
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 

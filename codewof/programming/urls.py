@@ -5,11 +5,13 @@ from rest_framework import routers
 
 from . import views
 from research import views as research_views
+from users import views as user_views
 
 router = routers.DefaultRouter()
 router.register(r'api-questions', views.QuestionAPIViewSet)
 router.register(r'api-studies', research_views.StudyAPIViewSet)
 router.register(r'api-attempts', views.AttemptAPIViewSet)
+router.register(r'api-users', user_views.UserAPIViewSet)
 
 app_name = 'programming'
 urlpatterns = [

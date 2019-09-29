@@ -9,6 +9,9 @@ from django.urls import reverse
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView, RedirectView, UpdateView
+from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser
+from users.serializers import UserSerializer
 from programming import settings
 from programming.models import Question, Attempt
 from users.forms import UserChangeForm
@@ -134,3 +137,11 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self):
         """URL to redirect to."""
         return reverse("users:dashboard")
+
+
+class UserAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows users to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
