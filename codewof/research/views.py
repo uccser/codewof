@@ -12,9 +12,14 @@ from mail_templated import send_mail
 from programming.models import Attempt
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
-from research.serializers import StudySerializer
+from research.serializers import (
+    StudySerializer,
+    StudyGroupSerializer,
+    SingularStudySerializer
+)
 from research.models import (
     Study,
+    StudyGroup,
     StudyRegistration,
 )
 from research.utils import get_consent_form_class
@@ -205,5 +210,26 @@ class StudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows studies to be viewed."""
 
     permission_classes = [IsAdminUser]
-    queryset = Study.objects.all()
     serializer_class = StudySerializer
+    queryset = Study.objects.all()
+
+
+class StudyGroupAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows study groups to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = StudyGroup.objects.all()
+    serializer_class = StudyGroupSerializer
+
+
+class SingularStudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows studies to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = Study.objects.all()
+    serializer_class = SingularStudySerializer
+
+    def get_queryset(self):
+        study_id = self.request.query_params.get('study_id')
+        queryset = Study.objects.all().filter(pk=study_id)
+        return queryset
