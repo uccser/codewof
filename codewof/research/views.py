@@ -226,10 +226,11 @@ class SingularStudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows studies to be viewed."""
 
     permission_classes = [IsAdminUser]
-    queryset = Study.objects.all()
+    queryset = Study.objects.all().prefetch_related('groups')
     serializer_class = SingularStudySerializer
 
     def get_queryset(self):
+        """Get study object that has been requested."""
         study_id = self.request.query_params.get('study_id')
         queryset = Study.objects.all().filter(pk=study_id)
         return queryset

@@ -221,7 +221,7 @@ class CreateView(generic.base.TemplateView):
 class QuestionAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows questions to be viewed."""
 
-    queryset = Question.objects.all()
+    queryset = Question.objects.all().prefetch_related('attempt_set', 'groups')
     serializer_class = QuestionSerializer
 
 
@@ -233,7 +233,7 @@ class ProfileAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """
 
     permission_classes = [IsAdminUser]
-    queryset = Profile.objects.all()
+    queryset = Profile.objects.all().prefetch_related('user')
     serializer_class = ProfileSerializer
 
 
@@ -241,5 +241,5 @@ class AttemptAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows attempts to be viewed."""
 
     permission_classes = [IsAdminUser]
-    queryset = Attempt.objects.all()
+    queryset = Attempt.objects.all().prefetch_related('profile')
     serializer_class = AttemptSerializer

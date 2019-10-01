@@ -13,7 +13,6 @@ router.register(r'api-studies', research_views.StudyAPIViewSet)
 router.register(r'api-attempts', views.AttemptAPIViewSet)
 router.register(r'api-users', user_views.UserAPIViewSet)
 router.register(r'api-study', research_views.SingularStudyAPIViewSet)
-router.register(r'api-study-groups', research_views.StudyGroupAPIViewSet)
 
 app_name = 'programming'
 urlpatterns = [

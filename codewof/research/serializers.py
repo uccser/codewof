@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from research.models import Study, StudyGroup
-from programming.serializers import AttemptSerializer, QuestionSerializer
+from programming.serializers import QuestionWithAttemptSerializer
 
 
 class StudySerializer(serializers.ModelSerializer):
@@ -22,8 +22,8 @@ class StudySerializer(serializers.ModelSerializer):
 
 class StudyGroupSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF studies."""
-    # gets related Questions
-    groups = QuestionSerializer(many=True, read_only=True)
+
+    questions = QuestionWithAttemptSerializer(many=True, read_only=True)
 
     class Meta:
         """Meta settings for serializer."""
@@ -32,12 +32,13 @@ class StudyGroupSerializer(serializers.ModelSerializer):
         fields = (
             'pk',
             'title',
-            'groups',
+            'questions',
         )
 
 
 class SingularStudySerializer(serializers.ModelSerializer):
     """Serializer for codeWOF studies."""
+
     # gets related StudyGroups
     groups = StudyGroupSerializer(many=True, read_only=True)
 
