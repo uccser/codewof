@@ -59,3 +59,10 @@ b {
   float: right;
   margin-right: 1rem;
 }
+
+.format-selection.open ul {
+  display: block;
+  li {
+    padding-left: 0.5rem !important;
+  }
+}
