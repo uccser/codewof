@@ -207,11 +207,10 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
 
 
 class ResearcherPermission(permissions.BasePermission):
-    """
-    Global permission check if the user is a researcher of the study.
-    """
+    """Global permission check if the user is a researcher of the study."""
 
     def has_permission(self, request, view):
+        """Check if user is researcher of study."""
         user = request.user
         study_id = request.query_params.get('study_id')
         study = Study.objects.get(pk=study_id)
