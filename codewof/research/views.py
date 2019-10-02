@@ -10,7 +10,7 @@ from django.views.generic.edit import FormView
 from django.shortcuts import redirect, get_object_or_404
 from mail_templated import send_mail
 from programming.models import Attempt
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.permissions import IsAdminUser
 from research.serializers import (
     StudySerializer,
@@ -206,6 +206,21 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         return redirect(study)
 
 
+class ResearcherPermission(permissions.BasePermission):
+    """
+    Global permission check if the user is a researcher of the study.
+    """
+
+    def has_permission(self, request, view):
+        user = request.user
+        study_id = request.query_params.get('study_id')
+        study = Study.objects.get(pk=study_id)
+        if user in study.researchers.all():
+            return True
+        else:
+            return False
+
+
 class StudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows studies to be viewed."""
 
@@ -225,7 +240,7 @@ class StudyGroupAPIViewSet(viewsets.ReadOnlyModelViewSet):
 class SingularStudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows studies to be viewed."""
 
-    permission_classes = [IsAdminUser]
+    permission_classes = [ResearcherPermission]
     queryset = Study.objects.all().prefetch_related('groups')
     serializer_class = SingularStudySerializer
 
