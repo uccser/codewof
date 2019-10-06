@@ -9,7 +9,12 @@ from django.http import JsonResponse, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from rest_framework import viewsets
-from programming.serializers import QuestionSerializer
+from rest_framework.permissions import IsAdminUser
+from programming.serializers import (
+    QuestionSerializer,
+    ProfileSerializer,
+    AttemptSerializer,
+)
 from programming.models import (
     Profile,
     Question,
@@ -216,5 +221,25 @@ class CreateView(generic.base.TemplateView):
 class QuestionAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows questions to be viewed."""
 
-    queryset = Question.objects.all()
+    queryset = Question.objects.all().prefetch_related('attempt_set', 'groups')
     serializer_class = QuestionSerializer
+
+
+class ProfileAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows profiles to be viewed.
+
+    There is currently no URL set up to access this.
+    Helper for AttemptAPIViewSet.
+    """
+
+    permission_classes = [IsAdminUser]
+    queryset = Profile.objects.all().prefetch_related('user')
+    serializer_class = ProfileSerializer
+
+
+class AttemptAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows attempts to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = Attempt.objects.all().prefetch_related('profile')
+    serializer_class = AttemptSerializer

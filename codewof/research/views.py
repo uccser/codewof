@@ -10,8 +10,16 @@ from django.views.generic.edit import FormView
 from django.shortcuts import redirect, get_object_or_404
 from mail_templated import send_mail
 from programming.models import Attempt
+from rest_framework import viewsets, permissions
+from rest_framework.permissions import IsAdminUser
+from research.serializers import (
+    StudySerializer,
+    StudyGroupSerializer,
+    SingularStudySerializer
+)
 from research.models import (
     Study,
+    StudyGroup,
     StudyRegistration,
 )
 from research.utils import get_consent_form_class
@@ -196,3 +204,45 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
             'You are successfully enrolled into this study. You have been emailed a copy of your signed consent form.'.format(study.title)  # noqa: E501
         )
         return redirect(study)
+
+
+class ResearcherPermission(permissions.BasePermission):
+    """Global permission check if the user is a researcher of the study."""
+
+    def has_object_permission(self, request, view, study):
+        """Check if user is researcher of study."""
+        user = request.user
+        if user in study.researchers.all():
+            return True
+        else:
+            return False
+
+
+class StudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows studies to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    serializer_class = StudySerializer
+    queryset = Study.objects.all()
+
+
+class StudyGroupAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows study groups to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = StudyGroup.objects.all()
+    serializer_class = StudyGroupSerializer
+
+
+class SingularStudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows studies to be viewed."""
+
+    permission_classes = [ResearcherPermission]
+    queryset = Study.objects.all().prefetch_related('groups')
+    serializer_class = SingularStudySerializer
+
+    def get_queryset(self):
+        """Get study object that has been requested."""
+        study_id = self.request.query_params.get('study_id')
+        queryset = Study.objects.all().filter(pk=study_id)
+        return queryset

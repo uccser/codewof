@@ -10,6 +10,7 @@ from tests.research.factories import (
     StudyFactory,
     StudyGroupFactory,
 )
+from tests.programming.factories import AttemptFactory
 
 LOG_HEADER = '\n{}\n' + ('-' * 20)
 
@@ -77,3 +78,7 @@ class Command(management.base.BaseCommand):
         StudyFactory.create_batch(size=5)
         StudyGroupFactory.create_batch(size=15)
         print('Research studies loaded.')
+
+        # Attempts
+        AttemptFactory.create_batch(size=50)
+        print('Attempts loaded.')
