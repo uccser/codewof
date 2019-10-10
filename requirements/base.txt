@@ -1,5 +1,5 @@
 pytz==2019.2
-python-slugify==3.0.3
+python-slugify==3.0.6
 Pillow==6.1.0
 argon2-cffi==19.1.0
 redis>=2.10.6, < 3  # pyup: < 3
