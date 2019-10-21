@@ -25,7 +25,13 @@ $(document).ready(function () {
         styleActiveLine: true,
         autofocus: true,
         indentUnit: 4,
-        viewportMargin: Infinity
+        viewportMargin: Infinity,
+        // Replace tabs with 4 spaces. Taken from https://stackoverflow.com/questions/15183494/codemirror-tabs-to-spaces
+        extraKeys: {
+            "Tab": function(cm) {
+                cm.replaceSelection("    ", "end");
+            }
+        }
     });
 
     mark_lines_as_read_only(editor);
@@ -52,6 +58,9 @@ function run_code(editor, submit) {
         }
     }
     var user_code = editor.getValue();
+    console.log(user_code);
+    user_code = user_code.replace(/(.*?)\t/gm, "    ");
+    console.log(user_code);
     test_cases = base.run_test_cases(test_cases, user_code, run_python_code);
     if (submit) {
         base.ajax_request(
