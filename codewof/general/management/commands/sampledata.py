@@ -138,7 +138,7 @@ class Command(management.base.BaseCommand):
 
         Badge.objects.create(
             id_name='attempts-made-1',
-            display_name='Made your first attempt at a question!',
+            display_name='Made your first question attempt!',
             description='Attempted one question',
             icon_name='img/icons/badges/icons8-attempt-made-black-50.png',
             badge_tier=1
