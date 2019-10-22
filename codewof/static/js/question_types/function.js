@@ -50,9 +50,13 @@ function run_code(editor, submit) {
         }
     }
     var user_code = editor.getValue();
-    console.log(user_code);
-    user_code = user_code.replace(/    /gm, "\t");
-    console.log(user_code);
+    if (user_code.includes("\t")) {
+        // contains tabs
+        $("#indentation-warning").removeClass("d-none");
+        return; // do not run tests
+    } else {
+        $("#indentation-warning").addClass("d-none");
+    }
     test_cases = base.run_test_cases(test_cases, user_code, run_python_code);
     if (submit) {
         base.ajax_request(
