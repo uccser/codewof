@@ -39,7 +39,7 @@
         <h2>Achievements</h2>
         <br>
         {% for badge in all_badges %}
-            {% if badge in user.profile.earned_badges.all %}
+            {% if badge in user.profile.earned_badges.all and badge.parent not in user.profile.earned_badges.all %}
               <img style="padding: 5px;" src="{% static badge.icon_name %}">
               <b>{{badge.display_name}}</b>
               <br>

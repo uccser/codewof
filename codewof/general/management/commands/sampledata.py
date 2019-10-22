@@ -104,31 +104,7 @@ class Command(management.base.BaseCommand):
             badge_tier=0
         )
 
-        Badge.objects.create(
-            id_name='questions-solved-1',
-            display_name='Solved one question!',
-            description='Solved your very first question',
-            icon_name='img/icons/badges/icons8-question-solved-black-50.png',
-            badge_tier=1
-        )
-
-        Badge.objects.create(
-            id_name='questions-solved-5',
-            display_name='Solved five questions!',
-            description='Solved five questions',
-            icon_name='img/icons/badges/icons8-question-solved-bronze-50.png',
-            badge_tier=2
-        )
-
-        Badge.objects.create(
-            id_name='questions-solved-10',
-            display_name='Solved ten questions!',
-            description='Solved ten questions',
-            icon_name='img/icons/badges/icons8-question-solved-silver-50.png',
-            badge_tier=3
-        )
-
-        Badge.objects.create(
+        questionSolved100 = Badge.objects.create(
             id_name='questions-solved-100',
             display_name='Solved one hundred questions!',
             description='Solved one hundred questions',
@@ -136,31 +112,34 @@ class Command(management.base.BaseCommand):
             badge_tier=4
         )
 
-        Badge.objects.create(
-            id_name='attempts-made-1',
-            display_name='Made your first question attempt!',
-            description='Attempted one question',
-            icon_name='img/icons/badges/icons8-attempt-made-black-50.png',
-            badge_tier=1
+        questionSolved10 = Badge.objects.create(
+            id_name='questions-solved-10',
+            display_name='Solved ten questions!',
+            description='Solved ten questions',
+            icon_name='img/icons/badges/icons8-question-solved-silver-50.png',
+            badge_tier=3,
+            parent=questionSolved100
+        )
+
+        questionSolved5 = Badge.objects.create(
+            id_name='questions-solved-5',
+            display_name='Solved five questions!',
+            description='Solved five questions',
+            icon_name='img/icons/badges/icons8-question-solved-bronze-50.png',
+            badge_tier=2,
+            parent = questionSolved10
         )
 
         Badge.objects.create(
-            id_name='attempts-made-5',
-            display_name='Made five question attempts!',
-            description='Attempted five questions',
-            icon_name='img/icons/badges/icons8-attempt-made-bronze-50.png',
-            badge_tier=2
+            id_name='questions-solved-1',
+            display_name='Solved one question!',
+            description='Solved your very first question',
+            icon_name='img/icons/badges/icons8-question-solved-black-50.png',
+            badge_tier=1,
+            parent=questionSolved5
         )
 
-        Badge.objects.create(
-            id_name='attempts-made-10',
-            display_name='Made ten question attempts!',
-            description='Attempted ten questions',
-            icon_name='img/icons/badges/icons8-attempt-made-silver-50.png',
-            badge_tier=3
-        )
-
-        Badge.objects.create(
+        attemptsMade100 = Badge.objects.create(
             id_name='attempts-made-100',
             display_name='Made one hundred question attempts!',
             description='Attempted one hundred questions',
@@ -168,44 +147,75 @@ class Command(management.base.BaseCommand):
             badge_tier=4
         )
 
-        Badge.objects.create(
-            id_name='consecutive-days-2',
-            display_name='Worked on coding for two days in a row!',
-            description='Attempted at least one question two days in a row',
-            icon_name='img/icons/badges/icons8-calendar-2-50.png',
-            badge_tier=1
+        attemptsMade10 = Badge.objects.create(
+            id_name='attempts-made-10',
+            display_name='Made ten question attempts!',
+            description='Attempted ten questions',
+            icon_name='img/icons/badges/icons8-attempt-made-silver-50.png',
+            badge_tier=3,
+            parent=attemptsMade100
+        )
+
+        attemptsMade5 = Badge.objects.create(
+            id_name='attempts-made-5',
+            display_name='Made five question attempts!',
+            description='Attempted five questions',
+            icon_name='img/icons/badges/icons8-attempt-made-bronze-50.png',
+            badge_tier=2,
+            parent=attemptsMade10
         )
 
         Badge.objects.create(
-            id_name='consecutive-days-7',
-            display_name='Worked on coding every day for one week!',
-            description='Attempted at least one question every day for one week',
-            icon_name='img/icons/badges/icons8-calendar-7-50.png',
-            badge_tier=2
+            id_name='attempts-made-1',
+            display_name='Made your first question attempt!',
+            description='Attempted one question',
+            icon_name='img/icons/badges/icons8-attempt-made-black-50.png',
+            badge_tier=1,
+            parent=attemptsMade5
         )
 
-        Badge.objects.create(
-            id_name='consecutive-days-14',
-            display_name='Worked on coding every day for two weeks!',
-            description='Attempted at least one question every day for two weeks',
-            icon_name='img/icons/badges/icons8-calendar-14-50.png',
-            badge_tier=3
-        )
-
-        Badge.objects.create(
-            id_name='consecutive-days-21',
-            display_name='Worked on coding every day for three weeks!',
-            description='Attempted at least one question every day for three weeks',
-            icon_name='img/icons/badges/icons8-calendar-21-50.png',
-            badge_tier=4
-        )
-
-        Badge.objects.create(
+        consecutiveDays28 = Badge.objects.create(
             id_name='consecutive-days-28',
             display_name='Worked on coding every day for four weeks!',
             description='Attempted at least one question every day for four weeks',
             icon_name='img/icons/badges/icons8-calendar-28-50.png',
             badge_tier=5
+        )
+
+        consecutiveDays21 = Badge.objects.create(
+            id_name='consecutive-days-21',
+            display_name='Worked on coding every day for three weeks!',
+            description='Attempted at least one question every day for three weeks',
+            icon_name='img/icons/badges/icons8-calendar-21-50.png',
+            badge_tier=4,
+            parent=consecutiveDays28
+        )
+
+        consecutiveDays14 = Badge.objects.create(
+            id_name='consecutive-days-14',
+            display_name='Worked on coding every day for two weeks!',
+            description='Attempted at least one question every day for two weeks',
+            icon_name='img/icons/badges/icons8-calendar-14-50.png',
+            badge_tier=3,
+            parent=consecutiveDays21
+        )
+
+        consecutiveDays7 = Badge.objects.create(
+            id_name='consecutive-days-7',
+            display_name='Worked on coding every day for one week!',
+            description='Attempted at least one question every day for one week',
+            icon_name='img/icons/badges/icons8-calendar-7-50.png',
+            badge_tier=2,
+            parent=consecutiveDays14
+        )
+
+        Badge.objects.create(
+            id_name='consecutive-days-2',
+            display_name='Worked on coding for two days in a row!',
+            description='Attempted at least one question two days in a row',
+            icon_name='img/icons/badges/icons8-calendar-2-50.png',
+            badge_tier=1,
+            parent=consecutiveDays7
         )
 
         print("Badges added.")

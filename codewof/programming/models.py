@@ -62,6 +62,7 @@ class Badge(models.Model):
     description = models.CharField(max_length=LARGE)
     icon_name = models.CharField(null=True, max_length=SMALL)
     badge_tier = models.IntegerField(default=0)
+    parent = models.ForeignKey('Badge', on_delete=models.CASCADE, null=True, default=None)
 
     def __str__(self):
         """Text representation of a badge."""

@@ -179,9 +179,12 @@ def save_question_attempt(request):
                         passed=test_case_data['passed'],
                     )
                 result['success'] = True
+                points_before = profile.points
                 points = add_points(question, profile, attempt)
                 badges = check_badge_conditions(profile.user)
+                points_after = profile.points
                 result['curr_points'] = points
+                result['point_diff'] = points_after - points_before
                 result['badges'] = badges
             else:
                 result['success'] = False
