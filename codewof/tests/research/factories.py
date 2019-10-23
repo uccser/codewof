@@ -12,7 +12,7 @@ from research.models import (
     Study,
     StudyGroup,
 )
-from users.models import UserType
+from users.models import User, UserType
 
 
 class StudyFactory(DjangoModelFactory):
@@ -39,6 +39,8 @@ class StudyFactory(DjangoModelFactory):
             self.user_types.add(*UserType.objects.all())
         else:
             self.user_types.add(random.choice(UserType.objects.all()))
+        researcher = User.objects.get(pk=1)  # admin account
+        self.researchers.add(researcher)
 
 
 class StudyGroupFactory(DjangoModelFactory):
