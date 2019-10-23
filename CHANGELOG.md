@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.5.1
+- Update GCP health checks.
+
 ## 1.5.0
 - Add 7 new questions.
 - Fix test case where no argument was passed for the total of evens question. Fixes #101
