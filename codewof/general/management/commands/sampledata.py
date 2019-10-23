@@ -127,7 +127,7 @@ class Command(management.base.BaseCommand):
             description='Solved five questions',
             icon_name='img/icons/badges/icons8-question-solved-bronze-50.png',
             badge_tier=2,
-            parent = questionSolved10
+            parent=questionSolved10
         )
 
         Badge.objects.create(
