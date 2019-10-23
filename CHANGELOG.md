@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.0
+- Add 7 new questions.
+- Fix test case in total of evens question. Fixes #101
+- Fix error in example of driver speed question.
+- Add endpoints to API.
+
 ## 1.4.0
 
 - Add 37 new questions.
