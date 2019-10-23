@@ -30,6 +30,7 @@ liveness_check:
 
 readiness_check:
   path: "/_ah/health"
+  check_interval_sec: 5
 
 manual_scaling:
   instances: 1
