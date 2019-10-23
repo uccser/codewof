@@ -2,8 +2,8 @@
 
 ## 1.5.0
 - Add 7 new questions.
-- Fix test case in total of evens question. Fixes #101
-- Fix error in example of driver speed question.
+- Fix test case in where no argument was passed for the total of evens question. Fixes #101
+- Fix error in example of the driver speed question.
 - Do not allow use of tab characters to indent code. Fixes #103
 - Add endpoints to API.
 
