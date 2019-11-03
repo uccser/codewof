@@ -25,12 +25,10 @@ resources:
   memory_gb: 3.75
 
 liveness_check:
-  path: "/_ah/health"
-  check_interval_sec: 5
+  path: "/gae/liveness_check"
 
 readiness_check:
-  path: "/_ah/health"
-  check_interval_sec: 5
+  path: "/gae/readiness_check"
 
 manual_scaling:
   instances: 1

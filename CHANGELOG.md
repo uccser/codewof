@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.5.2
+- Split GCP health check URLs.
+
 ## 1.5.1
 - Update GCP health checks.
 
