@@ -21,9 +21,3 @@ env_variables:
 resources:
   cpu: 1
   memory_gb: 3.75
-
-liveness_check:
-  path: "/gae/liveness_check"
-
-readiness_check:
-  path: "/gae/readiness_check"

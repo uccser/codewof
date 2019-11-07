@@ -6,9 +6,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views import defaults as default_views
-from config.views import (
-    health_check,
-)
 admin.site.login = login_required(admin.site.login)
 admin.site.site_header = 'CodeWOF'
 
@@ -19,8 +16,6 @@ urlpatterns = [
     path('users/', include('users.urls', namespace='users'),),
     path('accounts/', include('allauth.urls')),
     path('', include('programming.urls', namespace='programming'),),
-    path('gae/liveness_check', health_check),
-    path('gae/readiness_check', health_check),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
