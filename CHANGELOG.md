@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.5.3
+- Use default settings for split health checks.
+
 ## 1.5.2
 - Split GCP health check URLs.
 
