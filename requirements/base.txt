@@ -17,7 +17,7 @@ django-autoslug-iplweb==1.9.4
 git+git://github.com/uccser/django-rest-framework.git@cecd0818119c34a71fd02a1c32d8e5a7629b2876
 coreapi==2.3.3
 django-filter==2.2.0
-django-modeltranslation==0.13.3
+django-modeltranslation==0.14.1
 django-inline-svg==0.1.1
 django-ckeditor==5.7.1
 django-recaptcha==2.0.5
