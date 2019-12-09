@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 
-{% load static %}
+{% load static svg %}
 
 {% block title %}Python Style Checker{% endblock %}
 
 {% block page_heading %}
-    <h1>Python Style Checker</h1>
+    <div>
+        <div class="d-inline-block img-x4">
+            {% svg 'devicon-python' %}
+        </div>
+        <h1 class="d-inline-block">
+            Python Style Checker
+        </h1>
+    </div>
 {% endblock page_heading %}
 
 {% block content_container %}
