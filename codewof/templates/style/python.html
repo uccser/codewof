@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Python Style Checker{% endblock %}
+
+{% block page_heading %}
+    <h1>Python Style Checker</h1>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div class="col-12">
+        <p>
+            This style checker will check your code against the <a href="https://www.python.org/dev/peps/pep-0008/">PEP 8 Python Style Guide</a>.
+        </p>
+    </div>
+    <div class="col-12 col-md-6">
+        <h3>Your code</h3>
+        <div class="border">
+            <textarea id="code" class="hidden"></textarea>
+        </div>
+        <div class="d-flex my-3">
+            <button type="button" id="clear_btn" class="btn btn-sm btn-danger mr-1">
+                Clear
+            </button>
+            <button type="button" id="load_example_btn" class="btn btn-sm btn-secondary mr-1">
+                Load example
+            </button>
+            <button id="check_btn" type="button" class="btn btn-primary ml-auto">
+                Check for style errors
+            </button>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <h3>Style errors found</h3>
+        <p id="run-checker-message">
+            <em>
+                Run the style checker and any errors will appear here.
+            </em>
+        </p>
+    </div>
+{% endblock content_container %}
+
+{% block scripts %}
+    <script src="{% static 'js/style_checkers/python.js' %}"></script>
+{% endblock scripts %}
