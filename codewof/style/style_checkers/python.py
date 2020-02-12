@@ -78,7 +78,7 @@ def process_line(line_text):
         char_number = re_result.group('character')
         error_code = re_result.group('error_code')
         error_message = re_result.group('error_message')
-        error_data = python_data.PYTHON_ERRORS.get(error_code)
+        error_data = python_data.PYTHON_ISSUES.get(error_code)
         if error_data.get('templated'):
             error_title = render_text(error_data['title'], error_message)
             error_solution = render_text(error_data['solution'], error_message)

@@ -1,4 +1,4 @@
-PYTHON_ERRORS = {
+PYTHON_ISSUES = {
     "E101": {
         "original_message": "indentation contains mixed spaces and tabs",
         "templated": False,

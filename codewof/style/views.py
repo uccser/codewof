@@ -34,7 +34,7 @@ class LanguageStyleCheckerView(TemplateView):
 
 
 def check_code(request):
-    """Check the user's code for style errors.
+    """Check the user's code for style issues.
 
     Args:
         request (Request): AJAX request from user.
