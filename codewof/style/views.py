@@ -1,12 +1,14 @@
 """Views for style application."""
 
+import json
 from django.urls import reverse_lazy
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.template.loader import get_template
 from django.template import TemplateDoesNotExist
 from django.views.generic import (
     TemplateView,
 )
+from style.style_checkers.python import python_style_check
 
 LANGUAGE_PATH_TEMPLATE = 'style/{}.html'
 
@@ -29,3 +31,28 @@ class LanguageStyleCheckerView(TemplateView):
             raise Http404
         else:
             return [template_path]
+
+
+def check_code(request):
+    """Check the user's code for style errors.
+
+    Args:
+        request (Request): AJAX request from user.
+
+    Returns:
+        JSON response with result.
+    """
+    result = {
+        'success': False,
+    }
+    if request.is_ajax():
+        # TODO: Check submission length
+        request_json = json.loads(request.body.decode('utf-8'))
+        user_code = request_json['user_code']
+        language = request_json['language']
+        if language == 'python3':
+            checker_result = python_style_check(user_code)
+            result['success'] = True
+            result.update(checker_result)
+        # else raise error language isn't supported
+    return JsonResponse(result)

@@ -31,4 +31,5 @@ python-markdown-math==0.6
 PyYAML==5.1.2
 
 # Style checker
-pycodestyle==2.5.0
+# Replace flake8 dependency once new release is created
+git+git://github.com/PyCQA/flake8.git@20906d43046096c31dfcd9b8bc536dbd21f043ef

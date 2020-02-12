@@ -33,21 +33,25 @@
             <button type="button" id="load_example_btn" class="btn btn-sm btn-secondary mr-1">
                 Load example
             </button>
-            <button id="check_btn" type="button" class="btn btn-primary ml-auto">
+            <button type="button" id="check_btn" class="btn btn-primary ml-auto">
                 Check for style errors
             </button>
         </div>
     </div>
     <div class="col-12 col-md-6">
         <h3>Style errors found</h3>
-        <p id="run-checker-message">
-            <em>
-                Run the style checker and any errors will appear here.
-            </em>
-        </p>
+        <div id="run-checker-result">
+            <p>
+                <em>
+                    Run the style checker and any errors will appear here.
+                </em>
+            </p>
+        </div>
     </div>
 {% endblock content_container %}
 
 {% block scripts %}
+    {{ block.super }}
+    {% csrf_token %}
     <script src="{% static 'js/style_checkers/python.js' %}"></script>
 {% endblock scripts %}

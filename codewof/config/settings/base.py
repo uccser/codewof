@@ -388,6 +388,8 @@ SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
 SVG_DIRS = [
     os.path.join(str(STATIC_ROOT), 'svg')
 ]
+STYLE_CHECKER_TEMP_FILES_ROOT = os.path.join(str(ROOT_DIR), 'temp', 'style')
+STYLE_CHECKER_PYTHON3_SETTINGS = os.path.join(str(ROOT_DIR), 'style', 'style_checkers', 'flake8.ini')
 
 # reCAPTCHA
 # ------------------------------------------------------------------------------

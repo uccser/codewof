@@ -1,0 +1,18 @@
+<div class="card mb-1" data-line-number="{{ line_number }}">
+    <div class="card-body p-2">
+        <small class="text-muted">
+            Line {{ line_number }}
+        </small>
+        <div>
+            <span class="pep8-code text-muted">
+                {{ pep8_code }}
+            </span>
+            {{ title }}
+        </div>
+        {% if explanation %}
+            <p class="card-text mb-0">
+                {{ explanation }}
+            </p>
+        {% endif %}
+    </div>
+</div>
