@@ -78,19 +78,23 @@ def process_line(line_text):
         char_number = re_result.group('character')
         error_code = re_result.group('error_code')
         error_message = re_result.group('error_message')
-        error_data = python_data.PYTHON_ISSUES.get(error_code)
+        error_data = python_data.PYTHON_ISSUES.get(error_code, dict())
         if error_data.get('templated'):
             error_title = render_text(error_data['title'], error_message)
             error_solution = render_text(error_data['solution'], error_message)
         else:
-            error_title = error_data['title']
-            error_solution = error_data['solution']
+            try:
+                error_title = error_data['title']
+                error_solution = error_data['solution']
+            except KeyError:
+                error_title = error_data.get('original_message', error_message)
+                error_solution = ''
         issue_data = {
             'pep8_code': error_code,
             'title': error_title,
             'line_number': line_number,
             'solution': error_solution,
-            'explanation': error_data['explanation'],
+            'explanation': error_data.get('explanation', ''),
         }
     return issue_data
 
