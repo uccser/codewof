@@ -38,17 +38,18 @@
             </button>
         </div>
     </div>
-    <div class="col-12 col-md-6">
-        <h3>Style errors found</h3>
-        <div id="run-checker-result">
-            <p>
-                <em>
-                    Run the style checker and any errors will appear here.
-                </em>
-            </p>
-        </div>
+    <div class="col-12 col-md-6" id="run-checker-result">
+        <p>
+            <em>
+                Run the style checker and any errors will appear here.
+            </em>
+        </p>
     </div>
 {% endblock content_container %}
+
+{% block css %}
+    <link href="{% static 'css/style_checker.css' %}" rel="stylesheet">
+{% endblock css %}
 
 {% block scripts %}
     {{ block.super }}

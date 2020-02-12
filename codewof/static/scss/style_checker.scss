@@ -1,0 +1,10 @@
+$highlight_colour: #ffeb3b;
+
+.style-highlight {
+    background-color: $highlight_colour;
+}
+
+.issue-card {
+    user-select: none;
+    cursor: pointer;
+}

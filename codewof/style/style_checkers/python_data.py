@@ -542,10 +542,10 @@ def get_article(word):
     letter but this shouldn't occur with our words.
 
     Args:
-    word (str): Word to create article for.
+        word (str): Word to create article for.
 
     Returns:
-    'a' or 'an' (str) depending if word starts with vowel.
+        'a' or 'an' (str) depending if word starts with vowel.
     """
     if word[0].lower() in 'aeiou':
         return 'an'

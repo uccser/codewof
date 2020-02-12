@@ -36,7 +36,6 @@ def python_style_check(code):
 
     # Process results
     result_text = checker_result.stdout.decode('utf-8')
-    print(result_text)
     result_data = process_results(result_text)
 
     # Delete file from HDD
@@ -55,20 +54,24 @@ def process_results(result_text):
     Returns:
         List of dictionaries of result data.
     """
-    feedback_html = []
+    issues = []
     for line in result_text.split('\n'):
-        line_html = process_line(line)
-        if line_html:
-            feedback_html.append(line_html)
-    result_data = {
-        'feedback_html': feedback_html,
-        'error_count': len(feedback_html),
-    }
-    return result_data
+        issue_data = process_line(line)
+        if issue_data:
+            issues.append(issue_data)
+    # TODO: Check for at least one comment
+    result_html = render_to_string(
+        'style/component/feedback_result.html',
+        {
+            'issues': issues,
+            'issue_count': len(issues),
+        }
+    )
+    return result_html
 
 
 def process_line(line_text):
-    line_html = ''
+    issue_data = dict()
     re_result = re.search(LINE_RE, line_text)
     if re_result:
         line_number = re_result.group('line')
@@ -76,28 +79,23 @@ def process_line(line_text):
         error_code = re_result.group('error_code')
         error_message = re_result.group('error_message')
         error_data = python_data.PYTHON_ERRORS.get(error_code)
-        print(error_data)
-        # Check if message requires rendering
         if error_data.get('templated'):
-            error_title = render_title(error_data, error_message)
+            error_title = render_text(error_data['title'], error_message)
+            error_solution = render_text(error_data['solution'], error_message)
         else:
             error_title = error_data['title']
-        print(error_title)
-        line_html = render_to_string(
-            'style/component/style_error.html',
-            {
-                'pep8_code': error_code,
-                'title': error_title,
-                'line_number': line_number,
-                'explanation': error_data['explanation'],
-            }
-        )
-    return line_html
+            error_solution = error_data['solution']
+        issue_data = {
+            'pep8_code': error_code,
+            'title': error_title,
+            'line_number': line_number,
+            'solution': error_solution,
+            'explanation': error_data['explanation'],
+        }
+    return issue_data
 
 
-def render_title(error_data, error_message):
-    template = error_data['title']
-    # Find character
+def render_text(template, error_message):
     re_result = re.search(CHARACTER_RE, error_message)
     character = re_result.group('character')
     character_description = python_data.CHARACTER_DESCRIPTIONS[character]

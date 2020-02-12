@@ -2,6 +2,7 @@ var editor;
 var CodeMirror = require('codemirror');
 require('codemirror/mode/python/python.js');
 
+var HIGHLIGHT_CLASS = 'style-highlight';
 var EXAMPLE_CODE = `def fizzbuzz():
     for i in range(1 ,100):
         if i % 3 == 0 and i % 5 == 0 :
@@ -55,16 +56,35 @@ $(document).ready(function () {
             success: display_style_checker_results,
         });
     });
+
+    $('#run-checker-result').on('click', 'div[data-line-number]', function () {
+        toggle_highlight($(this), true);
+    });
 });
 
 
 function display_style_checker_results(data, textStatus, jqXHR) {
-    $('#run-checker-result').empty();
-    data['feedback_html'].forEach(function (line_html, index) {
-        style_error = $(line_html);
-        $('#run-checker-result').append(style_error);
-    });
+    $('#run-checker-result').html(data['feedback_html']);
 }
+
+
+function toggle_highlight(issue_button, remove_existing) {
+    var line_number = issue_button.data('line-number') - 1;
+    if (issue_button.hasClass(HIGHLIGHT_CLASS)) {
+        editor.removeLineClass(line_number, 'background', HIGHLIGHT_CLASS);
+        issue_button.removeClass(HIGHLIGHT_CLASS);
+    } else {
+        // Remove existing highlights
+        if (remove_existing) {
+            $('div[data-line-number].' + HIGHLIGHT_CLASS).each(function () {
+                toggle_highlight($(this), false);
+            });
+        }
+        issue_button.addClass(HIGHLIGHT_CLASS);
+        editor.addLineClass(line_number, 'background', HIGHLIGHT_CLASS);
+    }
+}
+
 
 function clear() {
     editor.setValue("");

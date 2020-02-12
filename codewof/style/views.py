@@ -51,8 +51,8 @@ def check_code(request):
         user_code = request_json['user_code']
         language = request_json['language']
         if language == 'python3':
-            checker_result = python_style_check(user_code)
+            result_html = python_style_check(user_code)
             result['success'] = True
-            result.update(checker_result)
+            result['feedback_html'] = result_html
         # else raise error language isn't supported
     return JsonResponse(result)
