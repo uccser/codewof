@@ -33,12 +33,12 @@ $(document).ready(function () {
     var CSRF_TOKEN = jQuery("[name=csrfmiddlewaretoken]").val();
 
     $('#load_example_btn').click(function () {
-        clear();
+        reset();
         editor.setValue(EXAMPLE_CODE);
     });
 
-    $('#clear_btn').click(function () {
-        clear();
+    $('#reset_btn').click(function () {
+        reset();
     });
 
     $('#check_btn').click(function () {
@@ -87,7 +87,7 @@ function toggle_highlight(issue_button, remove_existing) {
 }
 
 
-function clear() {
+function reset() {
     editor.setValue("");
     $('#run-checker-result').empty();
 }
