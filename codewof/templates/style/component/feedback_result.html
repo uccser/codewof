@@ -1,5 +1,6 @@
 {% if issue_count %}
-    <h3>{{ issue_count }} style issue{{ issue_count|pluralize }} found</h3>
+    <h3 class="text-danger">{{ issue_count }} style issue{{ issue_count|pluralize }} found</h3>
+    <p>Click a style issue to see where it occurs in your code.</p>
 
     {% for issue in issues %}
         <div class="card issue-card mb-1" data-line-number="{{ issue.line_number }}">
