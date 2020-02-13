@@ -13,33 +13,34 @@
             Python Style Checker <small class="text-muted">for schools</small>
         </h1>
     </div>
+    <p>
+        This style checker will check your code against the more important rules in <a href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a> (Style
+        Guide for Python Code) and <a href="https://www.python.org/dev/peps/pep-0257/">PEP 257</a> (Docstring Conventions).
+        Aligning your code to pass these common conventions ensures a high readability of your Python code.
+    </p>
 {% endblock page_heading %}
 
 {% block content_container %}
-    <div class="col-12">
-        <p>
-            This style checker will check your code against <a href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a> (Style Guide for Python Code) and <a href="https://www.python.org/dev/peps/pep-0257/">PEP 257</a> (Docstring Conventions).
-            Aligning your code to pass these common conventions ensures a high readability of your Python code.
-        </p>
-    </div>
-    <div class="col-12 col-md-6">
-        <h3>Your code</h3>
-        <div class="border">
-            <textarea id="code" class="hidden"></textarea>
-        </div>
-        <div class="d-flex my-3">
-            <button type="button" id="clear_btn" class="btn btn-sm btn-danger mr-1">
-                Clear
-            </button>
-            <button type="button" id="load_example_btn" class="btn btn-sm btn-secondary mr-1">
-                Load example
-            </button>
-            <button type="button" id="check_btn" class="btn btn-primary ml-auto">
-                Check for style issues
-            </button>
+    <div class="col-12 col-md-6 mb-3">
+        <div id="code-container" class="mb-1">
+            <h3>Your code</h3>
+            <div class="border">
+                <textarea id="code" class="hidden"></textarea>
+            </div>
+            <div class="d-flex my-3">
+                <button type="button" id="clear_btn" class="btn btn-sm btn-danger mr-1">
+                    Clear
+                </button>
+                <button type="button" id="load_example_btn" class="btn btn-sm btn-secondary mr-1">
+                    Load example
+                </button>
+                <button type="button" id="check_btn" class="btn btn-primary ml-auto">
+                    Check for style issues
+                </button>
+            </div>
         </div>
     </div>
-    <div class="col-12 col-md-6" id="run-checker-result"></div>
+    <div class="col-12 col-md-6 mb-3" id="run-checker-result"></div>
 {% endblock content_container %}
 
 {% block css %}

@@ -8,3 +8,8 @@ $highlight_colour: #ffeb3b;
     user-select: none;
     cursor: pointer;
 }
+
+#code-container {
+    position: sticky;
+    top: 0;
+}
