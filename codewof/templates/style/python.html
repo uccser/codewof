@@ -2,7 +2,7 @@
 
 {% load static svg %}
 
-{% block title %}Python Style Checker{% endblock %}
+{% block title %}Python Style Checker for schools{% endblock %}
 
 {% block page_heading %}
     <div>
@@ -10,7 +10,7 @@
             {% svg 'devicon-python' %}
         </div>
         <h1 class="d-inline-block">
-            Python Style Checker
+            Python Style Checker <small class="text-muted">for schools</small>
         </h1>
     </div>
 {% endblock page_heading %}
@@ -18,7 +18,8 @@
 {% block content_container %}
     <div class="col-12">
         <p>
-            This style checker will check your code against the <a href="https://www.python.org/dev/peps/pep-0008/">PEP 8 Python Style Guide</a>.
+            This style checker will check your code against <a href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a> (Style Guide for Python Code) and <a href="https://www.python.org/dev/peps/pep-0257/">PEP 257</a> (Docstring Conventions).
+            Aligning your code to pass these common conventions ensures a high readability of your Python code.
         </p>
     </div>
     <div class="col-12 col-md-6">
@@ -38,13 +39,7 @@
             </button>
         </div>
     </div>
-    <div class="col-12 col-md-6" id="run-checker-result">
-        <p>
-            <em>
-                Run the style checker and any issues will appear here.
-            </em>
-        </p>
-    </div>
+    <div class="col-12 col-md-6" id="run-checker-result"></div>
 {% endblock content_container %}
 
 {% block css %}
