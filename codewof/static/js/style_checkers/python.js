@@ -3,15 +3,16 @@ var CodeMirror = require('codemirror');
 require('codemirror/mode/python/python.js');
 
 var HIGHLIGHT_CLASS = 'style-highlight';
-var EXAMPLE_CODE = `def fizzbuzz():
+var EXAMPLE_CODE = `"""a simple fizzbuzz program."""
+
+def fizzbuzz():
     for i in range(1 ,100):
         if i % 3 == 0 and i % 5 == 0 :
             print("FizzBuzz")
         elif i%3 == 0:
             print( "Fizz")
         elif  i % 5==0:
-             print("Buzz")
-
+            print("Buzz")
         else:
             print(i)`;
 

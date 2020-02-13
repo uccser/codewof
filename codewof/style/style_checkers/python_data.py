@@ -55,6 +55,7 @@ PYTHON_ISSUES = {
         "solution": "Remove indentation from this line until it is indented at the correct level.",
         "explanation": ""
     },
+    # E121 ignored by default
     "E121": {
         "original_message": "continuation line under-indented for hanging indent",
         "templated": False,
@@ -69,6 +70,7 @@ PYTHON_ISSUES = {
         "solution": "Add or remove indentation levels until it is indented at the correct level.",
         "explanation": ""
     },
+    # E123 ignored by default
     "E123": {
         "original_message": "closing bracket does not match indentation of opening bracket’s line",
         "templated": False,
@@ -90,6 +92,7 @@ PYTHON_ISSUES = {
         "solution": "Add an indentation level to the line continuation so that it is indented one more level than the next logical line.",
         "explanation": "Continuation lines should not be indented at the same level as the next logical line. Instead, they should be indented to one more level so as to distinguish them from the next line."
     },
+    # E126 ignored by default
     "E126": {
         "original_message": "continuation line over-indented for hanging indent",
         "templated": False,
@@ -125,9 +128,8 @@ PYTHON_ISSUES = {
         "solution": "Add or remove indentation so that the lines are aligned with each other.",
         "explanation": ""
     },
+    # E133 ignored by default
     "E133": {
-        # This contradicts rule E123. We want to enforce E123.
-        # See https://lintlyci.github.io/Flake8Rules/rules/E133.html
         "original_message": "closing bracket is missing indentation",
         "templated": False,
         "title": "",
@@ -162,72 +164,84 @@ PYTHON_ISSUES = {
         "solution": "Remove any spaces that appear before the <code>{character}</code> character.",
         "explanation": ""
     },
-"E221": {
-"original_message": "multiple spaces before operator",
-"title": "This line has multiple spaces before an operator.",
-"solution": "Remove any extra spaces that appear before the operator on this line.",
-"explanation": ""
-},
-"E222": {
-"original_message": "multiple spaces after operator",
-"title": "This line has multiple spaces after an operator.",
-"solution": "Remove any extra spaces that appear after the operator on this line.",
-"explanation": ""
-},
-"E223": {
-"original_message": "tab before operator",
-"title": "This line contains a tab character before an operator.",
-"solution": "Remove any tab characters that appear before the operator on this line. Operators should only have one space before them.",
-"explanation": ""
-},
-"E224": {
-"original_message": "tab after operator",
-"title": "This line contains a tab character after an operator.",
-"solution": "Remove any tab characters that appear after the operator on this line. Operators should only have one space after them.",
-"explanation": ""
-},
-"E225": {
-"original_message": "missing whitespace around operator",
-"title": "This line is missing whitespace around an operator.",
-"solution": "Ensure there is one space before and after all operators.",
-"explanation": ""
-},
-"E226": {
-"original_message": "missing whitespace around arithmetic operator",
-"title": "This line is missing whitespace around an arithmetic operator (+, -, / and *).",
-"solution": "Ensure there is one space before and after all arithmetic operators  (+, -, / and *).",
-"explanation": ""
-},
-"E227": {
-"original_message": "missing whitespace around bitwise or shift operator",
-"title": "This line is missing whitespace around a bitwise or shift operator (<<, >>, &, |, ^).",
-"solution": "Ensure there is one space before and after all bitwise and shift operators  (<<, >>, &, |, ^).",
-"explanation": ""
-},
-"E228": {
-"original_message": "missing whitespace around modulo operator",
-"title": "This line is missing whitespace around a modulo operator (%).",
-"solution": "Ensure there is one space before and after the modulo operator (%).",
-"explanation": ""
-},
-"E231": {
-"original_message": "missing whitespace after ‘,’, ‘;’, or ‘:’",
-"title": "This line is missing whitespace around one of the following characters: , ; and :.",
-"solution": "Ensure there is one space before and after any of the following characters: , ; and :.",
-"explanation": ""
-},
-"E241": {
-"original_message": "multiple spaces after ‘,’",
-"title": "This line has multiple spaces after the ',' character.",
-"solution": "Ensure there is one space before and after any ',' characters.",
-"explanation": ""
-},
-"E242": {
-"original_message": "tab after ‘,’",
-"title": "This line contains a tab character after the ',' character.",
-"solution": "Remove any tab characters and ensure there is one space before and after any ',' characters.",
-"explanation": ""
-},
+    "E221": {
+        "templated": False,
+        "original_message": "multiple spaces before operator",
+        "title": "This line has multiple spaces before an operator.",
+        "solution": "Remove any extra spaces that appear before the operator on this line.",
+        "explanation": ""
+    },
+    "E222": {
+        "templated": False,
+        "original_message": "multiple spaces after operator",
+        "title": "This line has multiple spaces after an operator.",
+        "solution": "Remove any extra spaces that appear after the operator on this line.",
+        "explanation": ""
+    },
+    "E223": {
+        "templated": False,
+        "original_message": "tab before operator",
+        "title": "This line contains a tab character before an operator.",
+        "solution": "Remove any tab characters that appear before the operator on this line. Operators should only have one space before them.",
+        "explanation": ""
+    },
+    "E224": {
+        "templated": False,
+        "original_message": "tab after operator",
+        "title": "This line contains a tab character after an operator.",
+        "solution": "Remove any tab characters that appear after the operator on this line. Operators should only have one space after them.",
+        "explanation": ""
+    },
+    "E225": {
+        "templated": False,
+        "original_message": "missing whitespace around operator",
+        "title": "This line is missing whitespace around an operator.",
+        "solution": "Ensure there is one space before and after all operators.",
+        "explanation": ""
+    },
+    # E226 ignored by default
+    "E226": {
+        "templated": False,
+        "original_message": "missing whitespace around arithmetic operator",
+        "title": "This line is missing whitespace around an arithmetic operator (+, -, / and *).",
+        "solution": "Ensure there is one space before and after all arithmetic operators  (+, -, / and *).",
+        "explanation": ""
+    },
+    "E227": {
+        "templated": False,
+        "original_message": "missing whitespace around bitwise or shift operator",
+        "title": "This line is missing whitespace around a bitwise or shift operator (<<, >>, &, |, ^).",
+        "solution": "Ensure there is one space before and after all bitwise and shift operators  (<<, >>, &, |, ^).",
+        "explanation": ""
+    },
+    "E228": {
+        "templated": False,
+        "original_message": "missing whitespace around modulo operator",
+        "title": "This line is missing whitespace around a modulo operator (<code>%</code>).",
+        "solution": "Ensure there is one space before and after the modulo operator (<code>%</code>).",
+        "explanation": ""
+    },
+    # TODO: Check for specific character
+    "E231": {
+        "original_message": "missing whitespace after ‘,’, ‘;’, or ‘:’",
+        "title": "This line is missing whitespace around one of the following characters: , ; and :.",
+        "solution": "Ensure there is one space before and after any of the following characters: , ; and :.",
+        "explanation": ""
+    },
+    # E241 ignored by default
+    "E241": {
+        "original_message": "multiple spaces after ‘,’",
+        "title": "This line has multiple spaces after the ',' character.",
+        "solution": "Ensure there is one space before and after any ',' characters.",
+        "explanation": ""
+    },
+    # E242 ignored by default
+    "E242": {
+        "original_message": "tab after ‘,’",
+        "title": "This line contains a tab character after the ',' character.",
+        "solution": "Remove any tab characters and ensure there is one space before and after any ',' characters.",
+        "explanation": ""
+    },
 "E251": {
 "original_message": "unexpected spaces around keyword / parameter equals",
 "title": "This line contains spaces before or after the = in a function definition.",
@@ -366,6 +380,7 @@ PYTHON_ISSUES = {
 "solution": "Remove the semicolon from the end of the line.",
 "explanation": ""
 },
+    # E704 ignored by default
 "E704": {
 "original_message": "multiple statements on one line (def)",
 "title": "This line contains multiple statements.",
@@ -462,18 +477,23 @@ PYTHON_ISSUES = {
 "solution": "Ensure there is only one blank line at the end of your file.",
 "explanation": ""
 },
+    # W503 ignored by default
+    # This seems contradicitng... https://lintlyci.github.io/Flake8Rules/rules/W503.html
 "W503": {
 "original_message": "line break before binary operator",
 "title": "",
 "solution": "",
-"explanation": "This seems contradicitng... https://lintlyci.github.io/Flake8Rules/rules/W503.html"
+"explanation": ""
 },
+    # W504 ignored by default
+    # same as above https://lintlyci.github.io/Flake8Rules/rules/W504.html
 "W504": {
 "original_message": "line break after binary operator",
 "title": "",
 "solution": "",
-"explanation": "same as above https://lintlyci.github.io/Flake8Rules/rules/W504.html"
+"explanation": ""
 },
+    # W505 ignored by default
 "W505": {
 "original_message": "doc line too long (82 > 79 characters)",
 "title": "This line is longer than 79 characters.",
@@ -516,6 +536,9 @@ PYTHON_ISSUES = {
 "solution": "",
 "explanation": ""
 }
+    # TODO: Add http://www.pydocstyle.org/en/5.0.2/error_codes.html
+    # TODO: Add https://github.com/PyCQA/pep8-naming#plugin-for-flake8
+    # TODO: Add https://github.com/zheller/flake8-quotes#warnings
 }
 
 CHARACTER_DESCRIPTIONS = {

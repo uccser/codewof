@@ -33,3 +33,6 @@ PyYAML==5.1.2
 # Style checker
 # Replace flake8 dependency once new release is created
 git+git://github.com/PyCQA/flake8.git@20906d43046096c31dfcd9b8bc536dbd21f043ef
+flake8-docstrings==1.5.0
+flake8-quotes==2.1.1
+pep8-naming==0.9.1
