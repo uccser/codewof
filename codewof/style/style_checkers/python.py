@@ -89,8 +89,9 @@ def process_line(line_text):
             except KeyError:
                 error_title = error_data.get('original_message', error_message)
                 error_solution = ''
+        # TODO: Link to https://www.flake8rules.com if available
         issue_data = {
-            'pep8_code': error_code,
+            'error_code': error_code,
             'title': error_title,
             'line_number': line_number,
             'solution': error_solution,
