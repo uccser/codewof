@@ -13,3 +13,15 @@ $highlight_colour: #ffeb3b;
     position: sticky;
     top: 0;
 }
+
+.CodeMirror {
+    height: 500px;
+}
+
+.read-only {
+    background-color: #e6e6e6;
+}
+
+#run-checker-error {
+    display: none;
+}

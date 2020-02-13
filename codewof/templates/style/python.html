@@ -39,7 +39,15 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-md-6 mb-3" id="run-checker-result"></div>
+    <div class="col-12 col-md-6 mb-3">
+        <div id="run-checker-result"></div>
+        <div id="run-checker-error">
+            <strong class="text-danger">Sorry!</strong>
+            We have encountered an error.
+            Feel free to <a href="{% url 'general:contact' %}">contact us</a> if this error continues.
+        </div>
+    </div>
+
 {% endblock content_container %}
 
 {% block css %}
@@ -49,5 +57,8 @@
 {% block scripts %}
     {{ block.super }}
     {% csrf_token %}
+    <script type="text/javascript">
+        var MAX_CHARACTER_COUNT = "{{ MAX_CHARACTER_COUNT }}";
+    </script>
     <script src="{% static 'js/style_checkers/python.js' %}"></script>
 {% endblock scripts %}

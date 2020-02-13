@@ -1,6 +1,7 @@
 """Views for style application."""
 
 import json
+from django.conf import settings
 from django.urls import reverse_lazy
 from django.http import Http404, JsonResponse
 from django.template.loader import get_template
@@ -32,6 +33,12 @@ class LanguageStyleCheckerView(TemplateView):
         else:
             return [template_path]
 
+    def get_context_data(self, **kwargs):
+        """Get additional context data for template."""
+        context = super().get_context_data(**kwargs)
+        context['MAX_CHARACTER_COUNT'] = settings.STYLE_CHECKER_MAX_CHARACTER_COUNT
+        return context
+
 
 def check_code(request):
     """Check the user's code for style issues.
@@ -46,13 +53,13 @@ def check_code(request):
         'success': False,
     }
     if request.is_ajax():
-        # TODO: Check submission length
         request_json = json.loads(request.body.decode('utf-8'))
         user_code = request_json['user_code']
-        language = request_json['language']
-        if language == 'python3':
-            result_html = python_style_check(user_code)
-            result['success'] = True
-            result['feedback_html'] = result_html
-        # else raise error language isn't supported
+        if 0 < len(user_code) <= settings.STYLE_CHECKER_MAX_CHARACTER_COUNT:
+            language = request_json['language']
+            if language == 'python3':
+                result_html = python_style_check(user_code)
+                result['success'] = True
+                result['feedback_html'] = result_html
+            # TODO: else raise error language isn't supported
     return JsonResponse(result)

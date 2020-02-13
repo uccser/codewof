@@ -390,6 +390,7 @@ SVG_DIRS = [
 ]
 STYLE_CHECKER_TEMP_FILES_ROOT = os.path.join(str(ROOT_DIR), 'temp', 'style')
 STYLE_CHECKER_PYTHON3_SETTINGS = os.path.join(str(ROOT_DIR), 'style', 'style_checkers', 'flake8.ini')
+STYLE_CHECKER_MAX_CHARACTER_COUNT = 10000
 
 # reCAPTCHA
 # ------------------------------------------------------------------------------

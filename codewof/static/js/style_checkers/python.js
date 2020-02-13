@@ -17,9 +17,9 @@ def fizzbuzz():
             print(i)`;
 
 $(document).ready(function () {
-    editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    editor = CodeMirror.fromTextArea(document.getElementById('code'), {
         mode: {
-            name: "python",
+            name: 'python',
             version: 3,
             singleLineStringErrors: false
         },
@@ -30,7 +30,7 @@ $(document).ready(function () {
         indentUnit: 4,
         viewportMargin: Infinity
     });
-    var CSRF_TOKEN = jQuery("[name=csrfmiddlewaretoken]").val();
+    var CSRF_TOKEN = jQuery('[name=csrfmiddlewaretoken]').val();
 
     $('#load_example_btn').click(function () {
         reset();
@@ -42,20 +42,32 @@ $(document).ready(function () {
     });
 
     $('#check_btn').click(function () {
-        $('#run-checker-result').text('Loading...');
-        $.ajax({
-            url: '/style/ajax/check/',
-            type: 'POST',
-            method: 'POST',
-            data: JSON.stringify({
-                user_code: editor.getValue(),
-                language: 'python3',
-            }),
-            contentType: 'application/json; charset=utf-8',
-            headers: { 'X-CSRFToken': CSRF_TOKEN },
-            dataType: 'json',
-            success: display_style_checker_results,
-        });
+        var user_code = editor.getValue();
+        if (user_code.length == 0) {
+            $('#run-checker-result').text('No code submitted!');
+        } else if (user_code.length > MAX_CHARACTER_COUNT) {
+            var message = 'Your file is too long! We accept a maximum of ' + MAX_CHARACTER_COUNT + ' characters, and your code is ' + user_code.length + ' characters.';
+            $('#run-checker-result').text(message);
+        } else {
+            // TODO: Add message how to reset text
+            editor.setOption('readOnly', 'nocursor');
+            $('.CodeMirror').addClass('read-only');
+            $('#run-checker-result').text('Loading...');
+            $.ajax({
+                url: '/style/ajax/check/',
+                type: 'POST',
+                method: 'POST',
+                data: JSON.stringify({
+                    user_code: user_code,
+                    language: 'python3',
+                }),
+                contentType: 'application/json; charset=utf-8',
+                headers: { 'X-CSRFToken': CSRF_TOKEN },
+                dataType: 'json',
+                success: display_style_checker_results,
+                error: display_style_checker_error,
+            });
+        }
     });
 
     $('#run-checker-result').on('click', 'div[data-line-number]', function () {
@@ -65,7 +77,17 @@ $(document).ready(function () {
 
 
 function display_style_checker_results(data, textStatus, jqXHR) {
-    $('#run-checker-result').html(data['feedback_html']);
+    if (data['success']) {
+        $('#run-checker-result').html(data['feedback_html']);
+    } else {
+        display_style_checker_error();
+    }
+}
+
+
+function display_style_checker_error(jqXHR, textStatus, errorThrown) {
+    $('#run-checker-result').html('');
+    $('#run-checker-error').show();
 }
 
 
@@ -88,6 +110,9 @@ function toggle_highlight(issue_button, remove_existing) {
 
 
 function reset() {
-    editor.setValue("");
+    editor.setValue('');
+    editor.setOption('readOnly', false);
+    $('#run-checker-error').hide();
+    $('.CodeMirror').removeClass('read-only');
     $('#run-checker-result').empty();
 }
