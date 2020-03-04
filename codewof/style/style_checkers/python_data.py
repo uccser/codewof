@@ -535,10 +535,142 @@ PYTHON_ISSUES = {
 "title": "",
 "solution": "",
 "explanation": ""
+},
+"D100": {
+"original_message": "Missing docstring in public module",
+"title": "Modules should have docstrings.",
+"solution": "Add a docstring to your module.",
+"explanation": ""
+},
+"D101": {
+"original_message": "Missing docstring in public class",
+"title": "Classes should have docstrings.",
+"solution": "Add a docstring to your class.",
+"explanation": ""
+},
+"D102": {
+"original_message": "Missing docstring in public method",
+"title": "Methods should have docstrings.",
+"solution": "Add a docstring to your method.",
+"explanation": ""
+},
+"D103": {
+"original_message": "Missing docstring in public function",
+"title": "Functions should have docstrings.",
+"solution": "Add a docstring to your function.",
+"explanation": ""
+},
+"D104": {
+"original_message": "Missing docstring in public package",
+"title": "Packages should have docstrings.",
+"solution": "Add a docstring to your package.",
+"explanation": ""
+},
+"D105": {
+"original_message": "Missing docstring in magic method",
+"title": "Magic methods should have docstrings.",
+"solution": "Add a docstring to your magic method.",
+"explanation": ""
+},
+"D106": {
+"original_message": "Missing docstring in public nested class",
+"title": "Public nested classes should have docstrings.",
+"solution": "Add a docstring to your public nested class.",
+"explanation": ""
+},
+"D107": {
+"original_message": "Missing docstring in __init__",
+"title": "The __init__ method should have a docstring.",
+"solution": "Add a docstring to your __init__ method.",
+"explanation": ""
+},
+"D200": {
+"original_message": "One-line docstring should fit on one line with quotes",
+"title": "Docstrings that are one line long should fit on one line with quotes.",
+"solution": "Put your docstring on one line with quotes.",
+"explanation": ""
+},
+"D201": {
+"original_message": "No blank lines allowed before function docstring",
+"title": "Function docstrings should not have blank lines before them.",
+"solution": "Remove any blank lines before your function docstring.",
+"explanation": ""
+},
+"D202": {
+"original_message": "No blank lines allowed after function docstring",
+"title": "Function docstrings should not have blank lines after them.",
+"solution": "Remove any blank lines after your function docstring.",
+"explanation": ""
+},
+"D203": {
+"original_message": "1 blank line required before class docstring",
+"title": "Class docstrings should have 1 blank line before them.",
+"solution": "Insert 1 blank line before your class docstring.",
+"explanation": ""
+},
+"D204": {
+"original_message": "1 blank line required after class docstring",
+"title": "Class docstrings should have 1 blank line after them.",
+"solution": "Insert 1 blank line after your class docstring.",
+"explanation": ""
+},
+"D205": {
+"original_message": "1 blank line required between summary line and description",
+"title": "There should be 1 blank line between the summary line and the description.",
+"solution": "Insert 1 blank line between the summary line and the description.",
+"explanation": ""
+},
+"D206": {
+"original_message": "Docstring should be indented with spaces, not tabs",
+"title": "Docstrings should be indented using spaces, not tabs.",
+"solution": "Make sure your docstrings are indented using spaces instead of tabs.",
+"explanation": ""
+},
+"D207": {
+"original_message": "Docstring is under-indented",
+"title": "Docstring is under-indented.",
+"solution": "Add indentation levels to your docstring until it is at the correct indentation level.",
+"explanation": ""
+},
+"D208": {
+"original_message": "Docstring is over-indented",
+"title": "Docstring is over-indented.",
+"solution": "Remove indentation levels from your docstring until it is at the correct indentation level.",
+"explanation": ""
+},
+"D209": {
+"original_message": "Multi-line docstring closing quotes should be on a separate line",
+"title": "Docstrings that are longer than one line should have closing quotes on a separate line.",
+"solution": "Put the closing quotes of your docstring on a separate line.",
+"explanation": ""
+},
+"D210": {
+"original_message": "No whitespaces allowed surrounding docstring text",
+"title": "Text in docstrings should not be surrounded by whitespace.",
+"solution": "Remove any whitespace from the start and end of your docstring.",
+"explanation": ""
+},
+"D211": {
+"original_message": "No blank lines allowed before class docstring",
+"title": "Class docstrings should not have blank lines before them.",
+"solution": "Remove any blank lines before your class docstring.",
+"explanation": ""
+},
+"D212": {
+"original_message": "Multi-line docstring summary should start at the first line",
+"title": "Docstrings that are more than one line long should start at the first line.",
+"solution": "Ensure your docstring starts on the first line with quotes.",
+"explanation": ""
+},
+"D213": {
+"original_message": "Multi-line docstring summary should start at the second line",
+"title": "Docstrings that are more than one line long should start at the second line.",
+"solution": "Ensure your docstring starts on the second line, which is the first line without quotes.",
+"explanation": ""
 }
-    # TODO: Add http://www.pydocstyle.org/en/5.0.2/error_codes.html
-    # TODO: Add https://github.com/PyCQA/pep8-naming#plugin-for-flake8
-    # TODO: Add https://github.com/zheller/flake8-quotes#warnings
+# TODO: Add http://www.pydocstyle.org/en/5.0.2/error_codes.html
+# TODO: Add https://github.com/PyCQA/pep8-naming#plugin-for-flake8
+# TODO: Add https://github.com/zheller/flake8-quotes#warnings
 }
 
 CHARACTER_DESCRIPTIONS = {
