@@ -805,6 +805,91 @@ PYTHON_ISSUES = {
 "title": "Docstrings should include argument descriptions.",
 "solution": "Add argument descriptions to your docstring.",
 "explanation": ""
+},
+"N801": {
+"original_message": "class names should use CapWords convention",
+"title": "Class names should use the CapWords convention.",
+"solution": "Edit your class names to follow the CapWords convention.",
+"explanation": ""
+},
+"N802": {
+"original_message": "function name should be lowercase",
+"title": "Function names should be lowercase.",
+"solution": "Edit your function names to be lowercase.",
+"explanation": ""
+},
+"N803": {
+"original_message": "argument name should be lowercase",
+"title": "Argument names should be lowercase.",
+"solution": "Edit your argument names to be lowercase.",
+"explanation": ""
+},
+"N804": {
+"original_message": "first argument of a classmethod should be named 'cls'",
+"title": "The first argument of a classmethod should be named 'cls'.",
+"solution": "Edit the first argument in your classmethod to be named 'cls'.",
+"explanation": ""
+},
+"N805": {
+"original_message": "first argument of a method should be named 'self'",
+"title": "The first argument of a method should be named 'self'.",
+"solution": "Edit the first argument in your method to be named 'self'.",
+"explanation": ""
+},
+"N806": {
+"original_message": "variable in function should be lowercase",
+"title": "Variables in functions should be lowercase.",
+"solution": "Edit the variable in your function to be lowercase.",
+"explanation": ""
+},
+"N807": {
+"original_message": "function name should not start and end with '__'",
+"title": "Function names should not start and end with '__'",
+"solution": "Edit the function name so that it does not start and end with '__'",
+"explanation": ""
+},
+"N811": {
+"original_message": "constant imported as non constant",
+"title": "Import that should have been imported as a constant has been imported as a non constant.",
+"solution": "Edit the import to be imported as a constant (use all capital letters in the 'import as...' name).",
+"explanation": ""
+},
+"N812": {
+"original_message": "lowercase imported as non lowercase",
+"title": "Import that should have been imported as lowercase has been imported as non lowercase",
+"solution": "Edit the import to be imported as lowercase (use lowercase in the 'import as...' name).",
+"explanation": ""
+},
+"N813": {
+"original_message": "camelcase imported as lowercase",
+"title": "Import that should have been imported as camelCase has been imported as lowercase.",
+"solution": "Edit the import to be imported as camelCase (use camelCase in the 'import as ...' name).",
+"explanation": ""
+},
+"N814": {
+"original_message": "camelcase imported as constant",
+"title": "Import that should have been imported as camelCase has been imported as a constant.",
+"solution": "Edit the import to be imported as camelCase (use camelCase in the 'import as ...' name).",
+"explanation": ""
+},
+"N815": {
+"original_message": "mixedCase variable in class scope",
+"title": "Mixed case variable used in the class scope",
+"solution": "Edit the variable name so that it doesn't use mixedCase.",
+"explanation": ""
+},
+"N816": {
+"original_message": "mixedCase variable in global scope",
+"title": "Mixed case variable used in the global scope",
+"solution": "Edit the variable name so that it doesn't use mixedCase.",
+"explanation": ""
+},
+"N817": {
+"original_message": "camelcase imported as acronym",
+"title": "Import that should have been imported as camelCase has been imported as an acronym.",
+"solution": "Edit the import to be imported as camelCase (use camelCase in the 'import as...' name).",
+"explanation": ""
+}
 }
 # TODO: Add http://www.pydocstyle.org/en/5.0.2/error_codes.html
 # TODO: Add https://github.com/PyCQA/pep8-naming#plugin-for-flake8
