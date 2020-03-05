@@ -889,11 +889,31 @@ PYTHON_ISSUES = {
 "title": "Import that should have been imported as camelCase has been imported as an acronym.",
 "solution": "Edit the import to be imported as camelCase (use camelCase in the 'import as...' name).",
 "explanation": ""
+},
+"Q000": {
+"original_message": "Remove bad quotes",
+"title": "Use single quotes (') instead of double quotes (\").",
+"solution": "Replace any double quotes with single quotes.",
+"explanation": ""
+},
+"Q001": {
+"original_message": "Remove bad quotes from multiline string",
+"title": "Use single quotes (') instead of double quotes (\") in multiline strings.",
+"solution": "Replace any double quotes in your multiline string with single quotes.",
+"explanation": ""
+},
+"Q002": {
+"original_message": "Remove bad quotes from docstring",
+"title": "Use single quotes (') instead of double quotes (\") in docstrings.",
+"solution": "Replace any double quotes in your docstring with single quotes.",
+"explanation": ""
+},
+"Q003": {
+"original_message": "Change outer quotes to avoid escaping inner quotes",
+"title": "Change outer quotes to avoid escaping inner quotes.",
+"solution": "Make either the outer quotes single (') and the inner quotes double (\"), or the outer quotes double and the inner quotes single.",
+"explanation": ""
 }
-}
-# TODO: Add http://www.pydocstyle.org/en/5.0.2/error_codes.html
-# TODO: Add https://github.com/PyCQA/pep8-naming#plugin-for-flake8
-# TODO: Add https://github.com/zheller/flake8-quotes#warnings
 }
 
 CHARACTER_DESCRIPTIONS = {
