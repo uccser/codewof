@@ -667,6 +667,144 @@ PYTHON_ISSUES = {
 "title": "Docstrings that are more than one line long should start at the second line.",
 "solution": "Ensure your docstring starts on the second line, which is the first line without quotes.",
 "explanation": ""
+},
+"D214": {
+"original_message": "Section is over-indented",
+"title": "Section is indented by too many levels.",
+"solution": "Remove indentation levels from this section until it is at the correct indentation level.",
+"explanation": ""
+},
+"D215": {
+"original_message": "Section underline is over-indented",
+"title": "Section underline is indented by too many levels.",
+"solution": "Remove indentation levels from this section underline until it is at the correct indentation level.",
+"explanation": ""
+},
+"D300": {
+"original_message": "Use “”“triple double quotes”“”",
+"title": "Use “”“triple double quotes”“” around docstrings.",
+"solution": "Use “”“triple double quotes”“” around your docstring.",
+"explanation": ""
+},
+"D301": {
+"original_message": "Use r”“” if any backslashes in a docstring",
+"title": "Use r”“” if there are any backslashes in a docstring.",
+"solution": "Use r”“” at the beginning of your docstring if it contains any backslashes.",
+"explanation": ""
+},
+"D302": {
+"original_message": "Use u”“” for Unicode docstrings",
+"title": "Use u”“” for docstrings that contain Unicode.",
+"solution": "Use u”“” at the beginning of your docstring if it contains any Unicode.",
+"explanation": ""
+},
+"D400": {
+"original_message": "First line should end with a period",
+"title": "The first line in docstrings should end with a period.",
+"solution": "Add a period to the end of the first line in your docstring.",
+"explanation": ""
+},
+"D401": {
+"original_message": "First line should be in imperative mood",
+"title": "The first line in docstrings should read like a command.",
+"solution": "Ensure the first line in your docstring reads like a command, not a description. For example 'Do this' instead of 'Does this', 'Return this' instead of 'Returns this'.",
+"explanation": ""
+},
+"D402": {
+"original_message": "First line should not be the function’s “signature”",
+"title": "The first line in docstrings should not be the function’s “signature”.",
+"solution": "Move the function’s “signature” to a different line or remove it completely.",
+"explanation": ""
+},
+"D403": {
+"original_message": "First line should not be the function’s “signature”",
+"title": "The first line in docstrings should not be the function’s “signature”.",
+"solution": "Move the function’s “signature” to a different line or remove it completely.",
+"explanation": ""
+},
+"D404": {
+"original_message": "First word of the docstring should not be 'This'",
+"title": "First word of the docstring should not be 'This'.",
+"solution": "Rephrase the docstring so that the first word is not 'This'.",
+"explanation": ""
+},
+"D405": {
+"original_message": "Section name should be properly capitalized",
+"title": "Section name should be properly capitalised.",
+"solution": "Capitalise the section name.",
+"explanation": ""
+},
+"D406": {
+"original_message": "Section name should end with a newline",
+"title": "Section names should end with a newline.",
+"solution": "Add a newline after the section name.",
+"explanation": ""
+},
+"D407": {
+"original_message": "Missing dashed underline after section",
+"title": "Section names should have a dashed line underneath them.",
+"solution": "Add a dashed line underneath the section name.",
+"explanation": ""
+},
+"D408": {
+"original_message": "Section underline should be in the line following the section’s name",
+"title": "Dashed line should be on the line following the section's name.",
+"solution": "Put the dashed underline on the line immediately following the section name.",
+"explanation": ""
+},
+"D409": {
+"original_message": "Section underline should match the length of its name",
+"title": "Dashed section underline should match the length of the section's name.",
+"solution": "Add or remove dashes from the dashed underline until it matches the length of the section name.",
+"explanation": ""
+},
+"D410": {
+"original_message": "Missing blank line after section",
+"title": "Section should have a blank line after it.",
+"solution": "Add a blank line after the section.",
+"explanation": ""
+},
+"D411": {
+"original_message": "Missing blank line before section",
+"title": "Section should have a blank line before it.",
+"solution": "Add a blank line before the section.",
+"explanation": ""
+},
+"D412": {
+"original_message": "No blank lines allowed between a section header and its content",
+"title": "There should be no blank lines between a section header and its content.",
+"solution": "Remove any blank lines that are between the section header and its content.",
+"explanation": ""
+},
+"D413": {
+"original_message": "Missing blank line after last section",
+"title": "The last section in a docstring should have a blank line after it.",
+"solution": "Add a blank line after the last section in your docstring.",
+"explanation": ""
+},
+"D414": {
+"original_message": "Section has no content",
+"title": "Sections in docstrings must have content.",
+"solution": "Add content to the section in your docstring.",
+"explanation": ""
+},
+"D415": {
+"original_message": "First line should end with a period, question mark, or exclamation point",
+"title": "The first line in your docstring should end with a period, question mark, or exclamation point.",
+"solution": "Add a period, question mark, or exclamation point to the end of the first line in your docstring.",
+"explanation": ""
+},
+"D416": {
+"original_message": "Section name should end with a colon",
+"title": "Section names should end with a colon.",
+"solution": "Add a colon to the end of your section name.",
+"explanation": ""
+},
+"D417": {
+"original_message": "Missing argument descriptions in the docstring",
+"title": "Docstrings should include argument descriptions.",
+"solution": "Add argument descriptions to your docstring.",
+"explanation": ""
 }
 # TODO: Add http://www.pydocstyle.org/en/5.0.2/error_codes.html
 # TODO: Add https://github.com/PyCQA/pep8-naming#plugin-for-flake8
