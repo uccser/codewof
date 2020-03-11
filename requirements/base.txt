@@ -23,7 +23,7 @@ django-ckeditor==5.7.1
 django-recaptcha==2.0.5
 
 # Google Cloud Platform
-google-api-python-client==1.7.11
+google-api-python-client==1.7.12
 
 # Content loading
 verto==0.10.0
