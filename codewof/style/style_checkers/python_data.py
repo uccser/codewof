@@ -535,10 +535,385 @@ PYTHON_ISSUES = {
 "title": "",
 "solution": "",
 "explanation": ""
+},
+"D100": {
+"original_message": "Missing docstring in public module",
+"title": "Modules should have docstrings.",
+"solution": "Add a docstring to your module.",
+"explanation": ""
+},
+"D101": {
+"original_message": "Missing docstring in public class",
+"title": "Classes should have docstrings.",
+"solution": "Add a docstring to your class.",
+"explanation": ""
+},
+"D102": {
+"original_message": "Missing docstring in public method",
+"title": "Methods should have docstrings.",
+"solution": "Add a docstring to your method.",
+"explanation": ""
+},
+"D103": {
+"original_message": "Missing docstring in public function",
+"title": "Functions should have docstrings.",
+"solution": "Add a docstring to your function.",
+"explanation": ""
+},
+"D104": {
+"original_message": "Missing docstring in public package",
+"title": "Packages should have docstrings.",
+"solution": "Add a docstring to your package.",
+"explanation": ""
+},
+"D105": {
+"original_message": "Missing docstring in magic method",
+"title": "Magic methods should have docstrings.",
+"solution": "Add a docstring to your magic method.",
+"explanation": ""
+},
+"D106": {
+"original_message": "Missing docstring in public nested class",
+"title": "Public nested classes should have docstrings.",
+"solution": "Add a docstring to your public nested class.",
+"explanation": ""
+},
+"D107": {
+"original_message": "Missing docstring in __init__",
+"title": "The __init__ method should have a docstring.",
+"solution": "Add a docstring to your __init__ method.",
+"explanation": ""
+},
+"D200": {
+"original_message": "One-line docstring should fit on one line with quotes",
+"title": "Docstrings that are one line long should fit on one line with quotes.",
+"solution": "Put your docstring on one line with quotes.",
+"explanation": ""
+},
+"D201": {
+"original_message": "No blank lines allowed before function docstring",
+"title": "Function docstrings should not have blank lines before them.",
+"solution": "Remove any blank lines before your function docstring.",
+"explanation": ""
+},
+"D202": {
+"original_message": "No blank lines allowed after function docstring",
+"title": "Function docstrings should not have blank lines after them.",
+"solution": "Remove any blank lines after your function docstring.",
+"explanation": ""
+},
+"D203": {
+"original_message": "1 blank line required before class docstring",
+"title": "Class docstrings should have 1 blank line before them.",
+"solution": "Insert 1 blank line before your class docstring.",
+"explanation": ""
+},
+"D204": {
+"original_message": "1 blank line required after class docstring",
+"title": "Class docstrings should have 1 blank line after them.",
+"solution": "Insert 1 blank line after your class docstring.",
+"explanation": ""
+},
+"D205": {
+"original_message": "1 blank line required between summary line and description",
+"title": "There should be 1 blank line between the summary line and the description.",
+"solution": "Insert 1 blank line between the summary line and the description.",
+"explanation": ""
+},
+"D206": {
+"original_message": "Docstring should be indented with spaces, not tabs",
+"title": "Docstrings should be indented using spaces, not tabs.",
+"solution": "Make sure your docstrings are indented using spaces instead of tabs.",
+"explanation": ""
+},
+"D207": {
+"original_message": "Docstring is under-indented",
+"title": "Docstring is under-indented.",
+"solution": "Add indentation levels to your docstring until it is at the correct indentation level.",
+"explanation": ""
+},
+"D208": {
+"original_message": "Docstring is over-indented",
+"title": "Docstring is over-indented.",
+"solution": "Remove indentation levels from your docstring until it is at the correct indentation level.",
+"explanation": ""
+},
+"D209": {
+"original_message": "Multi-line docstring closing quotes should be on a separate line",
+"title": "Docstrings that are longer than one line should have closing quotes on a separate line.",
+"solution": "Put the closing quotes of your docstring on a separate line.",
+"explanation": ""
+},
+"D210": {
+"original_message": "No whitespaces allowed surrounding docstring text",
+"title": "Text in docstrings should not be surrounded by whitespace.",
+"solution": "Remove any whitespace from the start and end of your docstring.",
+"explanation": ""
+},
+"D211": {
+"original_message": "No blank lines allowed before class docstring",
+"title": "Class docstrings should not have blank lines before them.",
+"solution": "Remove any blank lines before your class docstring.",
+"explanation": ""
+},
+"D212": {
+"original_message": "Multi-line docstring summary should start at the first line",
+"title": "Docstrings that are more than one line long should start at the first line.",
+"solution": "Ensure your docstring starts on the first line with quotes.",
+"explanation": ""
+},
+"D213": {
+"original_message": "Multi-line docstring summary should start at the second line",
+"title": "Docstrings that are more than one line long should start at the second line.",
+"solution": "Ensure your docstring starts on the second line, which is the first line without quotes.",
+"explanation": ""
+},
+"D214": {
+"original_message": "Section is over-indented",
+"title": "Section is indented by too many levels.",
+"solution": "Remove indentation levels from this section until it is at the correct indentation level.",
+"explanation": ""
+},
+"D215": {
+"original_message": "Section underline is over-indented",
+"title": "Section underline is indented by too many levels.",
+"solution": "Remove indentation levels from this section underline until it is at the correct indentation level.",
+"explanation": ""
+},
+"D300": {
+"original_message": "Use “”“triple double quotes”“”",
+"title": "Use “”“triple double quotes”“” around docstrings.",
+"solution": "Use “”“triple double quotes”“” around your docstring.",
+"explanation": ""
+},
+"D301": {
+"original_message": "Use r”“” if any backslashes in a docstring",
+"title": "Use r”“” if there are any backslashes in a docstring.",
+"solution": "Use r”“” at the beginning of your docstring if it contains any backslashes.",
+"explanation": ""
+},
+"D302": {
+"original_message": "Use u”“” for Unicode docstrings",
+"title": "Use u”“” for docstrings that contain Unicode.",
+"solution": "Use u”“” at the beginning of your docstring if it contains any Unicode.",
+"explanation": ""
+},
+"D400": {
+"original_message": "First line should end with a period",
+"title": "The first line in docstrings should end with a period.",
+"solution": "Add a period to the end of the first line in your docstring.",
+"explanation": ""
+},
+"D401": {
+"original_message": "First line should be in imperative mood",
+"title": "The first line in docstrings should read like a command.",
+"solution": "Ensure the first line in your docstring reads like a command, not a description. For example 'Do this' instead of 'Does this', 'Return this' instead of 'Returns this'.",
+"explanation": ""
+},
+"D402": {
+"original_message": "First line should not be the function’s “signature”",
+"title": "The first line in docstrings should not be the function’s “signature”.",
+"solution": "Move the function’s “signature” to a different line or remove it completely.",
+"explanation": ""
+},
+"D403": {
+"original_message": "First line should not be the function’s “signature”",
+"title": "The first line in docstrings should not be the function’s “signature”.",
+"solution": "Move the function’s “signature” to a different line or remove it completely.",
+"explanation": ""
+},
+"D404": {
+"original_message": "First word of the docstring should not be 'This'",
+"title": "First word of the docstring should not be 'This'.",
+"solution": "Rephrase the docstring so that the first word is not 'This'.",
+"explanation": ""
+},
+"D405": {
+"original_message": "Section name should be properly capitalized",
+"title": "Section name should be properly capitalised.",
+"solution": "Capitalise the section name.",
+"explanation": ""
+},
+"D406": {
+"original_message": "Section name should end with a newline",
+"title": "Section names should end with a newline.",
+"solution": "Add a newline after the section name.",
+"explanation": ""
+},
+"D407": {
+"original_message": "Missing dashed underline after section",
+"title": "Section names should have a dashed line underneath them.",
+"solution": "Add a dashed line underneath the section name.",
+"explanation": ""
+},
+"D408": {
+"original_message": "Section underline should be in the line following the section’s name",
+"title": "Dashed line should be on the line following the section's name.",
+"solution": "Put the dashed underline on the line immediately following the section name.",
+"explanation": ""
+},
+"D409": {
+"original_message": "Section underline should match the length of its name",
+"title": "Dashed section underline should match the length of the section's name.",
+"solution": "Add or remove dashes from the dashed underline until it matches the length of the section name.",
+"explanation": ""
+},
+"D410": {
+"original_message": "Missing blank line after section",
+"title": "Section should have a blank line after it.",
+"solution": "Add a blank line after the section.",
+"explanation": ""
+},
+"D411": {
+"original_message": "Missing blank line before section",
+"title": "Section should have a blank line before it.",
+"solution": "Add a blank line before the section.",
+"explanation": ""
+},
+"D412": {
+"original_message": "No blank lines allowed between a section header and its content",
+"title": "There should be no blank lines between a section header and its content.",
+"solution": "Remove any blank lines that are between the section header and its content.",
+"explanation": ""
+},
+"D413": {
+"original_message": "Missing blank line after last section",
+"title": "The last section in a docstring should have a blank line after it.",
+"solution": "Add a blank line after the last section in your docstring.",
+"explanation": ""
+},
+"D414": {
+"original_message": "Section has no content",
+"title": "Sections in docstrings must have content.",
+"solution": "Add content to the section in your docstring.",
+"explanation": ""
+},
+"D415": {
+"original_message": "First line should end with a period, question mark, or exclamation point",
+"title": "The first line in your docstring should end with a period, question mark, or exclamation point.",
+"solution": "Add a period, question mark, or exclamation point to the end of the first line in your docstring.",
+"explanation": ""
+},
+"D416": {
+"original_message": "Section name should end with a colon",
+"title": "Section names should end with a colon.",
+"solution": "Add a colon to the end of your section name.",
+"explanation": ""
+},
+"D417": {
+"original_message": "Missing argument descriptions in the docstring",
+"title": "Docstrings should include argument descriptions.",
+"solution": "Add argument descriptions to your docstring.",
+"explanation": ""
+},
+"N801": {
+"original_message": "class names should use CapWords convention",
+"title": "Class names should use the CapWords convention.",
+"solution": "Edit your class names to follow the CapWords convention.",
+"explanation": ""
+},
+"N802": {
+"original_message": "function name should be lowercase",
+"title": "Function names should be lowercase.",
+"solution": "Edit your function names to be lowercase.",
+"explanation": ""
+},
+"N803": {
+"original_message": "argument name should be lowercase",
+"title": "Argument names should be lowercase.",
+"solution": "Edit your argument names to be lowercase.",
+"explanation": ""
+},
+"N804": {
+"original_message": "first argument of a classmethod should be named 'cls'",
+"title": "The first argument of a classmethod should be named 'cls'.",
+"solution": "Edit the first argument in your classmethod to be named 'cls'.",
+"explanation": ""
+},
+"N805": {
+"original_message": "first argument of a method should be named 'self'",
+"title": "The first argument of a method should be named 'self'.",
+"solution": "Edit the first argument in your method to be named 'self'.",
+"explanation": ""
+},
+"N806": {
+"original_message": "variable in function should be lowercase",
+"title": "Variables in functions should be lowercase.",
+"solution": "Edit the variable in your function to be lowercase.",
+"explanation": ""
+},
+"N807": {
+"original_message": "function name should not start and end with '__'",
+"title": "Function names should not start and end with '__'",
+"solution": "Edit the function name so that it does not start and end with '__'",
+"explanation": ""
+},
+"N811": {
+"original_message": "constant imported as non constant",
+"title": "Import that should have been imported as a constant has been imported as a non constant.",
+"solution": "Edit the import to be imported as a constant (use all capital letters in the 'import as...' name).",
+"explanation": ""
+},
+"N812": {
+"original_message": "lowercase imported as non lowercase",
+"title": "Import that should have been imported as lowercase has been imported as non lowercase",
+"solution": "Edit the import to be imported as lowercase (use lowercase in the 'import as...' name).",
+"explanation": ""
+},
+"N813": {
+"original_message": "camelcase imported as lowercase",
+"title": "Import that should have been imported as camelCase has been imported as lowercase.",
+"solution": "Edit the import to be imported as camelCase (use camelCase in the 'import as ...' name).",
+"explanation": ""
+},
+"N814": {
+"original_message": "camelcase imported as constant",
+"title": "Import that should have been imported as camelCase has been imported as a constant.",
+"solution": "Edit the import to be imported as camelCase (use camelCase in the 'import as ...' name).",
+"explanation": ""
+},
+"N815": {
+"original_message": "mixedCase variable in class scope",
+"title": "Mixed case variable used in the class scope",
+"solution": "Edit the variable name so that it doesn't use mixedCase.",
+"explanation": ""
+},
+"N816": {
+"original_message": "mixedCase variable in global scope",
+"title": "Mixed case variable used in the global scope",
+"solution": "Edit the variable name so that it doesn't use mixedCase.",
+"explanation": ""
+},
+"N817": {
+"original_message": "camelcase imported as acronym",
+"title": "Import that should have been imported as camelCase has been imported as an acronym.",
+"solution": "Edit the import to be imported as camelCase (use camelCase in the 'import as...' name).",
+"explanation": ""
+},
+"Q000": {
+"original_message": "Remove bad quotes",
+"title": "Use single quotes (') instead of double quotes (\").",
+"solution": "Replace any double quotes with single quotes.",
+"explanation": ""
+},
+"Q001": {
+"original_message": "Remove bad quotes from multiline string",
+"title": "Use single quotes (') instead of double quotes (\") in multiline strings.",
+"solution": "Replace any double quotes in your multiline string with single quotes.",
+"explanation": ""
+},
+"Q002": {
+"original_message": "Remove bad quotes from docstring",
+"title": "Use single quotes (') instead of double quotes (\") in docstrings.",
+"solution": "Replace any double quotes in your docstring with single quotes.",
+"explanation": ""
+},
+"Q003": {
+"original_message": "Change outer quotes to avoid escaping inner quotes",
+"title": "Change outer quotes to avoid escaping inner quotes.",
+"solution": "Make either the outer quotes single (') and the inner quotes double (\"), or the outer quotes double and the inner quotes single.",
+"explanation": ""
 }
-    # TODO: Add http://www.pydocstyle.org/en/5.0.2/error_codes.html
-    # TODO: Add https://github.com/PyCQA/pep8-naming#plugin-for-flake8
-    # TODO: Add https://github.com/zheller/flake8-quotes#warnings
 }
 
 CHARACTER_DESCRIPTIONS = {
