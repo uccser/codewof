@@ -3,6 +3,7 @@ var CodeMirror = require('codemirror');
 require('codemirror/mode/python/python.js');
 
 var HIGHLIGHT_CLASS = 'style-highlight';
+// TODO: Ignore this code in database.
 var EXAMPLE_CODE = `"""a simple fizzbuzz program."""
 
 def fizzbuzz():
@@ -37,11 +38,12 @@ $(document).ready(function () {
         editor.setValue(EXAMPLE_CODE);
     });
 
-    $('#reset_btn').click(function () {
+    $('#reset-btn').click(function () {
         reset();
     });
 
     $('#check_btn').click(function () {
+        $('#run-checker-error').hide();
         var user_code = editor.getValue();
         if (user_code.length == 0) {
             $('#run-checker-result').text('No code submitted!');
@@ -78,7 +80,11 @@ $(document).ready(function () {
 
 function display_style_checker_results(data, textStatus, jqXHR) {
     if (data['success']) {
-        $('#run-checker-result').html(data['feedback_html']);
+        $('#run-checker-result').html(data['result_html']);
+        result_text = data['result_text'];
+        $('#check_btn').hide();
+        $('#reset-btn').show();
+        $('#download-file-btn').show();
     } else {
         display_style_checker_error();
     }
@@ -112,7 +118,11 @@ function toggle_highlight(issue_button, remove_existing) {
 function reset() {
     editor.setValue('');
     editor.setOption('readOnly', false);
+    result_text = '';
+    $('#reset-btn').hide();
     $('#run-checker-error').hide();
+    $('#download-file-btn').hide();
     $('.CodeMirror').removeClass('read-only');
     $('#run-checker-result').empty();
+    $('#check_btn').show();
 }

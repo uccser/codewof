@@ -3,13 +3,17 @@
 import json
 from django.conf import settings
 from django.urls import reverse_lazy
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpResponse
 from django.template.loader import get_template
 from django.template import TemplateDoesNotExist
 from django.views.generic import (
     TemplateView,
 )
 from style.style_checkers.python import python_style_check
+from style.utils import (
+    render_results_as_html,
+    render_results_as_text,
+)
 
 LANGUAGE_PATH_TEMPLATE = 'style/{}.html'
 
@@ -58,8 +62,11 @@ def check_code(request):
         if 0 < len(user_code) <= settings.STYLE_CHECKER_MAX_CHARACTER_COUNT:
             language = request_json['language']
             if language == 'python3':
-                result_html = python_style_check(user_code)
+                result_data = python_style_check(user_code)
                 result['success'] = True
-                result['feedback_html'] = result_html
-            # TODO: else raise error language isn't supported
+            else:
+                # TODO: else raise error language isn't supported
+                pass
+            result['result_html'] = render_results_as_html(result_data)
+            result['result_text'] = render_results_as_text(user_code, result_data)
     return JsonResponse(result)

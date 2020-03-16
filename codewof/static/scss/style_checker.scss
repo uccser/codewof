@@ -22,6 +22,8 @@ $highlight_colour: #ffeb3b;
     background-color: #e6e6e6;
 }
 
-#run-checker-error {
+#run-checker-error,
+#download-file-btn,
+#reset-btn {
     display: none;
 }

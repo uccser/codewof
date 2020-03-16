@@ -4,7 +4,6 @@ import uuid
 import subprocess
 from pathlib import Path
 from django.conf import settings
-from django.template.loader import render_to_string
 from style.style_checkers import python_data
 
 
@@ -59,15 +58,7 @@ def process_results(result_text):
         issue_data = process_line(line)
         if issue_data:
             issues.append(issue_data)
-    # TODO: Check for at least one comment
-    result_html = render_to_string(
-        'style/component/feedback_result.html',
-        {
-            'issues': issues,
-            'issue_count': len(issues),
-        }
-    )
-    return result_html
+    return issues
 
 
 def process_line(line_text):

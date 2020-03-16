@@ -5,8 +5,9 @@
     {% for issue in issues %}
         <div class="card issue-card mb-1" data-line-number="{{ issue.line_number }}">
             <div class="card-body p-2">
-                <small class="text-muted">
-                    Line {{ issue.line_number }} <span class="error-code">
+                <small>
+                    Line {{ issue.line_number }}
+                    <span class="text-muted error-code">
                         - Issue code: {{ issue.error_code }}
                     </span>
                 </small>
