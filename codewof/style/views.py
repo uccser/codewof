@@ -13,6 +13,7 @@ from style.style_checkers.python import python_style_check
 from style.utils import (
     render_results_as_html,
     render_results_as_text,
+    update_error_counts,
 )
 
 LANGUAGE_PATH_TEMPLATE = 'style/{}.html'
@@ -67,6 +68,7 @@ def check_code(request):
             else:
                 # TODO: else raise error language isn't supported
                 pass
+            update_error_counts(language, result_data)
             result['result_html'] = render_results_as_html(result_data)
             result['result_text'] = render_results_as_text(user_code, result_data)
     return JsonResponse(result)

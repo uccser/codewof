@@ -1,6 +1,8 @@
 """Utilities for the style checker application."""
 
+from django.db.models import F
 from django.template.loader import render_to_string
+from style.models import Error
 
 
 def render_results_as_html(issues):
@@ -41,3 +43,11 @@ def render_results_as_text(user_code, issues):
         }
     )
     return result_text
+
+
+def update_error_counts(language, result_data):
+    """Update error counts for given errors."""
+    for error_data in result_data:
+        error, created = Error.objects.get_or_create(language=language, code=error_data['error_code'])
+        error.count = F('count') + 1
+        error.save()
