@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.5.2
+- Split GCP health check URLs.
+
+## 1.5.1
+- Update GCP health checks.
+
+## 1.5.0
+- Add 7 new questions.
+- Fix test case where no argument was passed for the total of evens question. Fixes #101
+- Fix error in example of the driver speed question.
+- Do not allow use of tab characters to indent code. Fixes #103
+- Add endpoints to API.
+
+## 1.4.0
+
+- Add 37 new questions.
+- Add API.
+
 ## 1.3.1
 
 - Remove ride share question.

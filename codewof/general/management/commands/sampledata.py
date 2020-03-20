@@ -10,6 +10,7 @@ from tests.research.factories import (
     StudyFactory,
     StudyGroupFactory,
 )
+from tests.programming.factories import AttemptFactory
 
 from programming.models import Badge
 
@@ -219,3 +220,6 @@ class Command(management.base.BaseCommand):
         )
 
         print("Badges added.")
+        # Attempts
+        AttemptFactory.create_batch(size=50)
+        print('Attempts loaded.')

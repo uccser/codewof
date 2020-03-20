@@ -14,7 +14,7 @@ django-crispy-forms==1.7.2
 django-redis==4.10.0
 django-activeurl==0.1.12
 django-autoslug-iplweb==1.9.4
-djangorestframework==3.10.2
+git+git://github.com/uccser/django-rest-framework.git@cecd0818119c34a71fd02a1c32d8e5a7629b2876
 coreapi==2.3.3
 django-filter==2.2.0
 django-modeltranslation==0.13.3

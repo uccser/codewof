@@ -1,1 +1,1 @@
-print(total_of_even_numbers())
+print(total_of_even_numbers([0]))
