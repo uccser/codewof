@@ -36,14 +36,14 @@
 
       <div class="col-12 col-md-4 mb-3">
         <h2>Points earned: {{user.profile.points}}</h2>
-        <h2>Achievements</h2>
+        <h2><a id="achievements-link" href="{% url 'users:achievements' %}">Achievements</a></h2>
         <br>
         {% for badge in all_badges %}
             {% if badge in user.profile.earned_badges.all and badge.parent not in user.profile.earned_badges.all %}
-            <div class="badge-container">
-              <img class="badge-icon" src="{% static badge.icon_name %}">
-              <b>{{badge.display_name}}</b>
-            </div>
+              <div class="badge-container">
+                <img class="badge-icon" src="{% static badge.icon_name %}">
+                <b>{{badge.display_name}}</b>
+              </div>
             {% endif %}
 <!--            {% include "programming/badge_card.html" %}-->
         {% endfor %}

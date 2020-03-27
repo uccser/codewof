@@ -166,6 +166,27 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
         return reverse("users:dashboard")
 
 
+class UserAchievementsView(LoginRequiredMixin, DetailView):
+    """View for a user's achievements."""
+
+    model = User
+    context_object_name = 'user'
+    template_name = 'users/achievements.html'
+
+    def get_object(self):
+        """Get object for template."""
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        """Get additional context data for template."""
+        user = self.request.user
+        context = super().get_context_data(**kwargs)
+        context['badges_not_earned'] = Badge.objects.all().difference(user.profile.earned_badges.all())
+        context['num_badges_earned'] = user.profile.earned_badges.all().count()
+        context['num_badges'] = Badge.objects.all().count()
+        return context
+
+
 class UserAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows users to be viewed."""
 

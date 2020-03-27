@@ -180,11 +180,21 @@ strong {
 
 .badge-container {
   clear: both;
+  padding-bottom: 0.5rem;
 }
 
 .badge-icon {
-  padding: 5px;
+  padding: 0.3125rem;
   float: left;
+}
+
+.badge-icon-unachieved {
+  padding: 0.3125rem;
+  opacity: 0.2;
+}
+
+#achievements-link {
+  color: inherit;
 }
 
 .img-inline {
