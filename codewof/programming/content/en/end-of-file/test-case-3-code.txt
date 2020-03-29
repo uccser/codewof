@@ -1,0 +1,9 @@
+file = ['Quick',
+        'brown',
+        'fox',
+        'jumps',
+        'over',
+        'the',
+        'lazy',
+        'dog']
+print(end_of_file(file) == None)

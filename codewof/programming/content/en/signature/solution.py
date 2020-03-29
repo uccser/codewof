@@ -1,0 +1,6 @@
+name = input("Name: ").upper()
+job = input("Job: ").title()
+email = input("Email: ").lower()
+print(name)
+print(job)
+print(email)
