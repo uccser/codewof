@@ -1,3 +1,3 @@
-<div class="border mb-3">
+<div class="border">
     <textarea id="code" class="hidden">{% if previous_attempt %}{{ previous_attempt.user_code }}{% elif question.QUESTION_TYPE == QUESTION_TYPE_DEBUGGING %}{{ question.initial_code }}{% endif %}</textarea>
 </div>
