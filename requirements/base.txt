@@ -1,31 +1,31 @@
-pytz==2019.2
-python-slugify==3.0.3
-Pillow==6.1.0
-argon2-cffi==19.1.0
+pytz==2019.3
+python-slugify==4.0.0
+Pillow==7.0.0
+argon2-cffi==19.2.0
 redis>=2.10.6, < 3  # pyup: < 3
 filetype==1.0.4
 
 # Django
-django-model-utils==3.2.0
-django-anymail[mailgun]==6.1.0
+django-model-utils==4.0.0
+django-anymail[mailgun]==7.0.0
 django-mail-templated==2.6.5
-django-allauth==0.39.1
-django-crispy-forms==1.7.2
-django-redis==4.10.0
-django-activeurl==0.1.12
-django-autoslug-iplweb==1.9.4
+django-allauth==0.41.0
+django-crispy-forms==1.9.0
+django-redis==4.11.0
+django-activeurl==0.2.0
+django-autoslug-iplweb==1.9.5
 git+git://github.com/uccser/django-rest-framework.git@cecd0818119c34a71fd02a1c32d8e5a7629b2876
 coreapi==2.3.3
 django-filter==2.2.0
-django-modeltranslation==0.13.3
+django-modeltranslation==0.14.4
 django-inline-svg==0.1.1
-django-ckeditor==5.7.1
-django-recaptcha==2.0.5
+django-ckeditor==5.9.0
+django-recaptcha==2.0.6
 
 # Google Cloud Platform
-google-api-python-client==1.7.11
+google-api-python-client==1.7.12
 
 # Content loading
 verto==0.10.0
 python-markdown-math==0.6
-PyYAML==5.1.2
+PyYAML==5.3.1
