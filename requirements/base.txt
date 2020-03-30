@@ -12,7 +12,7 @@ django-mail-templated==2.6.5
 django-allauth==0.41.0
 django-crispy-forms==1.9.0
 django-redis==4.11.0
-django-activeurl==0.1.12
+django-activeurl==0.2.0
 django-autoslug-iplweb==1.9.5
 git+git://github.com/uccser/django-rest-framework.git@cecd0818119c34a71fd02a1c32d8e5a7629b2876
 coreapi==2.3.3
