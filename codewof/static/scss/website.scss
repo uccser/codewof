@@ -193,7 +193,8 @@ strong {
   opacity: 0.2;
 }
 
-#achievements-link {
+.achievements-link,
+.achievements-link:hover {
   color: inherit;
 }
 
