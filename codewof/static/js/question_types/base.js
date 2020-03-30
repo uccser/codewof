@@ -34,8 +34,6 @@ function update_gamification(data) {
     $("#user_points_navbar").load(location.href + " #user_points_navbar"); // Add space between URL and selector.
 
     point_diff = parseInt(data.point_diff);
-    console.log(curr_points);
-    console.log(point_diff);
     if(point_diff > 0) {
         $("#point_toast_header").text("Points earned!");
         $("#point_toast_body").text("You earned " + point_diff.toString() +" points!");

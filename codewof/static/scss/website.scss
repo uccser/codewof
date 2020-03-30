@@ -269,15 +269,21 @@ $red: #b94a48;
   border-bottom: 0.5rem $brand-secondary-colour solid;
 }
 
+#toast-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .toast {
   border: 1px solid $brand-colour;
-  background-colour: brand-colour-light;
+  background-color: brand-colour-light;
   text-align: center;
 }
 
 .toast-header {
   border: 1px solid $brand-colour;
-  background-colour: brand-colour-light;
+  background-color: brand-colour-light;
   width: 100%;
   font-weight: bold;
   display: inline-block;
@@ -290,5 +296,5 @@ $red: #b94a48;
 
 .toast-body {
   border: 1px solid $brand-colour;
-  background-colour: brand-colour-light;
+  background-color: brand-colour-light;
 }
