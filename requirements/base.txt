@@ -10,7 +10,7 @@ django-model-utils==4.0.0
 django-anymail[mailgun]==7.0.0
 django-mail-templated==2.6.5
 django-allauth==0.41.0
-django-crispy-forms==1.7.2
+django-crispy-forms==1.9.0
 django-redis==4.11.0
 django-activeurl==0.1.12
 django-autoslug-iplweb==1.9.5
