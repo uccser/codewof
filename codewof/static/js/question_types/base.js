@@ -34,11 +34,13 @@ function update_gamification(data) {
     $("#user_points_navbar").load(location.href + " #user_points_navbar"); // Add space between URL and selector.
 
     point_diff = parseInt(data.point_diff);
+    console.log(curr_points);
+    console.log(point_diff);
     if(point_diff > 0) {
-        $("#point_toast_header").text("Earned " + point_diff.toString() + " points!");
-        $("#point_toast_body").text("Your total points are now " + data.curr_points.toString() +"!");
+        $("#point_toast_header").text("Points earned!");
+        $("#point_toast_body").text("You earned " + point_diff.toString() +" points!");
         $(document).ready(function(){
-            $("#point_toast").toast('show');
+            $("#point_toast").toast('show', {delay: 3000});
         });
     }
 
@@ -47,7 +49,7 @@ function update_gamification(data) {
         $("#badge_toast_header").text("New badges!");
         $("#badge_toast_body").text(badges);
         $(document).ready(function(){
-            $("#badge_toast").toast('show');
+            $("#badge_toast").toast('show', {delay: 3000});
         });
     }
 
