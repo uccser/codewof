@@ -42,48 +42,6 @@ class Command(BaseCommand):
         backdate_points_and_badges()
 
 
-def add_points(question, profile, attempt):
-    """
-    Add appropriate number of points (if any) to user's profile after a question is answered.
-
-    Adds 10 points to a user's profile for when the user answers a question correctly for the first time. If the user
-    answers the question correctly the first time they answer, the user gains two bonus points, as checked with the
-    variable "is_first_correct".
-    """
-    num_attempts = Attempt.objects.filter(question=question, profile=profile)
-    is_first_correct = len(Attempt.objects.filter(question=question, profile=profile, passed_tests=True)) == 1
-    logger.warning(num_attempts)
-    logger.warning(is_first_correct)
-    points_to_add = 0
-
-    # check if first passed
-    if attempt.passed_tests and is_first_correct:
-        points_to_add += 10
-        if len(num_attempts) == 1:
-            # correct first try
-            points_to_add += 2
-
-    profile.points += points_to_add
-    profile.full_clean()
-    profile.save()
-    return profile.points
-
-
-def save_goal_choice(request):
-    """Update user's goal choice in database."""
-    request_json = json.loads(request.body.decode('utf-8'))
-    if request.user.is_authenticated:
-        user = request.user
-        profile = user.profile
-
-        goal_choice = request_json['goal_choice']
-        profile.goal = int(goal_choice)
-        profile.full_clean()
-        profile.save()
-
-    return JsonResponse({})
-
-
 def get_days_consecutively_answered(user):
     """
     Get the number of consecutive days with questions attempted.
@@ -105,14 +63,6 @@ def get_days_consecutively_answered(user):
         i += 1
 
     return i
-
-
-def get_questions_answered_in_past_month(user):
-    """Get the number questions successfully answered in the past month."""
-    today = datetime.datetime.now().replace(tzinfo=None) + relativedelta(days=1)
-    last_month = today - relativedelta(months=1)
-    solved = Attempt.objects.filter(profile=user.profile, datetime__gte=last_month.date(), passed_tests=True)
-    return len(solved)
 
 
 def check_badge_conditions(user):
