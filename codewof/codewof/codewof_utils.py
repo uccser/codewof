@@ -29,6 +29,8 @@ LOGGING = {
     },
 }
 
+POINTS_WEIGHT = 10
+
 
 def add_points(question, profile, attempt):
     """
@@ -46,7 +48,7 @@ def add_points(question, profile, attempt):
 
     # check if first passed
     if attempt.passed_tests and is_first_correct:
-        points_to_add += 10
+        points_to_add += POINTS_WEIGHT
         if len(num_attempts) == 1:
             # correct first try
             points_to_add += 2
@@ -171,7 +173,7 @@ def check_badge_conditions(user):
 def calculate_badge_points(user, badges):
     """Calculate points earned by the user for new badges earned by multiplying the badge tier by 10."""
     for badge in badges:
-        points = badge.badge_tier * 10
+        points = badge.badge_tier * POINTS_WEIGHT
         user.profile.points += points
     user.full_clean()
     user.save()
@@ -199,7 +201,7 @@ def backdate_points(profile):
         if len(user_attempts) > 0:
             first_passed = user_attempts[0].passed_tests
         if has_passed:
-            profile.points += 10
+            profile.points += POINTS_WEIGHT
         if first_passed:
             profile.points += 1
     return profile
