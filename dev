@@ -327,7 +327,7 @@ cmd_dev() {
 }
 
 cmd_backdate() {
-  docker-compose exec django /docker_venv/bin/python3 ./codewof/codewof_utils.py backdate_points_and_badges
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py backdate_points_and_badges
 }
 defhelp backdate 'Re-calculates points and badges earned for all user profiles.'
 
