@@ -74,8 +74,8 @@ class Command(management.base.BaseCommand):
             'user2',
             'user2@codewof.co.nz',
             password="password",
-            first_name='Alex',
-            last_name='Doe',
+            first_name='Jane',
+            last_name='Jones',
             user_type=UserType.objects.get(slug='student')
         )
         EmailAddress.objects.create(
