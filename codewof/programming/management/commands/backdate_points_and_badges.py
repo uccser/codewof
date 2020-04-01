@@ -142,14 +142,16 @@ def calculate_badge_points(user, badges):
 def backdate_points_and_badges():
     """Perform backdate of all points and badges for each profile in the system."""
     profiles = Profile.objects.all()
-    for profile in profiles:
-        print(profile)
+    num_profiles = len(profiles)
+    for i in range(num_profiles):
+        print("Backdating users: " + str(i + 1) + "/" + str(num_profiles), end="\r")
+        profile = profiles[i]
         profile = backdate_badges(profile)
         profile = backdate_points(profile)
         # save profile when update is completed
         profile.full_clean()
         profile.save()
-    print('Backdate complete.')
+    print("\nBackdate complete.")
 
 
 def backdate_points(profile):
