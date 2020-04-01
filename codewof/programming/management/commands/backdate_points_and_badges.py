@@ -2,12 +2,9 @@
 
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from utils.LoaderFactory import LoaderFactory
 
 import datetime
-import json
 import logging
-from dateutil.relativedelta import relativedelta
 
 from programming.models import (
     Profile,
@@ -16,7 +13,6 @@ from programming.models import (
     Badge,
     Earned,
 )
-from django.http import JsonResponse
 
 time_zone = settings.TIME_ZONE
 
@@ -31,6 +27,7 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
 
 class Command(BaseCommand):
     """Required command class for the custom Django backdate command."""
