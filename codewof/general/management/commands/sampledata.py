@@ -70,21 +70,6 @@ class Command(management.base.BaseCommand):
             verified=True
         )
 
-        user2 = User.objects.create_user(
-            'user2',
-            'user2@codewof.co.nz',
-            password="password",
-            first_name='Jane',
-            last_name='Jones',
-            user_type=UserType.objects.get(slug='student')
-        )
-        EmailAddress.objects.create(
-            user=user2,
-            email=user2.email,
-            primary=True,
-            verified=True
-        )
-
         UserFactory.create_batch(size=100)
         print('Users created.')
 
