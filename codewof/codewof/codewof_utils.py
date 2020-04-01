@@ -13,9 +13,9 @@ from programming.models import (
     Earned,
 )
 from django.http import JsonResponse
-from django.conf import settings
+# from django.conf import settings
 
-time_zone = settings.TIME_ZONE
+# time_zone = settings.TIME_ZONE
 
 logger = logging.getLogger(__name__)
 del logging
@@ -29,15 +29,18 @@ LOGGING = {
     },
 }
 
-POINTS_WEIGHT = 10
+#  Number of points awarded for achieving each goal
+POINTS_BADGE = 10
+POINTS_SOLUTION = 10
+POINTS_BONUS = 2
 
 
 def add_points(question, profile, attempt):
     """
     Add appropriate number of points (if any) to user's profile after a question is answered.
 
-    Adds 10 points to a user's profile for when the user answers a question correctly for the first time. If the user
-    answers the question correctly the first time they answer, the user gains two bonus points, as checked with the
+    Adds points to a user's profile for when the user answers a question correctly for the first time. If the user
+    answers the question correctly the first time they answer, the user gains bonus points, as checked with the
     variable "is_first_correct".
     """
     num_attempts = Attempt.objects.filter(question=question, profile=profile)
@@ -48,10 +51,10 @@ def add_points(question, profile, attempt):
 
     # check if first passed
     if attempt.passed_tests and is_first_correct:
-        points_to_add += POINTS_WEIGHT
+        points_to_add += POINTS_SOLUTION
         if len(num_attempts) == 1:
             # correct first try
-            points_to_add += 2
+            points_to_add += POINTS_BONUS
 
     profile.points += points_to_add
     profile.full_clean()
@@ -173,7 +176,7 @@ def check_badge_conditions(user):
 def calculate_badge_points(user, badges):
     """Calculate points earned by the user for new badges earned by multiplying the badge tier by 10."""
     for badge in badges:
-        points = badge.badge_tier * POINTS_WEIGHT
+        points = badge.badge_tier * POINTS_BADGE
         user.profile.points += points
     user.full_clean()
     user.save()
@@ -182,12 +185,16 @@ def calculate_badge_points(user, badges):
 def backdate_points_and_badges():
     """Perform backdate of all points and badges for each profile in the system."""
     profiles = Profile.objects.all()
-    for profile in profiles:
+    num_profiles = len(profiles)
+    for i in range(num_profiles):
+        print("Backdating users: " + str(i + 1) + "/" + str(num_profiles), end="\r")
+        profile = profiles[i]
         profile = backdate_badges(profile)
         profile = backdate_points(profile)
         # save profile when update is completed
         profile.full_clean()
         profile.save()
+    print("\nBackdate complete.")
 
 
 def backdate_points(profile):
@@ -201,9 +208,11 @@ def backdate_points(profile):
         if len(user_attempts) > 0:
             first_passed = user_attempts[0].passed_tests
         if has_passed:
-            profile.points += POINTS_WEIGHT
+            profile.points += POINTS_SOLUTION
         if first_passed:
-            profile.points += 1
+            profile.points += POINTS_BONUS
+    for badge in profile.earned_badges.all():
+        profile.points += POINTS_BADGE * badge.badge_tier
     return profile
 
 
