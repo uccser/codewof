@@ -8,7 +8,10 @@ from programming.models import (
     QuestionTypeProgram,
     QuestionTypeFunction,
     QuestionTypeParsons,
-    QuestionTypeDebugging
+    QuestionTypeDebugging,
+    Profile,
+    Badge,
+    Earned,
 )
 
 User = get_user_model()
@@ -21,6 +24,15 @@ class TestCaseAttemptInline(admin.TabularInline):
     fields = ()
     extra = 0
     can_delete = False
+
+
+class EarnedInline(admin.TabularInline):
+    model = Earned
+    extra = 1
+
+
+class ProfileAdmin(admin.ModelAdmin):
+    inlines = (EarnedInline, )
 
 
 class AttemptAdmin(admin.ModelAdmin):
@@ -43,3 +55,5 @@ admin.site.register(QuestionTypeProgram)
 admin.site.register(QuestionTypeFunction)
 admin.site.register(QuestionTypeParsons)
 admin.site.register(QuestionTypeDebugging)
+admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Badge)
