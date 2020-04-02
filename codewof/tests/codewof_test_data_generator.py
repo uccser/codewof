@@ -6,7 +6,6 @@ from datetime import datetime
 
 from programming.models import Badge, Question, Attempt
 
-from tests.users.factories import UserFactory
 from users.models import UserType
 
 User = get_user_model()
@@ -20,8 +19,20 @@ def generate_questions():
 def generate_users(user):
     """Generate users for codeWOF tests. Creates two basic users for unit tests."""
     management.call_command("load_user_types")
-    User.objects.create_user(id=1, username='john', email='john@uclive.ac.nz', password='onion', user_type=UserType.objects.get(slug='student'))
-    User.objects.create_user(id=2, username='sally', email='sally@uclive.ac.nz', password='onion', user_type=UserType.objects.get(slug='other'))
+    User.objects.create_user(
+        id=1,
+        username='john',
+        email='john@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='student')
+    )
+    User.objects.create_user(
+        id=2,
+        username='sally',
+        email='sally@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='other')
+    )
 
 
 def generate_badges():

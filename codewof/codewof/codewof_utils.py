@@ -1,4 +1,4 @@
-# """Utility functions for codeWOF system. Involves points, badges, and backdating points and badges per user."""
+"""Utility functions for codeWOF system. Involves points, badges, and backdating points and badges per user."""
 
 # import datetime
 # import json

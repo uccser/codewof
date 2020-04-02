@@ -1,4 +1,4 @@
-# """Views for codeWOF application."""
+"""Views for codeWOF application."""
 # from django.views import generic
 # from django.http import JsonResponse, Http404
 # from django.contrib.auth.mixins import LoginRequiredMixin
