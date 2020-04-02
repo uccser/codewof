@@ -119,6 +119,19 @@ def check_badge_conditions(user):
     earned_badges = user.profile.earned_badges.all()
     new_badge_names = ""
     new_badge_objects = []
+    # account creation badge
+    try:
+        creation_badge = Badge.objects.get(id_name="create-account")
+        if creation_badge not in earned_badges:
+            # create a new account creation
+            new_achievement = Earned(profile=user.profile, badge=creation_badge)
+            new_achievement.full_clean()
+            new_achievement.save()
+            new_badge_names = new_badge_names + "- " + creation_badge.display_name + "\n"
+            new_badge_objects.append(creation_badge)
+    except Badge.DoesNotExist:
+        logger.warning("No such badge: create-account")
+        pass
 
     # check questions solved badges
     try:

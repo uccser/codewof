@@ -38,6 +38,7 @@ def generate_users(user):
 def generate_badges():
     """Create badges for codeWOF tests. Badges created for each main current badge category."""
     Badge.objects.create(id_name='questions_solved_1', display_name='first', description='first')
+    Badge.objects.create(id_name="create-account", display_name="test", description="test")
     Badge.objects.create(id_name="attempts-made-1", display_name="test", description="test")
     Badge.objects.create(id_name="attempts-made-5", display_name="test", description="test")
     Badge.objects.create(id_name="consecutive-days-2", display_name="test", description="test")

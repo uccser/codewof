@@ -81,6 +81,14 @@ class Command(management.base.BaseCommand):
         StudyFactory.create_batch(size=5)
         StudyGroupFactory.create_batch(size=15)
         print('Research studies loaded.')
+    
+        Badge.objects.create(
+            id_name='create-account',
+            display_name='Created an account!',
+            description='Created your very own account',
+            icon_name='img/icons/badges/icons8-badge-create-account-48.png',
+            badge_tier=0
+        )
 
         questionSolved100 = Badge.objects.create(
             id_name='questions-solved-100',
