@@ -43,36 +43,56 @@ class ProfileViewTest(DjangoTestCase):
     #     self.assertTemplateUsed(resp, 'registration/profile.html')
 
 
-# class BadgeViewTest(DjangoTestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         # never modify this object in tests
-#         user = User.objects.create_user(username='john', email='john@uclive.ac.nz', password='onion')
-#         LoginDay.objects.create(profile=user.profile)
-#         Badge.objects.create(id_name="create-account", display_name="test", description="test")
-#         Badge.objects.create(id_name="login-3", display_name="test", description="test")
-#         Badge.objects.create(id_name="solve-1", display_name="test", description="test")
+class BadgeViewTest(DjangoTestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        # LoginDay.objects.create(profile=user.profile)
+        Badge.objects.create(id_name="create-account", display_name="test", description="test")
+        Badge.objects.create(id_name="login-3", display_name="test", description="test")
+        Badge.objects.create(id_name="questions-solved-1", display_name="test", description="test")
 
-#     def test_new_user_awards_create_account(self):
-#         user = User.objects.get(pk=1)
-#         check_badge_conditions(user)
-#         badge = Badge.objects.get(id_name="create-account")
-#         earned = Earned.objects.filter(profile=user.profile, badge=badge)
-#         self.assertEquals(len(earned), 1)
+    def test_new_user_awards_create_account(self):
+        user = User.objects.get(pk=1)
+        check_badge_conditions(user)
+        badge = Badge.objects.get(id_name="create-account")
+        earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        self.assertEqual(len(earned), 1)
 
-#     def test_doesnt_award_twice_create_account(self):
-#         user = User.objects.get(pk=1)
-#         badge = Badge.objects.get(id_name="create-account")
-#         Earned.objects.create(profile=user.profile, badge=badge)
-#         check_badge_conditions(user)
+    def test_doesnt_award_twice_create_account(self):
+        user = User.objects.get(pk=1)
+        badge = Badge.objects.get(id_name="create-account")
+        Earned.objects.create(profile=user.profile, badge=badge)
+        check_badge_conditions(user)
 
-#         earned = Earned.objects.filter(profile=user.profile, badge=badge)
-#         self.assertEquals(len(earned), 1)
+        earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        self.assertEqual(len(earned), 1)
 
-#     def test_adding_unknown_badge_doesnt_break(self):
-#         Badge.objects.create(id_name="notrealbadge", display_name="test", description="test")
-#         user = User.objects.get(pk=1)
-#         check_badge_conditions(user)
+    def test_adding_unknown_badge_doesnt_break(self):
+        Badge.objects.create(id_name="notrealbadge", display_name="test", description="test")
+        user = User.objects.get(pk=1)
+        check_badge_conditions(user)
+
+    def test_award_solve_1_on_completed(self):
+        user = User.objects.get(pk=1)
+        question = Question.objects.create(title="Test question", question_text="Print hello world")
+        attempt = Attempt.objects.create(profile=user.profile, question=question, passed_tests=True, user_code='')
+
+        check_badge_conditions(user)
+        badge = Badge.objects.get(id_name="questions-solved-1")
+        earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        self.assertEqual(len(earned), 1)
+
+    def test_not_award_solve_1_on_attempt(self):
+        user = User.objects.get(pk=1)
+        question = Question.objects.create(title="Test question", question_text="Print hello world")
+        attempt = Attempt.objects.create(profile=user.profile, question=question, passed_tests=False, user_code='')
+
+        check_badge_conditions(user)
+        badge = Badge.objects.get(id_name="questions-solved-1")
+        earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        self.assertEqual(len(earned), 0)
 
 #     def test_no_award_consecutive_login_2(self):
 #         user = User.objects.get(pk=1)
@@ -161,25 +181,6 @@ class ProfileViewTest(DjangoTestCase):
 #         earned = Earned.objects.filter(profile=user.profile, badge=badge)
 #         self.assertEquals(len(earned), 0)
 
-#     def test_award_solve_1_on_completed(self):
-#         user = User.objects.get(pk=1)
-#         question = Programming.objects.create(title="Test question", question_text="Print hello world")
-#         attempt = Attempt.objects.create(profile=user.profile, question=question, passed_tests=True, is_save=False, user_code='')
-
-#         check_badge_conditions(user)
-#         badge = Badge.objects.get(id_name="solve-1")
-#         earned = Earned.objects.filter(profile=user.profile, badge=badge)
-#         self.assertEquals(len(earned), 1)
-
-#     def test_not_award_solve_1_on_attempt(self):
-#         user = User.objects.get(pk=1)
-#         question = Programming.objects.create(title="Test question", question_text="Print hello world")
-#         attempt = Attempt.objects.create(profile=user.profile, question=question, passed_tests=False, is_save=False, user_code='')
-
-#         check_badge_conditions(user)
-#         badge = Badge.objects.get(id_name="solve-1")
-#         earned = Earned.objects.filter(profile=user.profile, badge=badge)
-#         self.assertEquals(len(earned), 0)
 
 # class BuggyQuestionViewTest(DjangoTestCase):
 #     @classmethod

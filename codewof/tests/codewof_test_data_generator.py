@@ -22,6 +22,8 @@ def generate_users(user):
     User.objects.create_user(
         id=1,
         username='john',
+        first_name='John',
+        last_name='Doe',
         email='john@uclive.ac.nz',
         password='onion',
         user_type=UserType.objects.get(slug='student')
@@ -29,6 +31,8 @@ def generate_users(user):
     User.objects.create_user(
         id=2,
         username='sally',
+        first_name='Sally',
+        last_name='Jones',
         email='sally@uclive.ac.nz',
         password='onion',
         user_type=UserType.objects.get(slug='other')
