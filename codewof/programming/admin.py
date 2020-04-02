@@ -32,7 +32,14 @@ class EarnedInline(admin.TabularInline):
 
 
 class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'points', 'goal')
+    ordering = ('user', )
     inlines = (EarnedInline, )
+
+
+class BadgeAdmin(admin.ModelAdmin):
+    list_display = ('id_name', 'display_name', 'badge_tier')
+    ordering = ('id_name', )
 
 
 class AttemptAdmin(admin.ModelAdmin):
@@ -56,4 +63,4 @@ admin.site.register(QuestionTypeFunction)
 admin.site.register(QuestionTypeParsons)
 admin.site.register(QuestionTypeDebugging)
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Badge)
+admin.site.register(Badge, BadgeAdmin)
