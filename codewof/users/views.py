@@ -23,7 +23,7 @@ from programming.models import (
     Badge
 )
 
-from codewof.codewof_utils import check_badge_conditions, get_questions_answered_in_past_month
+from programming.codewof_utils import check_badge_conditions, get_questions_answered_in_past_month
 
 User = get_user_model()
 

@@ -21,10 +21,11 @@ from programming.models import (
     TestCase,
     Attempt,
     TestCaseAttempt,
+    Badge,
 )
 from research.models import StudyRegistration
 
-from codewof.codewof_utils import add_points, check_badge_conditions
+from programming.codewof_utils import add_points, check_badge_conditions
 
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 
@@ -224,6 +225,26 @@ class CreateView(generic.base.TemplateView):
             data['unanswered_count'] = data['count'] - max_answered['max_answered']
             question_types.append(data)
         context['question_types'] = question_types
+        return context
+
+
+class ProfileView(LoginRequiredMixin, generic.DetailView):
+    """Displays a user's profile."""
+
+    login_url = '/login/'
+    redirect_field_name = 'next'
+    template_name = 'users/user_detail.html'
+    model = Profile
+
+    def get_context_data(self, **kwargs):
+        """Get additional context data for template."""
+        context = super().get_context_data(**kwargs)
+
+        user = self.request.user
+        context['goal'] = user.profile.goal
+        context['all_badges'] = Badge.objects.all()
+        check_badge_conditions(user)
+        # context['past_5_weeks'] = get_past_5_weeks(user)
         return context
 
 

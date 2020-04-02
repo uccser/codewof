@@ -1,7 +1,7 @@
 """Module for the custom Django backdate_points_and_badges command."""
 
 from django.core.management.base import BaseCommand
-from codewof.codewof_utils import backdate_points_and_badges
+from programming.codewof_utils import backdate_points_and_badges
 
 
 class Command(BaseCommand):
