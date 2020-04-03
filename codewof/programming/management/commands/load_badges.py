@@ -1,15 +1,14 @@
 """Module for the custom Django load_badges command."""
 
 from django.core.management.base import BaseCommand
-from django.conf import settings
-from utils.LoaderFactory import LoaderFactory
 from programming.models import Badge
 
 
 class Command(BaseCommand):
     """Required command class for the custom Django load_badges command.
-    
-    Future plan: Create full loader like the load_questions command"""
+
+    Future plan: Create full loader like the load_questions command
+    """
 
     help = 'Loads badges into the database'
 
