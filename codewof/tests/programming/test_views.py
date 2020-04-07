@@ -1,6 +1,6 @@
 # flake8: noqa
 
-from django.test import TestCase as DjangoTestCase
+from django.test import Client, TestCase as DjangoTestCase
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 from unittest import skip
@@ -21,26 +21,29 @@ class ProfileViewTest(DjangoTestCase):
         # never modify this object in tests
         generate_users(user)
 
+    def setUp(self):
+        self.client = Client()
+
     def login_user(self):
-        login = self.client.login(username='john', password='onion')
+        login = self.client.login(email='john@uclive.ac.nz', password='onion')
         self.assertTrue(login)
 
     ### tests begin ###
 
-    # def test_redirect_if_not_logged_in(self):
-    #     resp = self.client.get('/users/profile/')
-    #     self.assertRedirects(resp, '/accounts/login/?next=/users/profile/')
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get('/users/dashboard/')
+        self.assertRedirects(resp, '/accounts/login/?next=/users/dashboard/')
 
-    # def test_view_url_exists(self):
-    #     self.login_user()
-    #     resp = self.client.get('/users/profile/')
-    #     self.assertEqual(resp.status_code, 200)
-    #
-    # def test_view_uses_correct_template(self):
-    #     self.login_user()
-    #     resp = self.client.get('/users/profile/')
-    #     self.assertEqual(resp.status_code, 200)
-    #     self.assertTemplateUsed(resp, 'registration/profile.html')
+    def test_view_url_exists(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'users/dashboard.html')
 
 
 class BadgeViewTest(DjangoTestCase):

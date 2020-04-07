@@ -315,6 +315,10 @@ ACTIVE_URL_KWARGS = {
     'ignore_params': 'no'
 }
 
+ACTIVE_URL_CACHE = True
+ACTIVE_URL_CACHE_TIMEOUT = 60 * 60 * 24  # 1 day
+ACTIVE_URL_CACHE_PREFIX = 'django_activeurl'
+
 # django-rest-framework
 # ------------------------------------------------------------------------------
 REST_FRAMEWORK = {
