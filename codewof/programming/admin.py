@@ -33,19 +33,12 @@ class EarnedInline(admin.TabularInline):
     extra = 1
 
 
-class AttemptedInline(admin.TabularInline):
-    """Configuration to show question attempts inline within profile admin."""
-
-    model = Attempt
-    extra = 1
-
-
 class ProfileAdmin(admin.ModelAdmin):
     """Configuration for displaying profiles in admin."""
 
     list_display = ('user', 'points', 'goal')
     ordering = ('user', )
-    inlines = (EarnedInline, AttemptedInline, )
+    inlines = (EarnedInline, )
 
 
 class BadgeAdmin(admin.ModelAdmin):
