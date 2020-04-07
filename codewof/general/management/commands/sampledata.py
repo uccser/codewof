@@ -86,3 +86,6 @@ class Command(management.base.BaseCommand):
         # Attempts
         AttemptFactory.create_batch(size=50)
         print('Attempts loaded.\n')
+
+        # Award points and badges
+        management.call_command('backdate_points_and_badges')

@@ -31,7 +31,6 @@ class Profile(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(7)]
     )
     earned_badges = models.ManyToManyField('Badge', through='Earned')
-
     attempted_questions = models.ManyToManyField('Question', through='Attempt')
 
     def __str__(self):
