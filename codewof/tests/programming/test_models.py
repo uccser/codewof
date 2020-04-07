@@ -4,33 +4,10 @@ from django.db.utils import IntegrityError
 from django.contrib.auth import get_user_model
 from programming.models import Token, Badge, Question
 
-from codewof.tests.codewof_test_data_generator import generate_users, generate_badges, generate_questions
+from codewof.tests.codewof_test_data_generator import generate_users, generate_badges, generate_questions, generate_attempts
 from codewof.tests.conftest import user
 
 User = get_user_model()
-
-
-class TokenModelTests(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        Token.objects.create(name='sphere', token='abc')
-
-    def test_name_unique(self):
-        with self.assertRaises(IntegrityError):
-            Token.objects.create(name='sphere', token='def')
-
-
-class BadgeModelTests(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        # generate_users()
-        # generate_questions()
-        generate_badges()
-        # generate_attempts()
-
-    def test_id_name_unique(self):
-        with self.assertRaises(IntegrityError):
-            Badge.objects.create(id_name='questions_solved_1', display_name='second', description='second')
 
 
 class ProfileModelTests(TestCase):
@@ -43,6 +20,14 @@ class ProfileModelTests(TestCase):
         user = User.objects.get(id=1)
         points = user.profile.points
         self.assertEqual(points, 0)
+
+    # def test_profile_starts_with_create_account_badge(self):
+    #     user = User.objects.get(id=1)
+    #     earned_badges = user.profile.earned_badges
+    #     self.assertEqual(earned_badges.count(), 1)
+    #     self.assertTrue(earned_badges.get(id_name='create-account'))
+
+    # test attempted questions
 
     def test_profile_starts_on_easiest_goal_level(self):
         user = User.objects.get(id=1)
@@ -75,26 +60,89 @@ class ProfileModelTests(TestCase):
         double_check_user = User.objects.get(id=2)
         self.assertEqual(double_check_user.profile.goal, 1)
 
+    def test_str_representation(self):
+        user = User.objects.get(id=1)
+        self.assertEqual(str(user.profile), 'John Doe')
 
-class QuestionModelTests(TestCase):
+
+class BadgeModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         # never modify this object in tests - read only
+        # generate_users()
+        # generate_questions()
+        generate_badges()
+        # generate_attempts()
+
+    def test_id_name_unique(self):
+        with self.assertRaises(IntegrityError):
+            Badge.objects.create(
+                id_name='questions-solved-1',
+                display_name='second',
+                description='second'
+            )
+
+    def test_badge_tier_zero_default(self):
+        badge = Badge.objects.create(
+            id_name='badge_name',
+            display_name='Dummy Badge',
+            description='A badge for testing'
+        )
+        self.assertEqual(badge.badge_tier, 0)
+
+    def test_str_representation(self):
+        badge = Badge.objects.get(id_name='questions-solved-1')
+        self.assertEqual(str(badge), 'first')
+
+    def test_parent_badge(self):
+        badge = Badge.objects.get(id_name='attempts-made-1')
+        parent_id = badge.parent.id_name
+        self.assertEqual(parent_id, 'attempts-made-5')
+
+
+class EarnedModelTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        generate_users(user)
         generate_questions()
+        generate_badges()
+        generate_attempts()
 
-    def test_question_text_label(self):
-        question = Question.objects.get(id=1)
-        field_label = question._meta.get_field('question_text').verbose_name
-        self.assertEqual(field_label, 'question text')
+    # def test_badges_earnt_user_john(self):
+    #     user = User.objects.get(id=1)
+    #     earned_badges = user.profile.earned_badges
+    #     self.assertEqual(earned_badges.count(), 5)
 
-    def test_solution_label(self):
-        question = Question.objects.get(id=1)
-        field_label = question._meta.get_field('solution').verbose_name
-        self.assertEqual(field_label, 'solution')
 
-    def test_str_question_is_title(self):
-        question = Question.objects.get(id=1)
-        self.assertEqual(str(question), question.title)
+class TokenModelTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Token.objects.create(name='sphere', token='abc')
+
+    def test_name_unique(self):
+        with self.assertRaises(IntegrityError):
+            Token.objects.create(name='sphere', token='def')
+
+
+# class QuestionModelTests(TestCase):
+#     @classmethod
+#     def setUpTestData(cls):
+#         # never modify this object in tests - read only
+#         generate_questions()
+
+#     def test_question_text_label(self):
+#         question = Question.objects.get(id=1)
+#         field_label = question._meta.get_field('question_text').verbose_name
+#         self.assertEqual(field_label, 'question text')
+
+#     def test_solution_label(self):
+#         question = Question.objects.get(id=1)
+#         field_label = question._meta.get_field('solution').verbose_name
+#         self.assertEqual(field_label, 'solution')
+
+#     def test_str_question_is_title(self):
+#         question = Question.objects.get(id=1)
+#         self.assertEqual(str(question), question.title)
 
 # class ProgrammingFunctionModelTests(TestCase):
 #     @classmethod

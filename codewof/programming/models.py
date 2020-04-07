@@ -16,11 +16,6 @@ LARGE = 500
 User = get_user_model()
 
 
-def get_local_time():
-    """Get local time in current time zone, rather than UTC."""
-    return timezone.localtime(timezone.now())
-
-
 class Profile(models.Model):
     """Profile of a user."""
 

@@ -2,9 +2,9 @@
 
 from django.contrib.auth import get_user_model
 from django.core import management
-from datetime import datetime
+import datetime
 
-from programming.models import Badge, Question, Attempt
+from programming.models import *
 
 from users.models import UserType
 
@@ -13,13 +13,43 @@ User = get_user_model()
 
 def generate_questions():
     """Generate questions for use in codeWOF tests. Questions contain minimum information and complexity."""
+
     Question.objects.create(title='Test', question_text='Hello')
 
+#    QuestionTypeProgram.create(
+#         slug="question-1",
+#         title='Test',
+#         question_text='Hello',
+#         solution="question_answer"
+#     )
+
+#     QuestionTypeFunction.create(
+#         slug="question-1",
+#         title='Test',
+#         question_text='Hello',
+#         solution="question_answer"
+#     )
+
+#     QuestionTypeParsons.create(
+#         slug="question-1",
+#         title='Test',
+#         question_text='Hello',
+#         solution="question_answer",
+#         lines="These are\nthe lines"
+#     )
+
+    # QuestionTypeDebugging.create(
+    #     slug="question-1"
+    #     title='Test',
+    #     question_text='Hello',
+    #     solution="question_answer",
+    #     initial_code=
+    # )
 
 def generate_users(user):
     """Generate users for codeWOF tests. Creates two basic users for unit tests."""
     management.call_command("load_user_types")
-    User.objects.create_user(
+    user_john = User.objects.create_user(
         id=1,
         username='john',
         first_name='John',
@@ -28,7 +58,9 @@ def generate_users(user):
         password='onion',
         user_type=UserType.objects.get(slug='student')
     )
-    User.objects.create_user(
+    user_john.save()
+
+    user_sally = User.objects.create_user(
         id=2,
         username='sally',
         first_name='Sally',
@@ -37,15 +69,42 @@ def generate_users(user):
         password='onion',
         user_type=UserType.objects.get(slug='other')
     )
+    user_sally.save()
 
 
 def generate_badges():
     """Create badges for codeWOF tests. Badges created for each main current badge category."""
-    Badge.objects.create(id_name='questions_solved_1', display_name='first', description='first')
-    Badge.objects.create(id_name="create-account", display_name="test", description="test")
-    Badge.objects.create(id_name="attempts-made-1", display_name="test", description="test")
-    Badge.objects.create(id_name="attempts-made-5", display_name="test", description="test")
-    Badge.objects.create(id_name="consecutive-days-2", display_name="test", description="test")
+    Badge.objects.create(
+        id_name='questions-solved-1',
+        display_name='first',
+        description='first',
+        badge_tier=1,
+    )
+    Badge.objects.create(
+        id_name="create-account",
+        display_name="test",
+        description="test",
+        badge_tier=1,
+    )
+    Badge.objects.create(
+        id_name="attempts-made-5",
+        display_name="test",
+        description="test",
+        badge_tier=2
+    )
+    Badge.objects.create(
+        id_name="attempts-made-1",
+        display_name="test",
+        description="test",
+        badge_tier=1,
+        parent=Badge.objects.get(id_name='attempts-made-5')
+    )
+    Badge.objects.create(
+        id_name="consecutive-days-2",
+        display_name="test",
+        description="test",
+        badge_tier=1,
+    )
 
 
 def generate_attempts():
