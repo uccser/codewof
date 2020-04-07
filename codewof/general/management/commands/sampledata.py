@@ -12,8 +12,6 @@ from tests.research.factories import (
 )
 from tests.programming.factories import AttemptFactory
 
-from programming.models import Badge
-
 LOG_HEADER = '\n{}\n' + ('-' * 20)
 
 
@@ -52,7 +50,7 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        print('Admin created.')
+        print('Admin created.\n')
 
         # Create user account
         user = User.objects.create_user(
@@ -71,140 +69,20 @@ class Command(management.base.BaseCommand):
         )
 
         UserFactory.create_batch(size=100)
-        print('Users created.')
+        print('Users created.\n')
 
         # Codewof
         management.call_command('load_questions')
-        print('Programming questions loaded.')
+        print('Programming questions loaded.\n')
+
+        management.call_command('load_badges')
+        print('Achievement badges loaded.\n')
 
         # Research
         StudyFactory.create_batch(size=5)
         StudyGroupFactory.create_batch(size=15)
-        print('Research studies loaded.')
+        print('Research studies loaded.\n')
 
-        Badge.objects.create(
-            id_name='create-account',
-            display_name='Created an account!',
-            description='Created your very own account',
-            icon_name='img/icons/badges/icons8-badge-create-account-48.png',
-            badge_tier=0
-        )
-
-        questionSolved100 = Badge.objects.create(
-            id_name='questions-solved-100',
-            display_name='Solved one hundred questions!',
-            description='Solved one hundred questions',
-            icon_name='img/icons/badges/icons8-question-solved-silver-50.png',
-            badge_tier=4
-        )
-
-        questionSolved10 = Badge.objects.create(
-            id_name='questions-solved-10',
-            display_name='Solved ten questions!',
-            description='Solved ten questions',
-            icon_name='img/icons/badges/icons8-question-solved-silver-50.png',
-            badge_tier=3,
-            parent=questionSolved100
-        )
-
-        questionSolved5 = Badge.objects.create(
-            id_name='questions-solved-5',
-            display_name='Solved five questions!',
-            description='Solved five questions',
-            icon_name='img/icons/badges/icons8-question-solved-bronze-50.png',
-            badge_tier=2,
-            parent=questionSolved10
-        )
-
-        Badge.objects.create(
-            id_name='questions-solved-1',
-            display_name='Solved one question!',
-            description='Solved your very first question',
-            icon_name='img/icons/badges/icons8-question-solved-black-50.png',
-            badge_tier=1,
-            parent=questionSolved5
-        )
-
-        attemptsMade100 = Badge.objects.create(
-            id_name='attempts-made-100',
-            display_name='Made one hundred question attempts!',
-            description='Attempted one hundred questions',
-            icon_name='img/icons/badges/icons8-attempt-made-gold-50.png',
-            badge_tier=4
-        )
-
-        attemptsMade10 = Badge.objects.create(
-            id_name='attempts-made-10',
-            display_name='Made ten question attempts!',
-            description='Attempted ten questions',
-            icon_name='img/icons/badges/icons8-attempt-made-silver-50.png',
-            badge_tier=3,
-            parent=attemptsMade100
-        )
-
-        attemptsMade5 = Badge.objects.create(
-            id_name='attempts-made-5',
-            display_name='Made five question attempts!',
-            description='Attempted five questions',
-            icon_name='img/icons/badges/icons8-attempt-made-bronze-50.png',
-            badge_tier=2,
-            parent=attemptsMade10
-        )
-
-        Badge.objects.create(
-            id_name='attempts-made-1',
-            display_name='Made your first question attempt!',
-            description='Attempted one question',
-            icon_name='img/icons/badges/icons8-attempt-made-black-50.png',
-            badge_tier=1,
-            parent=attemptsMade5
-        )
-
-        consecutiveDays28 = Badge.objects.create(
-            id_name='consecutive-days-28',
-            display_name='Worked on coding every day for four weeks!',
-            description='Attempted at least one question every day for four weeks',
-            icon_name='img/icons/badges/icons8-calendar-28-50.png',
-            badge_tier=5
-        )
-
-        consecutiveDays21 = Badge.objects.create(
-            id_name='consecutive-days-21',
-            display_name='Worked on coding every day for three weeks!',
-            description='Attempted at least one question every day for three weeks',
-            icon_name='img/icons/badges/icons8-calendar-21-50.png',
-            badge_tier=4,
-            parent=consecutiveDays28
-        )
-
-        consecutiveDays14 = Badge.objects.create(
-            id_name='consecutive-days-14',
-            display_name='Worked on coding every day for two weeks!',
-            description='Attempted at least one question every day for two weeks',
-            icon_name='img/icons/badges/icons8-calendar-14-50.png',
-            badge_tier=3,
-            parent=consecutiveDays21
-        )
-
-        consecutiveDays7 = Badge.objects.create(
-            id_name='consecutive-days-7',
-            display_name='Worked on coding every day for one week!',
-            description='Attempted at least one question every day for one week',
-            icon_name='img/icons/badges/icons8-calendar-7-50.png',
-            badge_tier=2,
-            parent=consecutiveDays14
-        )
-
-        Badge.objects.create(
-            id_name='consecutive-days-2',
-            display_name='Worked on coding for two days in a row!',
-            description='Attempted at least one question two days in a row',
-            icon_name='img/icons/badges/icons8-calendar-2-50.png',
-            badge_tier=1,
-            parent=consecutiveDays7
-        )
-
-        print("Badges added.")
         # Attempts
         AttemptFactory.create_batch(size=50)
-        print('Attempts loaded.')
+        print('Attempts loaded.\n')

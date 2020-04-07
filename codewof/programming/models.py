@@ -32,7 +32,7 @@ class Profile(models.Model):
     )
     earned_badges = models.ManyToManyField('Badge', through='Earned')
 
-    # attempted_questions = models.ManyToManyField('Question', through='Attempt')
+    attempted_questions = models.ManyToManyField('Question', through='Attempt')
 
     def __str__(self):
         """Text representation of a profile."""
