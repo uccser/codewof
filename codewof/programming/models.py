@@ -75,6 +75,10 @@ class Earned(models.Model):
     badge = models.ForeignKey('Badge', on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        verbose_name = "Earned badge"
+        verbose_name_plural = "Badges earned"
+
     def __str__(self):
         """Text representation of an Earned object."""
         return str(self.date)

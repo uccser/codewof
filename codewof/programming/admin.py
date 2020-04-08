@@ -45,7 +45,16 @@ class BadgeAdmin(admin.ModelAdmin):
     """Configuration for displaying badges in admin."""
 
     list_display = ('id_name', 'display_name', 'badge_tier')
+    list_filter = ['badge_tier']
     ordering = ('id_name', )
+
+
+class EarnedAdmin(admin.ModelAdmin):
+    """Configuration for displaying earned badges in admin."""
+
+    list_display = ('date', 'badge', 'profile')
+    list_filter = ['badge']
+    ordering = ('-date', )
 
 
 class AttemptAdmin(admin.ModelAdmin):
@@ -70,3 +79,4 @@ admin.site.register(QuestionTypeParsons)
 admin.site.register(QuestionTypeDebugging)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Badge, BadgeAdmin)
+admin.site.register(Earned, EarnedAdmin)
