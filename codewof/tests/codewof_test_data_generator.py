@@ -5,6 +5,7 @@ from django.core import management
 import datetime
 
 from programming.models import *
+from programming.codewof_utils import check_badge_conditions
 
 from users.models import UserType
 
@@ -14,7 +15,7 @@ User = get_user_model()
 def generate_questions():
     """Generate questions for use in codeWOF tests. Questions contain minimum information and complexity."""
 
-    Question.objects.create(title='Test', question_text='Hello')
+    Question.objects.create(id=1, title='Test', question_text='Hello')
 
 #    QuestionTypeProgram.create(
 #         slug="question-1",
@@ -123,3 +124,5 @@ def generate_attempts():
                            datetime=datetime.date(2019, 9, 9))
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=True,
                            datetime=datetime.date(2019, 9, 10))
+    # award badges
+    check_badge_conditions(user)

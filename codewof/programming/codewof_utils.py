@@ -113,7 +113,7 @@ def check_badge_conditions(user):
     Check if the user has earned new badges for their profile.
 
     Checks if the user has received each available badge. If not, check if the user has earned these badges. Badges
-    available to be checked for are profile creation, numebr of attempts made, number of questions answered, and
+    available to be checked for are profile creation, number of attempts made, number of questions answered, and
     number of days with consecutive attempts.
     """
     earned_badges = user.profile.earned_badges.all()

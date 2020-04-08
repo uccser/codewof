@@ -11,7 +11,7 @@ import datetime
 from programming.models import *
 from programming.views import *
 
-from codewof.tests.codewof_test_data_generator import generate_users
+from codewof.tests.codewof_test_data_generator import generate_users, generate_badges
 from codewof.tests.conftest import user
 
 
@@ -51,10 +51,8 @@ class BadgeViewTest(DjangoTestCase):
     def setUpTestData(cls):
         # never modify this object in tests
         generate_users(user)
+        generate_badges()
         # LoginDay.objects.create(profile=user.profile)
-        Badge.objects.create(id_name="create-account", display_name="test", description="test")
-        Badge.objects.create(id_name="login-3", display_name="test", description="test")
-        Badge.objects.create(id_name="questions-solved-1", display_name="test", description="test")
 
     def test_new_user_awards_create_account(self):
         user = User.objects.get(pk=1)
