@@ -26,7 +26,6 @@ class Profile(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(7)]
     )
     earned_badges = models.ManyToManyField('Badge', through='Earned')
-
     attempted_questions = models.ManyToManyField('Question', through='Attempt')
 
     def __str__(self):
@@ -70,6 +69,12 @@ class Earned(models.Model):
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
     badge = models.ForeignKey('Badge', on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        """How the name is displayed in the Admin view."""
+
+        verbose_name = "Earned badge"
+        verbose_name_plural = "Badges earned"
 
     def __str__(self):
         """Text representation of an Earned object."""

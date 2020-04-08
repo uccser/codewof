@@ -33,26 +33,28 @@ class EarnedInline(admin.TabularInline):
     extra = 1
 
 
-class AttemptedInline(admin.TabularInline):
-    """Configuration to show question attempts inline within profile admin."""
-
-    model = Attempt
-    extra = 1
-
-
 class ProfileAdmin(admin.ModelAdmin):
     """Configuration for displaying profiles in admin."""
 
     list_display = ('user', 'points', 'goal')
     ordering = ('user', )
-    inlines = (EarnedInline, AttemptedInline, )
+    inlines = (EarnedInline, )
 
 
 class BadgeAdmin(admin.ModelAdmin):
     """Configuration for displaying badges in admin."""
 
     list_display = ('id_name', 'display_name', 'badge_tier')
+    list_filter = ['badge_tier']
     ordering = ('id_name', )
+
+
+class EarnedAdmin(admin.ModelAdmin):
+    """Configuration for displaying earned badges in admin."""
+
+    list_display = ('date', 'badge', 'profile')
+    list_filter = ['badge']
+    ordering = ('-date', )
 
 
 class AttemptAdmin(admin.ModelAdmin):
@@ -77,3 +79,4 @@ admin.site.register(QuestionTypeParsons)
 admin.site.register(QuestionTypeDebugging)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Badge, BadgeAdmin)
+admin.site.register(Earned, EarnedAdmin)
