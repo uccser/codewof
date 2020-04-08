@@ -158,6 +158,93 @@ class BadgeModelTests(TestCase):
         earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(earned), 0)
 
+#     def test_no_award_consecutive_login_2(self):
+#         user = User.objects.get(pk=1)
+#         login_day = LoginDay.objects.create(profile=user.profile)
+#         yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
+#         LoginDay.objects.select_for_update().filter(pk=2).update(day=yesterday.date())
+
+#         check_badge_conditions(user)
+#         badge = Badge.objects.get(id_name="login-3")
+#         earned = Earned.objects.filter(profile=user.profile, badge=badge)
+#         self.assertEquals(len(earned), 0)
+
+#     def test_award_consecutive_login_3(self):
+#         user = User.objects.get(pk=1)
+#         LoginDay.objects.create(profile=user.profile)
+#         yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
+#         LoginDay.objects.select_for_update().filter(pk=2).update(day=yesterday.date())
+
+#         LoginDay.objects.create(profile=user.profile)
+#         day_before_yesterday = datetime.datetime.now() - datetime.timedelta(days=2)
+#         LoginDay.objects.select_for_update().filter(pk=3).update(day=day_before_yesterday.date())
+
+#         check_badge_conditions(user)
+#         badge = Badge.objects.get(id_name="login-3")
+#         earned = Earned.objects.filter(profile=user.profile, badge=badge)
+#         self.assertEquals(len(earned), 1)
+
+#     def test_award_consecutive_login_3_from_last_week(self):
+#         user = User.objects.get(pk=1)
+#         LoginDay.objects.create(profile=user.profile)
+#         last_week3 = datetime.datetime.now() - datetime.timedelta(days=1, weeks=1)
+#         LoginDay.objects.select_for_update().filter(pk=2).update(day=last_week3.date())
+
+#         LoginDay.objects.create(profile=user.profile)
+#         last_week2 = datetime.datetime.now() - datetime.timedelta(days=2, weeks=1)
+#         LoginDay.objects.select_for_update().filter(pk=3).update(day=last_week2.date())
+
+#         LoginDay.objects.create(profile=user.profile)
+#         last_week1 = datetime.datetime.now() - datetime.timedelta(days=3, weeks=1)
+#         LoginDay.objects.select_for_update().filter(pk=4).update(day=last_week1.date())
+
+#         check_badge_conditions(user)
+#         badge = Badge.objects.get(id_name="login-3")
+#         earned = Earned.objects.filter(profile=user.profile, badge=badge)
+#         self.assertEquals(len(earned), 1)
+
+#     def test_award_consecutive_login_3_from_last_week_5(self):
+#         user = User.objects.get(pk=1)
+#         LoginDay.objects.create(profile=user.profile)
+#         last_week3 = datetime.datetime.now() - datetime.timedelta(days=1, weeks=1)
+#         LoginDay.objects.select_for_update().filter(pk=2).update(day=last_week3.date())
+
+#         LoginDay.objects.create(profile=user.profile)
+#         last_week2 = datetime.datetime.now() - datetime.timedelta(days=2, weeks=1)
+#         LoginDay.objects.select_for_update().filter(pk=3).update(day=last_week2.date())
+
+#         LoginDay.objects.create(profile=user.profile)
+#         last_week1 = datetime.datetime.now() - datetime.timedelta(days=3, weeks=1)
+#         LoginDay.objects.select_for_update().filter(pk=4).update(day=last_week1.date())
+
+#         LoginDay.objects.create(profile=user.profile)
+#         last_week4 = datetime.datetime.now() - datetime.timedelta(days=4, weeks=1)
+#         LoginDay.objects.select_for_update().filter(pk=5).update(day=last_week4.date())
+
+#         LoginDay.objects.create(profile=user.profile)
+#         last_week5 = datetime.datetime.now() - datetime.timedelta(days=5, weeks=1)
+#         LoginDay.objects.select_for_update().filter(pk=6).update(day=last_week5.date())
+
+#         check_badge_conditions(user)
+#         badge = Badge.objects.get(id_name="login-3")
+#         earned = Earned.objects.filter(profile=user.profile, badge=badge)
+#         self.assertEquals(len(earned), 1)
+
+#     def test_no_award_consecutive_login_2_from_last_week(self):
+#         user = User.objects.get(pk=1)
+#         LoginDay.objects.create(profile=user.profile)
+#         last_week3 = datetime.datetime.now() - datetime.timedelta(days=1, weeks=1)
+#         LoginDay.objects.select_for_update().filter(pk=2).update(day=last_week3.date())
+
+#         LoginDay.objects.create(profile=user.profile)
+#         last_week2 = datetime.datetime.now() - datetime.timedelta(days=2, weeks=1)
+#         LoginDay.objects.select_for_update().filter(pk=3).update(day=last_week2.date())
+
+#         check_badge_conditions(user)
+#         badge = Badge.objects.get(id_name="login-3")
+#         earned = Earned.objects.filter(profile=user.profile, badge=badge)
+#         self.assertEquals(len(earned), 0)
+
 
 class EarnedModelTests(TestCase):
     @classmethod
