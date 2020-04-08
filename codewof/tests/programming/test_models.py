@@ -2,10 +2,21 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.contrib.auth import get_user_model
-from programming.models import Token, Badge, Question, Earned, Attempt
 from programming.codewof_utils import check_badge_conditions
+from programming.models import (
+    Token,
+    Badge,
+    Question,
+    Earned,
+    Attempt,
+)
 
-from codewof.tests.codewof_test_data_generator import generate_users, generate_badges, generate_questions, generate_attempts
+from codewof.tests.codewof_test_data_generator import (
+    generate_users,
+    generate_badges,
+    generate_questions,
+    generate_attempts,
+)
 from codewof.tests.conftest import user
 
 User = get_user_model()

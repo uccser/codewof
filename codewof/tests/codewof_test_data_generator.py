@@ -85,7 +85,7 @@ def generate_badges():
         id_name="create-account",
         display_name="test",
         description="test",
-        badge_tier=1,
+        badge_tier=0,
     )
     Badge.objects.create(
         id_name="attempts-made-5",
