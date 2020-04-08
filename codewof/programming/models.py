@@ -76,6 +76,7 @@ class Earned(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
     class Meta:
+        """How the name is displayed in the Admin view"""
         verbose_name = "Earned badge"
         verbose_name_plural = "Badges earned"
 
