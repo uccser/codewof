@@ -299,25 +299,28 @@ class TokenModelTests(TestCase):
         self.assertEqual(str(token), 'sphere')
 
 
-# class QuestionModelTests(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         # never modify this object in tests - read only
-#         generate_questions()
+class QuestionModelTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests - read only
+        generate_questions()
 
-#     def test_question_text_label(self):
-#         question = Question.objects.get(id=1)
-#         field_label = question._meta.get_field('question_text').verbose_name
-#         self.assertEqual(field_label, 'question text')
+    def test_question_slug_unique(self):
+        with self.assertRaises(IntegrityError):
+            Question.objects.create(
+                id=1,
+                title='duplicate',
+                question_text=''
+            )
 
-#     def test_solution_label(self):
-#         question = Question.objects.get(id=1)
-#         field_label = question._meta.get_field('solution').verbose_name
-#         self.assertEqual(field_label, 'solution')
+    def test_get_absolute_url(self):
+        question = Question.objects.get(id=1)
+        url = question.get_absolute_url()
+        self.assertEqual('/questions/1/', url)
 
-#     def test_str_question_is_title(self):
-#         question = Question.objects.get(id=1)
-#         self.assertEqual(str(question), question.title)
+    def test_str_representation(self):
+        question = Question.objects.get(id=1)
+        self.assertEqual(str(question), question.title)
 
 # class ProgrammingFunctionModelTests(TestCase):
 #     @classmethod
