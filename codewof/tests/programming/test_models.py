@@ -9,6 +9,7 @@ from programming.models import (
     Question,
     Earned,
     Attempt,
+    QuestionTypeProgram,
 )
 
 from codewof.tests.codewof_test_data_generator import (
@@ -321,6 +322,21 @@ class QuestionModelTests(TestCase):
     def test_str_representation(self):
         question = Question.objects.get(id=1)
         self.assertEqual(str(question), question.title)
+
+
+class QuestionTypeProgram(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests - read only
+        generate_questions()
+
+    def test_instance_of_question(self):
+        question = Question.objects.get_subclass(id=1)
+        self.assertTrue(isinstance(question, Question))
+
+    def test_instance_of_programming(self):
+        question = Question.objects.get_subclass(id=2)
+        self.assertTrue(isinstance(question, Question))
 
 # class ProgrammingFunctionModelTests(TestCase):
 #     @classmethod

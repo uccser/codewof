@@ -17,12 +17,13 @@ def generate_questions():
 
     Question.objects.create(id=1, title='Test', question_text='Hello')
 
-#    QuestionTypeProgram.create(
-#         slug="question-1",
-#         title='Test',
-#         question_text='Hello',
-#         solution="question_answer"
-#     )
+    QuestionTypeProgram.objects.create(
+        id=2,
+        slug="question-2",
+        title='Test',
+        question_text='Hello',
+        solution="question_answer"
+    )
 
 #     QuestionTypeFunction.create(
 #         slug="question-1",
