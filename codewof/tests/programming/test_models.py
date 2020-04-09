@@ -10,6 +10,9 @@ from programming.models import (
     Earned,
     Attempt,
     QuestionTypeProgram,
+    QuestionTypeFunction,
+    QuestionTypeParsons,
+    QuestionTypeDebugging,
 )
 
 from codewof.tests.codewof_test_data_generator import (
@@ -334,9 +337,109 @@ class QuestionTypeProgramModelTests(TestCase):
         # never modify this object in tests - read only
         generate_questions()
 
-    def test_instance_of_programming(self):
+    def test_question_type_program_instance(self):
         program_question = Question.objects.get_subclass(slug="program-question-1")
         self.assertTrue(isinstance(program_question, QuestionTypeProgram))
+
+    def test_question_type_program_verbose_name(self):
+        program_question = Question.objects.get_subclass(slug="program-question-1")
+        self.assertEqual(program_question._meta.verbose_name, 'Program Question')
+
+    def test_question_type_program_verbose_name_plural(self):
+        program_question = Question.objects.get_subclass(slug="program-question-1")
+        self.assertEqual(program_question._meta.verbose_name_plural, 'Program Questions')
+
+    def test_str_representation(self):
+        program_question = Question.objects.get_subclass(slug="program-question-1")
+        self.assertEqual(
+            str(program_question),
+            '{}: {}'.format(program_question.QUESTION_TYPE, program_question.title)
+        )
+
+
+class QuestionTypeFunctionModelTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests - read only
+        generate_questions()
+
+    def test_question_type_function_instance(self):
+        function_question = Question.objects.get_subclass(slug="function-question-1")
+        self.assertTrue(isinstance(function_question, QuestionTypeFunction))
+
+    def test_question_type_function_verbose_name(self):
+        function_question = Question.objects.get_subclass(slug="function-question-1")
+        self.assertEqual(function_question._meta.verbose_name, 'Function Question')
+
+    def test_question_type_function_verbose_name_plural(self):
+        function_question = Question.objects.get_subclass(slug="function-question-1")
+        self.assertEqual(function_question._meta.verbose_name_plural, 'Function Questions')
+
+    def test_str_representation(self):
+        function_question = Question.objects.get_subclass(slug="function-question-1")
+        self.assertEqual(
+            str(function_question),
+            '{}: {}'.format(function_question.QUESTION_TYPE, function_question.title)
+        )
+
+
+class QuestionTypeParsonsModelTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests - read only
+        generate_questions()
+
+    def test_question_type_parsons_instance(self):
+        parsons_question = Question.objects.get_subclass(slug="parsons-question-1")
+        self.assertTrue(isinstance(parsons_question, QuestionTypeParsons))
+
+    def test_question_type_parsons_verbose_name(self):
+        parsons_question = Question.objects.get_subclass(slug="parsons-question-1")
+        self.assertEqual(parsons_question._meta.verbose_name, 'Parsons Problem Question')
+
+    def test_str_representation(self):
+        parsons_question = Question.objects.get_subclass(slug="parsons-question-1")
+        self.assertEqual(
+            str(parsons_question),
+            '{}: {}'.format(parsons_question.QUESTION_TYPE, parsons_question.title)
+        )
+
+    def test_lines_as_list(self):
+        parsons_question = Question.objects.get_subclass(slug="parsons-question-1")
+        lines_list = list(parsons_question.lines.split('\n'))
+        shuffled_lines = parsons_question.lines_as_list()
+        self.assertEqual(sorted(shuffled_lines), sorted(lines_list))
+
+
+class QuestionTypeDebuggingModelTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests - read only
+        generate_questions()
+
+    def test_question_type_debugging_instance(self):
+        debugging_question = Question.objects.get_subclass(slug="debugging-question-1")
+        self.assertTrue(isinstance(debugging_question, QuestionTypeDebugging))
+
+    def test_question_type_function_verbose_name(self):
+        debugging_question = Question.objects.get_subclass(slug="debugging-question-1")
+        self.assertEqual(debugging_question._meta.verbose_name, 'Debugging Problem Question')
+
+    def test_str_representation(self):
+        debugging_question = Question.objects.get_subclass(slug="debugging-question-1")
+        self.assertEqual(
+            str(debugging_question),
+            '{}: {}'.format(debugging_question.QUESTION_TYPE, debugging_question.title)
+        )
+
+    def test_read_only_lines_top_default(self):
+        debugging_question = Question.objects.get_subclass(slug="debugging-question-1")
+        self.assertEqual(debugging_question.read_only_lines_top, 0)
+
+    def test_read_only_lines_bottom_default(self):
+        debugging_question = Question.objects.get_subclass(slug="debugging-question-1")
+        self.assertEqual(debugging_question.read_only_lines_bottom, 0)
+
 
 # class ProgrammingFunctionModelTests(TestCase):
 #     @classmethod

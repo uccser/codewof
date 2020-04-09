@@ -24,28 +24,28 @@ def generate_questions():
         solution="question_answer"
     )
 
-#     QuestionTypeFunction.create(
-#         slug="question-1",
-#         title='Test',
-#         question_text='Hello',
-#         solution="question_answer"
-#     )
+    QuestionTypeFunction.objects.create(
+        slug="function-question-1",
+        title='Test',
+        question_text='Hello',
+        solution="question_answer"
+    )
 
-#     QuestionTypeParsons.create(
-#         slug="question-1",
-#         title='Test',
-#         question_text='Hello',
-#         solution="question_answer",
-#         lines="These are\nthe lines"
-#     )
+    QuestionTypeParsons.objects.create(
+        slug="parsons-question-1",
+        title='Test',
+        question_text='Hello',
+        solution="question_answer",
+        lines="These are\nthe lines"
+    )
 
-    # QuestionTypeDebugging.create(
-    #     slug="question-1"
-    #     title='Test',
-    #     question_text='Hello',
-    #     solution="question_answer",
-    #     initial_code=
-    # )
+    QuestionTypeDebugging.objects.create(
+        slug="debugging-question-1",
+        title='Test',
+        question_text='Hello',
+        solution="question_answer",
+        initial_code=''
+    )
 
 def generate_users(user):
     """Generate users for codeWOF tests. Creates two basic users for unit tests."""

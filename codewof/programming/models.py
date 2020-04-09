@@ -160,9 +160,11 @@ class Question(TranslatableModel):
         else:
             return self.title
 
-    # class Meta:
-    # verbose_name = "Parsons Problem"
-    # verbose_name_plural = "All Questions & Parsons Problems"
+    class Meta:
+        """Meta information for class."""
+
+        verbose_name = 'Question'
+        verbose_name_plural = 'Questions'
 
 
 class TestCase(TranslatableModel):
