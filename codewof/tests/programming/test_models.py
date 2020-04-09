@@ -439,3 +439,10 @@ class QuestionTypeDebuggingModelTests(TestCase):
     def test_read_only_lines_bottom_default(self):
         debugging_question = Question.objects.get_subclass(slug="debugging-question-1")
         self.assertEqual(debugging_question.read_only_lines_bottom, 0)
+
+
+# class TestCaseModelTests(TestCase):
+#     @classmethod
+#     def setUpTestData(cls):
+#         # never modify this object in tests - read only
+#         generate_questions()
