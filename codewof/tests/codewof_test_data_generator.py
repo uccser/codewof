@@ -15,11 +15,10 @@ User = get_user_model()
 def generate_questions():
     """Generate questions for use in codeWOF tests. Questions contain minimum information and complexity."""
 
-    Question.objects.create(id=1, title='Test', question_text='Hello')
+    Question.objects.create(slug="question-1", title='Test', question_text='Hello')
 
     QuestionTypeProgram.objects.create(
-        id=2,
-        slug="question-2",
+        slug="program-question-1",
         title='Test',
         question_text='Hello',
         solution="question_answer"
@@ -117,7 +116,7 @@ def generate_attempts():
     and passed attempts. These attempts cover the main requirements to gain all test badges.
     """
     user = User.objects.get(id=1)
-    question = Question.objects.get(id=1)
+    question = Question.objects.get(slug='question-1')
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=False)
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=False)

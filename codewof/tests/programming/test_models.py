@@ -309,34 +309,34 @@ class QuestionModelTests(TestCase):
     def test_question_slug_unique(self):
         with self.assertRaises(IntegrityError):
             Question.objects.create(
-                id=1,
+                slug='question-1',
                 title='duplicate',
                 question_text=''
             )
 
     def test_get_absolute_url(self):
-        question = Question.objects.get(id=1)
+        question = Question.objects.get(slug='question-1')
         url = question.get_absolute_url()
-        self.assertEqual('/questions/1/', url)
+        self.assertEqual('/questions/{}/'.format(question.id), url)
 
     def test_str_representation(self):
-        question = Question.objects.get(id=1)
+        question = Question.objects.get(slug='question-1')
         self.assertEqual(str(question), question.title)
 
+    def test_instance_of_question(self):
+        question = Question.objects.get_subclass(slug='question-1')
+        self.assertTrue(isinstance(question, Question))
 
-class QuestionTypeProgram(TestCase):
+
+class QuestionTypeProgramModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         # never modify this object in tests - read only
         generate_questions()
 
-    def test_instance_of_question(self):
-        question = Question.objects.get_subclass(id=1)
-        self.assertTrue(isinstance(question, Question))
-
     def test_instance_of_programming(self):
-        question = Question.objects.get_subclass(id=2)
-        self.assertTrue(isinstance(question, Question))
+        program_question = Question.objects.get_subclass(slug="program-question-1")
+        self.assertTrue(isinstance(program_question, QuestionTypeProgram))
 
 # class ProgrammingFunctionModelTests(TestCase):
 #     @classmethod
