@@ -30,18 +30,6 @@ from programming.codewof_utils import add_points, check_badge_conditions
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 
 
-class IndexView(generic.base.TemplateView):
-    """Homepage for programming."""
-
-    template_name = 'programming/index.html'
-
-    def get_context_data(self, **kwargs):
-        """Get additional context data for template."""
-        context = super().get_context_data(**kwargs)
-        context['questions'] = Question.objects.select_subclasses()
-        return context
-
-
 class QuestionListView(LoginRequiredMixin, generic.ListView):
     """View for listing questions."""
 
