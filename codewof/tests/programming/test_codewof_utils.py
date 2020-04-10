@@ -28,6 +28,7 @@ class TestCodewofUtils(TestCase):
         generate_questions()
         generate_badges()
 
+    # Test add_points function
     def test_add_points_first_attempt_correct(self):
         user = User.objects.get(id=1)
         question = Question.objects.get(id=1)
@@ -61,6 +62,7 @@ class TestCodewofUtils(TestCase):
         points_after = add_points(question, user.profile, attempt_2)
         self.assertEqual(points_after - points_before, POINTS_SOLUTION)
 
+    # Test caluclate_badge_points function
     def test_calculate_badge_points_tier_0(self):
         user = User.objects.get(id=1)
         badge = Badge.objects.get(id_name="create-account")
@@ -87,4 +89,7 @@ class TestCodewofUtils(TestCase):
         points_before = user.profile.points
         calculate_badge_points(user, badges)
         self.assertEqual(user.profile.points - points_before, badge.badge_tier * POINTS_BADGE)
+
+    # Test calculate_badge_conditions function
+    def test_check_badge_conditions(self):
 

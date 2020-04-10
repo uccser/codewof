@@ -28,7 +28,8 @@ from codewof.tests.codewof_test_data_generator import (
 from codewof.tests.conftest import user
 
 
-# class QuestionViewTest()
+# class QuestionListViewTest():
+
 
 # class ProfileViewTest(TestCase):
 #     @classmethod
@@ -61,12 +62,12 @@ from codewof.tests.conftest import user
 #         self.assertTemplateUsed(resp, 'users/dashboard.html')
 
 
-class BadgeViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        # never modify this object in tests
-        generate_users(user)
-        generate_badges()
+# class BadgeViewTest(TestCase):
+#     @classmethod
+#     def setUpTestData(cls):
+#         # never modify this object in tests
+#         generate_users(user)
+#         generate_badges()
         # LoginDay.objects.create(profile=user.profile)
 
 

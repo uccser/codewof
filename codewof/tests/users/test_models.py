@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from users.models import UserType, User
 
-from codewof.tests.codewof_test_data_generator import generate_users, generate_badges, generate_questions, generate_attempts
+from codewof.tests.codewof_test_data_generator import generate_users
 from codewof.tests.conftest import user
 
 User = get_user_model()
