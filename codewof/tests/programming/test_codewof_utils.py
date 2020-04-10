@@ -28,7 +28,6 @@ class TestCodewofUtils(TestCase):
         generate_questions()
         generate_badges()
 
-    # Test add_points function
     def test_add_points_first_attempt_correct(self):
         user = User.objects.get(id=1)
         question = Question.objects.get(id=1)
@@ -62,7 +61,6 @@ class TestCodewofUtils(TestCase):
         points_after = add_points(question, user.profile, attempt_2)
         self.assertEqual(points_after - points_before, POINTS_SOLUTION)
 
-    # Test caluclate_badge_points function
     def test_calculate_badge_points_tier_0(self):
         user = User.objects.get(id=1)
         badge = Badge.objects.get(id_name="create-account")
@@ -90,10 +88,29 @@ class TestCodewofUtils(TestCase):
         calculate_badge_points(user, badges)
         self.assertEqual(user.profile.points - points_before, badge.badge_tier * POINTS_BADGE)
 
-    # Test calculate_badge_conditions function
-    # def test_check_badge_conditions(self):
+    def test_check_badge_conditions(self):
+        generate_attempts()
+        user = User.objects.get(id=1)
+        new_badge_names = check_badge_conditions(user)
+        self.assertEqual(
+            new_badge_names,
+            '- {}\n- {}\n- {}\n- {}\n- {}\n'.format(
+                'Account created',
+                'Solved one question',
+                'Five attempts made',
+                'One attempt made',
+                'Two consecutive days'
+            )
+        )
 
     def test_get_days_consecutively_answered(self):
         generate_attempts()
         user = User.objects.get(id=1)
+        streak = get_days_consecutively_answered(user)
+        self.assertEqual(streak, 2)
 
+    def test_get_questions_answered_in_past_month(self):
+        generate_attempts()
+        user = User.objects.get(id=1)
+        num_solved = get_questions_answered_in_past_month(user)
+        self.assertEqual(num_solved, 1)

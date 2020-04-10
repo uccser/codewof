@@ -77,33 +77,33 @@ def generate_badges():
     """Create badges for codeWOF tests. Badges created for each main current badge category."""
     Badge.objects.create(
         id_name='questions-solved-1',
-        display_name='first',
+        display_name='Solved one question',
         description='first',
         badge_tier=1,
     )
     Badge.objects.create(
-        id_name="create-account",
-        display_name="test",
-        description="test",
+        id_name='create-account',
+        display_name='Account created',
+        description='test',
         badge_tier=0,
     )
     Badge.objects.create(
-        id_name="attempts-made-5",
-        display_name="test",
-        description="test",
+        id_name='attempts-made-5',
+        display_name='Five attempts made',
+        description='test',
         badge_tier=2
     )
     Badge.objects.create(
-        id_name="attempts-made-1",
-        display_name="test",
-        description="test",
+        id_name='attempts-made-1',
+        display_name='One attempt made',
+        description='test',
         badge_tier=1,
         parent=Badge.objects.get(id_name='attempts-made-5')
     )
     Badge.objects.create(
-        id_name="consecutive-days-2",
-        display_name="test",
-        description="test",
+        id_name='consecutive-days-2',
+        display_name='Two consecutive days',
+        description='test',
         badge_tier=1,
     )
 
@@ -124,5 +124,3 @@ def generate_attempts():
                            datetime=datetime.date(2019, 9, 9))
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=True,
                            datetime=datetime.date(2019, 9, 10))
-    # award badges
-    check_badge_conditions(user)

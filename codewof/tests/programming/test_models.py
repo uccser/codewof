@@ -86,7 +86,7 @@ class ProfileModelTests(TestCase):
 
     def test_str_representation(self):
         user = User.objects.get(id=1)
-        self.assertEqual(str(user.profile), 'John Doe')
+        self.assertEqual(str(user.profile), '{} {}'.format(user.first_name, user.last_name))
 
 
 class BadgeModelTests(TestCase):
@@ -114,7 +114,7 @@ class BadgeModelTests(TestCase):
 
     def test_str_representation(self):
         badge = Badge.objects.get(id_name='questions-solved-1')
-        self.assertEqual(str(badge), 'first')
+        self.assertEqual(str(badge), badge.display_name)
 
     def test_parent_badge(self):
         badge = Badge.objects.get(id_name='attempts-made-1')
@@ -257,33 +257,39 @@ class EarnedModelTests(TestCase):
         generate_questions()
         generate_badges()
         generate_attempts()
+        # award badges
 
     def test_questions_solved_1_earnt(self):
         user = User.objects.get(id=1)
+        check_badge_conditions(user)
         badge = Badge.objects.get(id_name="questions-solved-1")
         qs1_earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(qs1_earned), 1)
 
     def test_create_account_earnt(self):
         user = User.objects.get(id=1)
+        check_badge_conditions(user)
         badge = Badge.objects.get(id_name="create-account")
         create_acc_earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(create_acc_earned), 1)
 
     def test_attempts_made_5_earnt(self):
         user = User.objects.get(id=1)
+        check_badge_conditions(user)
         badge = Badge.objects.get(id_name="attempts-made-5")
         attempts_5_earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(attempts_5_earned), 1)
 
     def test_attempts_made_1_earnt(self):
         user = User.objects.get(id=1)
+        check_badge_conditions(user)
         badge = Badge.objects.get(id_name="attempts-made-1")
         attempts1_earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(attempts1_earned), 1)
 
     def test_consecutive_days_2_earnt(self):
         user = User.objects.get(id=1)
+        check_badge_conditions(user)
         badge = Badge.objects.get(id_name="consecutive-days-2")
         consec_days_earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(consec_days_earned), 1)
