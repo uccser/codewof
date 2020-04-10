@@ -40,8 +40,9 @@ def add_points(question, profile, attempt):
     Add appropriate number of points (if any) to user's profile after a question is answered.
 
     Adds points to a user's profile for when the user answers a question correctly for the first time. If the user
-    answers the question correctly the first time they answer, the user gains bonus points, as checked with the
-    variable "is_first_correct".
+    answers the question correctly the first time they answer, the user gains bonus points.
+
+    Subsequent correct answers should not award any points.
     """
     num_attempts = Attempt.objects.filter(question=question, profile=profile)
     is_first_correct = len(Attempt.objects.filter(question=question, profile=profile, passed_tests=True)) == 1
@@ -128,6 +129,8 @@ def check_badge_conditions(user):
     Checks if the user has received each available badge. If not, check if the user has earned these badges. Badges
     available to be checked for are profile creation, number of attempts made, number of questions answered, and
     number of days with consecutive attempts.
+
+    A badge will not be removed if the user had earned it before but now doesn't meet the conditions
     """
     earned_badges = user.profile.earned_badges.all()
     new_badge_names = ""
@@ -181,12 +184,10 @@ def check_badge_conditions(user):
         pass
 
     # consecutive days logged in badges
-    num_consec_days = -1
+    num_consec_days = get_days_consecutively_answered(user)
     consec_badges = Badge.objects.filter(id_name__contains="consecutive-days")
     for consec_badge in consec_badges:
         if consec_badge not in earned_badges:
-            if num_consec_days == -1:
-                num_consec_days = get_days_consecutively_answered(user)
             n_days = int(consec_badge.id_name.split("-")[2])
             if n_days <= num_consec_days:
                 new_achievement = Earned(profile=user.profile, badge=consec_badge)
