@@ -91,5 +91,9 @@ class TestCodewofUtils(TestCase):
         self.assertEqual(user.profile.points - points_before, badge.badge_tier * POINTS_BADGE)
 
     # Test calculate_badge_conditions function
-    def test_check_badge_conditions(self):
+    # def test_check_badge_conditions(self):
+
+    def test_get_days_consecutively_answered(self):
+        generate_attempts()
+        user = User.objects.get(id=1)
 
