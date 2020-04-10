@@ -86,18 +86,31 @@ def get_days_consecutively_answered(user):
     """
     # get datetimes from attempts in date form)
     attempts = Attempt.objects.filter(profile=user.profile).datetimes('datetime', 'day', 'DESC')
-    # get current day as date
-    i = 0
-    today = datetime.datetime.now().replace(tzinfo=None).date()
 
-    while i < len(attempts):
-        attempt = attempts[i]
-        expected_date = today - datetime.timedelta(days=i)
-        if attempt.date() != expected_date:
-            break
-        i += 1
+    if len(attempts) <= 0:
+        return 0
 
-    return i
+    # first attempt is the start of the first streak
+    streak = 1
+    highest_streak = 0
+    expected_date = attempts[0].date() - datetime.timedelta(days=1)
+
+    for attempt in attempts[1:]:
+        if attempt.date() == expected_date:
+            # continue the streak
+            streak += 1
+        else:
+            # streak has ended
+            if streak > highest_streak:
+                highest_streak = streak
+            streak = 1
+        # compare the next item to yesterday
+        expected_date = attempt.date() - datetime.timedelta(days=1)
+
+    if streak > highest_streak:
+        highest_streak = streak
+
+    return highest_streak
 
 
 def get_questions_answered_in_past_month(user):
@@ -175,7 +188,7 @@ def check_badge_conditions(user):
             if num_consec_days == -1:
                 num_consec_days = get_days_consecutively_answered(user)
             n_days = int(consec_badge.id_name.split("-")[2])
-            if n_days == num_consec_days:
+            if n_days <= num_consec_days:
                 new_achievement = Earned(profile=user.profile, badge=consec_badge)
                 new_achievement.full_clean()
                 new_achievement.save()
