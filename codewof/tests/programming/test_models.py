@@ -282,11 +282,11 @@ class EarnedModelTests(TestCase):
         attempts1_earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(attempts1_earned), 1)
 
-    # def test_consecutive_days_2_earnt(self):
-    #     user = User.objects.get(id=1)
-    #     badge = Badge.objects.get(id_name="consecutive-days-2")
-    #     consec_days_earned = Earned.objects.filter(profile=user.profile, badge=badge)
-    #     self.assertEqual(len(consec_days_earned), 1)
+    def test_consecutive_days_2_earnt(self):
+        user = User.objects.get(id=1)
+        badge = Badge.objects.get(id_name="consecutive-days-2")
+        consec_days_earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        self.assertEqual(len(consec_days_earned), 1)
 
 
 class TokenModelTests(TestCase):
