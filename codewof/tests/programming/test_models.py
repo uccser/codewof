@@ -145,7 +145,7 @@ class BadgeModelTests(TestCase):
     def test_award_solve_1_on_correct_attempt(self):
         user = User.objects.get(pk=1)
         question = Question.objects.create(title="Test question", question_text="Print hello world")
-        attempt = Attempt.objects.create(profile=user.profile, question=question, passed_tests=True, user_code='')
+        Attempt.objects.create(profile=user.profile, question=question, passed_tests=True, user_code='')
 
         check_badge_conditions(user)
         badge = Badge.objects.get(id_name="questions-solved-1")
@@ -155,7 +155,7 @@ class BadgeModelTests(TestCase):
     def test_not_award_solve_1_on_incorrect_attempt(self):
         user = User.objects.get(pk=1)
         question = Question.objects.create(title="Test question", question_text="Print hello world")
-        attempt = Attempt.objects.create(profile=user.profile, question=question, passed_tests=False, user_code='')
+        Attempt.objects.create(profile=user.profile, question=question, passed_tests=False, user_code='')
 
         check_badge_conditions(user)
         badge = Badge.objects.get(id_name="questions-solved-1")

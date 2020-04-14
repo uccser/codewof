@@ -1,31 +1,31 @@
-from django.test import Client, TestCase
-from django.contrib.auth.models import User
-from django.contrib.auth import login
-from unittest import skip
-import json
-import time
-import datetime
+# from django.test import TestCase
+# from django.contrib.auth.models import User
+# from django.contrib.auth import login
+# from unittest import skip
+# import json
+# import time
+# import datetime
 
-from programming.models import (
-    Token,
-    Badge,
-    Question,
-    Earned,
-    Attempt,
-    QuestionTypeProgram,
-)
-from codewof.tests.codewof_test_data_generator import (
-    generate_users,
-    generate_badges,
-    generate_questions,
-    generate_attempts,
-)
+# from programming.models import (
+#     Token,
+#     Badge,
+#     Question,
+#     Earned,
+#     Attempt,
+#     QuestionTypeProgram,
+# )
+# from codewof.tests.codewof_test_data_generator import (
+#     generate_users,
+#     generate_badges,
+#     generate_questions,
+#     generate_attempts,
+# )
 # from programming.views import (
 #     CreateView,
 #     QuestionListView,
 #     QuestionView
 # )
-from codewof.tests.conftest import user
+# from codewof.tests.conftest import user
 
 
 # class QuestionListViewTest():
@@ -68,7 +68,7 @@ from codewof.tests.conftest import user
 #         # never modify this object in tests
 #         generate_users(user)
 #         generate_badges()
-        # LoginDay.objects.create(profile=user.profile)
+#         LoginDay.objects.create(profile=user.profile)
 
 
 # class BuggyQuestionViewTest(DjangoTestCase):
@@ -76,7 +76,12 @@ from codewof.tests.conftest import user
 #     def setUpTestData(cls):
 #         # never modify this object in tests
 #         User.objects.create_user(username='john', email='john@uclive.ac.nz', password='onion')
-#         question = Buggy.objects.create(title="test", question_text="Print input", solution="i=input()\nprint(i)", buggy_program="i=input()\nprint(i[1:])")
+#         question = Buggy.objects.create(
+#            title="test",
+#            question_text="Print input",
+#            solution="i=input()\nprint(i)",
+#            buggy_program="i=input()\nprint(i[1:])"
+#        )
 
 #         token_file = open("../../token_file.txt", "r")
 #         sphere_token = token_file.read().strip()
@@ -126,7 +131,12 @@ from codewof.tests.conftest import user
 #         self.get_the_output(user_code, buggy_stdin, exp_print, exp_return, 1, '"correct": [true]')
 
 #     def test_buggy_function(self):
-#         BuggyFunction.objects.create(title="test", question_text="Print input", function_name="hi", solution="def hi(n):\n    return n", buggy_program="def hi(n):\n    return n+1")
+#         BuggyFunction.objects.create(
+#             title="test",
+#             question_text="Print input",
+#             function_name="hi", solution="def hi(n):\n    return n",
+#             buggy_program="def hi(n):\n    return n+1"
+#            )
 
 #         user_code = '3'
 #         buggy_stdin = ''
@@ -136,7 +146,13 @@ from codewof.tests.conftest import user
 #         self.get_the_output(user_code, buggy_stdin, exp_print, exp_return, 2, '"correct": [true]')
 
 #     def test_buggy_function_and_input_output(self):
-#         BuggyFunction.objects.create(title="test", question_text="Print input", function_name="hi", solution="def hi(n):\n    i=input()\n    print(i)\n    return n", buggy_program="def hi(n):\n    i=input()\n    print(i[1:])\n    return n")
+#         BuggyFunction.objects.create(
+#             title="test",
+#             question_text="Print input",
+#             function_name="hi",
+#             solution="def hi(n):\n    i=input()\n    print(i)\n    return n",
+#             buggy_program="def hi(n):\n    i=input()\n    print(i[1:])\n    return n"
+#            )
 
 #         user_code = '3'
 #         buggy_stdin = 'hello'
@@ -242,7 +258,8 @@ from codewof.tests.conftest import user
 #         self.get_the_output(user_code, 2, '"correct": [true]')
 
 #     def test_get_output_program_escaped_newline_not_replaced(self):
-#         question = Programming.objects.create(title="Test 2", question_text="Print hello world on different lines using single print")
+#         question = Programming.objects.create(
+#    title="Test 2", question_text="Print hello world on different lines using single print")
 #         TestCaseProgram.objects.create(question=question, expected_output="hello\nworld\n")
 
 #         user_code = 'print("hello\\nworld")'
@@ -251,29 +268,36 @@ from codewof.tests.conftest import user
 #     # functions
 
 #     def test_get_output_function(self):
-#         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Return given word", function_name="direct_return")
+#         question = ProgrammingFunction.objects.create(
+#   title="Test 2", question_text="Return given word", function_name="direct_return")
 #         TestCaseFunction.objects.create(question=question, function_params="'hello'", expected_return="'hello'")
 
 #         user_code = 'def direct_return(word):\n    return word'
 #         self.get_the_output(user_code, 2, '"correct": [true]')
 
 #     def test_get_output_print_function(self):
-#         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Print given word", function_name="direct_print")
-#         TestCaseFunction.objects.create(question=question, function_params="'hello'", expected_output="hello\n", expected_return="")
+#         question = ProgrammingFunction.objects.create(
+#    title="Test 2", question_text="Print given word", function_name="direct_print")
+#         TestCaseFunction.objects.create(
+#    question=question, function_params="'hello'", expected_output="hello\n", expected_return="")
 
 #         user_code = 'def direct_print(word):\n    print(word)'
 #         self.get_the_output(user_code, 2, '"correct": [true]')
 
 #     def test_get_output_print_and_return_function_multiple_test_cases(self):
-#         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Print and return given word", function_name="print_return")
-#         TestCaseFunction.objects.create(question=question, function_params="'hello'", expected_output="hello\n", expected_return="'hello'")
-#         TestCaseFunction.objects.create(question=question, function_params="'world'", expected_output="world\n", expected_return="'world'")
+#         question = ProgrammingFunction.objects.create(
+#    title="Test 2", question_text="Print and return given word", function_name="print_return")
+#         TestCaseFunction.objects.create(
+#    question=question, function_params="'hello'", expected_output="hello\n", expected_return="'hello'")
+#         TestCaseFunction.objects.create(
+#    question=question, function_params="'world'", expected_output="world\n", expected_return="'world'")
 
 #         user_code = 'def print_return(word):\n    print(word)\n    return word'
 #         self.get_the_output(user_code, 2, '"correct": [true, true]')
 
 #     def test_blank_test_function_multiple_test_cases(self):
-#         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Return the string doubled", function_name="return_double")
+#         question = ProgrammingFunction.objects.create(
+#    title="Test 2", question_text="Return the string doubled", function_name="return_double")
 #         TestCaseFunction.objects.create(question=question, function_params="'hello'", expected_return="'hellohello'")
 #         TestCaseFunction.objects.create(question=question, function_params="''", expected_return="''")
 
@@ -281,15 +305,19 @@ from codewof.tests.conftest import user
 #         self.get_the_output(user_code, 2, '"correct": [true, true]')
 
 #     def test_function_multiple_params(self):
-#         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Add the strings", function_name="add_words")
-#         TestCaseFunction.objects.create(question=question, function_params="'good','night'", expected_return="'goodnight'")
+#         question = ProgrammingFunction.objects.create(
+#    title="Test 2", question_text="Add the strings", function_name="add_words")
+#         TestCaseFunction.objects.create(
+#    question=question, function_params="'good','night'", expected_return="'goodnight'")
 
 #         user_code = 'def add_words(word1, word2):\n    return word1 + word2'
 #         self.get_the_output(user_code, 2, '"correct": [true]')
 
 #     def test_function_false_for_incorrect_answer(self):
-#         question = ProgrammingFunction.objects.create(title="Test 2", question_text="Add the strings", function_name="add_words")
-#         TestCaseFunction.objects.create(question=question, function_params="'good','night'", expected_return="'goodnight'")
+#         question = ProgrammingFunction.objects.create(
+#    title="Test 2", question_text="Add the strings", function_name="add_words")
+#         TestCaseFunction.objects.create(
+#    question=question, function_params="'good','night'", expected_return="'goodnight'")
 
 #         user_code = 'def add_words(word1, word2):\n    return word1'
 #         self.get_the_output(user_code, 2, '"correct": [false]')

@@ -1,8 +1,7 @@
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.contrib.auth import get_user_model
 
 from programming.models import (
-    Profile,
     Question,
     Attempt,
     Badge,
@@ -14,7 +13,17 @@ from codewof.tests.codewof_test_data_generator import (
     generate_questions,
     generate_attempts,
 )
-from programming.codewof_utils import *
+from programming.codewof_utils import (
+    add_points,
+    backdate_points_and_badges,
+    calculate_badge_points,
+    check_badge_conditions,
+    get_days_consecutively_answered,
+    get_questions_answered_in_past_month,
+    POINTS_BADGE,
+    POINTS_SOLUTION,
+    POINTS_BONUS,
+)
 from codewof.tests.conftest import user
 
 User = get_user_model()
@@ -130,7 +139,7 @@ class TestCodewofUtils(TestCase):
     def test_backdate_points_and_badges_badge_earnt_no_longer_meets_requirements(self):
         user = User.objects.get(id=2)
         badge = Badge.objects.get(id_name='attempts-made-5')
-        earned = Earned.objects.create(profile=user.profile, badge=badge)
+        Earned.objects.create(profile=user.profile, badge=badge)
         backdate_points_and_badges()
         self.assertTrue(
             User.objects.get(id=2).profile.earned_badges.filter(id_name='attempts-made-5').exists()
