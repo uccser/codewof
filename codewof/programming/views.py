@@ -21,7 +21,6 @@ from programming.models import (
     TestCase,
     Attempt,
     TestCaseAttempt,
-    Badge,
 )
 from research.models import StudyRegistration
 

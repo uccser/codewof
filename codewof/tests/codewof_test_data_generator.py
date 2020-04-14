@@ -4,8 +4,15 @@ from django.contrib.auth import get_user_model
 from django.core import management
 import datetime
 
-from programming.models import *
-from programming.codewof_utils import check_badge_conditions
+from programming.models import (
+    Question,
+    Attempt,
+    Badge,
+    QuestionTypeProgram,
+    QuestionTypeFunction,
+    QuestionTypeParsons,
+    QuestionTypeDebugging,
+)
 
 from users.models import UserType
 
@@ -14,7 +21,6 @@ User = get_user_model()
 
 def generate_questions():
     """Generate questions for use in codeWOF tests. Questions contain minimum information and complexity."""
-
     Question.objects.create(slug="question-1", title='Test', question_text='Hello')
 
     QuestionTypeProgram.objects.create(
@@ -46,6 +52,7 @@ def generate_questions():
         solution="question_answer",
         initial_code=''
     )
+
 
 def generate_users(user):
     """Generate users for codeWOF tests. Creates two basic users for unit tests."""
