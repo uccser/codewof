@@ -118,3 +118,20 @@ class TestCodewofUtils(TestCase):
         user.profile.points = 1000
         backdate_points_and_badges()
         self.assertEqual(User.objects.get(id=1).profile.points, 62)
+
+    def test_backdate_points_and_badges_run_twice(self):
+        generate_attempts()
+        user = User.objects.get(id=1)
+        user.profile.points = 1000
+        backdate_points_and_badges()
+        backdate_points_and_badges()
+        self.assertEqual(User.objects.get(id=1).profile.points, 62)
+
+    def test_backdate_points_and_badges_badge_earnt_no_longer_meets_requirements(self):
+        user = User.objects.get(id=2)
+        badge = Badge.objects.get(id_name='attempts-made-5')
+        earned = Earned.objects.create(profile=user.profile, badge=badge)
+        backdate_points_and_badges()
+        self.assertTrue(
+            User.objects.get(id=2).profile.earned_badges.filter(id_name='attempts-made-5').exists()
+        )
