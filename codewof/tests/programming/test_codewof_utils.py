@@ -112,6 +112,22 @@ class TestCodewofUtils(TestCase):
         num_solved = get_questions_answered_in_past_month(user)
         self.assertEqual(num_solved, 1)
 
+    def test_backdate_points_correct_second_attempt(self):
+        user = User.objects.get(id=2)
+        question = Question.objects.get(slug='question-1')
+        Attempt.objects.create(profile=user.profile, question=question, passed_tests=False)
+        Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
+        profile = backdate_points(user.profile)
+        self.assertEqual(profile.points, 10)
+
+    def test_backdate_points_correct_multiple_attempts(self):
+        user = User.objects.get(id=2)
+        question = Question.objects.get(slug='question-1')
+        Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
+        Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
+        profile = backdate_points(user.profile)
+        self.assertEqual(profile.points, 12)
+
     def test_backdate_points_and_badges_too_many_points(self):
         generate_attempts()
         user = User.objects.get(id=1)
@@ -126,6 +142,12 @@ class TestCodewofUtils(TestCase):
         backdate_points_and_badges()
         backdate_points_and_badges()
         self.assertEqual(User.objects.get(id=1).profile.points, 62)
+        earned_badges = User.objects.get(id=1).profile.earned_badges
+        self.assertEqual(len(earned_badges.filter(id_name='create-account')), 1)
+        self.assertEqual(len(earned_badges.filter(id_name='attempts-made-1')), 1)
+        self.assertEqual(len(earned_badges.filter(id_name='attempts-made-5')), 1)
+        self.assertEqual(len(earned_badges.filter(id_name='questions-solved-1')), 1)
+        self.assertEqual(len(earned_badges.filter(id_name='consecutive-days-2')), 1)
 
     def test_backdate_points_and_badges_badge_earnt_no_longer_meets_requirements(self):
         user = User.objects.get(id=2)
