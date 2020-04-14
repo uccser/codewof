@@ -116,7 +116,5 @@ class TestCodewofUtils(TestCase):
         generate_attempts()
         user = User.objects.get(id=1)
         user.profile.points = 1000
-        user.profile.full_clean()
-        user.profile.save()
         backdate_points_and_badges()
-        self.assertEqual(user.profile.points, 52)
+        self.assertEqual(User.objects.get(id=1).profile.points, 62)
