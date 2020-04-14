@@ -91,17 +91,14 @@ class TestCodewofUtils(TestCase):
     def test_check_badge_conditions(self):
         generate_attempts()
         user = User.objects.get(id=1)
-        new_badge_names = check_badge_conditions(user)
-        self.assertEqual(
-            new_badge_names,
-            '- {}\n- {}\n- {}\n- {}\n- {}\n'.format(
-                'Account created',
-                'Solved one question',
-                'Five attempts made',
-                'One attempt made',
-                'Two consecutive days'
-            )
-        )
+        self.assertEqual(user.profile.earned_badges.count(), 0)
+        check_badge_conditions(user)
+        earned_badges = user.profile.earned_badges
+        self.assertTrue(earned_badges.filter(id_name='create-account').exists())
+        self.assertTrue(earned_badges.filter(id_name='attempts-made-1').exists())
+        self.assertTrue(earned_badges.filter(id_name='attempts-made-5').exists())
+        self.assertTrue(earned_badges.filter(id_name='questions-solved-1').exists())
+        self.assertTrue(earned_badges.filter(id_name='consecutive-days-2').exists())
 
     def test_get_days_consecutively_answered(self):
         generate_attempts()
