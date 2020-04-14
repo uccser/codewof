@@ -111,3 +111,12 @@ class TestCodewofUtils(TestCase):
         user = User.objects.get(id=1)
         num_solved = get_questions_answered_in_past_month(user)
         self.assertEqual(num_solved, 1)
+
+    def test_backdate_points_and_badges_too_many_points(self):
+        generate_attempts()
+        user = User.objects.get(id=1)
+        user.profile.points = 1000
+        user.profile.full_clean()
+        user.profile.save()
+        backdate_points_and_badges()
+        self.assertEqual(user.profile.points, 52)
