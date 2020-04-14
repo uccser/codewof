@@ -12,7 +12,7 @@ Scenario: User solves a question on first attempt
   And their profile points are 0
   And they have not attempted the "Print CodeWOF" question
   When they solve the "Print CodeWOF" question
-  Then the user's points equal 11
+  Then the user's points equal 12
 
 #Test for question that has previously been attempted
 Scenario: User solves an attempted question
