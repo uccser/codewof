@@ -15,6 +15,7 @@ from codewof.tests.codewof_test_data_generator import (
 )
 from programming.codewof_utils import (
     add_points,
+    backdate_points,
     backdate_points_and_badges,
     calculate_badge_points,
     check_badge_conditions,
