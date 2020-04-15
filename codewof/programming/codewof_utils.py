@@ -209,7 +209,7 @@ def check_badge_conditions(user):
 
 
 def calculate_badge_points(badges):
-    """Returns the number of points earned by the user for new badges, calculated by multiplying the badge tier by 10."""
+    """Return the number of points earned by the user for new badges."""
     points = 0
     for badge in badges:
         points += badge.badge_tier * POINTS_BADGE

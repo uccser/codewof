@@ -72,28 +72,25 @@ class TestCodewofUtils(TestCase):
         self.assertEqual(points_after - points_before, POINTS_SOLUTION)
 
     def test_calculate_badge_points_tier_0(self):
-        user = User.objects.get(id=1)
         badge = Badge.objects.get(id_name="create-account")
         badges = [badge]
 
         points = calculate_badge_points(badges)
-        self.assertEqual(points, 0)
+        self.assertEqual(points, POINTS_BADGE * 0)
 
     def test_calculate_badge_points_tier_1(self):
-        user = User.objects.get(id=1)
         badge = Badge.objects.get(id_name="questions-solved-1")
         badges = [badge]
 
         points = calculate_badge_points(badges)
-        self.assertEqual(points, 10)
+        self.assertEqual(points, POINTS_BADGE * 1)
 
     def test_calculate_badge_points_tier_2(self):
-        user = User.objects.get(id=1)
         badge = Badge.objects.get(id_name="attempts-made-5")
         badges = [badge]
 
         points = calculate_badge_points(badges)
-        self.assertEqual(points, 20)
+        self.assertEqual(points, POINTS_BADGE * 2)
 
     def test_check_badge_conditions(self):
         generate_attempts()
