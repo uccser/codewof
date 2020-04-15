@@ -16,7 +16,6 @@ router.register(r'api-study', research_views.SingularStudyAPIViewSet)
 
 app_name = 'programming'
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='home'),
     path('', include(router.urls)),
     path('questions/', views.QuestionListView.as_view(), name='question_list'),
     path('questions/create/', views.CreateView.as_view(), name='create'),

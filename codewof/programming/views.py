@@ -24,19 +24,9 @@ from programming.models import (
 )
 from research.models import StudyRegistration
 
+from programming.codewof_utils import add_points, check_badge_conditions
+
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
-
-
-class IndexView(generic.base.TemplateView):
-    """Homepage for programming."""
-
-    template_name = 'programming/index.html'
-
-    def get_context_data(self, **kwargs):
-        """Get additional context data for template."""
-        context = super().get_context_data(**kwargs)
-        context['questions'] = Question.objects.select_subclasses()
-        return context
 
 
 class QuestionListView(LoginRequiredMixin, generic.ListView):
@@ -184,6 +174,13 @@ def save_question_attempt(request):
                         passed=test_case_data['passed'],
                     )
                 result['success'] = True
+                points_before = profile.points
+                points = add_points(question, profile, attempt)
+                badges = check_badge_conditions(profile.user)
+                points_after = profile.points
+                result['curr_points'] = points
+                result['point_diff'] = points_after - points_before
+                result['badges'] = badges
             else:
                 result['success'] = False
                 result['message'] = 'Attempt not saved, same as previous attempt.'
@@ -216,6 +213,26 @@ class CreateView(generic.base.TemplateView):
             question_types.append(data)
         context['question_types'] = question_types
         return context
+
+
+# class ProfileView(LoginRequiredMixin, generic.DetailView):
+#     """Displays a user's profile."""
+
+#     login_url = '/login/'
+#     redirect_field_name = 'next'
+#     template_name = 'users/user_detail.html'
+#     model = Profile
+
+#     def get_context_data(self, **kwargs):
+#         """Get additional context data for template."""
+#         context = super().get_context_data(**kwargs)
+
+#         user = self.request.user
+#         context['goal'] = user.profile.goal
+#         context['all_badges'] = Badge.objects.all()
+#         check_badge_conditions(user)
+#         # context['past_5_weeks'] = get_past_5_weeks(user)
+#         return context
 
 
 class QuestionAPIViewSet(viewsets.ReadOnlyModelViewSet):

@@ -50,7 +50,7 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        print('Admin created.')
+        print('Admin created.\n')
 
         # Create user account
         user = User.objects.create_user(
@@ -67,18 +67,25 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
+
         UserFactory.create_batch(size=100)
-        print('Users created.')
+        print('Users created.\n')
 
         # Codewof
         management.call_command('load_questions')
-        print('Programming questions loaded.')
+        print('Programming questions loaded.\n')
+
+        management.call_command('load_badges')
+        print('Achievement badges loaded.\n')
 
         # Research
         StudyFactory.create_batch(size=5)
         StudyGroupFactory.create_batch(size=15)
-        print('Research studies loaded.')
+        print('Research studies loaded.\n')
 
         # Attempts
         AttemptFactory.create_batch(size=50)
-        print('Attempts loaded.')
+        print('Attempts loaded.\n')
+
+        # Award points and badges
+        management.call_command('backdate_points_and_badges')

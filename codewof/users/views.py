@@ -13,12 +13,31 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 from users.serializers import UserSerializer
 from programming import settings
-from programming.models import Question, Attempt
 from users.forms import UserChangeForm
 from research.models import StudyRegistration
 
+
+from programming.models import (
+    Question,
+    Attempt,
+    Badge
+)
+
+from programming.codewof_utils import check_badge_conditions, get_questions_answered_in_past_month
+
 User = get_user_model()
+
 logger = logging.getLogger(__name__)
+del logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'incremental': True,
+    'root': {
+        'level': 'DEBUG',
+    },
+}
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -34,6 +53,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         """Get additional context data for template."""
+        user = self.request.user
         context = super().get_context_data(**kwargs)
         now = timezone.now()
         today = now.date()
@@ -58,7 +78,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         log_message = 'Questions for user {} on {} ({}):\n'.format(self.request.user, now, today)
         for i, question in enumerate(questions):
             log_message += '{}: {}\n'.format(i, question)
-        logging.info(log_message)
+        logger.info(log_message)
 
         # TODO: Also filter by questions added before today
         questions = questions.filter(
@@ -71,7 +91,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         log_message = 'Filtered questions for user {}:\n'.format(self.request.user)
         for i, question in enumerate(questions):
             log_message += '{}: {}\n'.format(i, question)
-        logging.info(log_message)
+        logger.info(log_message)
 
         # Randomly pick 3 based off seed of todays date
         if len(questions) > 0:
@@ -94,7 +114,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         log_message = 'Chosen questions for user {}:\n'.format(self.request.user)
         for i, question in enumerate(todays_questions):
             log_message += '{}: {}\n'.format(i, question)
-        logging.info(log_message)
+        logger.info(log_message)
 
         context['questions_to_do'] = todays_questions
         context['all_complete'] = all_complete
@@ -111,6 +131,13 @@ class UserDetailView(LoginRequiredMixin, DetailView):
                 study_group__in=study.groups.all(),
             ).exists()
         context['studies'] = studies
+        context['codewof_profile'] = self.object.profile
+        context['goal'] = user.profile.goal
+        context['all_badges'] = Badge.objects.all()
+        questions_answered = get_questions_answered_in_past_month(user)
+        context['num_questions_answered'] = questions_answered
+        logger.warning(questions_answered)
+        check_badge_conditions(user)
         return context
 
 
@@ -137,6 +164,27 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self):
         """URL to redirect to."""
         return reverse("users:dashboard")
+
+
+class UserAchievementsView(LoginRequiredMixin, DetailView):
+    """View for a user's achievements."""
+
+    model = User
+    context_object_name = 'user'
+    template_name = 'users/achievements.html'
+
+    def get_object(self):
+        """Get object for template."""
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        """Get additional context data for template."""
+        user = self.request.user
+        context = super().get_context_data(**kwargs)
+        context['badges_not_earned'] = Badge.objects.all().difference(user.profile.earned_badges.all())
+        context['num_badges_earned'] = user.profile.earned_badges.all().count()
+        context['num_badges'] = Badge.objects.all().count()
+        return context
 
 
 class UserAPIViewSet(viewsets.ReadOnlyModelViewSet):

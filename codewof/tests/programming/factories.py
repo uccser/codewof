@@ -8,6 +8,7 @@ from factory import (
     post_generation,
 )
 from programming.models import Question, Profile, Attempt
+from django.utils import timezone
 
 # shuffle the quesitons so it doesn't appear as 1, 2, 3, 4...
 question_list = list(Question.objects.all())
@@ -18,7 +19,7 @@ class AttemptFactory(DjangoModelFactory):
     """Factory for generating attempts."""
 
     profile = Iterator(Profile.objects.all())
-    datetime = Faker('iso8601')
+    datetime = Faker('date_time', tzinfo=timezone.get_current_timezone())
     question = Iterator(question_list)
     user_code = Faker('paragraph', nb_sentences=5)
 
