@@ -46,8 +46,6 @@ def add_points(question, profile, attempt):
     """
     num_attempts = Attempt.objects.filter(question=question, profile=profile)
     is_first_correct = len(Attempt.objects.filter(question=question, profile=profile, passed_tests=True)) == 1
-    logger.warning(num_attempts)
-    logger.warning(is_first_correct)
     points_to_add = 0
 
     # check if first passed
