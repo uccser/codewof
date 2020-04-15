@@ -44,14 +44,14 @@ def add_points(question, profile, attempt):
 
     Subsequent correct answers should not award any points.
     """
-    num_attempts = Attempt.objects.filter(question=question, profile=profile)
-    is_first_correct = len(Attempt.objects.filter(question=question, profile=profile, passed_tests=True)) == 1
+    attempts = Attempt.objects.filter(question=question, profile=profile)
+    is_first_correct = len(attempts.filter(passed_tests=True)) == 1
     points_to_add = 0
 
     # check if first passed
     if attempt.passed_tests and is_first_correct:
         points_to_add += POINTS_SOLUTION
-        if len(num_attempts) == 1:
+        if len(attempts) == 1:
             # correct first try
             points_to_add += POINTS_BONUS
 
@@ -130,17 +130,21 @@ def check_badge_conditions(user):
 
     A badge will not be removed if the user had earned it before but now doesn't meet the conditions
     """
+    user_attempts = Attempt.objects.filter(profile=user.profile)
+    badge_objects = Badge.objects.all()
     earned_badges = user.profile.earned_badges.all()
     new_badge_names = ""
     new_badge_objects = []
+
     # account creation badge
     try:
-        creation_badge = Badge.objects.get(id_name="create-account")
+        creation_badge = badge_objects.get(id_name="create-account")
         if creation_badge not in earned_badges:
             # create a new account creation
-            new_achievement = Earned(profile=user.profile, badge=creation_badge)
-            new_achievement.full_clean()
-            new_achievement.save()
+            Earned.objects.create(
+                profile=user.profile,
+                badge=creation_badge
+            )
             new_badge_names = new_badge_names + "- " + creation_badge.display_name + "\n"
             new_badge_objects.append(creation_badge)
     except Badge.DoesNotExist:
@@ -149,15 +153,16 @@ def check_badge_conditions(user):
 
     # check questions solved badges
     try:
-        question_badges = Badge.objects.filter(id_name__contains="questions-solved")
-        solved = Attempt.objects.filter(profile=user.profile, passed_tests=True)
+        question_badges = badge_objects.filter(id_name__contains="questions-solved")
+        solved = user_attempts.filter(passed_tests=True)
         for question_badge in question_badges:
             if question_badge not in earned_badges:
                 num_questions = int(question_badge.id_name.split("-")[2])
                 if len(solved) >= num_questions:
-                    new_achievement = Earned(profile=user.profile, badge=question_badge)
-                    new_achievement.full_clean()
-                    new_achievement.save()
+                    Earned.objects.create(
+                        profile=user.profile,
+                        badge=question_badge
+                    )
                     new_badge_names = new_badge_names + "- " + question_badge.display_name + "\n"
                     new_badge_objects.append(question_badge)
     except Badge.DoesNotExist:
@@ -166,15 +171,16 @@ def check_badge_conditions(user):
 
     # checked questions attempted badges
     try:
-        attempt_badges = Badge.objects.filter(id_name__contains="attempts-made")
-        attempted = Attempt.objects.filter(profile=user.profile)
+        attempt_badges = badge_objects.filter(id_name__contains="attempts-made")
+        attempted = user_attempts
         for attempt_badge in attempt_badges:
             if attempt_badge not in earned_badges:
                 num_questions = int(attempt_badge.id_name.split("-")[2])
                 if len(attempted) >= num_questions:
-                    new_achievement = Earned(profile=user.profile, badge=attempt_badge)
-                    new_achievement.full_clean()
-                    new_achievement.save()
+                    Earned.objects.create(
+                        profile=user.profile,
+                        badge=attempt_badge
+                    )
                     new_badge_names = new_badge_names + "- " + attempt_badge.display_name + "\n"
                     new_badge_objects.append(attempt_badge)
     except Badge.DoesNotExist:
@@ -183,28 +189,31 @@ def check_badge_conditions(user):
 
     # consecutive days logged in badges
     num_consec_days = get_days_consecutively_answered(user)
-    consec_badges = Badge.objects.filter(id_name__contains="consecutive-days")
+    consec_badges = badge_objects.filter(id_name__contains="consecutive-days")
     for consec_badge in consec_badges:
         if consec_badge not in earned_badges:
             n_days = int(consec_badge.id_name.split("-")[2])
             if n_days <= num_consec_days:
-                new_achievement = Earned(profile=user.profile, badge=consec_badge)
-                new_achievement.full_clean()
-                new_achievement.save()
+                Earned.objects.create(
+                    profile=user.profile,
+                    badge=consec_badge
+                )
                 new_badge_names = new_badge_names + "- " + consec_badge.display_name + "\n"
                 new_badge_objects.append(consec_badge)
 
-    calculate_badge_points(user, new_badge_objects)
+    new_points = calculate_badge_points(new_badge_objects)
+    user.profile.points += new_points
+    user.full_clean()
+    user.save()
     return new_badge_names
 
 
-def calculate_badge_points(user, badges):
-    """Calculate points earned by the user for new badges earned by multiplying the badge tier by 10."""
+def calculate_badge_points(badges):
+    """Returns the number of points earned by the user for new badges, calculated by multiplying the badge tier by 10."""
+    points = 0
     for badge in badges:
-        points = badge.badge_tier * POINTS_BADGE
-        user.profile.points += points
-    user.full_clean()
-    user.save()
+        points += badge.badge_tier * POINTS_BADGE
+    return points
 
 
 def backdate_points_and_badges():
@@ -227,8 +236,8 @@ def backdate_points(profile):
     questions = Question.objects.all()
     profile.points = 0
     for question in questions:
-        has_passed = len(Attempt.objects.filter(profile=profile, question=question, passed_tests=True)) > 0
         user_attempts = Attempt.objects.filter(profile=profile, question=question)
+        has_passed = len(user_attempts.filter(passed_tests=True)) > 0
         first_passed = False
         if len(user_attempts) > 0:
             first_passed = user_attempts[0].passed_tests
