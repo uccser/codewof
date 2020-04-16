@@ -88,4 +88,4 @@ class Command(management.base.BaseCommand):
         print('Attempts loaded.\n')
 
         # Award points and badges
-        #management.call_command('backdate_points_and_badges') TEMPORARY
+        # management.call_command('backdate_points_and_badges') TEMPORARY
