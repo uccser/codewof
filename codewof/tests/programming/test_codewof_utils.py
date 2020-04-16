@@ -96,7 +96,7 @@ class TestCodewofUtils(TestCase):
         generate_attempts()
         user = User.objects.get(id=1)
         self.assertEqual(user.profile.earned_badges.count(), 0)
-        check_badge_conditions(user)
+        check_badge_conditions(user.profile)
         earned_badges = user.profile.earned_badges
         self.assertTrue(earned_badges.filter(id_name='create-account').exists())
         self.assertTrue(earned_badges.filter(id_name='attempts-made-1').exists())
@@ -107,13 +107,13 @@ class TestCodewofUtils(TestCase):
     def test_get_days_consecutively_answered(self):
         generate_attempts()
         user = User.objects.get(id=1)
-        streak = get_days_consecutively_answered(user)
+        streak = get_days_consecutively_answered(user.profile)
         self.assertEqual(streak, 2)
 
     def test_get_questions_answered_in_past_month(self):
         generate_attempts()
         user = User.objects.get(id=1)
-        num_solved = get_questions_answered_in_past_month(user)
+        num_solved = get_questions_answered_in_past_month(user.profile)
         self.assertEqual(num_solved, 1)
 
     def test_backdate_points_correct_second_attempt(self):

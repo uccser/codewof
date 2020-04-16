@@ -37,7 +37,7 @@ POINTS_BONUS = 2
 
 def add_points(question, profile, attempt):
     """
-    Add appropriate number of points (if any) to user's profile after a question is answered.
+    Add appropriate number of points (if any) to user profile after a question is answered.
 
     Adds points to a user's profile for when the user answers a question correctly for the first time. If the user
     answers the question correctly the first time they answer, the user gains bonus points.
@@ -76,15 +76,15 @@ def save_goal_choice(request):
     return JsonResponse({})
 
 
-def get_days_consecutively_answered(user, user_attempts=None):
+def get_days_consecutively_answered(profile, user_attempts=None):
     """
     Get the number of consecutive days with questions attempted.
 
-    Gets all datetimes of attempts for the given user's profile, and checks for the longest continuous "streak" of
+    Gets all datetimes of attempts for the given user profile, and checks for the longest continuous "streak" of
     days where attempts were made. Returns an integer of the longest attempt "streak".
     """
     if user_attempts is None:
-        user_attempts = Attempt.objects.filter(profile=user.profile)
+        user_attempts = Attempt.objects.filter(profile=profile)
 
     # get datetimes from attempts in date form)
     attempts = user_attempts.datetimes('datetime', 'day', 'DESC')
@@ -115,10 +115,10 @@ def get_days_consecutively_answered(user, user_attempts=None):
     return highest_streak
 
 
-def get_questions_answered_in_past_month(user, user_attempts=None):
+def get_questions_answered_in_past_month(profile, user_attempts=None):
     """Get the number questions successfully answered in the past month."""
     if user_attempts is None:
-        user_attempts = Attempt.objects.filter(profile=user.profile)
+        user_attempts = Attempt.objects.filter(profile=profile)
 
     today = datetime.datetime.now().replace(tzinfo=None) + relativedelta(days=1)
     last_month = today - relativedelta(months=1)
@@ -126,9 +126,9 @@ def get_questions_answered_in_past_month(user, user_attempts=None):
     return len(solved)
 
 
-def check_badge_conditions(user, user_attempts=None):
+def check_badge_conditions(profile, user_attempts=None):
     """
-    Check if the user has earned new badges for their profile.
+    Check if the user profile has earned new badges for their profile.
 
     Checks if the user has received each available badge. If not, check if the user has earned these badges. Badges
     available to be checked for are profile creation, number of attempts made, number of questions answered, and
@@ -137,10 +137,10 @@ def check_badge_conditions(user, user_attempts=None):
     A badge will not be removed if the user had earned it before but now doesn't meet the conditions
     """
     if user_attempts is None:
-        user_attempts = Attempt.objects.filter(profile=user.profile)
+        user_attempts = Attempt.objects.filter(profile=profile)
 
     badge_objects = Badge.objects.all()
-    earned_badges = user.profile.earned_badges.all()
+    earned_badges = profile.earned_badges.all()
     new_badge_names = ""
     new_badge_objects = []
 
@@ -150,7 +150,7 @@ def check_badge_conditions(user, user_attempts=None):
         if creation_badge not in earned_badges:
             # create a new account creation
             Earned.objects.create(
-                profile=user.profile,
+                profile=profile,
                 badge=creation_badge
             )
             new_badge_names = new_badge_names + "- " + creation_badge.display_name + "\n"
@@ -168,7 +168,7 @@ def check_badge_conditions(user, user_attempts=None):
                 num_questions = int(question_badge.id_name.split("-")[2])
                 if len(solved) >= num_questions:
                     Earned.objects.create(
-                        profile=user.profile,
+                        profile=profile,
                         badge=question_badge
                     )
                     new_badge_names = new_badge_names + "- " + question_badge.display_name + "\n"
@@ -186,7 +186,7 @@ def check_badge_conditions(user, user_attempts=None):
                 num_questions = int(attempt_badge.id_name.split("-")[2])
                 if len(attempted) >= num_questions:
                     Earned.objects.create(
-                        profile=user.profile,
+                        profile=profile,
                         badge=attempt_badge
                     )
                     new_badge_names = new_badge_names + "- " + attempt_badge.display_name + "\n"
@@ -196,23 +196,23 @@ def check_badge_conditions(user, user_attempts=None):
         pass
 
     # consecutive days logged in badges
-    num_consec_days = get_days_consecutively_answered(user, user_attempts=user_attempts)
+    num_consec_days = get_days_consecutively_answered(profile, user_attempts=user_attempts)
     consec_badges = badge_objects.filter(id_name__contains="consecutive-days")
     for consec_badge in consec_badges:
         if consec_badge not in earned_badges:
             n_days = int(consec_badge.id_name.split("-")[2])
             if n_days <= num_consec_days:
                 Earned.objects.create(
-                    profile=user.profile,
+                    profile=profile,
                     badge=consec_badge
                 )
                 new_badge_names = new_badge_names + "- " + consec_badge.display_name + "\n"
                 new_badge_objects.append(consec_badge)
 
     new_points = calculate_badge_points(new_badge_objects)
-    user.profile.points += new_points
-    user.full_clean()
-    user.save()
+    profile.points += new_points
+    profile.full_clean()
+    profile.save()
     return new_badge_names
 
 
@@ -228,7 +228,7 @@ def backdate_points_and_badges():
     """Perform backdate of all points and badges for each profile in the system."""
     profiles = Profile.objects.all()
     num_profiles = len(profiles)
-    all_attempts = attempt.objects.all()
+    all_attempts = Attempt.objects.all()
     for i in range(num_profiles):
         # The commented out part below seems to break travis somehow
         print("Backdating user: " + str(i + 1) + "/" + str(num_profiles))  # , end="\r")
@@ -266,5 +266,5 @@ def backdate_points(profile, user_attempts=None):
 
 def backdate_badges(profile, user_attempts=None):
     """Re-check the profile for badges earned."""
-    check_badge_conditions(profile.user, user_attempts=user_attempts)
+    check_badge_conditions(profile, user_attempts=user_attempts)
     return profile
