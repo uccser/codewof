@@ -11,4 +11,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Automatically called when the backdate command is given."""
+        print("Backdating points and badges\n")
         backdate_points_and_badges()
