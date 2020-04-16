@@ -134,10 +134,10 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context['codewof_profile'] = self.object.profile
         context['goal'] = user.profile.goal
         context['all_badges'] = Badge.objects.all()
-        questions_answered = get_questions_answered_in_past_month(user)
+        questions_answered = get_questions_answered_in_past_month(user.profile)
         context['num_questions_answered'] = questions_answered
         logger.warning(questions_answered)
-        check_badge_conditions(user)
+        check_badge_conditions(user.profile)
         return context
 
 

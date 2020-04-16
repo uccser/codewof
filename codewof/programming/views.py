@@ -176,7 +176,7 @@ def save_question_attempt(request):
                 result['success'] = True
                 points_before = profile.points
                 points = add_points(question, profile, attempt)
-                badges = check_badge_conditions(profile.user)
+                badges = check_badge_conditions(profile)
                 points_after = profile.points
                 result['curr_points'] = points
                 result['point_diff'] = points_after - points_before
@@ -230,7 +230,7 @@ class CreateView(generic.base.TemplateView):
 #         user = self.request.user
 #         context['goal'] = user.profile.goal
 #         context['all_badges'] = Badge.objects.all()
-#         check_badge_conditions(user)
+#         check_badge_conditions(user.profile)
 #         # context['past_5_weeks'] = get_past_5_weeks(user)
 #         return context
 

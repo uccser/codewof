@@ -41,7 +41,7 @@ class ProfileModelTests(TestCase):
 
     def test_profile_starts_with_create_account_badge(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user)
+        check_badge_conditions(user.profile)
         badge = Badge.objects.get(id_name="create-account")
         earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(earned), 1)
@@ -123,7 +123,7 @@ class BadgeModelTests(TestCase):
 
     def test_new_user_awards_create_account(self):
         user = User.objects.get(pk=1)
-        check_badge_conditions(user)
+        check_badge_conditions(user.profile)
         badge = Badge.objects.get(id_name="create-account")
         earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(earned), 1)
@@ -132,7 +132,7 @@ class BadgeModelTests(TestCase):
     #     user = User.objects.get(pk=1)
     #     badge = Badge.objects.get(id_name="create-account")
     #     Earned.objects.create(profile=user.profile, badge=badge)
-    #     check_badge_conditions(user)
+    #     check_badge_conditions(user.profile)
 
     #     earned = Earned.objects.filter(profile=user.profile, badge=badge)
     #     self.assertEqual(len(earned), 1)
@@ -140,14 +140,14 @@ class BadgeModelTests(TestCase):
     # def test_adding_unknown_badge_doesnt_break(self):
     #     Badge.objects.create(id_name="notrealbadge", display_name="test", description="test")
     #     user = User.objects.get(pk=1)
-    #     check_badge_conditions(user)
+    #     check_badge_conditions(user.profile)
 
     def test_award_solve_1_on_correct_attempt(self):
         user = User.objects.get(pk=1)
         question = Question.objects.create(title="Test question", question_text="Print hello world")
         Attempt.objects.create(profile=user.profile, question=question, passed_tests=True, user_code='')
 
-        check_badge_conditions(user)
+        check_badge_conditions(user.profile)
         badge = Badge.objects.get(id_name="questions-solved-1")
         earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(earned), 1)
@@ -157,7 +157,7 @@ class BadgeModelTests(TestCase):
         question = Question.objects.create(title="Test question", question_text="Print hello world")
         Attempt.objects.create(profile=user.profile, question=question, passed_tests=False, user_code='')
 
-        check_badge_conditions(user)
+        check_badge_conditions(user.profile)
         badge = Badge.objects.get(id_name="questions-solved-1")
         earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(earned), 0)
@@ -168,7 +168,7 @@ class BadgeModelTests(TestCase):
 #         yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
 #         LoginDay.objects.select_for_update().filter(pk=2).update(day=yesterday.date())
 
-#         check_badge_conditions(user)
+#         check_badge_conditions(user.profile)
 #         badge = Badge.objects.get(id_name="login-3")
 #         earned = Earned.objects.filter(profile=user.profile, badge=badge)
 #         self.assertEquals(len(earned), 0)
@@ -183,7 +183,7 @@ class BadgeModelTests(TestCase):
 #         day_before_yesterday = datetime.datetime.now() - datetime.timedelta(days=2)
 #         LoginDay.objects.select_for_update().filter(pk=3).update(day=day_before_yesterday.date())
 
-#         check_badge_conditions(user)
+#         check_badge_conditions(user.profile)
 #         badge = Badge.objects.get(id_name="login-3")
 #         earned = Earned.objects.filter(profile=user.profile, badge=badge)
 #         self.assertEquals(len(earned), 1)
@@ -202,7 +202,7 @@ class BadgeModelTests(TestCase):
 #         last_week1 = datetime.datetime.now() - datetime.timedelta(days=3, weeks=1)
 #         LoginDay.objects.select_for_update().filter(pk=4).update(day=last_week1.date())
 
-#         check_badge_conditions(user)
+#         check_badge_conditions(user.profile)
 #         badge = Badge.objects.get(id_name="login-3")
 #         earned = Earned.objects.filter(profile=user.profile, badge=badge)
 #         self.assertEquals(len(earned), 1)
@@ -229,7 +229,7 @@ class BadgeModelTests(TestCase):
 #         last_week5 = datetime.datetime.now() - datetime.timedelta(days=5, weeks=1)
 #         LoginDay.objects.select_for_update().filter(pk=6).update(day=last_week5.date())
 
-#         check_badge_conditions(user)
+#         check_badge_conditions(user.profile)
 #         badge = Badge.objects.get(id_name="login-3")
 #         earned = Earned.objects.filter(profile=user.profile, badge=badge)
 #         self.assertEquals(len(earned), 1)
@@ -244,7 +244,7 @@ class BadgeModelTests(TestCase):
 #         last_week2 = datetime.datetime.now() - datetime.timedelta(days=2, weeks=1)
 #         LoginDay.objects.select_for_update().filter(pk=3).update(day=last_week2.date())
 
-#         check_badge_conditions(user)
+#         check_badge_conditions(user.profile)
 #         badge = Badge.objects.get(id_name="login-3")
 #         earned = Earned.objects.filter(profile=user.profile, badge=badge)
 #         self.assertEquals(len(earned), 0)
@@ -261,35 +261,35 @@ class EarnedModelTests(TestCase):
 
     def test_questions_solved_1_earnt(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user)
+        check_badge_conditions(user.profile)
         badge = Badge.objects.get(id_name="questions-solved-1")
         qs1_earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(qs1_earned), 1)
 
     def test_create_account_earnt(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user)
+        check_badge_conditions(user.profile)
         badge = Badge.objects.get(id_name="create-account")
         create_acc_earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(create_acc_earned), 1)
 
     def test_attempts_made_5_earnt(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user)
+        check_badge_conditions(user.profile)
         badge = Badge.objects.get(id_name="attempts-made-5")
         attempts_5_earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(attempts_5_earned), 1)
 
     def test_attempts_made_1_earnt(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user)
+        check_badge_conditions(user.profile)
         badge = Badge.objects.get(id_name="attempts-made-1")
         attempts1_earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(attempts1_earned), 1)
 
     def test_consecutive_days_2_earnt(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user)
+        check_badge_conditions(user.profile)
         badge = Badge.objects.get(id_name="consecutive-days-2")
         consec_days_earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(consec_days_earned), 1)
