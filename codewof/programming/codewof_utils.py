@@ -250,7 +250,7 @@ def backdate_points(profile, user_attempts=None):
     questions = Question.objects.all()
     profile.points = 0
     for question in questions:
-        question_attempts = user_attempts.filter(profile=profile, question=question)
+        question_attempts = user_attempts.filter(question=question)
         has_passed = len(question_attempts.filter(passed_tests=True)) > 0
         first_passed = False
         if len(question_attempts) > 0:
