@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 
 from programming.models import (
     Profile,
-    Question,
+    # Question,
     Attempt,
     Badge,
     Earned,
@@ -251,12 +251,12 @@ def backdate_points_and_badges():
 
         badges_time_before = time.perf_counter()
         profile = backdate_badges(profile, user_attempts=attempts)
-        badges_time_after= time.perf_counter()
+        badges_time_after = time.perf_counter()
         backdate_badges_times.append(badges_time_after - badges_time_before)
 
         points_time_before = time.perf_counter()
         profile = backdate_points(profile, user_attempts=attempts)
-        points_time_after= time.perf_counter()
+        points_time_after = time.perf_counter()
         backdate_points_times.append(points_time_after - points_time_before)
         # save profile when update is completed
         profile.full_clean()
