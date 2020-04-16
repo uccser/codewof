@@ -175,6 +175,9 @@ def check_badge_conditions(profile, user_attempts=None):
                     )
                     new_badge_names = new_badge_names + "- " + question_badge.display_name + "\n"
                     new_badge_objects.append(question_badge)
+                else:
+                    # hasn't achieved the current badge tier so won't achieve any higher ones
+                    break
     except Badge.DoesNotExist:
         logger.warning("No such badges: questions-solved")
         pass
@@ -193,6 +196,9 @@ def check_badge_conditions(profile, user_attempts=None):
                     )
                     new_badge_names = new_badge_names + "- " + attempt_badge.display_name + "\n"
                     new_badge_objects.append(attempt_badge)
+                else:
+                    # hasn't achieved the current badge tier so won't achieve any higher ones
+                    break
     except Badge.DoesNotExist:
         logger.warning("No such badges: attempts-made")
         pass
@@ -210,6 +216,9 @@ def check_badge_conditions(profile, user_attempts=None):
                 )
                 new_badge_names = new_badge_names + "- " + consec_badge.display_name + "\n"
                 new_badge_objects.append(consec_badge)
+            else:
+                # hasn't achieved the current badge tier so won't achieve any higher ones
+                break
 
     new_points = calculate_badge_points(new_badge_objects)
     profile.points += new_points
@@ -256,36 +265,24 @@ def backdate_points_and_badges():
     print("\nBackdate complete.")
 
     badges_ave = statistics.mean(backdate_badges_times)
-    log_badges_str = f"Average time per user to backdate badges: {badges_ave:0.4f} seconds"
-    logger.debug(log_badges_str)
+    print(f"Average time per user to backdate badges: {badges_ave:0.4f} seconds")
 
     points_ave = statistics.mean(backdate_points_times)
-    log_points_str = f"Average time per user to backdate points: {points_ave:0.4f} seconds"
-    logger.debug(log_points_str)
+    print(f"Average time per user to backdate points: {points_ave:0.4f} seconds")
 
-    duration = time_before - time_after
+    duration = time_after - time_before
     average = duration / num_profiles
-    log_total_str = f"Backdate duration {duration:0.4f} seconds, average per user {average:0.4f} seconds"
-    logger.debug(log_total_str)
+    print(f"Backdate duration {duration:0.4f} seconds, average per user {average:0.4f} seconds")
 
 
 def backdate_points(profile, user_attempts=None):
     """Re-calculate points for the user profile."""
     if user_attempts is None:
-        user_attempts = Attempt.objects.filter(profile=profile)
+        user_attempts = Attempt.objects.filter(profile=profile, passed_tests=True)
 
-    questions = Question.objects.all()
-    profile.points = 0
-    for question in questions:
-        question_attempts = user_attempts.filter(question=question)
-        has_passed = len(question_attempts.filter(passed_tests=True)) > 0
-        first_passed = False
-        if len(question_attempts) > 0:
-            first_passed = question_attempts[0].passed_tests
-        if has_passed:
-            profile.points += POINTS_SOLUTION
-        if first_passed:
-            profile.points += POINTS_BONUS
+    num_correct_attempts = len(user_attempts.filter(passed_tests=True))
+    profile.points = num_correct_attempts * POINTS_SOLUTION
+
     for badge in profile.earned_badges.all():
         profile.points += POINTS_BADGE * badge.badge_tier
     return profile
