@@ -228,13 +228,14 @@ def backdate_points_and_badges():
     """Perform backdate of all points and badges for each profile in the system."""
     profiles = Profile.objects.all()
     num_profiles = len(profiles)
+    all_attempts = attempt.objects.all()
     for i in range(num_profiles):
         # The commented out part below seems to break travis somehow
         print("Backdating user: " + str(i + 1) + "/" + str(num_profiles))  # , end="\r")
         profile = profiles[i]
-        attempts = Attempt.objects.filter(profile=profile)
+        attempts = all_attempts.filter(profile=profile)
         profile = backdate_badges(profile, user_attempts=attempts)
-        profile = backdate_points(profile)
+        profile = backdate_points(profile, user_attempts=attempts)
         # save profile when update is completed
         profile.full_clean()
         profile.save()
