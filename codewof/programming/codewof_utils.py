@@ -220,10 +220,9 @@ def backdate_points_and_badges():
     """Perform backdate of all points and badges for each profile in the system."""
     profiles = Profile.objects.all()
     num_profiles = len(profiles)
-    print("This is a TEMPORARY log to say we are about to start the for loop backdating users.\n"
-          + "The first statement in the for loop (starting now) is another print statement.")
     for i in range(num_profiles):
-        print("Backdating users: " + str(i + 1) + "/" + str(num_profiles), end="\r")
+        # The commented out part below seems to break travis somehow
+        print("Backdating user: " + str(i + 1) + "/" + str(num_profiles))  # , end="\r")
         profile = profiles[i]
         profile = backdate_badges(profile)
         profile = backdate_points(profile)
