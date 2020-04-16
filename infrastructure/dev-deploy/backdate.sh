@@ -12,6 +12,7 @@ cp ./infrastructure/cloud-sql-proxy/docker-compose.yml ./docker-compose.yml
 source ./codewof/load-dev-envs.sh
 
 # Backdate the database
+./dev start
 ./dev backdate
 
 # FILE IS TEMPORARY
