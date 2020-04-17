@@ -62,6 +62,11 @@ class Badge(models.Model):
         """Text representation of a badge."""
         return self.display_name
 
+    class Meta:
+        """Queryset will be ordered by badge tier."""
+
+        ordering = ['badge_tier']
+
 
 class Earned(models.Model):
     """Model that documents when a badge is earned by a user in their profile."""

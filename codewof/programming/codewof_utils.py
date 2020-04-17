@@ -3,11 +3,13 @@
 import datetime
 import json
 import logging
+import time
+import statistics
 from dateutil.relativedelta import relativedelta
 
 from programming.models import (
     Profile,
-    Question,
+    # Question,
     Attempt,
     Badge,
     Earned,
@@ -32,7 +34,6 @@ LOGGING = {
 #  Number of points awarded for achieving each goal
 POINTS_BADGE = 10
 POINTS_SOLUTION = 10
-POINTS_BONUS = 2
 
 
 def add_points(question, profile, attempt):
@@ -46,16 +47,11 @@ def add_points(question, profile, attempt):
     """
     attempts = Attempt.objects.filter(question=question, profile=profile)
     is_first_correct = len(attempts.filter(passed_tests=True)) == 1
-    points_to_add = 0
 
     # check if first passed
     if attempt.passed_tests and is_first_correct:
-        points_to_add += POINTS_SOLUTION
-        if len(attempts) == 1:
-            # correct first try
-            points_to_add += POINTS_BONUS
+        profile.points += POINTS_SOLUTION
 
-    profile.points += points_to_add
     profile.full_clean()
     profile.save()
     return profile.points
@@ -173,6 +169,9 @@ def check_badge_conditions(profile, user_attempts=None):
                     )
                     new_badge_names = new_badge_names + "- " + question_badge.display_name + "\n"
                     new_badge_objects.append(question_badge)
+                else:
+                    # hasn't achieved the current badge tier so won't achieve any higher ones
+                    break
     except Badge.DoesNotExist:
         logger.warning("No such badges: questions-solved")
         pass
@@ -191,6 +190,9 @@ def check_badge_conditions(profile, user_attempts=None):
                     )
                     new_badge_names = new_badge_names + "- " + attempt_badge.display_name + "\n"
                     new_badge_objects.append(attempt_badge)
+                else:
+                    # hasn't achieved the current badge tier so won't achieve any higher ones
+                    break
     except Badge.DoesNotExist:
         logger.warning("No such badges: attempts-made")
         pass
@@ -208,6 +210,9 @@ def check_badge_conditions(profile, user_attempts=None):
                 )
                 new_badge_names = new_badge_names + "- " + consec_badge.display_name + "\n"
                 new_badge_objects.append(consec_badge)
+            else:
+                # hasn't achieved the current badge tier so won't achieve any higher ones
+                break
 
     new_points = calculate_badge_points(new_badge_objects)
     profile.points += new_points
@@ -226,6 +231,9 @@ def calculate_badge_points(badges):
 
 def backdate_points_and_badges():
     """Perform backdate of all points and badges for each profile in the system."""
+    backdate_badges_times = []
+    backdate_points_times = []
+    time_before = time.perf_counter()
     profiles = Profile.objects.all()
     num_profiles = len(profiles)
     all_attempts = Attempt.objects.all()
@@ -234,12 +242,31 @@ def backdate_points_and_badges():
         print("Backdating user: " + str(i + 1) + "/" + str(num_profiles))  # , end="\r")
         profile = profiles[i]
         attempts = all_attempts.filter(profile=profile)
+
+        badges_time_before = time.perf_counter()
         profile = backdate_badges(profile, user_attempts=attempts)
+        badges_time_after = time.perf_counter()
+        backdate_badges_times.append(badges_time_after - badges_time_before)
+
+        points_time_before = time.perf_counter()
         profile = backdate_points(profile, user_attempts=attempts)
+        points_time_after = time.perf_counter()
+        backdate_points_times.append(points_time_after - points_time_before)
         # save profile when update is completed
         profile.full_clean()
         profile.save()
+    time_after = time.perf_counter()
     print("\nBackdate complete.")
+
+    badges_ave = statistics.mean(backdate_badges_times)
+    print(f"Average time per user to backdate badges: {badges_ave:0.4f} seconds")
+
+    points_ave = statistics.mean(backdate_points_times)
+    print(f"Average time per user to backdate points: {points_ave:0.4f} seconds")
+
+    duration = time_after - time_before
+    average = duration / num_profiles
+    print(f"Backdate duration {duration:0.4f} seconds, average per user {average:0.4f} seconds")
 
 
 def backdate_points(profile, user_attempts=None):
@@ -247,18 +274,9 @@ def backdate_points(profile, user_attempts=None):
     if user_attempts is None:
         user_attempts = Attempt.objects.filter(profile=profile)
 
-    questions = Question.objects.all()
-    profile.points = 0
-    for question in questions:
-        question_attempts = user_attempts.filter(question=question)
-        has_passed = len(question_attempts.filter(passed_tests=True)) > 0
-        first_passed = False
-        if len(question_attempts) > 0:
-            first_passed = question_attempts[0].passed_tests
-        if has_passed:
-            profile.points += POINTS_SOLUTION
-        if first_passed:
-            profile.points += POINTS_BONUS
+    num_correct_attempts = len(user_attempts.filter(passed_tests=True).distinct('question__slug'))
+    profile.points = num_correct_attempts * POINTS_SOLUTION
+
     for badge in profile.earned_badges.all():
         profile.points += POINTS_BADGE * badge.badge_tier
     return profile
