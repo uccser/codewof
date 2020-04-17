@@ -23,7 +23,6 @@ from programming.codewof_utils import (
     get_questions_answered_in_past_month,
     POINTS_BADGE,
     POINTS_SOLUTION,
-    POINTS_BONUS,
 )
 from codewof.tests.conftest import user
 
