@@ -21,6 +21,7 @@ class Command(management.base.BaseCommand):
     help = "Add sample data to database."
 
     def add_arguments(self, parser):
+        """Interprets arguments passed to command."""
         parser.add_argument(
             '--skip_backdate',
             action='store_true',
