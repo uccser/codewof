@@ -34,7 +34,6 @@ LOGGING = {
 #  Number of points awarded for achieving each goal
 POINTS_BADGE = 10
 POINTS_SOLUTION = 10
-POINTS_BONUS = 2
 
 
 def add_points(question, profile, attempt):
@@ -48,16 +47,11 @@ def add_points(question, profile, attempt):
     """
     attempts = Attempt.objects.filter(question=question, profile=profile)
     is_first_correct = len(attempts.filter(passed_tests=True)) == 1
-    points_to_add = 0
 
     # check if first passed
     if attempt.passed_tests and is_first_correct:
-        points_to_add += POINTS_SOLUTION
-        if len(attempts) == 1:
-            # correct first try
-            points_to_add += POINTS_BONUS
+        profile.points += POINTS_SOLUTION
 
-    profile.points += points_to_add
     profile.full_clean()
     profile.save()
     return profile.points
