@@ -3,21 +3,15 @@
 import datetime
 import json
 import logging
-import time
-import statistics
 from dateutil.relativedelta import relativedelta
 
 from programming.models import (
     Profile,
-    # Question,
     Attempt,
     Badge,
     Earned,
 )
 from django.http import JsonResponse
-# from django.conf import settings
-
-# time_zone = settings.TIME_ZONE
 
 logger = logging.getLogger(__name__)
 del logging
@@ -231,9 +225,6 @@ def calculate_badge_points(badges):
 
 def backdate_points_and_badges():
     """Perform backdate of all points and badges for each profile in the system."""
-    backdate_badges_times = []
-    backdate_points_times = []
-    time_before = time.perf_counter()
     profiles = Profile.objects.all()
     num_profiles = len(profiles)
     all_attempts = Attempt.objects.all()
@@ -242,31 +233,12 @@ def backdate_points_and_badges():
         print("Backdating user: " + str(i + 1) + "/" + str(num_profiles))  # , end="\r")
         profile = profiles[i]
         attempts = all_attempts.filter(profile=profile)
-
-        badges_time_before = time.perf_counter()
         profile = backdate_badges(profile, user_attempts=attempts)
-        badges_time_after = time.perf_counter()
-        backdate_badges_times.append(badges_time_after - badges_time_before)
-
-        points_time_before = time.perf_counter()
         profile = backdate_points(profile, user_attempts=attempts)
-        points_time_after = time.perf_counter()
-        backdate_points_times.append(points_time_after - points_time_before)
         # save profile when update is completed
         profile.full_clean()
         profile.save()
-    time_after = time.perf_counter()
     print("\nBackdate complete.")
-
-    badges_ave = statistics.mean(backdate_badges_times)
-    print(f"Average time per user to backdate badges: {badges_ave:0.4f} seconds")
-
-    points_ave = statistics.mean(backdate_points_times)
-    print(f"Average time per user to backdate points: {points_ave:0.4f} seconds")
-
-    duration = time_after - time_before
-    average = duration / num_profiles
-    print(f"Backdate duration {duration:0.4f} seconds, average per user {average:0.4f} seconds")
 
 
 def backdate_points(profile, user_attempts=None):
