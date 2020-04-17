@@ -23,7 +23,6 @@ from programming.codewof_utils import (
     get_questions_answered_in_past_month,
     POINTS_BADGE,
     POINTS_SOLUTION,
-    POINTS_BONUS,
 )
 from codewof.tests.conftest import user
 
@@ -48,7 +47,7 @@ class TestCodewofUtils(TestCase):
         )
         points_before = user.profile.points
         points_after = add_points(question, user.profile, attempt)
-        self.assertEqual(points_after - points_before, POINTS_SOLUTION + POINTS_BONUS)
+        self.assertEqual(points_after - points_before, POINTS_SOLUTION)
 
     def test_add_points_first_attempt_incorrect(self):
         user = User.objects.get(id=1)
@@ -122,7 +121,7 @@ class TestCodewofUtils(TestCase):
         Attempt.objects.create(profile=user.profile, question=question, passed_tests=False)
         Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
         profile = backdate_points(user.profile)
-        self.assertEqual(profile.points, 10)
+        self.assertEqual(profile.points, POINTS_SOLUTION)
 
     def test_backdate_points_correct_multiple_attempts(self):
         user = User.objects.get(id=2)
@@ -130,14 +129,14 @@ class TestCodewofUtils(TestCase):
         Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
         Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
         profile = backdate_points(user.profile)
-        self.assertEqual(profile.points, 12)
+        self.assertEqual(profile.points, POINTS_SOLUTION)
 
     def test_backdate_points_and_badges_too_many_points(self):
         generate_attempts()
         user = User.objects.get(id=1)
         user.profile.points = 1000
         backdate_points_and_badges()
-        self.assertEqual(User.objects.get(id=1).profile.points, 62)
+        self.assertEqual(User.objects.get(id=1).profile.points, 60)
 
     def test_backdate_points_and_badges_run_twice(self):
         generate_attempts()
@@ -145,7 +144,7 @@ class TestCodewofUtils(TestCase):
         user.profile.points = 1000
         backdate_points_and_badges()
         backdate_points_and_badges()
-        self.assertEqual(User.objects.get(id=1).profile.points, 62)
+        self.assertEqual(User.objects.get(id=1).profile.points, 60)
         earned_badges = User.objects.get(id=1).profile.earned_badges
         self.assertEqual(len(earned_badges.filter(id_name='create-account')), 1)
         self.assertEqual(len(earned_badges.filter(id_name='attempts-made-1')), 1)
