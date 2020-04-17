@@ -280,7 +280,7 @@ def backdate_points(profile, user_attempts=None):
     if user_attempts is None:
         user_attempts = Attempt.objects.filter(profile=profile, passed_tests=True)
 
-    num_correct_attempts = len(user_attempts.filter(passed_tests=True))
+    num_correct_attempts = len(user_attempts.filter(passed_tests=True).distinct('question__slug'))
     profile.points = num_correct_attempts * POINTS_SOLUTION
 
     for badge in profile.earned_badges.all():
