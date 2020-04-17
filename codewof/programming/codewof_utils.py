@@ -9,7 +9,6 @@ from dateutil.relativedelta import relativedelta
 
 from programming.models import (
     Profile,
-    # Question,
     Attempt,
     Badge,
     Earned,
@@ -140,15 +139,17 @@ def check_badge_conditions(profile, user_attempts=None):
     new_badge_names = ""
     new_badge_objects = []
 
+    earned_objects_to_create = []
     # account creation badge
     try:
         creation_badge = badge_objects.get(id_name="create-account")
         if creation_badge not in earned_badges:
             # create a new account creation
-            Earned.objects.create(
-                profile=profile,
-                badge=creation_badge
-            )
+            # Earned.objects.create(
+            #     profile=profile,
+            #     badge=creation_badge
+            # )
+            earned_objects_to_create.append(Earned(profile=profile, badge=creation_badge))
             new_badge_names = new_badge_names + "- " + creation_badge.display_name + "\n"
             new_badge_objects.append(creation_badge)
     except Badge.DoesNotExist:
@@ -163,10 +164,11 @@ def check_badge_conditions(profile, user_attempts=None):
             if question_badge not in earned_badges:
                 num_questions = int(question_badge.id_name.split("-")[2])
                 if len(solved) >= num_questions:
-                    Earned.objects.create(
-                        profile=profile,
-                        badge=question_badge
-                    )
+                    # Earned.objects.create(
+                    #     profile=profile,
+                    #     badge=question_badge
+                    # )
+                    earned_objects_to_create.append(Earned(profile=profile, badge=question_badge))
                     new_badge_names = new_badge_names + "- " + question_badge.display_name + "\n"
                     new_badge_objects.append(question_badge)
                 else:
@@ -184,10 +186,11 @@ def check_badge_conditions(profile, user_attempts=None):
             if attempt_badge not in earned_badges:
                 num_questions = int(attempt_badge.id_name.split("-")[2])
                 if len(attempted) >= num_questions:
-                    Earned.objects.create(
-                        profile=profile,
-                        badge=attempt_badge
-                    )
+                    # Earned.objects.create(
+                    #     profile=profile,
+                    #     badge=attempt_badge
+                    # )
+                    earned_objects_to_create.append(Earned(profile=profile, badge=attempt_badge))
                     new_badge_names = new_badge_names + "- " + attempt_badge.display_name + "\n"
                     new_badge_objects.append(attempt_badge)
                 else:
@@ -204,16 +207,18 @@ def check_badge_conditions(profile, user_attempts=None):
         if consec_badge not in earned_badges:
             n_days = int(consec_badge.id_name.split("-")[2])
             if n_days <= num_consec_days:
-                Earned.objects.create(
-                    profile=profile,
-                    badge=consec_badge
-                )
+                # Earned.objects.create(
+                #     profile=profile,
+                #     badge=consec_badge
+                # )
+                earned_objects_to_create.append(Earned(profile=profile, badge=consec_badge))
                 new_badge_names = new_badge_names + "- " + consec_badge.display_name + "\n"
                 new_badge_objects.append(consec_badge)
             else:
                 # hasn't achieved the current badge tier so won't achieve any higher ones
                 break
 
+    Earned.objects.bulk_create(earned_objects_to_create)
     new_points = calculate_badge_points(new_badge_objects)
     profile.points += new_points
     profile.full_clean()
