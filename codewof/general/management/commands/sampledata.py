@@ -20,12 +20,22 @@ class Command(management.base.BaseCommand):
 
     help = "Add sample data to database."
 
+    def add_arguments(self, parser):
+        """Interprets arguments passed to command."""
+        parser.add_argument(
+            '--skip_backdate',
+            action='store_true',
+            help='skip backdate step',
+            )
+
     def handle(self, *args, **options):
         """Automatically called when the sampledata command is given."""
         if settings.DEPLOYMENT_TYPE == 'prod' and not settings.DEBUG:
             raise management.base.CommandError(
                 'This command can only be executed in DEBUG mode on non-production website.'
             )
+
+        skip = options['skip_backdate']
 
         # Clear all data
         print(LOG_HEADER.format('Wipe database'))
@@ -88,4 +98,7 @@ class Command(management.base.BaseCommand):
         print('Attempts loaded.\n')
 
         # Award points and badges
-        # management.call_command('backdate_points_and_badges') TEMPORARY
+        if not skip:
+            management.call_command('backdate_points_and_badges')
+        else:
+            print('Ignoring backdate step as requested.\n')

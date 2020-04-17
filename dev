@@ -182,7 +182,7 @@ cmd_createsuperuser() {
 defhelp createsuperuser "Create superuser in Django system."
 
 cmd_sampledata() {
-  docker-compose exec django /docker_venv/bin/python3 ./manage.py sampledata
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py sampledata $1
 }
 defhelp sampledata "Add sample data to website."
 

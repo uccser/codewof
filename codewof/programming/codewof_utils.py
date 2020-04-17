@@ -9,15 +9,11 @@ from dateutil.relativedelta import relativedelta
 
 from programming.models import (
     Profile,
-    # Question,
     Attempt,
     Badge,
     Earned,
 )
 from django.http import JsonResponse
-# from django.conf import settings
-
-# time_zone = settings.TIME_ZONE
 
 logger = logging.getLogger(__name__)
 del logging
@@ -42,7 +38,6 @@ def add_points(question, profile, attempt):
 
     Adds points to a user's profile for when the user answers a question correctly for the first time. If the user
     answers the question correctly the first time they answer, the user gains bonus points.
-
     Subsequent correct answers should not award any points.
     """
     attempts = Attempt.objects.filter(question=question, profile=profile)
@@ -259,14 +254,14 @@ def backdate_points_and_badges():
     print("\nBackdate complete.")
 
     badges_ave = statistics.mean(backdate_badges_times)
-    print(f"Average time per user to backdate badges: {badges_ave:0.4f} seconds")
+    logger.debug(f"Average time per user to backdate badges: {badges_ave:0.4f} seconds")
 
     points_ave = statistics.mean(backdate_points_times)
-    print(f"Average time per user to backdate points: {points_ave:0.4f} seconds")
+    logger.debug(f"Average time per user to backdate points: {points_ave:0.4f} seconds")
 
     duration = time_after - time_before
     average = duration / num_profiles
-    print(f"Backdate duration {duration:0.4f} seconds, average per user {average:0.4f} seconds")
+    logger.debug(f"Backdate duration {duration:0.4f} seconds, average per user {average:0.4f} seconds")
 
 
 def backdate_points(profile, user_attempts=None):
