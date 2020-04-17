@@ -67,7 +67,7 @@ jobs:
           skip_cleanup: true
           on:
             branch: master
-    - stage: database backdate  #TEMPORARY
+    - stage: database backdate
       script: skip
       name: "Backdate development database"
       deploy:
@@ -75,7 +75,7 @@ jobs:
           script: bash ./infrastructure/dev-deploy/backdate.sh
           skip_cleanup: true
           on:
-            branch: develop  #TEMPORARY END
+            branch: develop
 notifications:
   email: false
   slack:
