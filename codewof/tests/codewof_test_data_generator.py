@@ -83,16 +83,52 @@ def generate_users(user):
 def generate_badges():
     """Create badges for codeWOF tests. Badges created for each main current badge category."""
     Badge.objects.create(
-        id_name='questions-solved-1',
-        display_name='Solved one question',
-        description='first',
-        badge_tier=1,
-    )
-    Badge.objects.create(
         id_name='create-account',
         display_name='Account created',
         description='test',
         badge_tier=0,
+    )
+    # Questions solved badges
+    Badge.objects.create(
+        id_name='questions-solved-100',
+        display_name='Solved one hundred questions',
+        description='test',
+        badge_tier=4,
+    )
+    Badge.objects.create(
+        id_name='questions-solved-10',
+        display_name='Solved ten questions',
+        description='test',
+        badge_tier=3,
+        parent=Badge.objects.get(id_name='questions-solved-100')
+    )
+    Badge.objects.create(
+        id_name='questions-solved-5',
+        display_name='Solved five questions',
+        description='test',
+        badge_tier=2,
+        parent=Badge.objects.get(id_name='questions-solved-10')
+    )
+    Badge.objects.create(
+        id_name='questions-solved-1',
+        display_name='Solved one question',
+        description='first',
+        badge_tier=1,
+        parent=Badge.objects.get(id_name='questions-solved-5')
+    )
+    # Attempts made badges
+    Badge.objects.create(
+        id_name='attempts-made-100',
+        display_name='One hundred attempts made',
+        description='test',
+        badge_tier=4,
+    )
+    Badge.objects.create(
+        id_name='attempts-made-10',
+        display_name='Ten attempts made',
+        description='test',
+        badge_tier=3,
+        parent=Badge.objects.get(id_name='attempts-made-100')
     )
     Badge.objects.create(
         id_name='attempts-made-5',
@@ -107,11 +143,40 @@ def generate_badges():
         badge_tier=1,
         parent=Badge.objects.get(id_name='attempts-made-5')
     )
+    # Consecutive days badges
+    # Badge.objects.create(
+    #     id_name='consecutive-days-28',
+    #     display_name='Twenty eight consecutive days',
+    #     description='test',
+    #     badge_tier=5,
+    # )
+    # Badge.objects.create(
+    #     id_name='consecutive-days-21',
+    #     display_name='Twenty one consecutive days',
+    #     description='test',
+    #     badge_tier=4,
+    #     parent=Badge.objects.get(id_name='consecutive-days-28')
+    # )
+    # Badge.objects.create(
+    #     id_name='consecutive-days-14',
+    #     display_name='Fourteen consecutive days',
+    #     description='test',
+    #     badge_tier=3,
+    #     parent=Badge.objects.get(id_name='consecutive-days-21')
+    # )
+    # Badge.objects.create(
+    #     id_name='consecutive-days-7',
+    #     display_name='Seven consecutive days',
+    #     description='test',
+    #     badge_tier=2,
+    #     parent=Badge.objects.get(id_name='consecutive-days-14')
+    # )
     Badge.objects.create(
         id_name='consecutive-days-2',
         display_name='Two consecutive days',
         description='test',
         badge_tier=1,
+        parent=Badge.objects.get(id_name='consecutive-days-7')
     )
 
 
