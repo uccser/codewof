@@ -176,7 +176,6 @@ def generate_badges():
         display_name='Two consecutive days',
         description='test',
         badge_tier=1,
-        parent=Badge.objects.get(id_name='consecutive-days-7')
     )
 
 

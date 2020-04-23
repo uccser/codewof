@@ -1,65 +1,97 @@
-# from django.test import TestCase
-# from django.contrib.auth.models import User
-# from django.contrib.auth import login
-# from unittest import skip
-# import json
-# import time
-# import datetime
+from django.test import Client, TestCase
+from django.contrib.auth.models import User
+from django.contrib.auth import login
+from django.urls import reverse
+from unittest import skip
+import json
+import time
+import datetime
 
-# from programming.models import (
-#     Token,
-#     Badge,
-#     Question,
-#     Earned,
-#     Attempt,
-#     QuestionTypeProgram,
-# )
-# from codewof.tests.codewof_test_data_generator import (
-#     generate_users,
-#     generate_badges,
-#     generate_questions,
-#     generate_attempts,
-# )
-# from programming.views import (
-#     CreateView,
-#     QuestionListView,
-#     QuestionView
-# )
-# from codewof.tests.conftest import user
-
-
-# class QuestionListViewTest():
+from programming.models import (
+    Token,
+    Badge,
+    Question,
+    Earned,
+    Attempt,
+    QuestionTypeProgram,
+)
+from codewof.tests.codewof_test_data_generator import (
+    generate_users,
+    generate_badges,
+    generate_questions,
+    generate_attempts,
+)
+from programming.views import (
+    CreateView,
+    QuestionListView,
+    QuestionView
+)
+from codewof.tests.conftest import user
 
 
-# class ProfileViewTest(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         # never modify this object in tests
-#         generate_users(user)
+class QuestionListViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_questions()
 
-#     def setUp(self):
-#         self.client = Client()
+    def setUp(self):
+        self.client = Client()
 
-#     def login_user(self):
-#         login = self.client.login(email='john@uclive.ac.nz', password='onion')
-#         self.assertTrue(login)
+    def login_user(self):
+        login = self.client.login(email='john@uclive.ac.nz', password='onion')
+        self.assertTrue(login)
+    
+    # tests begin
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get('/questions/')
+        self.assertRedirects(resp, '/accounts/login/?next=/questions/')
 
-#     ### tests begin ###
+    def test_view_url_exists(self):
+        self.login_user()
+        resp = self.client.get('/questions/')
+        self.assertEqual(resp.status_code, 200)
 
-#     def test_redirect_if_not_logged_in(self):
-#         resp = self.client.get('/users/dashboard/')
-#         self.assertRedirects(resp, '/accounts/login/?next=/users/dashboard/')
+    def test_view_uses_correct_template(self):
+        self.login_user()
+        resp = self.client.get('/questions/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'programming/question_list.html')
+    
+    def test_get_queryset(self):
+        
+        
 
-#     def test_view_url_exists(self):
-#         self.login_user()
-#         resp = self.client.get('/users/dashboard/')
-#         self.assertEqual(resp.status_code, 200)
+class ProfileViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
 
-#     def test_view_uses_correct_template(self):
-#         self.login_user()
-#         resp = self.client.get('/users/dashboard/')
-#         self.assertEqual(resp.status_code, 200)
-#         self.assertTemplateUsed(resp, 'users/dashboard.html')
+    def setUp(self):
+        self.client = Client()
+
+    def login_user(self):
+        login = self.client.login(email='john@uclive.ac.nz', password='onion')
+        self.assertTrue(login)
+
+    # tests begin
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get('/users/dashboard/')
+        self.assertRedirects(resp, '/accounts/login/?next=/users/dashboard/')
+
+    def test_view_url_exists(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'users/dashboard.html')
 
 
 # class BadgeViewTest(TestCase):
