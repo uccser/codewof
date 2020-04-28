@@ -39,7 +39,7 @@ class TestCodewofUtils(TestCase):
 
     def test_add_points_first_attempt_correct(self):
         user = User.objects.get(id=1)
-        question = Question.objects.get(id=1)
+        question = Question.objects.get(slug='question-1')
         attempt = Attempt.objects.create(
             profile=user.profile,
             question=question,
@@ -51,7 +51,7 @@ class TestCodewofUtils(TestCase):
 
     def test_add_points_first_attempt_incorrect(self):
         user = User.objects.get(id=1)
-        question = Question.objects.get(id=1)
+        question = Question.objects.get(slug='question-1')
         attempt_1 = Attempt.objects.create(
             profile=user.profile,
             question=question,
