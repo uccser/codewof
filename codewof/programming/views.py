@@ -215,26 +215,6 @@ class CreateView(generic.base.TemplateView):
         return context
 
 
-# class ProfileView(LoginRequiredMixin, generic.DetailView):
-#     """Displays a user's profile."""
-
-#     login_url = '/login/'
-#     redirect_field_name = 'next'
-#     template_name = 'users/user_detail.html'
-#     model = Profile
-
-#     def get_context_data(self, **kwargs):
-#         """Get additional context data for template."""
-#         context = super().get_context_data(**kwargs)
-
-#         user = self.request.user
-#         context['goal'] = user.profile.goal
-#         context['all_badges'] = Badge.objects.all()
-#         check_badge_conditions(user.profile)
-#         # context['past_5_weeks'] = get_past_5_weeks(user)
-#         return context
-
-
 class QuestionAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows questions to be viewed."""
 

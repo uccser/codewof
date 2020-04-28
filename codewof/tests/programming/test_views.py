@@ -1,31 +1,12 @@
 from django.test import Client, TestCase
-from django.contrib.auth.models import User
-from django.contrib.auth import login
-from django.urls import reverse
-from unittest import skip
-import json
-import time
-import datetime
 
-from programming.models import (
-    Token,
-    Badge,
-    Question,
-    Earned,
-    Attempt,
-    QuestionTypeProgram,
-)
+from programming.models import Question
+
 from codewof.tests.codewof_test_data_generator import (
     generate_users,
-    generate_badges,
     generate_questions,
-    generate_attempts,
 )
-from programming.views import (
-    CreateView,
-    QuestionListView,
-    QuestionView
-)
+
 from codewof.tests.conftest import user
 
 
@@ -42,7 +23,7 @@ class QuestionListViewTest(TestCase):
     def login_user(self):
         login = self.client.login(email='john@uclive.ac.nz', password='onion')
         self.assertTrue(login)
-    
+
     # tests begin
     def test_redirect_if_not_logged_in(self):
         resp = self.client.get('/questions/')
@@ -58,16 +39,27 @@ class QuestionListViewTest(TestCase):
         resp = self.client.get('/questions/')
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'programming/question_list.html')
-    
-    def test_get_queryset(self):
-        
-        
 
-class ProfileViewTest(TestCase):
+    def test_get_queryset(self):
+        self.assertQuerysetEqual(
+            Question.objects.all(),
+            [
+                '<Question: Test>',
+                '<Question: Test>',
+                '<Question: Test>',
+                '<Question: Test>',
+                '<Question: Test>',
+            ],
+            ordered=False
+        )
+
+
+class QuestionViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         # never modify this object in tests
         generate_users(user)
+        generate_questions()
 
     def setUp(self):
         self.client = Client()
@@ -77,21 +69,22 @@ class ProfileViewTest(TestCase):
         self.assertTrue(login)
 
     # tests begin
-
     def test_redirect_if_not_logged_in(self):
-        resp = self.client.get('/users/dashboard/')
-        self.assertRedirects(resp, '/accounts/login/?next=/users/dashboard/')
+        resp = self.client.get('/questions/1/')
+        self.assertRedirects(resp, '/accounts/login/?next=/questions/1/')
 
     def test_view_url_exists(self):
         self.login_user()
-        resp = self.client.get('/users/dashboard/')
+        pk = Question.objects.get(slug='program-question-1').pk
+        resp = self.client.get('/questions/{}/'.format(pk))
         self.assertEqual(resp.status_code, 200)
 
     def test_view_uses_correct_template(self):
         self.login_user()
-        resp = self.client.get('/users/dashboard/')
+        pk = Question.objects.get(slug='program-question-1').pk
+        resp = self.client.get('/questions/{}/'.format(pk))
         self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'users/dashboard.html')
+        self.assertTemplateUsed(resp, 'programming/question.html')
 
 
 # class BadgeViewTest(TestCase):
