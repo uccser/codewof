@@ -143,34 +143,7 @@ def generate_badges():
         badge_tier=1,
         parent=Badge.objects.get(id_name='attempts-made-5')
     )
-    # Consecutive days badges
-    # Badge.objects.create(
-    #     id_name='consecutive-days-28',
-    #     display_name='Twenty eight consecutive days',
-    #     description='test',
-    #     badge_tier=5,
-    # )
-    # Badge.objects.create(
-    #     id_name='consecutive-days-21',
-    #     display_name='Twenty one consecutive days',
-    #     description='test',
-    #     badge_tier=4,
-    #     parent=Badge.objects.get(id_name='consecutive-days-28')
-    # )
-    # Badge.objects.create(
-    #     id_name='consecutive-days-14',
-    #     display_name='Fourteen consecutive days',
-    #     description='test',
-    #     badge_tier=3,
-    #     parent=Badge.objects.get(id_name='consecutive-days-21')
-    # )
-    # Badge.objects.create(
-    #     id_name='consecutive-days-7',
-    #     display_name='Seven consecutive days',
-    #     description='test',
-    #     badge_tier=2,
-    #     parent=Badge.objects.get(id_name='consecutive-days-14')
-    # )
+    # Only need one of the consecutive days badges
     Badge.objects.create(
         id_name='consecutive-days-2',
         display_name='Two consecutive days',
