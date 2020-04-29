@@ -38,7 +38,7 @@ function update_gamification(data) {
         $("#point_toast_header").text("Points earned!");
         $("#point_toast_body").text("You earned " + point_diff.toString() +" points!");
         $(document).ready(function(){
-            $("#point_toast").toast('show', {delay: 3000});
+            $("#point_toast").toast('show', {delay: 5000});
         });
     }
 
@@ -47,7 +47,7 @@ function update_gamification(data) {
         $("#badge_toast_header").text("New badges!");
         $("#badge_toast_body").text(badges);
         $(document).ready(function(){
-            $("#badge_toast").toast('show', {delay: 3000});
+            $("#badge_toast").toast('show', {delay: 5000});
         });
     }
 
