@@ -14,6 +14,7 @@ RUN apt-get update \
     binutils \
     libproj-dev \
     gdal-bin \
+    cron \
     --no-install-recommends --no-install-suggests \
     && apt-get -y --purge autoremove \
     && rm -rf /var/lib/apt/lists/*

@@ -36,7 +36,7 @@ class EarnedInline(admin.TabularInline):
 class ProfileAdmin(admin.ModelAdmin):
     """Configuration for displaying profiles in admin."""
 
-    list_display = ('user', 'points', 'goal')
+    list_display = ('user', 'points', 'goal', 'has_backdated')
     ordering = ('user', )
     inlines = (EarnedInline, )
 

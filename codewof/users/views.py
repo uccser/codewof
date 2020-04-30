@@ -23,7 +23,7 @@ from programming.models import (
     Badge
 )
 
-from programming.codewof_utils import check_badge_conditions, get_questions_answered_in_past_month
+from programming.codewof_utils import check_badge_conditions, get_questions_answered_in_past_month, backdate_user
 
 User = get_user_model()
 
@@ -49,20 +49,25 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         """Get object for template."""
-        return self.request.user
+        user = self.request.user
+        if not user.profile.has_backdated:
+            backdate_user(user.profile)
+        return user
 
     def get_context_data(self, **kwargs):
         """Get additional context data for template."""
         user = self.request.user
+        if not user.profile.has_backdated:
+            backdate_user(user.profile)
         context = super().get_context_data(**kwargs)
         now = timezone.now()
         today = now.date()
 
-        if self.request.user.is_authenticated:
+        if user.is_authenticated:
             # Look for active study registration
             try:
                 study_registration = StudyRegistration.objects.get(
-                    user=self.request.user,
+                    user=user,
                     study_group__study__start_date__lte=now,
                     study_group__study__end_date__gte=now,
                 )
@@ -75,7 +80,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         else:
             questions = Question.objects.all()
 
-        log_message = 'Questions for user {} on {} ({}):\n'.format(self.request.user, now, today)
+        log_message = 'Questions for user {} on {} ({}):\n'.format(user, now, today)
         for i, question in enumerate(questions):
             log_message += '{}: {}\n'.format(i, question)
         logger.info(log_message)
@@ -88,20 +93,20 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         ).order_by('pk').distinct('pk').select_subclasses()
         questions = list(questions)
 
-        log_message = 'Filtered questions for user {}:\n'.format(self.request.user)
+        log_message = 'Filtered questions for user {}:\n'.format(user)
         for i, question in enumerate(questions):
             log_message += '{}: {}\n'.format(i, question)
         logger.info(log_message)
 
         # Randomly pick 3 based off seed of todays date
         if len(questions) > 0:
-            random_seeded = Random('{}{}'.format(self.request.user.pk, today))
+            random_seeded = Random('{}{}'.format(user.pk, today))
             number_to_do = min(len(questions), settings.QUESTIONS_PER_DAY)
             todays_questions = random_seeded.sample(questions, number_to_do)
             all_complete = True
             for question in todays_questions:
                 question.completed = Attempt.objects.filter(
-                    profile=self.request.user.profile,
+                    profile=user.profile,
                     question=question,
                     passed_tests=True,
                 ).exists()
@@ -111,7 +116,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             todays_questions = list()
             all_complete = False
 
-        log_message = 'Chosen questions for user {}:\n'.format(self.request.user)
+        log_message = 'Chosen questions for user {}:\n'.format(user)
         for i, question in enumerate(todays_questions):
             log_message += '{}: {}\n'.format(i, question)
         logger.info(log_message)
@@ -120,14 +125,14 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context['all_complete'] = all_complete
 
         # Show studies
-        studies = self.request.user.user_type.studies.filter(
+        studies = user.user_type.studies.filter(
             visible=True,
             groups__isnull=False,
         ).distinct()
         # TODO: Simplify to one database query
         for study in studies:
             study.registered = StudyRegistration.objects.filter(
-                user=self.request.user,
+                user=user,
                 study_group__in=study.groups.all(),
             ).exists()
         context['studies'] = studies
@@ -136,8 +141,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context['all_badges'] = Badge.objects.all()
         questions_answered = get_questions_answered_in_past_month(user.profile)
         context['num_questions_answered'] = questions_answered
-        logger.warning(questions_answered)
-        check_badge_conditions(user.profile)
+        logger.debug(questions_answered)
         return context
 
 
