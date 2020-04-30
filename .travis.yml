@@ -13,8 +13,8 @@ install:
 jobs:
   include:
     - stage: test
-      # script: ./dev ci test_suite
-      # name: "Run test suite"
+      script: ./dev ci test_suite
+      name: "Run test suite"
       script: ./dev ci style
       name: "Run style checker"
     - stage: development deployment
@@ -67,6 +67,15 @@ jobs:
           skip_cleanup: true
           on:
             branch: master
+    - stage: database backdate
+      script: skip
+      name: "Backdate development database"
+      deploy:
+        - provider: script
+          script: bash ./infrastructure/dev-deploy/backdate.sh
+          skip_cleanup: true
+          on:
+            branch: develop
 notifications:
   email: false
   slack:
@@ -79,3 +88,5 @@ stages:
     if: branch = develop
   - name: production deployment
     if: branch = master
+  - name: database backdate  # TEMPORARY
+    if: branch = develop     # To avoid it happening on minor branches. DO NOT RELEASE

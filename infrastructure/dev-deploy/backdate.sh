@@ -11,7 +11,8 @@ cp ./infrastructure/cloud-sql-proxy/docker-compose.yml ./docker-compose.yml
 # Load environment variables.
 source ./codewof/load-dev-envs.sh
 
-# Update the database and website sample content
+# Backdate the database
 ./dev start
-./dev migrate
-./dev sampledata --skip_backdate
+./dev backdate
+
+# FILE IS TEMPORARY

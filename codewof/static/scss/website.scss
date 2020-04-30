@@ -178,6 +178,26 @@ strong {
   }
 }
 
+.badge-container {
+  clear: both;
+  padding-bottom: 0.5rem;
+}
+
+.badge-icon {
+  padding: 0.3125rem;
+  float: left;
+}
+
+.badge-icon-unachieved {
+  padding: 0.3125rem;
+  opacity: 0.2;
+}
+
+.achievements-link,
+.achievements-link:hover {
+  color: inherit;
+}
+
 .img-inline {
     max-height: 1.5rem;
 }
@@ -247,4 +267,34 @@ $red: #b94a48;
 
 .orange-underline {
   border-bottom: 0.5rem $brand-secondary-colour solid;
+}
+
+#toast-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.toast {
+  border: 1px solid $brand-colour;
+  background-color: brand-colour-light;
+  text-align: center;
+}
+
+.toast-header {
+  border: 1px solid $brand-colour;
+  background-color: brand-colour-light;
+  width: 100%;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.toast-header strong {
+  color: black;
+  font-weight: bold;
+}
+
+.toast-body {
+  border: 1px solid $brand-colour;
+  background-color: brand-colour-light;
 }

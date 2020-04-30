@@ -170,13 +170,19 @@ cmd_load_questions() {
 }
 defhelp load_questions "Load questions."
 
+# Run load_badges command
+cmd_load_badges() {
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py load_badges
+}
+defhelp load_badges "Load badges."
+
 cmd_createsuperuser() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py createsuperuser
 }
 defhelp createsuperuser "Create superuser in Django system."
 
 cmd_sampledata() {
-  docker-compose exec django /docker_venv/bin/python3 ./manage.py sampledata
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py sampledata $1
 }
 defhelp sampledata "Add sample data to website."
 
@@ -325,6 +331,11 @@ cmd_dev() {
     return 1
   fi
 }
+
+cmd_backdate() {
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py backdate_points_and_badges
+}
+defhelp backdate 'Re-calculates points and badges earned for all user profiles.'
 
 # If no command given
 if [ $# -eq 0 ]; then
