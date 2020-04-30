@@ -1,13 +1,15 @@
 from django.test import Client, TestCase
-
+from django.contrib.auth import get_user_model
 from programming.models import Question
 
 from codewof.tests.codewof_test_data_generator import (
     generate_users,
     generate_questions,
+    generate_attempts,
 )
-
+from codewof.programming.codewof_utils import check_badge_conditions
 from codewof.tests.conftest import user
+User = get_user_model()
 
 
 class QuestionListViewTest(TestCase):
@@ -85,3 +87,58 @@ class QuestionViewTest(TestCase):
         resp = self.client.get('/questions/{}/'.format(pk))
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'programming/question.html')
+
+
+class CreateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_questions()
+        generate_attempts()
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get('/questions/create/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'programming/create.html')
+
+    def test_context_object(self):
+        user = User.objects.get(id=1)
+        check_badge_conditions(user.profile) # make sure a program question has been answered
+
+        resp = self.client.get('/questions/create/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            resp.context['question_types'],
+            [
+                {'name': 'Program', 'count': 1, 'unanswered_count': 0},
+                {'name': 'Function', 'count': 1, 'unanswered_count': 1},
+                {'name': 'Parsons', 'count': 1, 'unanswered_count': 1},
+                {'name': 'Debugging', 'count': 1, 'unanswered_count': 1},
+
+            ]
+        )
+
+
+class SaveQuestionAttemptTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_questions()
+
+    def setUp(self):
+        self.client = Client()
+
+    def login_user(self):
+        login = self.client.login(email='john@uclive.ac.nz', password='onion')
+        self.assertTrue(login)
+
+    def test_save_question_attempt(self):
+        resp = self.client.post(
+            'ajax/save_question_attempt/',
+            data={'question': 1, 'user_input': 'test', 'test_cases': {1: {'passed': True}}},
+            content_type='application/json',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(200, resp.status_code)

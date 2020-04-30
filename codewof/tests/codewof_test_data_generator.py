@@ -160,7 +160,7 @@ def generate_attempts():
     and passed attempts. These attempts cover the main requirements to gain all test badges.
     """
     user = User.objects.get(id=1)
-    question = Question.objects.get(slug='question-1')
+    question = Question.objects.get(slug='program-question-1')
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=False)
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=False)
