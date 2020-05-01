@@ -117,7 +117,6 @@ THIRD_PARTY_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'captcha',
-    'django_crontab',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',

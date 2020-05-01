@@ -27,7 +27,7 @@ class Profile(models.Model):
     )
     earned_badges = models.ManyToManyField('Badge', through='Earned')
     attempted_questions = models.ManyToManyField('Question', through='Attempt')
-    has_backdated = models.BooleanField(default=False)
+    has_backdated = models.BooleanField(default=True)
 
     def __str__(self):
         """Text representation of a profile."""

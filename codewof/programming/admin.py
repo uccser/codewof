@@ -37,6 +37,7 @@ class ProfileAdmin(admin.ModelAdmin):
     """Configuration for displaying profiles in admin."""
 
     list_display = ('user', 'points', 'goal', 'has_backdated')
+    list_filter = ['goal', 'has_backdated']
     ordering = ('user', )
     inlines = (EarnedInline, )
 
