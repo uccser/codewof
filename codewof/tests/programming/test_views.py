@@ -6,6 +6,7 @@ from codewof.tests.codewof_test_data_generator import (
     generate_users,
     generate_questions,
     generate_attempts,
+    generate_test_cases,
 )
 from codewof.programming.codewof_utils import check_badge_conditions
 from codewof.tests.conftest import user
@@ -127,6 +128,7 @@ class SaveQuestionAttemptTest(TestCase):
         generate_users(user)
         generate_questions()
         generate_attempts()
+        generate_test_cases()
 
     def setUp(self):
         self.client = Client()
@@ -139,7 +141,7 @@ class SaveQuestionAttemptTest(TestCase):
         self.login_user()
         pk = Question.objects.get(slug='program-question-1').pk
         resp = self.client.post(
-            'http://localhost:83/ajax/save_question_attempt/',
+            '/ajax/save_question_attempt/',
             data={'question': pk, 'user_input': 'test', 'test_cases': {1: {'passed': True}}},
             content_type='application/json',
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
