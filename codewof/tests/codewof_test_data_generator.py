@@ -168,3 +168,13 @@ def generate_attempts():
                            datetime=datetime.date(2019, 9, 9))
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=True,
                            datetime=datetime.date(2019, 9, 10))
+
+
+def generate_test_cases():
+    question = Question.objects.get(slug='program-question-1')
+    TestCase.objects.create()
+
+    QuestionTypeProgramTestCase.objects.create(
+        test_input="program-question-1",
+        question='Test'
+    )

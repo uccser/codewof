@@ -126,6 +126,7 @@ class SaveQuestionAttemptTest(TestCase):
         # never modify this object in tests
         generate_users(user)
         generate_questions()
+        generate_attempts()
 
     def setUp(self):
         self.client = Client()
@@ -135,9 +136,11 @@ class SaveQuestionAttemptTest(TestCase):
         self.assertTrue(login)
 
     def test_save_question_attempt(self):
+        self.login_user()
+        pk = Question.objects.get(slug='program-question-1').pk
         resp = self.client.post(
-            'ajax/save_question_attempt/',
-            data={'question': 1, 'user_input': 'test', 'test_cases': {1: {'passed': True}}},
+            'http://localhost:83/ajax/save_question_attempt/',
+            data={'question': pk, 'user_input': 'test', 'test_cases': {1: {'passed': True}}},
             content_type='application/json',
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
