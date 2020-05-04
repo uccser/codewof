@@ -1,15 +1,17 @@
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
-from programming.models import Question
+from programming.models import Question, Attempt
 
 from codewof.tests.codewof_test_data_generator import (
     generate_users,
     generate_questions,
     generate_attempts,
     generate_test_cases,
+    generate_badges,
 )
 from codewof.programming.codewof_utils import check_badge_conditions
 from codewof.tests.conftest import user
+import datetime
 User = get_user_model()
 
 
@@ -127,6 +129,7 @@ class SaveQuestionAttemptTest(TestCase):
         # never modify this object in tests
         generate_users(user)
         generate_questions()
+        generate_badges()
         generate_attempts()
         generate_test_cases()
 
@@ -137,9 +140,12 @@ class SaveQuestionAttemptTest(TestCase):
         login = self.client.login(email='john@uclive.ac.nz', password='onion')
         self.assertTrue(login)
 
-    def test_save_question_attempt(self):
+    def test_save_question_attempt_success_true(self):
         self.login_user()
+        user = User.objects.get(id=1)
+        check_badge_conditions(user.profile)
         pk = Question.objects.get(slug='program-question-1').pk
+
         resp = self.client.post(
             '/ajax/save_question_attempt/',
             data={'question': pk, 'user_input': 'test', 'test_cases': {1: {'passed': True}}},
@@ -147,3 +153,38 @@ class SaveQuestionAttemptTest(TestCase):
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
         self.assertEqual(200, resp.status_code)
+        self.assertJSONEqual(
+            str(resp.content, encoding='utf8'),
+            {'success': True, 'curr_points': 50, 'point_diff': 0, 'badges': ''}
+        )
+
+
+    def test_save_question_attempt_success_false(self):
+        self.login_user()
+        user = User.objects.get(id=1)
+        check_badge_conditions(user.profile)
+        question = Question.objects.get(slug='program-question-1')
+
+        attempt_one_resp = self.client.post(
+            '/ajax/save_question_attempt/',
+            data={'question': question.pk, 'user_input': 'test', 'test_cases': {1: {'passed': True}}},
+            content_type='application/json',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(200, attempt_one_resp.status_code)
+        self.assertJSONEqual(
+            str(attempt_one_resp.content, encoding='utf8'),
+            {'success': True, 'curr_points': 50, 'point_diff': 0, 'badges': ''}
+        )
+
+        attempt_two_resp = self.client.post(
+            '/ajax/save_question_attempt/',
+            data={'question': question.pk, 'user_input': 'test', 'test_cases': {1: {'passed': True}}},
+            content_type='application/json',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(200, attempt_two_resp.status_code)
+        self.assertJSONEqual(
+            str(attempt_two_resp.content, encoding='utf8'),
+            {'success': False, 'message': 'Attempt not saved, same as previous attempt.'}
+        )

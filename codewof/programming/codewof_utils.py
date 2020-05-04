@@ -35,15 +35,11 @@ POINTS_SOLUTION = 10
 def add_points(question, profile, attempt):
     """
     Add appropriate number of points (if any) to user profile after a question is answered.
-
-    Adds points to a user's profile for when the user answers a question correctly for the first time. If the user
-    answers the question correctly the first time they answer, the user gains bonus points.
     Subsequent correct answers should not award any points.
     """
     attempts = Attempt.objects.filter(question=question, profile=profile)
     is_first_correct = len(attempts.filter(passed_tests=True)) == 1
 
-    # check if first passed
     if attempt.passed_tests and is_first_correct:
         profile.points += POINTS_SOLUTION
 
@@ -153,7 +149,7 @@ def check_badge_conditions(profile, user_attempts=None):
     # check questions solved badges
     try:
         question_badges = badge_objects.filter(id_name__contains="questions-solved")
-        solved = user_attempts.filter(passed_tests=True)
+        solved = user_attempts.filter(passed_tests=True).distinct('question__slug')
         for question_badge in question_badges:
             if question_badge not in earned_badges:
                 num_questions = int(question_badge.id_name.split("-")[2])
