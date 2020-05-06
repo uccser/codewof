@@ -1,6 +1,7 @@
 """Views for programming application."""
 
 import json
+from django.core import management
 from django.views import generic
 from django.utils import timezone
 from django.db.models import Count, Max
@@ -27,6 +28,7 @@ from research.models import StudyRegistration
 from programming.codewof_utils import add_points, check_badge_conditions
 
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
+BATCH_SIZE = 15
 
 
 class QuestionListView(LoginRequiredMixin, generic.ListView):
@@ -186,6 +188,13 @@ def save_question_attempt(request):
                 result['message'] = 'Attempt not saved, same as previous attempt.'
 
     return JsonResponse(result)
+
+
+def partial_backdate(request):
+    """Backdate a set number of user profiles.
+    
+    TODO: Find out what type of request gcp sends, authenticate request, respond."""
+    management.call_command("backdate_points_and_badges", profiles=BATCH_SIZE)
 
 
 class CreateView(generic.base.TemplateView):

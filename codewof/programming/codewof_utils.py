@@ -234,7 +234,7 @@ def backdate_user(profile):
     profile.save()
 
 
-def backdate_points_and_badges(n=-1, ignoreFlags=False):
+def backdate_points_and_badges(n=-1, ignoreFlags=True):
     """Perform batch backdate of all points and badges for n profiles in the system."""
     backdate_badges_times = []
     backdate_points_times = []

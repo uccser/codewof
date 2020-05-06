@@ -64,7 +64,7 @@ def generate_users(user):
         last_name='Doe',
         email='john@uclive.ac.nz',
         password='onion',
-        user_type=UserType.objects.get(slug='student')
+        user_type=UserType.objects.get(slug='student'),
     )
     user_john.save()
 
@@ -75,7 +75,7 @@ def generate_users(user):
         last_name='Jones',
         email='sally@uclive.ac.nz',
         password='onion',
-        user_type=UserType.objects.get(slug='other')
+        user_type=UserType.objects.get(slug='other'),
     )
     user_sally.save()
 
