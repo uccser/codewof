@@ -192,8 +192,9 @@ def save_question_attempt(request):
 
 def partial_backdate(request):
     """Backdate a set number of user profiles.
-    
-    TODO: Find out what type of request gcp sends, authenticate request, respond."""
+
+    TODO: Find out what type of request gcp sends, authenticate request, respond.
+    """
     management.call_command("backdate_points_and_badges", profiles=BATCH_SIZE)
 
 
