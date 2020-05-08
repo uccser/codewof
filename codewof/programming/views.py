@@ -196,7 +196,8 @@ def partial_backdate(request):
 
     Returns a 403 Forbidden response if the request was made to a production website and did not come from GCP.
     """
-    #https://cloud.google.com/appengine/docs/standard/python3/scheduling-jobs-with-cron-yaml?hl=en_US#validating_cron_requests
+    # https://cloud.google.com/appengine/docs/standard/python3/scheduling-jobs-with-cron-yaml?hl=en_US
+    # #validating_cron_requests
     if settings.DEBUG or 'X-Appengine-Cron' in request.headers:
         management.call_command("backdate_points_and_badges", profiles=BATCH_SIZE)
         response = {
