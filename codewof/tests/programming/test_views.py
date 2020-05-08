@@ -1,6 +1,6 @@
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
-from programming.models import Question, Attempt
+from programming.models import Question, Attempt, QuestionTypeProgram
 
 from codewof.tests.codewof_test_data_generator import (
     generate_users,
@@ -65,6 +65,7 @@ class QuestionViewTest(TestCase):
         # never modify this object in tests
         generate_users(user)
         generate_questions()
+        generate_test_cases()
 
     def setUp(self):
         self.client = Client()
@@ -90,6 +91,16 @@ class QuestionViewTest(TestCase):
         resp = self.client.get('/questions/{}/'.format(pk))
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'programming/question.html')
+
+    def test_context_object(self):
+        self.login_user()
+        question = QuestionTypeProgram.objects.get(slug='program-question-1')
+        resp = self.client.get('/questions/{}/'.format(question.pk))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            resp.context['question'],
+            question
+        )
 
 
 class CreateViewTest(TestCase):
