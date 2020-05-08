@@ -189,7 +189,7 @@ defhelp sampledata "Add sample data to website."
 cmd_raise_backdate_flags() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py raise_backdate_flags
 }
-defhelp raise_backdate_flags 'Raises a flag on all user profiles, requiring a backdate be done on them.'
+defhelp raise_backdate_flags 'Raise a flag on all user profiles, requiring a backdate be done on them.'
 
 cmd_backdate() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py backdate_points_and_badges --ignore_flags
