@@ -1,6 +1,7 @@
 """Views for programming application."""
 
 import json
+from django.conf import settings
 from django.core import management
 from django.views import generic
 from django.utils import timezone
@@ -193,9 +194,17 @@ def save_question_attempt(request):
 def partial_backdate(request):
     """Backdate a set number of user profiles.
 
-    TODO: Find out what type of request gcp sends, authenticate request, respond.
+    Returns a 403 Forbidden response if the request was made to a production website and did not come from GCP.
     """
-    management.call_command("backdate_points_and_badges", profiles=BATCH_SIZE)
+    #https://cloud.google.com/appengine/docs/standard/python3/scheduling-jobs-with-cron-yaml?hl=en_US#validating_cron_requests
+    if settings.DEBUG or 'X-Appengine-Cron' in request.headers:
+        management.call_command("backdate_points_and_badges", profiles=BATCH_SIZE)
+        response = {
+            'success': True,
+        }
+        return JsonResponse(response)
+    else:
+        raise PermissionDenied()
 
 
 class CreateView(generic.base.TemplateView):
