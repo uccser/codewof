@@ -275,10 +275,11 @@ ci_test_suite() {
   cmd_collect_static
   cmd_test_suite
   test_status=$?
-  cmd_test_coverage
-  coverage_status=$?
-  bash <(curl -s https://codecov.io/bash)
-  ! (( $test_status || $coverage_status ))
+  # cmd_test_coverage
+  # coverage_status=$?
+  # bash <(curl -s https://codecov.io/bash)
+  # ! (( $test_status || $coverage_status ))
+  ! $test_status
 }
 
 ci_style() {
