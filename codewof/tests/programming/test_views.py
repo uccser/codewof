@@ -1,6 +1,6 @@
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
-from programming.models import Question, QuestionTypeProgram
+from programming.models import Question, QuestionTypeProgram, QuestionTypeFunction
 
 from codewof.tests.codewof_test_data_generator import (
     generate_users,
@@ -8,6 +8,7 @@ from codewof.tests.codewof_test_data_generator import (
     generate_attempts,
     generate_test_cases,
     generate_badges,
+    generate_study_registrations,
 )
 from codewof.programming.codewof_utils import check_badge_conditions
 from codewof.tests.conftest import user
@@ -92,7 +93,7 @@ class QuestionViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'programming/question.html')
 
-    def test_context_object(self):
+    def test_get_object_question_exists(self):
         self.login_user()
         question = QuestionTypeProgram.objects.get(slug='program-question-1')
         resp = self.client.get('/questions/{}/'.format(question.pk))
@@ -101,6 +102,18 @@ class QuestionViewTest(TestCase):
             resp.context['question'],
             question
         )
+
+    def test_get_object_question_does_not_exist(self):
+        self.login_user()
+        resp = self.client.get('/questions/{}/'.format('fake-primary-key'))
+        self.assertEqual(resp.status_code, 404)
+
+    def test_context_object_question_not_in_study(self):
+        self.login_user()
+        generate_study_registrations()
+        question = QuestionTypeFunction.objects.get(slug='function-question-1')
+        resp = self.client.get('/questions/{}/'.format(question.pk))
+        self.assertEqual(resp.status_code, 403)
 
 
 class CreateViewTest(TestCase):

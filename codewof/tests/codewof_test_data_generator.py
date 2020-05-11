@@ -15,6 +15,12 @@ from programming.models import (
     QuestionTypeProgramTestCase,
 )
 
+from research.models import (
+    Study,
+    StudyGroup,
+    StudyRegistration,
+)
+
 from users.models import UserType
 
 User = get_user_model()
@@ -179,4 +185,29 @@ def generate_test_cases():
         id=1,
         test_input="",
         question=question
+    )
+
+
+def generate_study_registrations():
+    """
+    Generate studies, study groups and study registrations.
+
+    One study is generated that has one study group which contains program-question-1.
+    Only user 1 is registered for this study.
+    """
+    study = Study.objects.create(
+        title='study-1',
+        start_date=datetime.date(2019, 1, 15),
+        end_date=datetime.date(3000, 1, 15)
+    )
+    question = QuestionTypeProgram.objects.get(slug='program-question-1')
+    study_group = StudyGroup.objects.create(
+        title='study-group-1',
+        study=study,
+    )
+    study_group.questions.add(question)
+    user = User.objects.get(id=1)
+    StudyRegistration.objects.create(
+        study_group=study_group,
+        user=user,
     )
