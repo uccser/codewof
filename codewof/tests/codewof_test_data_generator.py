@@ -12,7 +12,6 @@ from programming.models import (
     QuestionTypeFunction,
     QuestionTypeParsons,
     QuestionTypeDebugging,
-    TestCase,
     QuestionTypeProgramTestCase,
 )
 
@@ -173,8 +172,8 @@ def generate_attempts():
 
 
 def generate_test_cases():
+    """Generate test cases for codeWOF questions. Test cases are generated for program-question-1."""
     question = QuestionTypeProgram.objects.get(slug='program-question-1')
-    TestCase.objects.create()
 
     QuestionTypeProgramTestCase.objects.create(
         id=1,

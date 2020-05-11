@@ -1,6 +1,6 @@
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
-from programming.models import Question, Attempt, QuestionTypeProgram
+from programming.models import Question, QuestionTypeProgram
 
 from codewof.tests.codewof_test_data_generator import (
     generate_users,
@@ -11,7 +11,7 @@ from codewof.tests.codewof_test_data_generator import (
 )
 from codewof.programming.codewof_utils import check_badge_conditions
 from codewof.tests.conftest import user
-import datetime
+
 User = get_user_model()
 
 
@@ -118,7 +118,7 @@ class CreateViewTest(TestCase):
 
     def test_context_object(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user.profile) # make sure a program question has been answered
+        check_badge_conditions(user.profile)  # make sure a program question has been answered
 
         resp = self.client.get('/questions/create/')
         self.assertEqual(resp.status_code, 200)
@@ -168,7 +168,6 @@ class SaveQuestionAttemptTest(TestCase):
             str(resp.content, encoding='utf8'),
             {'success': True, 'curr_points': 50, 'point_diff': 0, 'badges': ''}
         )
-
 
     def test_save_question_attempt_success_false(self):
         self.login_user()

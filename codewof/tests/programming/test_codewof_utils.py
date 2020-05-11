@@ -120,7 +120,6 @@ class TestCodewofUtils(TestCase):
         earned_badges = user.profile.earned_badges
         self.assertFalse(earned_badges.filter(id_name='questions-solved-5').exists())
 
-
     def test_get_days_consecutively_answered(self):
         generate_attempts()
         user = User.objects.get(id=1)

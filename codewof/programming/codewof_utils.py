@@ -35,6 +35,7 @@ POINTS_SOLUTION = 10
 def add_points(question, profile, attempt):
     """
     Add appropriate number of points (if any) to user profile after a question is answered.
+
     Subsequent correct answers should not award any points.
     """
     attempts = Attempt.objects.filter(question=question, profile=profile)
