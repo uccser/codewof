@@ -12,6 +12,7 @@ from codewof.tests.codewof_test_data_generator import (
 )
 from codewof.programming.codewof_utils import check_badge_conditions
 from codewof.tests.conftest import user
+import json
 
 User = get_user_model()
 
@@ -108,12 +109,34 @@ class QuestionViewTest(TestCase):
         resp = self.client.get('/questions/{}/'.format('fake-primary-key'))
         self.assertEqual(resp.status_code, 404)
 
-    def test_context_object_question_not_in_study(self):
+    def test_get_object_question_not_in_study(self):
         self.login_user()
         generate_study_registrations()
         question = QuestionTypeFunction.objects.get(slug='function-question-1')
         resp = self.client.get('/questions/{}/'.format(question.pk))
         self.assertEqual(resp.status_code, 403)
+
+    def test_context_data(self):
+        self.login_user()
+        question = QuestionTypeProgram.objects.get(slug='program-question-1')
+        resp = self.client.get('/questions/{}/'.format(question.pk))
+        self.assertEqual(resp.status_code, 200)
+        self.assertCountEqual(
+            resp.context['test_cases'],
+            question.test_cases.values(),
+        )
+        self.assertCountEqual(
+            resp.context['test_cases_json'],
+            json.dumps(list(question.test_cases.values())),
+        )
+        self.assertEqual(
+            resp.context['question_js'],
+            'js/question_types/{}.js'.format(question.QUESTION_TYPE),
+        )
+        self.assertEqual(
+            resp.context['previous_attempt'],
+            None,
+        )
 
 
 class CreateViewTest(TestCase):
