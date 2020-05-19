@@ -1,6 +1,6 @@
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
-from programming.models import Question  # , QuestionTypeProgram, QuestionTypeFunction
+from programming.models import Question, QuestionTypeProgram, QuestionTypeFunction
 
 from codewof.tests.codewof_test_data_generator import (
     generate_users,
@@ -8,11 +8,11 @@ from codewof.tests.codewof_test_data_generator import (
     generate_attempts,
     generate_test_cases,
     generate_badges,
-    # generate_study_registrations,
+    generate_study_registrations,
 )
 from codewof.programming.codewof_utils import check_badge_conditions
 from codewof.tests.conftest import user
-# import json
+import json
 
 User = get_user_model()
 
@@ -32,21 +32,20 @@ class QuestionListViewTest(TestCase):
         self.assertTrue(login)
 
     # tests begin
-    # TODO: Understand why this code breaks the test coverage report
-    # def test_redirect_if_not_logged_in(self):
-    #     resp = self.client.get('/questions/')
-    #     self.assertRedirects(resp, '/accounts/login/?next=/questions/')
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get('/questions/')
+        self.assertRedirects(resp, '/accounts/login/?next=/questions/')
 
-    # def test_view_url_exists(self):
-    #     self.login_user()
-    #     resp = self.client.get('/questions/')
-    #     self.assertEqual(resp.status_code, 200)
+    def test_view_url_exists(self):
+        self.login_user()
+        resp = self.client.get('/questions/')
+        self.assertEqual(resp.status_code, 200)
 
-    # def test_view_uses_correct_template(self):
-    #     self.login_user()
-    #     resp = self.client.get('/questions/')
-    #     self.assertEqual(resp.status_code, 200)
-    #     self.assertTemplateUsed(resp, 'programming/question_list.html')
+    def test_view_uses_correct_template(self):
+        self.login_user()
+        resp = self.client.get('/questions/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'programming/question_list.html')
 
     def test_get_queryset(self):
         self.assertQuerysetEqual(
@@ -62,118 +61,116 @@ class QuestionListViewTest(TestCase):
         )
 
 
-# TODO: Understand why this class breaks the test coverage report
-# class QuestionViewTest(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         # never modify this object in tests
-#         generate_users(user)
-#         generate_questions()
-#         generate_test_cases()
+class QuestionViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_questions()
+        generate_test_cases()
 
-#     def setUp(self):
-#         self.client = Client()
+    def setUp(self):
+        self.client = Client()
 
-#     def login_user(self):
-#         login = self.client.login(email='john@uclive.ac.nz', password='onion')
-#         self.assertTrue(login)
+    def login_user(self):
+        login = self.client.login(email='john@uclive.ac.nz', password='onion')
+        self.assertTrue(login)
 
-#     # tests begin
-#     def test_redirect_if_not_logged_in(self):
-#         resp = self.client.get('/questions/1/')
-#         self.assertRedirects(resp, '/accounts/login/?next=/questions/1/')
+    # tests begin
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get('/questions/1/')
+        self.assertRedirects(resp, '/accounts/login/?next=/questions/1/')
 
-#     def test_view_url_exists(self):
-#         self.login_user()
-#         pk = Question.objects.get(slug='program-question-1').pk
-#         resp = self.client.get('/questions/{}/'.format(pk))
-#         self.assertEqual(resp.status_code, 200)
+    def test_view_url_exists(self):
+        self.login_user()
+        pk = Question.objects.get(slug='program-question-1').pk
+        resp = self.client.get('/questions/{}/'.format(pk))
+        self.assertEqual(resp.status_code, 200)
 
-#     def test_view_uses_correct_template(self):
-#         self.login_user()
-#         pk = Question.objects.get(slug='program-question-1').pk
-#         resp = self.client.get('/questions/{}/'.format(pk))
-#         self.assertEqual(resp.status_code, 200)
-#         self.assertTemplateUsed(resp, 'programming/question.html')
+    def test_view_uses_correct_template(self):
+        self.login_user()
+        pk = Question.objects.get(slug='program-question-1').pk
+        resp = self.client.get('/questions/{}/'.format(pk))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'programming/question.html')
 
-#     def test_get_object_question_exists(self):
-#         self.login_user()
-#         question = QuestionTypeProgram.objects.get(slug='program-question-1')
-#         resp = self.client.get('/questions/{}/'.format(question.pk))
-#         self.assertEqual(resp.status_code, 200)
-#         self.assertEqual(
-#             resp.context['question'],
-#             question
-#         )
+    def test_get_object_question_exists(self):
+        self.login_user()
+        question = QuestionTypeProgram.objects.get(slug='program-question-1')
+        resp = self.client.get('/questions/{}/'.format(question.pk))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            resp.context['question'],
+            question
+        )
 
-#     def test_get_object_question_does_not_exist(self):
-#         self.login_user()
-#         resp = self.client.get('/questions/{}/'.format('fake-primary-key'))
-#         self.assertEqual(resp.status_code, 404)
+    def test_get_object_question_does_not_exist(self):
+        self.login_user()
+        resp = self.client.get('/questions/{}/'.format('fake-primary-key'))
+        self.assertEqual(resp.status_code, 404)
 
-#     def test_get_object_question_not_in_study(self):
-#         self.login_user()
-#         generate_study_registrations()
-#         question = QuestionTypeFunction.objects.get(slug='function-question-1')
-#         resp = self.client.get('/questions/{}/'.format(question.pk))
-#         self.assertEqual(resp.status_code, 403)
+    def test_get_object_question_not_in_study(self):
+        self.login_user()
+        generate_study_registrations()
+        question = QuestionTypeFunction.objects.get(slug='function-question-1')
+        resp = self.client.get('/questions/{}/'.format(question.pk))
+        self.assertEqual(resp.status_code, 403)
 
-#     def test_context_data(self):
-#         self.login_user()
-#         question = QuestionTypeProgram.objects.get(slug='program-question-1')
-#         resp = self.client.get('/questions/{}/'.format(question.pk))
-#         self.assertEqual(resp.status_code, 200)
-#         self.assertCountEqual(
-#             resp.context['test_cases'],
-#             question.test_cases.values(),
-#         )
-#         self.assertCountEqual(
-#             resp.context['test_cases_json'],
-#             json.dumps(list(question.test_cases.values())),
-#         )
-#         self.assertEqual(
-#             resp.context['question_js'],
-#             'js/question_types/{}.js'.format(question.QUESTION_TYPE),
-#         )
-#         self.assertEqual(
-#             resp.context['previous_attempt'],
-#             None,
-#         )
+    def test_context_data(self):
+        self.login_user()
+        question = QuestionTypeProgram.objects.get(slug='program-question-1')
+        resp = self.client.get('/questions/{}/'.format(question.pk))
+        self.assertEqual(resp.status_code, 200)
+        self.assertCountEqual(
+            resp.context['test_cases'],
+            question.test_cases.values(),
+        )
+        self.assertCountEqual(
+            resp.context['test_cases_json'],
+            json.dumps(list(question.test_cases.values())),
+        )
+        self.assertEqual(
+            resp.context['question_js'],
+            'js/question_types/{}.js'.format(question.QUESTION_TYPE),
+        )
+        self.assertEqual(
+            resp.context['previous_attempt'],
+            None,
+        )
 
 
-# TODO: Understand why this class breaks the test coverage report
-# class CreateViewTest(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         # never modify this object in tests
-#         generate_users(user)
-#         generate_questions()
-#         generate_attempts()
+class CreateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_questions()
+        generate_attempts()
 
-#     def setUp(self):
-#         self.client = Client()
+    def setUp(self):
+        self.client = Client()
 
-#     def test_view_uses_correct_template(self):
-#         resp = self.client.get('/questions/create/')
-#         self.assertEqual(resp.status_code, 200)
-#         self.assertTemplateUsed(resp, 'programming/create.html')
+    def test_view_uses_correct_template(self):
+        resp = self.client.get('/questions/create/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'programming/create.html')
 
-#     def test_context_object(self):
-#         user = User.objects.get(id=1)
-#         check_badge_conditions(user.profile)  # make sure a program question has been answered
+    def test_context_object(self):
+        user = User.objects.get(id=1)
+        check_badge_conditions(user.profile)  # make sure a program question has been answered
 
-#         resp = self.client.get('/questions/create/')
-#         self.assertEqual(resp.status_code, 200)
-#         self.assertEqual(
-#             resp.context['question_types'],
-#             [
-#                 {'name': 'Program', 'count': 1, 'unanswered_count': 0},
-#                 {'name': 'Function', 'count': 1, 'unanswered_count': 1},
-#                 {'name': 'Parsons', 'count': 1, 'unanswered_count': 1},
-#                 {'name': 'Debugging', 'count': 1, 'unanswered_count': 1},
+        resp = self.client.get('/questions/create/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            resp.context['question_types'],
+            [
+                {'name': 'Program', 'count': 1, 'unanswered_count': 0},
+                {'name': 'Function', 'count': 1, 'unanswered_count': 1},
+                {'name': 'Parsons', 'count': 1, 'unanswered_count': 1},
+                {'name': 'Debugging', 'count': 1, 'unanswered_count': 1},
 
-#             ]
-#         )
+            ]
+        )
 
 
 class SaveQuestionAttemptTest(TestCase):
