@@ -28,7 +28,7 @@ else:
 
 # Exempt Google App Engine cron job URLs from HTTPS to function correctly.
 SECURE_REDIRECT_EXEMPT = [
-    r'^/?cron/.*',
+    r'^tasks/.*',
 ]
 
 # DATABASES
@@ -52,8 +52,6 @@ DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=0)  # noq
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-ssl-redirect
 SECURE_SSL_REDIRECT = env.bool('DJANGO_SECURE_SSL_REDIRECT', default=True)
-# Exempt requests to (Google App Engine Cron) tasks
-SECURE_REDIRECT_EXEMPT = [r'/tasks/backdate']
 # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-secure
 SESSION_COOKIE_SECURE = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-secure
