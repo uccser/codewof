@@ -8,6 +8,8 @@ from google.cloud import logging as google_cloud_logging
 
 # GENERAL
 # ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#debug
+DEBUG = False
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 # SECURITY WARNING: App Engine's security features ensure that it is safe to

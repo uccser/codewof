@@ -221,44 +221,67 @@ def calculate_badge_points(badges):
     return points
 
 
-def backdate_points_and_badges():
-    """Perform backdate of all points and badges for each profile in the system."""
+def backdate_user(profile):
+    """Perform backdate of a single user profile."""
+    attempts = Attempt.objects.filter(profile=profile)
+    profile = backdate_badges(profile, user_attempts=attempts)
+    profile = backdate_points(profile, user_attempts=attempts)
+    profile.has_backdated = True
+    profile.full_clean()
+    profile.save()
+
+
+def backdate_points_and_badges(n=-1, ignoreFlags=True):
+    """Perform batch backdate of all points and badges for n profiles in the system."""
     backdate_badges_times = []
     backdate_points_times = []
     time_before = time.perf_counter()
     profiles = Profile.objects.all()
+    if not ignoreFlags:
+        profiles = profiles.filter(has_backdated=False)
+    if (n > 0):
+        profiles = profiles[:n]
     num_profiles = len(profiles)
     all_attempts = Attempt.objects.all()
     for i in range(num_profiles):
         # The commented out part below seems to break travis somehow
-        print("Backdating user: " + str(i + 1) + "/" + str(num_profiles))  # , end="\r")
+        print("Backdating user: {}/{}".format(str(i + 1), str(num_profiles)))  # , end="\r")
         profile = profiles[i]
-        attempts = all_attempts.filter(profile=profile)
+        if not profile.has_backdated or ignoreFlags:
+            attempts = all_attempts.filter(profile=profile)
 
-        badges_time_before = time.perf_counter()
-        profile = backdate_badges(profile, user_attempts=attempts)
-        badges_time_after = time.perf_counter()
-        backdate_badges_times.append(badges_time_after - badges_time_before)
+            badges_time_before = time.perf_counter()
+            profile = backdate_badges(profile, user_attempts=attempts)
+            badges_time_after = time.perf_counter()
+            backdate_badges_times.append(badges_time_after - badges_time_before)
 
-        points_time_before = time.perf_counter()
-        profile = backdate_points(profile, user_attempts=attempts)
-        points_time_after = time.perf_counter()
-        backdate_points_times.append(points_time_after - points_time_before)
-        # save profile when update is completed
-        profile.full_clean()
-        profile.save()
+            points_time_before = time.perf_counter()
+            profile = backdate_points(profile, user_attempts=attempts)
+            points_time_after = time.perf_counter()
+            backdate_points_times.append(points_time_after - points_time_before)
+            # save profile when update is completed
+            profile.has_backdated = True
+            profile.full_clean()
+            profile.save()
+        else:
+            print("User {} has already been backdated".format(str(i + 1)))
     time_after = time.perf_counter()
     print("\nBackdate complete.")
 
-    badges_ave = statistics.mean(backdate_badges_times)
-    logger.debug(f"Average time per user to backdate badges: {badges_ave:0.4f} seconds")
-
-    points_ave = statistics.mean(backdate_points_times)
-    logger.debug(f"Average time per user to backdate points: {points_ave:0.4f} seconds")
-
     duration = time_after - time_before
-    average = duration / num_profiles
-    logger.debug(f"Backdate duration {duration:0.4f} seconds, average per user {average:0.4f} seconds")
+
+    if len(backdate_badges_times) > 0 and len(backdate_points_times) > 0:
+        badges_ave = statistics.mean(backdate_badges_times)
+        logger.debug(f"Average time per user to backdate badges: {badges_ave:0.4f} seconds")
+
+        points_ave = statistics.mean(backdate_points_times)
+        logger.debug(f"Average time per user to backdate points: {points_ave:0.4f} seconds")
+
+        average = duration / num_profiles
+        logger.debug(f"Backdate duration {duration:0.4f} seconds, average per user {average:0.4f} seconds")
+    else:
+        logger.debug(f"No users were backdated")
+        logger.debug(f"Backdate duration {duration:0.4f} seconds")
 
 
 def backdate_points(profile, user_attempts=None):
