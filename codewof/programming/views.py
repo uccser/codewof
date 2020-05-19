@@ -194,7 +194,7 @@ def save_question_attempt(request):
 def partial_backdate(request):
     """Backdate a set number of user profiles.
 
-    Returns a 403 Forbidden response if the request was made to a production website and did not come from GCP.
+    Returns a 403 Forbidden response if the request was made to a live website and did not come from GCP.
     """
     # https://cloud.google.com/appengine/docs/standard/python3/scheduling-jobs-with-cron-yaml?hl=en_US
     # #validating_cron_requests

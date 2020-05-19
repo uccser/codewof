@@ -15,12 +15,12 @@ class Command(BaseCommand):
             '--ignore_flags',
             action='store_true',
             help='ignore status of backdate flags',
-            )
+        )
         parser.add_argument(
             '--profiles',
             default=-1,
             help='number of profiles to backdate',
-            )
+        )
 
     def handle(self, *args, **options):
         """Automatically called when the backdate command is given."""
