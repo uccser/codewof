@@ -186,6 +186,16 @@ cmd_sampledata() {
 }
 defhelp sampledata "Add sample data to website."
 
+cmd_raise_backdate_flags() {
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py raise_backdate_flags
+}
+defhelp raise_backdate_flags 'Raise a flag on all user profiles, requiring a backdate be done on them.'
+
+cmd_backdate() {
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py backdate_points_and_badges --ignore_flags
+}
+defhelp backdate 'Re-calculate points and badges earned for all user profiles.'
+
 # Reboot Django Docker container
 cmd_reboot_django() {
   echo "Rebooting Django Docker container..."
@@ -331,11 +341,6 @@ cmd_dev() {
     return 1
   fi
 }
-
-cmd_backdate() {
-  docker-compose exec django /docker_venv/bin/python3 ./manage.py backdate_points_and_badges
-}
-defhelp backdate 'Re-calculates points and badges earned for all user profiles.'
 
 # If no command given
 if [ $# -eq 0 ]; then
