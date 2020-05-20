@@ -141,7 +141,7 @@ def check_badge_conditions(profile, user_attempts=None):
                 profile=profile,
                 badge=creation_badge
             )
-            new_badge_names = new_badge_names + "- " + creation_badge.display_name + "\n"
+            new_badge_names += creation_badge.display_name + "\n"
             new_badge_objects.append(creation_badge)
     except Badge.DoesNotExist:
         logger.warning("No such badge: create-account")
@@ -159,7 +159,7 @@ def check_badge_conditions(profile, user_attempts=None):
                         profile=profile,
                         badge=question_badge
                     )
-                    new_badge_names = new_badge_names + "- " + question_badge.display_name + "\n"
+                    new_badge_names += question_badge.display_name + "\n"
                     new_badge_objects.append(question_badge)
                 else:
                     # hasn't achieved the current badge tier so won't achieve any higher ones
@@ -180,7 +180,7 @@ def check_badge_conditions(profile, user_attempts=None):
                         profile=profile,
                         badge=attempt_badge
                     )
-                    new_badge_names = new_badge_names + "- " + attempt_badge.display_name + "\n"
+                    new_badge_names += attempt_badge.display_name + "\n"
                     new_badge_objects.append(attempt_badge)
                 else:
                     # hasn't achieved the current badge tier so won't achieve any higher ones
@@ -200,7 +200,7 @@ def check_badge_conditions(profile, user_attempts=None):
                     profile=profile,
                     badge=consec_badge
                 )
-                new_badge_names = new_badge_names + "- " + consec_badge.display_name + "\n"
+                new_badge_names += consec_badge.display_name + "\n"
                 new_badge_objects.append(consec_badge)
             else:
                 # hasn't achieved the current badge tier so won't achieve any higher ones
