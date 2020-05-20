@@ -39,7 +39,7 @@ class TestCodewofUtils(TestCase):
 
     def test_add_points_first_attempt_correct(self):
         user = User.objects.get(id=1)
-        question = Question.objects.get(id=1)
+        question = Question.objects.get(slug='question-1')
         attempt = Attempt.objects.create(
             profile=user.profile,
             question=question,
@@ -51,7 +51,7 @@ class TestCodewofUtils(TestCase):
 
     def test_add_points_first_attempt_incorrect(self):
         user = User.objects.get(id=1)
-        question = Question.objects.get(id=1)
+        question = Question.objects.get(slug='question-1')
         attempt_1 = Attempt.objects.create(
             profile=user.profile,
             question=question,
@@ -102,6 +102,23 @@ class TestCodewofUtils(TestCase):
         self.assertTrue(earned_badges.filter(id_name='attempts-made-5').exists())
         self.assertTrue(earned_badges.filter(id_name='questions-solved-1').exists())
         self.assertTrue(earned_badges.filter(id_name='consecutive-days-2').exists())
+
+    def test_check_badge_conditions_question_already_solved(self):
+        generate_attempts()
+        user = User.objects.get(id=1)
+        self.assertEqual(user.profile.earned_badges.count(), 0)
+        check_badge_conditions(user.profile)
+        self.assertEqual(user.profile.earned_badges.count(), 5)
+        question = Question.objects.get(slug='program-question-1')
+
+        # generate two more correct attempts for the SAME question
+        # this would put the total number of correct submissions at 5
+        # but since it's for the SAME question, it does not contribute to the questions solved badge
+        Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
+        Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
+        check_badge_conditions(user.profile)
+        earned_badges = user.profile.earned_badges
+        self.assertFalse(earned_badges.filter(id_name='questions-solved-5').exists())
 
     def test_get_days_consecutively_answered(self):
         generate_attempts()
