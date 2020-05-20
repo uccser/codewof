@@ -12,6 +12,13 @@ from programming.models import (
     QuestionTypeFunction,
     QuestionTypeParsons,
     QuestionTypeDebugging,
+    QuestionTypeProgramTestCase,
+)
+
+from research.models import (
+    Study,
+    StudyGroup,
+    StudyRegistration,
 )
 
 from users.models import UserType
@@ -83,16 +90,52 @@ def generate_users(user):
 def generate_badges():
     """Create badges for codeWOF tests. Badges created for each main current badge category."""
     Badge.objects.create(
-        id_name='questions-solved-1',
-        display_name='Solved one question',
-        description='first',
-        badge_tier=1,
-    )
-    Badge.objects.create(
         id_name='create-account',
         display_name='Account created',
         description='test',
         badge_tier=0,
+    )
+    # Questions solved badges
+    Badge.objects.create(
+        id_name='questions-solved-100',
+        display_name='Solved one hundred questions',
+        description='test',
+        badge_tier=4,
+    )
+    Badge.objects.create(
+        id_name='questions-solved-10',
+        display_name='Solved ten questions',
+        description='test',
+        badge_tier=3,
+        parent=Badge.objects.get(id_name='questions-solved-100')
+    )
+    Badge.objects.create(
+        id_name='questions-solved-5',
+        display_name='Solved five questions',
+        description='test',
+        badge_tier=2,
+        parent=Badge.objects.get(id_name='questions-solved-10')
+    )
+    Badge.objects.create(
+        id_name='questions-solved-1',
+        display_name='Solved one question',
+        description='first',
+        badge_tier=1,
+        parent=Badge.objects.get(id_name='questions-solved-5')
+    )
+    # Attempts made badges
+    Badge.objects.create(
+        id_name='attempts-made-100',
+        display_name='One hundred attempts made',
+        description='test',
+        badge_tier=4,
+    )
+    Badge.objects.create(
+        id_name='attempts-made-10',
+        display_name='Ten attempts made',
+        description='test',
+        badge_tier=3,
+        parent=Badge.objects.get(id_name='attempts-made-100')
     )
     Badge.objects.create(
         id_name='attempts-made-5',
@@ -107,6 +150,7 @@ def generate_badges():
         badge_tier=1,
         parent=Badge.objects.get(id_name='attempts-made-5')
     )
+    # Only need one of the consecutive days badges
     Badge.objects.create(
         id_name='consecutive-days-2',
         display_name='Two consecutive days',
@@ -123,7 +167,7 @@ def generate_attempts():
     and passed attempts. These attempts cover the main requirements to gain all test badges.
     """
     user = User.objects.get(id=1)
-    question = Question.objects.get(slug='question-1')
+    question = Question.objects.get(slug='program-question-1')
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=False)
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=False)
@@ -131,3 +175,39 @@ def generate_attempts():
                            datetime=datetime.date(2019, 9, 9))
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=True,
                            datetime=datetime.date(2019, 9, 10))
+
+
+def generate_test_cases():
+    """Generate test cases for codeWOF questions. Test cases are generated for program-question-1."""
+    question = QuestionTypeProgram.objects.get(slug='program-question-1')
+
+    QuestionTypeProgramTestCase.objects.create(
+        id=1,
+        test_input="",
+        question=question
+    )
+
+
+def generate_study_registrations():
+    """
+    Generate studies, study groups and study registrations.
+
+    One study is generated that has one study group which contains program-question-1.
+    Only user 1 is registered for this study.
+    """
+    study = Study.objects.create(
+        title='study-1',
+        start_date=datetime.date(2019, 1, 15),
+        end_date=datetime.date(3000, 1, 15)
+    )
+    question = QuestionTypeProgram.objects.get(slug='program-question-1')
+    study_group = StudyGroup.objects.create(
+        title='study-group-1',
+        study=study,
+    )
+    study_group.questions.add(question)
+    user = User.objects.get(id=1)
+    StudyRegistration.objects.create(
+        study_group=study_group,
+        user=user,
+    )

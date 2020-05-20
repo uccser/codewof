@@ -270,9 +270,9 @@ $red: #b94a48;
 }
 
 #toast-container {
-  position: absolute;
-  top: 0;
-  right: 0;
+  position: fixed;
+  top: 3rem;
+  right: 2rem;
 }
 
 .toast {
@@ -297,4 +297,5 @@ $red: #b94a48;
 .toast-body {
   border: 1px solid $brand-colour;
   background-color: brand-colour-light;
+  white-space: pre;
 }
