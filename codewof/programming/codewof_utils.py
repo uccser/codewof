@@ -36,6 +36,7 @@ def add_points(question, profile, attempt):
     """
     Add appropriate number of points (if any) to user profile after a question is answered.
 
+    Adds points to a user's profile for when the user answers a question correctly for the first time.
     Subsequent correct answers should not award any points.
     """
     attempts = Attempt.objects.filter(question=question, profile=profile)

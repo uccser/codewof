@@ -40,4 +40,4 @@ python ./infrastructure/replace_envs.py ./infrastructure/prod-deploy/app.yaml
 # that the apps deploy to the correct services.
 # See: https://cloud.google.com/sdk/gcloud/reference/app/deploy
 gcloud app deploy ./app.yaml --quiet --project=codewof
-gcloud app deploy ./cron.yaml --quiet --project=codewof
+gcloud app deploy ./infrastructure/prod-deploy/cron.yaml --quiet --project=codewof

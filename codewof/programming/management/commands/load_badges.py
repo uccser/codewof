@@ -3,7 +3,7 @@
 from django.core.management.base import BaseCommand
 from programming.models import Badge
 
-# TODO: Relocate
+# TODO: Consider relocating to a yaml file like the questions
 BADGES = [
     {
         'id_name':      'create-account',

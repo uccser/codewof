@@ -15,4 +15,4 @@ source ./codewof/load-dev-envs.sh
 ./dev start
 ./dev migrate
 ./dev sampledata --skip_backdate
-./raise_backdate_flags
+./dev raise_backdate_flags
