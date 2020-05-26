@@ -62,6 +62,7 @@ class AttemptAdmin(admin.ModelAdmin):
     """Configuration for displaying attempts in admin."""
 
     list_display = ('datetime', 'question', 'profile', 'passed_tests')
+    list_filter = ['passed_tests', 'question']
     ordering = ('-datetime', )
     inlines = (TestCaseAttemptInline, )
 
