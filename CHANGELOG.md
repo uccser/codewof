@@ -8,8 +8,7 @@
 - Update Django from 2.1.5 to 2.2.3.
 - Dependency updates:
     - Remove django-coverage-plugin.
-    - Update coverage from 4.5.4 to 5.0.4.
-    - Update coverage from 5.0.4 to 5.1.
+    - Update coverage from 4.5.4 to 5.1.
     - Update django-activeurl from 0.1.12 to 0.2.0.
     - Update django-allauth from 0.39.1 to 0.41.0.
     - Update django-ckeditor from 5.7.1 to 5.9.0.
@@ -29,8 +28,8 @@
     - Update pydocstyle from 4.0.1 to 5.0.2.
     - Update pytest from 5.1.1 to 5.4.1.
     - Update pytest-django from 3.5.1 to 3.8.0.
-    - Update PyYAML from 5.1.2 to 5.3.
-    - Update Sphinx from 2.2.0 to 2.4.4.
+    - Update PyYAML from 5.1.2 to 5.3.1.
+    - Update Sphinx from 2.2.0 to 3.0.4.
 
 ## 1.5.3
 

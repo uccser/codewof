@@ -50,7 +50,7 @@ cmd_start() {
   echo "Run the command ./dev update to load content."
 }
 
-defhelp start 'Start development environment (this also runs the update command).'
+defhelp start 'Start development environment.'
 
 # Stop development environment
 cmd_end() {
