@@ -1,12 +1,13 @@
 # Changelog
 
 ## 1.6.0
+
 - Add gamification system that allows users to earn points and badges.
-- Add more filters for question attempts on the admin site.
-- Add cron job that every minute will backdate any 15 user profiles that haven't already been backdated.
+- Add ability for the CodeWOF server to recalculate a user's points and badges from their past attempts.
+- Improve the CodeWOF admin site with more information and filtering options.
 - Update Django from 2.1.5 to 2.2.3.
 - Dependency updates:
-    - Removed django-coverage-plugin.
+    - Remove django-coverage-plugin.
     - Update coverage from 4.5.4 to 5.0.4.
     - Update coverage from 5.0.4 to 5.1.
     - Update django-activeurl from 0.1.12 to 0.2.0.
@@ -32,15 +33,19 @@
     - Update Sphinx from 2.2.0 to 2.4.4.
 
 ## 1.5.3
+
 - Use default settings for split health checks.
 
 ## 1.5.2
+
 - Split GCP health check URLs.
 
 ## 1.5.1
+
 - Update GCP health checks.
 
 ## 1.5.0
+
 - Add 7 new questions.
 - Fix test case where no argument was passed for the total of evens question. Fixes #101
 - Fix error in example of the driver speed question.

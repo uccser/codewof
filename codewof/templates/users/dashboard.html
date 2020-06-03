@@ -30,11 +30,11 @@
             <strong>Sorry!</strong> We currently don't have questions for you to do today.
           </div>
         {% endif %}
-        <p>You've solved {{num_questions_answered}} question{{ num_questions_answered|pluralize }} in the last month!</p>
+        <p>You've solved {{ num_questions_answered }} question{{ num_questions_answered|pluralize }} in the last month!</p>
       </div>
 
       <div class="col-12 col-md-4 mb-3">
-        <h2>Points earned: {{user.profile.points}}</h2>
+        <h2>Points earned: {{ user.profile.points }}</h2>
         <h2>Achievements</a></h2>
         <br>
         {% for badge in all_badges %}
@@ -42,7 +42,7 @@
               <div class="badge-container">
                 <a class="achievements-link" href="{% url 'users:achievements' %}">
                   <img class="badge-icon" src="{% static badge.icon_name %}">
-                  <b>{{badge.display_name}}</b>
+                  <b>{{ badge.display_name }}</b>
                 </a>
               </div>
             {% endif %}
