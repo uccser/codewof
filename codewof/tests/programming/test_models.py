@@ -128,20 +128,6 @@ class BadgeModelTests(TestCase):
         earned = Earned.objects.filter(profile=user.profile, badge=badge)
         self.assertEqual(len(earned), 1)
 
-    # def test_doesnt_award_twice_create_account(self):
-    #     user = User.objects.get(pk=1)
-    #     badge = Badge.objects.get(id_name="create-account")
-    #     Earned.objects.create(profile=user.profile, badge=badge)
-    #     check_badge_conditions(user.profile)
-
-    #     earned = Earned.objects.filter(profile=user.profile, badge=badge)
-    #     self.assertEqual(len(earned), 1)
-
-    # def test_adding_unknown_badge_doesnt_break(self):
-    #     Badge.objects.create(id_name="notrealbadge", display_name="test", description="test")
-    #     user = User.objects.get(pk=1)
-    #     check_badge_conditions(user.profile)
-
     def test_award_solve_1_on_correct_attempt(self):
         user = User.objects.get(pk=1)
         question = Question.objects.create(title="Test question", question_text="Print hello world")
@@ -381,10 +367,3 @@ class QuestionTypeDebuggingModelTests(TestCase):
     def test_read_only_lines_bottom_default(self):
         debugging_question = Question.objects.get_subclass(slug="debugging-question-1")
         self.assertEqual(debugging_question.read_only_lines_bottom, 0)
-
-
-# class TestCaseModelTests(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         # never modify this object in tests - read only
-#         generate_questions()
