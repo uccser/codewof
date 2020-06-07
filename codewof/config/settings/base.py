@@ -390,12 +390,18 @@ SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
 SVG_DIRS = [
     os.path.join(str(STATIC_ROOT), 'svg')
 ]
+# Key 'example_code' uses underscore to be accessible in templates
 STYLE_CHECKER_LANGUAGES = {
     'python3': {
         'name': 'Python 3',
         'svg-icon': 'devicon-python.svg',
-        'checker-config': os.path.join(str(ROOT_DIR), 'style', 'style_checkers', 'flake8.ini'),
-        'example-code': """\"\"\"a simple fizzbuzz program.\"\"\"
+        'checker-config': os.path.join(
+            str(ROOT_DIR),
+            'style',
+            'style_checkers',
+            'flake8.ini'
+        ),
+        'example_code': """\"\"\"a simple fizzbuzz program.\"\"\"
 
 def fizzbuzz():
     for i in range(1 ,100):

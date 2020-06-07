@@ -44,7 +44,7 @@ def python3_style_check(code):
 
     # Process results
     result_text = checker_result.stdout.decode('utf-8')
-    is_example_code = code == PYTHON3_DETAILS['example-code']
+    is_example_code = code == PYTHON3_DETAILS['example_code']
     result_data = process_results(result_text, is_example_code)
 
     # Delete file from HDD
@@ -117,6 +117,7 @@ def process_line(line_text, is_example_code):
                 'title': error_message,
                 'line_number': line_number,
             }
+    print(issue_data)
     return issue_data
 
 

@@ -10,8 +10,9 @@ class Error(models.Model):
     code = models.CharField(max_length=20)
     count = models.PositiveIntegerField(default=0)
     original_message = models.TextField(blank=True)
-    title = models.TextField()
     title_templated = models.BooleanField(default=False)
+    # The following fields are stored as HTML
+    title = models.TextField()
     solution = models.TextField()
     explanation = models.TextField()
 

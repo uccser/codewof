@@ -11,14 +11,14 @@
                         - Issue code: {{ issue.error_code }}
                     </span>
                 </small>
-                <div class="feedback-title font-weight-bold text-danger">
+                <div class="feedback-title">
                     {{ issue.title|safe }}
                 </div>
-                <div>
+                <div class="feedback-solution">
                     {{ issue.solution|safe }}
                 </div>
                 {% if issue.explanation %}
-                    <div>
+                    <div class="feedback-explanation">
                         {{ issue.explanation|safe }}
                     </div>
                 {% endif %}

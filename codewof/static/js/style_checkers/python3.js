@@ -72,7 +72,6 @@ function display_style_checker_results(data, textStatus, jqXHR) {
         result_text = data['result_text'];
         $('#check_btn').hide();
         $('#reset-btn').show();
-        $('#download-file-btn').show();
     } else {
         display_style_checker_error();
     }
@@ -109,7 +108,6 @@ function reset() {
     result_text = '';
     $('#reset-btn').hide();
     $('#run-checker-error').hide();
-    $('#download-file-btn').hide();
     $('.CodeMirror').removeClass('read-only');
     $('#run-checker-result').empty();
     $('#check_btn').show();

@@ -1,3 +1,9 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/mixins";
+@import "core-variables";
+@import "functions";
+@import "node_modules/bootstrap/scss/variables";
+
 $highlight_colour: #ffeb3b;
 
 .style-highlight {
@@ -23,7 +29,14 @@ $highlight_colour: #ffeb3b;
 }
 
 #run-checker-error,
-#download-file-btn,
 #reset-btn {
     display: none;
+}
+
+.feedback-title {
+    p {
+        margin-bottom: 0;
+        color: $red;
+        font-weight: bold;;
+    }
 }
