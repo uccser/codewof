@@ -2,7 +2,7 @@
 
 ## 2.0.0
 
-Add Gamification.
+Adds gamification elements (points and badges) to the website, including for all previous submissions for each user.
 
 - Add gamification system that allows users to earn points and badges.
 - Add ability for the CodeWOF server to recalculate a user's points and badges from their past attempts.

@@ -26,7 +26,7 @@ class Command(management.base.BaseCommand):
             '--skip_backdate',
             action='store_true',
             help='skip backdate step',
-            )
+        )
 
     def handle(self, *args, **options):
         """Automatically called when the sampledata command is given."""
