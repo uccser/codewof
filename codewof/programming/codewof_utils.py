@@ -16,7 +16,6 @@ from programming.models import (
 from django.http import JsonResponse
 
 logger = logging.getLogger(__name__)
-del logging
 
 LOGGING = {
     'version': 1,
