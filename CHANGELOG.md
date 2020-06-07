@@ -1,6 +1,8 @@
 # Changelog
 
-## 1.6.0
+## 2.0.0
+
+Add Gamification.
 
 - Add gamification system that allows users to earn points and badges.
 - Add ability for the CodeWOF server to recalculate a user's points and badges from their past attempts.
