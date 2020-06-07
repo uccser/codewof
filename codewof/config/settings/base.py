@@ -5,7 +5,6 @@ import os.path
 import environ
 from utils.get_upload_filepath import get_upload_path_for_date
 
-
 # codewof/codewof/config/settings/base.py - 3 = codewof/codewof/
 ROOT_DIR = environ.Path(__file__) - 3
 
@@ -317,6 +316,10 @@ ACTIVE_URL_KWARGS = {
     'menu': 'yes',
     'ignore_params': 'no'
 }
+
+ACTIVE_URL_CACHE = True
+ACTIVE_URL_CACHE_TIMEOUT = 60 * 60 * 24  # 1 day
+ACTIVE_URL_CACHE_PREFIX = 'django_activeurl'
 
 # django-rest-framework
 # ------------------------------------------------------------------------------
