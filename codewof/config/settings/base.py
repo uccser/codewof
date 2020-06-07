@@ -118,6 +118,7 @@ THIRD_PARTY_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'captcha',
+    'django_bootstrap_breadcrumbs',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
@@ -380,6 +381,7 @@ CKEDITOR_CONFIGS = {
 
 # Other
 # ------------------------------------------------------------------------------
+BREADCRUMBS_TEMPLATE = "django_bootstrap_breadcrumbs/bootstrap4.html"
 DEPLOYMENT_TYPE = env("DEPLOYMENT", default='local')
 QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path("programming")), "content")
 CUSTOM_VERTO_TEMPLATES = os.path.join(str(ROOT_DIR.path("utils")), "custom_converter_templates", "")
@@ -388,8 +390,27 @@ SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
 SVG_DIRS = [
     os.path.join(str(STATIC_ROOT), 'svg')
 ]
+STYLE_CHECKER_LANGUAGES = {
+    'python3': {
+        'name': 'Python 3',
+        'svg-icon': 'devicon-python.svg',
+        'checker-config': os.path.join(str(ROOT_DIR), 'style', 'style_checkers', 'flake8.ini'),
+        'example-code': """\"\"\"a simple fizzbuzz program.\"\"\"
+
+def fizzbuzz():
+    for i in range(1 ,100):
+        if i % 3 == 0 and i % 5 == 0 :
+            print("FizzBuzz")
+        elif i%3 == 0:
+            print( "Fizz")
+        elif  i % 5==0:
+            print("Buzz")
+        else:
+            print(i)
+"""
+    },
+}
 STYLE_CHECKER_TEMP_FILES_ROOT = os.path.join(str(ROOT_DIR), 'temp', 'style')
-STYLE_CHECKER_PYTHON3_SETTINGS = os.path.join(str(ROOT_DIR), 'style', 'style_checkers', 'flake8.ini')
 STYLE_CHECKER_MAX_CHARACTER_COUNT = 10000
 
 # reCAPTCHA

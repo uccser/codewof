@@ -1,22 +1,18 @@
 {% extends "base.html" %}
 
-{% load static svg %}
+{% load static svg i18n django_bootstrap_breadcrumbs %}
 
-{% block title %}Python Style Checker for schools{% endblock %}
+{% block title %}{{ language.name }} Style Checker for beginners{% endblock %}
+
+{% block breadcrumbs %}
+    {% trans "Home" as home_label %}
+    {% breadcrumb home_label "general:home" %}
+    {% breadcrumb "Style Checkers" "style:home" %}
+    {% breadcrumb language.name "style:language" language.slug %}
+{% endblock breadcrumbs %}
 
 {% block page_heading %}
-    <div>
-        <div class="d-inline-block img-x4">
-            {% svg 'devicon-python' %}
-        </div>
-        <h1 class="d-inline-block">
-            Python Style Checker <small class="text-muted">for schools</small>
-        </h1>
-    </div>
-    <p>
-        This style checker will check your code against the main conventions recommended for Python in <a href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a> (Style Guide for Python Code) and <a href="https://www.python.org/dev/peps/pep-0257/">PEP 257</a> (Docstring Conventions).
-        Fine tuning your code to pass these common conventions makes it easy for others to read your Python code.
-    </p>
+    {% include language_header %}
 {% endblock page_heading %}
 
 {% block content_container %}
@@ -46,8 +42,8 @@
             We have encountered an error.
             Feel free to <a href="{% url 'general:contact' %}">contact us</a> if this error continues.
         </div>
-        <button type="button" id="download-file-btn" class="btn btn-sm btn-secondary mt-2">
-            Download results as .txt file
+        <button type="button" id="download-file-btn" class="btn btn-sm btn-secondary mt-2" disabled>
+            Download results as .txt file (coming soon)
         </button>
     </div>
 
@@ -62,6 +58,8 @@
     {% csrf_token %}
     <script type="text/javascript">
         var MAX_CHARACTER_COUNT = "{{ MAX_CHARACTER_COUNT }}";
+        var EXAMPLE_CODE = `{{ language.example_code|safe }}`;
     </script>
-    <script src="{% static 'js/style_checkers/python.js' %}"></script>
+    <script src="{% static language_js %}"></script>
+
 {% endblock scripts %}

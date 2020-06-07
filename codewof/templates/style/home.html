@@ -1,13 +1,30 @@
 {% extends "base.html" %}
 
-{% load static %}
+{% load static svg i18n django_bootstrap_breadcrumbs %}
 
-{% block title %}Style Checker{% endblock %}
+{% block title %}Style Checkers for schools{% endblock %}
+
+{% block breadcrumbs %}
+    {% trans "Home" as home_label %}
+    {% breadcrumb home_label "general:home" %}
+    {% breadcrumb "Style Checkers" "style:home" %}
+{% endblock breadcrumbs %}
 
 {% block page_heading %}
-    <h1>Style Checker</h1>
+    <h1>Style Checkers <span class="text-muted">for beginners</span></h1>
 {% endblock page_heading %}
 
 {% block content %}
-    <p>Currently no style checkers are available.</p>
+    <p>The following checkers provide feedback on the style of your code using professional standards. However we provide simplified descriptions and explanations to easily help you improve your coding style.</p>
+
+    {% for language_code,language_data in languages.items %}
+        <a href="{% url 'style:language' language_code %}" class="btn btn-light text-center border">
+            <div class="d-inline-block img-x4 pt-2">
+                {% svg 'devicon-python' %}
+            </div>
+            <div><strong>{{ language_data.name }}</strong></div>
+        </a>
+    {% empty %}
+        <p>Currently no style checkers are available.</p>
+    {% endfor %}
 {% endblock content %}

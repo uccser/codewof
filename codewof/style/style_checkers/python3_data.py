@@ -1,56 +1,56 @@
-PYTHON_ISSUES = {
+DATA = {
     "E101": {
         "original_message": "indentation contains mixed spaces and tabs",
-        "templated": False,
+        "title_templated": False,
         "title": "This line is indented using a mixture of spaces and tabs.",
         "solution": "You should indent your code using only spaces.",
         "explanation": "Python expects the indentation method to be consistent line to line. Spaces are the preferred indentation method."
     },
     "E111": {
         "original_message": "indentation is not a multiple of four",
-        "templated": False,
+        "title_templated": False,
         "title": "This line has an indentation level that is not a multiple of four.",
         "solution": "Ensure that the first indentation level is 4 spaces, the second indentation level is 8 spaces and so on.",
         "explanation": ""
     },
     "E112": {
         "original_message": "expected an indented block",
-        "templated": False,
+        "title_templated": False,
         "title": "This line is not indented at the correct level.",
         "solution": "Add indentation to this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E113": {
         "original_message": "unexpected indentation",
-        "templated": False,
+        "title_templated": False,
         "title": "This line is indented when it shouldn't be.",
         "solution": "Remove indentation from this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E114": {
         "original_message": "indentation is not a multiple of four (comment)",
-        "templated": False,
+        "title_templated": False,
         "title": "This line has an indentation level that is not a multiple of four.",
         "solution": "Ensure that the first indentation level is 4 spaces, the second indentation level is 8 spaces and so on.",
         "explanation": ""
     },
     "E115": {
         "original_message": "expected an indented block (comment)",
-        "templated": False,
+        "title_templated": False,
         "title": "This line is not indented at the correct level.",
         "solution": "Add indentation to this line until it is indented at the correct level.",
         "explanation": "Comments should be indented relative to the code block they are in."
     },
     "E116": {
         "original_message": "unexpected indentation (comment)",
-        "templated": False,
+        "title_templated": False,
         "title": "This line is indented when it shouldn't be.",
         "solution": "Remove indentation from this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E117": {
         "original_message": "over-indented",
-        "templated": False,
+        "title_templated": False,
         "title": "This line has too many indentation levels.",
         "solution": "Remove indentation from this line until it is indented at the correct level.",
         "explanation": ""
@@ -58,14 +58,14 @@ PYTHON_ISSUES = {
     # E121 ignored by default
     "E121": {
         "original_message": "continuation line under-indented for hanging indent",
-        "templated": False,
+        "title_templated": False,
         "title": "This line is less indented than it should be.",
         "solution": "Add indentation to this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E122": {
         "original_message": "continuation line missing indentation or outdented",
-        "templated": False,
+        "title_templated": False,
         "title": "This line is not indented as far as it should be or is indented too far.",
         "solution": "Add or remove indentation levels until it is indented at the correct level.",
         "explanation": ""
@@ -73,21 +73,21 @@ PYTHON_ISSUES = {
     # E123 ignored by default
     "E123": {
         "original_message": "closing bracket does not match indentation of opening bracket’s line",
-        "templated": False,
+        "title_templated": False,
         "title": "This line has a closing bracket that does not match the indentation level of the line that the opening bracket started on.",
         "solution": "Add or remove indentation of the closing bracket so it matches the indentation of the line that the opening bracket is on.",
         "explanation": ""
     },
     "E124": {
         "original_message": "closing bracket does not match visual indentation",
-        "templated": False,
+        "title_templated": False,
         "title": "This line has a closing bracket that does not match the indentation of the opening bracket.",
         "solution": "Add or remove indentation of the closing bracket so it matches the indentation of the opening bracket.",
         "explanation": ""
     },
     "E125": {
         "original_message": "continuation line with same indent as next logical line",
-        "templated": False,
+        "title_templated": False,
         "title": "This line has a continuation that should be indented one extra level so that it can be distinguished from the next logical line.",
         "solution": "Add an indentation level to the line continuation so that it is indented one more level than the next logical line.",
         "explanation": "Continuation lines should not be indented at the same level as the next logical line. Instead, they should be indented to one more level so as to distinguish them from the next line."
@@ -95,35 +95,35 @@ PYTHON_ISSUES = {
     # E126 ignored by default
     "E126": {
         "original_message": "continuation line over-indented for hanging indent",
-        "templated": False,
+        "title_templated": False,
         "title": "This line is indented more than it should be.",
         "solution": "Remove indentation from this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E127": {
         "original_message": "continuation line over-indented for visual indent",
-        "templated": False,
+        "title_templated": False,
         "title": "This line is indented more than it should be.",
         "solution": "Remove indentation from this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E128": {
         "original_message": "continuation line under-indented for visual indent",
-        "templated": False,
+        "title_templated": False,
         "title": "This line is indented less than it should be.",
         "solution": "Add indentation to this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E129": {
         "original_message": "visually indented line with same indent as next logical line",
-        "templated": False,
+        "title_templated": False,
         "title": "This line has the same indentation as the next logical line.",
         "solution": "Add an indentation level to the visually indented line so that it is indented one more level than the next logical line.",
         "explanation": "A visually indented line that has the same indentation as the next logical line is hard to read."
     },
     "E131": {
         "original_message": "continuation line unaligned for hanging indent",
-        "templated": False,
+        "title_templated": False,
         "title": "This line is not aligned correctly for a hanging indent.",
         "solution": "Add or remove indentation so that the lines are aligned with each other.",
         "explanation": ""
@@ -131,69 +131,69 @@ PYTHON_ISSUES = {
     # E133 ignored by default
     "E133": {
         "original_message": "closing bracket is missing indentation",
-        "templated": False,
+        "title_templated": False,
         "title": "",
         "solution": "",
         "explanation": "",
     },
     "E201": {
         "original_message": "whitespace after '{character}'",
-        "templated": True,
+        "title_templated": True,
         "title": "This line contains {article} {character_description} that has a space after it.",
         "solution": "Remove any spaces that appear after the <code>{character}</code> character.",
         "explanation": ""
     },
     "E202": {
         "original_message": "whitespace before '{character}'",
-        "templated": True,
+        "title_templated": True,
         "title": "This line contains {article} {character_description} that has a space before it.",
         "solution": "Remove any spaces that appear before the <code>{character}</code> character.",
         "explanation": ""
     },
     "E203": {
         "original_message": "whitespace before '{character}'",
-        "templated": True,
+        "title_templated": True,
         "title": "This line contains {article} {character_description} that has a space before it.",
         "solution": "Remove any spaces that appear before the <code>{character}</code> character.",
         "explanation": ""
     },
     "E211": {
         "original_message": "whitespace before '{character}'",
-        "templated": True,
+        "title_templated": True,
         "title": "This line contains {article} {character_description} that has a space before it.",
         "solution": "Remove any spaces that appear before the <code>{character}</code> character.",
         "explanation": ""
     },
     "E221": {
-        "templated": False,
+        "title_templated": False,
         "original_message": "multiple spaces before operator",
         "title": "This line has multiple spaces before an operator.",
         "solution": "Remove any extra spaces that appear before the operator on this line.",
         "explanation": ""
     },
     "E222": {
-        "templated": False,
+        "title_templated": False,
         "original_message": "multiple spaces after operator",
         "title": "This line has multiple spaces after an operator.",
         "solution": "Remove any extra spaces that appear after the operator on this line.",
         "explanation": ""
     },
     "E223": {
-        "templated": False,
+        "title_templated": False,
         "original_message": "tab before operator",
         "title": "This line contains a tab character before an operator.",
         "solution": "Remove any tab characters that appear before the operator on this line. Operators should only have one space before them.",
         "explanation": ""
     },
     "E224": {
-        "templated": False,
+        "title_templated": False,
         "original_message": "tab after operator",
         "title": "This line contains a tab character after an operator.",
         "solution": "Remove any tab characters that appear after the operator on this line. Operators should only have one space after them.",
         "explanation": ""
     },
     "E225": {
-        "templated": False,
+        "title_templated": False,
         "original_message": "missing whitespace around operator",
         "title": "This line is missing whitespace around an operator.",
         "solution": "Ensure there is one space before and after all operators.",
@@ -201,21 +201,21 @@ PYTHON_ISSUES = {
     },
     # E226 ignored by default
     "E226": {
-        "templated": False,
+        "title_templated": False,
         "original_message": "missing whitespace around arithmetic operator",
         "title": "This line is missing whitespace around an arithmetic operator (+, -, / and *).",
         "solution": "Ensure there is one space before and after all arithmetic operators  (+, -, / and *).",
         "explanation": ""
     },
     "E227": {
-        "templated": False,
+        "title_templated": False,
         "original_message": "missing whitespace around bitwise or shift operator",
         "title": "This line is missing whitespace around a bitwise or shift operator (<<, >>, &, |, ^).",
         "solution": "Ensure there is one space before and after all bitwise and shift operators  (<<, >>, &, |, ^).",
         "explanation": ""
     },
     "E228": {
-        "templated": False,
+        "title_templated": False,
         "original_message": "missing whitespace around modulo operator",
         "title": "This line is missing whitespace around a modulo operator (<code>%</code>).",
         "solution": "Ensure there is one space before and after the modulo operator (<code>%</code>).",
@@ -540,7 +540,7 @@ PYTHON_ISSUES = {
 "original_message": "Missing docstring in public module",
 "title": "Modules should have docstrings.",
 "solution": "Add a docstring to your module.",
-"explanation": ""
+"explanation": "A docstring is a comment at the top of your module that briefly explains the purpose of the module."
 },
 "D101": {
 "original_message": "Missing docstring in public class",
@@ -558,7 +558,8 @@ PYTHON_ISSUES = {
 "original_message": "Missing docstring in public function",
 "title": "Functions should have docstrings.",
 "solution": "Add a docstring to your function.",
-"explanation": ""
+        "explanation": "A docstring is a comment at the top of your function that briefly explains the purpose of the module.<br>For example:<pre>def get_waypoint_latlng(number):<br>\"\"\"Return the latitude and longitude values of the waypoint.\"\"\"</pre>"
+        # TODO: Check this works
 },
 "D104": {
 "original_message": "Missing docstring in public package",
@@ -915,37 +916,3 @@ PYTHON_ISSUES = {
 "explanation": ""
 }
 }
-
-CHARACTER_DESCRIPTIONS = {
-    '(': 'opening bracket',
-    ')': 'closing bracket',
-    '[': 'opening square bracket',
-    ']': 'closing square bracket',
-    '{': 'opening curly bracket',
-    '}': 'closing curly bracket',
-    "'": 'single quote',
-    '"': 'double quote',
-    ':': 'colon',
-    ';': 'semicolon',
-    ' ': 'space',
-    ',': 'comma',
-    '.': 'full stop',
-}
-
-def get_article(word):
-    """Return English article for word.
-
-    Returns 'an' if word starts with vowel. Technically
-    it should check the word sound, compared to the
-    letter but this shouldn't occur with our words.
-
-    Args:
-        word (str): Word to create article for.
-
-    Returns:
-        'a' or 'an' (str) depending if word starts with vowel.
-    """
-    if word[0].lower() in 'aeiou':
-        return 'an'
-    else:
-        return 'a'

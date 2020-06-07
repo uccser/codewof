@@ -1,4 +1,4 @@
-{% load static i18n activeurl svg %}
+{% load static i18n activeurl svg django_bootstrap_breadcrumbs i18n %}
 
 <!doctype html>
 <html lang="en">
@@ -75,22 +75,26 @@
     </nav>
 
     {% if messages %}
-    <div class="container">
-      {% for message in messages %}
-      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show my-3"
-        role="alert">
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      {% endfor %}
-    </div>
-  {% endif %}
+        <div class="container">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show my-3"
+                role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block breadcrumbs %}
+    {% endblock breadcrumbs %}
 
     {% block body_container %}
     <div id="page-header" class="my-3">
       <div class="container">
+        {% render_breadcrumbs %}
         {% block page_heading %}
         {% endblock page_heading %}
       </div>

@@ -170,6 +170,12 @@ cmd_load_questions() {
 }
 defhelp load_questions "Load questions."
 
+# Run load_style_errors command
+cmd_load_style_errors() {
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py load_style_errors
+}
+defhelp load_style_errors "Load style errors."
+
 cmd_createsuperuser() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py createsuperuser
 }
