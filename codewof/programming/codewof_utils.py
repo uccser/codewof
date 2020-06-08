@@ -27,7 +27,7 @@ LOGGING = {
 }
 
 #  Number of points awarded for achieving each goal
-POINTS_BADGE = 10
+POINTS_ACHIEVEMENT = 10
 POINTS_SOLUTION = 10
 
 
@@ -217,7 +217,7 @@ def calculate_achievement_points(achievements):
     """Return the number of points earned by the user for new achievements."""
     points = 0
     for achievement in achievements:
-        points += achievement.achievement_tier * POINTS_BADGE
+        points += achievement.achievement_tier * POINTS_ACHIEVEMENT
     return points
 
 
@@ -293,7 +293,7 @@ def backdate_points(profile, user_attempts=None):
     profile.points = num_correct_attempts * POINTS_SOLUTION
 
     for achievement in profile.earned_achievements.all():
-        profile.points += POINTS_BADGE * achievement.achievement_tier
+        profile.points += POINTS_ACHIEVEMENT * achievement.achievement_tier
     return profile
 
 

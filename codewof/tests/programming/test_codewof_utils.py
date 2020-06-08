@@ -21,7 +21,7 @@ from programming.codewof_utils import (
     check_achievement_conditions,
     get_days_consecutively_answered,
     get_questions_answered_in_past_month,
-    POINTS_BADGE,
+    POINTS_ACHIEVEMENT,
     POINTS_SOLUTION,
 )
 from codewof.tests.conftest import user
@@ -75,21 +75,21 @@ class TestCodewofUtils(TestCase):
         achievements = [achievement]
 
         points = calculate_achievement_points(achievements)
-        self.assertEqual(points, POINTS_BADGE * 0)
+        self.assertEqual(points, POINTS_ACHIEVEMENT * 0)
 
     def test_calculate_achievement_points_tier_1(self):
         achievement = Achievement.objects.get(id_name="questions-solved-1")
         achievements = [achievement]
 
         points = calculate_achievement_points(achievements)
-        self.assertEqual(points, POINTS_BADGE * 1)
+        self.assertEqual(points, POINTS_ACHIEVEMENT * 1)
 
     def test_calculate_achievement_points_tier_2(self):
         achievement = Achievement.objects.get(id_name="attempts-made-5")
         achievements = [achievement]
 
         points = calculate_achievement_points(achievements)
-        self.assertEqual(points, POINTS_BADGE * 2)
+        self.assertEqual(points, POINTS_ACHIEVEMENT * 2)
 
     def test_check_achievement_conditions(self):
         generate_attempts()
