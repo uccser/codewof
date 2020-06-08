@@ -133,7 +133,6 @@ class TestCodewofUtils(TestCase):
         # All questions-solved badges have been deleted and should not exist
         self.assertFalse(earned_achievements.filter(id_name='questions-solved-1').exists())
 
-
     def test_get_days_consecutively_answered(self):
         generate_attempts()
         user = User.objects.get(id=1)
