@@ -120,6 +120,20 @@ class TestCodewofUtils(TestCase):
         earned_achievements = user.profile.earned_achievements
         self.assertFalse(earned_achievements.filter(id_name='questions-solved-5').exists())
 
+    def test_check_achievement_conditions_questions_solved_does_not_exist(self):
+        Achievement.objects.filter(id_name__contains="questions-solved").delete()
+        generate_attempts()
+        user = User.objects.get(id=1)
+        check_achievement_conditions(user.profile)
+        earned_achievements = user.profile.earned_achievements
+        self.assertTrue(earned_achievements.filter(id_name='create-account').exists())
+        self.assertTrue(earned_achievements.filter(id_name='attempts-made-1').exists())
+        self.assertTrue(earned_achievements.filter(id_name='attempts-made-5').exists())
+        self.assertTrue(earned_achievements.filter(id_name='consecutive-days-2').exists())
+        # All questions-solved badges have been deleted and should not exist
+        self.assertFalse(earned_achievements.filter(id_name='questions-solved-1').exists())
+
+
     def test_get_days_consecutively_answered(self):
         generate_attempts()
         user = User.objects.get(id=1)
