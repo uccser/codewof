@@ -2,10 +2,10 @@
 
 ## 2.0.0
 
-Adds gamification elements (points and badges) to the website, including for all previous submissions for each user.
+Adds gamification elements (points and achievements) to the website, including for all previous submissions for each user.
 
-- Add gamification system that allows users to earn points and badges.
-- Add ability for the CodeWOF server to recalculate a user's points and badges from their past attempts.
+- Add gamification system that allows users to earn points and achievements.
+- Add ability for the CodeWOF server to recalculate a user's points and achievements from their past attempts.
 - Improve the CodeWOF admin site with more information and filtering options.
 - Update Django from 2.1.5 to 2.2.3.
 - Dependency updates:

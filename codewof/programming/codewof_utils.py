@@ -1,4 +1,4 @@
-"""Utility functions for codeWOF system. Involves points, badges, and backdating points and badges per user."""
+"""Utility functions for codeWOF system. Involves points, achievements, and backdating points and achievements per user."""
 
 import datetime
 import json
@@ -10,7 +10,7 @@ from dateutil.relativedelta import relativedelta
 from programming.models import (
     Profile,
     Attempt,
-    Badge,
+    Achievement,
     Earned,
 )
 from django.http import JsonResponse
@@ -114,126 +114,126 @@ def get_questions_answered_in_past_month(profile, user_attempts=None):
     return len(solved)
 
 
-def check_badge_conditions(profile, user_attempts=None):
+def check_achievement_conditions(profile, user_attempts=None):
     """
-    Check if the user profile has earned new badges for their profile.
+    Check if the user profile has earned new achievements for their profile.
 
-    Checks if the user has received each available badge. If not, check if the user has earned these badges. Badges
+    Checks if the user has received each available achievement. If not, check if the user has earned these achievements. Achievements
     available to be checked for are profile creation, number of attempts made, number of questions answered, and
     number of days with consecutive attempts.
 
-    A badge will not be removed if the user had earned it before but now doesn't meet the conditions
+    An achievement will not be removed if the user had earned it before but now doesn't meet the conditions
     """
     if user_attempts is None:
         user_attempts = Attempt.objects.filter(profile=profile)
 
-    badge_objects = Badge.objects.all()
-    earned_badges = profile.earned_badges.all()
-    new_badge_names = ""
-    new_badge_objects = []
+    achievement_objects = Achievement.objects.all()
+    earned_achievements = profile.earned_achievements.all()
+    new_achievement_names = ""
+    new_achievement_objects = []
 
-    # account creation badge
+    # account creation achievement
     try:
-        creation_badge = badge_objects.get(id_name="create-account")
-        if creation_badge not in earned_badges:
+        creation_achievement = achievement_objects.get(id_name="create-account")
+        if creation_achievement not in earned_achievements:
             # create a new account creation
             Earned.objects.create(
                 profile=profile,
-                badge=creation_badge
+                achievement=creation_achievement
             )
-            new_badge_names += creation_badge.display_name + "\n"
-            new_badge_objects.append(creation_badge)
-    except Badge.DoesNotExist:
-        logger.warning("No such badge: create-account")
+            new_achievement_names += creation_achievement.display_name + "\n"
+            new_achievement_objects.append(creation_achievement)
+    except Achievement.DoesNotExist:
+        logger.warning("No such achievement: create-account")
         pass
 
-    # check questions solved badges
+    # check questions solved achievements
     try:
-        question_badges = badge_objects.filter(id_name__contains="questions-solved")
+        question_achievements = achievement_objects.filter(id_name__contains="questions-solved")
         solved = user_attempts.filter(passed_tests=True).distinct('question__slug')
-        for question_badge in question_badges:
-            if question_badge not in earned_badges:
-                num_questions = int(question_badge.id_name.split("-")[2])
+        for question_achievement in question_achievements:
+            if question_achievement not in earned_achievements:
+                num_questions = int(question_achievement.id_name.split("-")[2])
                 if len(solved) >= num_questions:
                     Earned.objects.create(
                         profile=profile,
-                        badge=question_badge
+                        achievement=question_achievement
                     )
-                    new_badge_names += question_badge.display_name + "\n"
-                    new_badge_objects.append(question_badge)
+                    new_achievement_names += question_achievement.display_name + "\n"
+                    new_achievement_objects.append(question_achievement)
                 else:
-                    # hasn't achieved the current badge tier so won't achieve any higher ones
+                    # hasn't achieved the current achievement tier so won't achieve any higher ones
                     break
-    except Badge.DoesNotExist:
-        logger.warning("No such badges: questions-solved")
+    except Achievement.DoesNotExist:
+        logger.warning("No such achievements: questions-solved")
         pass
 
-    # checked questions attempted badges
+    # checked questions attempted achievements
     try:
-        attempt_badges = badge_objects.filter(id_name__contains="attempts-made")
+        attempt_achievements = achievement_objects.filter(id_name__contains="attempts-made")
         attempted = user_attempts
-        for attempt_badge in attempt_badges:
-            if attempt_badge not in earned_badges:
-                num_questions = int(attempt_badge.id_name.split("-")[2])
+        for attempt_achievement in attempt_achievements:
+            if attempt_achievement not in earned_achievements:
+                num_questions = int(attempt_achievement.id_name.split("-")[2])
                 if len(attempted) >= num_questions:
                     Earned.objects.create(
                         profile=profile,
-                        badge=attempt_badge
+                        achievement=attempt_achievement
                     )
-                    new_badge_names += attempt_badge.display_name + "\n"
-                    new_badge_objects.append(attempt_badge)
+                    new_achievement_names += attempt_achievement.display_name + "\n"
+                    new_achievement_objects.append(attempt_achievement)
                 else:
-                    # hasn't achieved the current badge tier so won't achieve any higher ones
+                    # hasn't achieved the current achievement tier so won't achieve any higher ones
                     break
-    except Badge.DoesNotExist:
-        logger.warning("No such badges: attempts-made")
+    except Achievement.DoesNotExist:
+        logger.warning("No such achievements: attempts-made")
         pass
 
-    # consecutive days logged in badges
+    # consecutive days logged in achievements
     num_consec_days = get_days_consecutively_answered(profile, user_attempts=user_attempts)
-    consec_badges = badge_objects.filter(id_name__contains="consecutive-days")
-    for consec_badge in consec_badges:
-        if consec_badge not in earned_badges:
-            n_days = int(consec_badge.id_name.split("-")[2])
+    consec_achievements = achievement_objects.filter(id_name__contains="consecutive-days")
+    for consec_achievement in consec_achievements:
+        if consec_achievement not in earned_achievements:
+            n_days = int(consec_achievement.id_name.split("-")[2])
             if n_days <= num_consec_days:
                 Earned.objects.create(
                     profile=profile,
-                    badge=consec_badge
+                    achievement=consec_achievement
                 )
-                new_badge_names += consec_badge.display_name + "\n"
-                new_badge_objects.append(consec_badge)
+                new_achievement_names += consec_achievement.display_name + "\n"
+                new_achievement_objects.append(consec_achievement)
             else:
-                # hasn't achieved the current badge tier so won't achieve any higher ones
+                # hasn't achieved the current achievement tier so won't achieve any higher ones
                 break
 
-    new_points = calculate_badge_points(new_badge_objects)
+    new_points = calculate_achievement_points(new_achievement_objects)
     profile.points += new_points
     profile.full_clean()
     profile.save()
-    return new_badge_names
+    return new_achievement_names
 
 
-def calculate_badge_points(badges):
-    """Return the number of points earned by the user for new badges."""
+def calculate_achievement_points(achievements):
+    """Return the number of points earned by the user for new achievements."""
     points = 0
-    for badge in badges:
-        points += badge.badge_tier * POINTS_BADGE
+    for achievement in achievements:
+        points += achievement.achievement_tier * POINTS_BADGE
     return points
 
 
 def backdate_user(profile):
     """Perform backdate of a single user profile."""
     attempts = Attempt.objects.filter(profile=profile)
-    profile = backdate_badges(profile, user_attempts=attempts)
+    profile = backdate_achievements(profile, user_attempts=attempts)
     profile = backdate_points(profile, user_attempts=attempts)
     profile.has_backdated = True
     profile.full_clean()
     profile.save()
 
 
-def backdate_points_and_badges(n=-1, ignoreFlags=True):
-    """Perform batch backdate of all points and badges for n profiles in the system."""
-    backdate_badges_times = []
+def backdate_points_and_achievements(n=-1, ignoreFlags=True):
+    """Perform batch backdate of all points and achievements for n profiles in the system."""
+    backdate_achievements_times = []
     backdate_points_times = []
     time_before = time.perf_counter()
     profiles = Profile.objects.all()
@@ -250,10 +250,10 @@ def backdate_points_and_badges(n=-1, ignoreFlags=True):
         if not profile.has_backdated or ignoreFlags:
             attempts = all_attempts.filter(profile=profile)
 
-            badges_time_before = time.perf_counter()
-            profile = backdate_badges(profile, user_attempts=attempts)
-            badges_time_after = time.perf_counter()
-            backdate_badges_times.append(badges_time_after - badges_time_before)
+            achievements_time_before = time.perf_counter()
+            profile = backdate_achievements(profile, user_attempts=attempts)
+            achievements_time_after = time.perf_counter()
+            backdate_achievements_times.append(achievements_time_after - achievements_time_before)
 
             points_time_before = time.perf_counter()
             profile = backdate_points(profile, user_attempts=attempts)
@@ -270,9 +270,9 @@ def backdate_points_and_badges(n=-1, ignoreFlags=True):
 
     duration = time_after - time_before
 
-    if len(backdate_badges_times) > 0 and len(backdate_points_times) > 0:
-        badges_ave = statistics.mean(backdate_badges_times)
-        logger.debug(f"Average time per user to backdate badges: {badges_ave:0.4f} seconds")
+    if len(backdate_achievements_times) > 0 and len(backdate_points_times) > 0:
+        achievements_ave = statistics.mean(backdate_achievements_times)
+        logger.debug(f"Average time per user to backdate achievements: {achievements_ave:0.4f} seconds")
 
         points_ave = statistics.mean(backdate_points_times)
         logger.debug(f"Average time per user to backdate points: {points_ave:0.4f} seconds")
@@ -292,12 +292,12 @@ def backdate_points(profile, user_attempts=None):
     num_correct_attempts = len(user_attempts.filter(passed_tests=True).distinct('question__slug'))
     profile.points = num_correct_attempts * POINTS_SOLUTION
 
-    for badge in profile.earned_badges.all():
-        profile.points += POINTS_BADGE * badge.badge_tier
+    for achievement in profile.earned_achievements.all():
+        profile.points += POINTS_BADGE * achievement.achievement_tier
     return profile
 
 
-def backdate_badges(profile, user_attempts=None):
-    """Re-check the profile for badges earned."""
-    check_badge_conditions(profile, user_attempts=user_attempts)
+def backdate_achievements(profile, user_attempts=None):
+    """Re-check the profile for achievements earned."""
+    check_achievement_conditions(profile, user_attempts=user_attempts)
     return profile

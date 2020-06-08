@@ -24,12 +24,12 @@
 
     {{ emailaddress.email }}
     {% if emailaddress.verified %}
-      <span class="badge badge-success">{% trans "Verified" %}</span>
+      <span class="achievement achievement-success">{% trans "Verified" %}</span>
     {% else %}
-      <span class="badge badge-secondary">{% trans "Unverified" %}</span>
+      <span class="achievement achievement-secondary">{% trans "Unverified" %}</span>
     {% endif %}
     {% if emailaddress.primary %}
-      <span class="badge badge-primary">{% trans "Primary" %}</span>
+      <span class="achievement achievement-primary">{% trans "Primary" %}</span>
     {% endif %}
   </label>
 </div>

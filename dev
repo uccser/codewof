@@ -170,11 +170,11 @@ cmd_load_questions() {
 }
 defhelp load_questions "Load questions."
 
-# Run load_badges command
-cmd_load_badges() {
-  docker-compose exec django /docker_venv/bin/python3 ./manage.py load_badges
+# Run load_achievements command
+cmd_load_achievements() {
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py load_achievements
 }
-defhelp load_badges "Load badges."
+defhelp load_achievements "Load achievements."
 
 cmd_createsuperuser() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py createsuperuser
@@ -192,9 +192,9 @@ cmd_raise_backdate_flags() {
 defhelp raise_backdate_flags 'Raise a flag on all user profiles, requiring a backdate be done on them.'
 
 cmd_backdate() {
-  docker-compose exec django /docker_venv/bin/python3 ./manage.py backdate_points_and_badges --ignore_flags
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py backdate_points_and_achievements --ignore_flags
 }
-defhelp backdate 'Re-calculate points and badges earned for all user profiles.'
+defhelp backdate 'Re-calculate points and achievements earned for all user profiles.'
 
 # Reboot Django Docker container
 cmd_reboot_django() {

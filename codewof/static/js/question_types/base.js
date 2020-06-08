@@ -42,12 +42,12 @@ function update_gamification(data) {
         });
     }
 
-    badges = data.badges;
-    if (badges.length > 0){
-        $("#badge_toast_header").text("New badges!");
-        $("#badge_toast_body").text(badges);
+    achievements = data.achievements;
+    if (achievements.length > 0){
+        $("#achievement_toast_header").text("New achievements!");
+        $("#achievement_toast_body").text(achievements);
         $(document).ready(function(){
-            $("#badge_toast").toast('show', {delay: 5000});
+            $("#achievement_toast").toast('show', {delay: 5000});
         });
     }
 

@@ -1,7 +1,7 @@
-"""Module for the custom Django backdate_points_and_badges command."""
+"""Module for the custom Django backdate_points_and_achievements command."""
 
 from django.core.management.base import BaseCommand
-from programming.codewof_utils import backdate_points_and_badges
+from programming.codewof_utils import backdate_points_and_achievements
 
 
 class Command(BaseCommand):
@@ -24,9 +24,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Automatically called when the backdate command is given."""
-        print("Backdating points and badges\n")
+        print("Backdating points and achievements\n")
         ignoreFlags = options['ignore_flags']
         number = int(options['profiles'])
         if ignoreFlags and number > 0:
             raise ValueError("If ignoring backdate flags you must backdate all profiles.")
-        backdate_points_and_badges(number, ignoreFlags)
+        backdate_points_and_achievements(number, ignoreFlags)

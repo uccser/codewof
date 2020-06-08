@@ -85,8 +85,8 @@ class Command(management.base.BaseCommand):
         management.call_command('load_questions')
         print('Programming questions loaded.\n')
 
-        management.call_command('load_badges')
-        print('Achievement badges loaded.\n')
+        management.call_command('load_achievements')
+        print('Achievements loaded.\n')
 
         # Research
         StudyFactory.create_batch(size=5)
@@ -97,8 +97,8 @@ class Command(management.base.BaseCommand):
         AttemptFactory.create_batch(size=50)
         print('Attempts loaded.\n')
 
-        # Award points and badges
+        # Award points and achievements
         if not skip:
-            management.call_command('backdate_points_and_badges')
+            management.call_command('backdate_points_and_achievements')
         else:
             print('Ignoring backdate step as requested.\n')

@@ -6,19 +6,19 @@
 {% block content %}
   <div class="container">
     <h1 class="display-3 orange-underline text-center">Achievements</h1>
-    <h3>Achievements earned: {{ num_badges_earned }}/{{ num_badges }}</h3>
+    <h3>Achievements earned: {{ num_achievements_earned }}/{{ num_achievements }}</h3>
     <div class="col-12 col-md-8 offset-md-2 mb-3">
         <br>
         <div class="row">
-            {% for badge in user.profile.earned_badges.all %}
-                <div class="col-4 badge-container">
-                    <img class="badge-icon" src="{% static badge.icon_name %}">
-                    <b>{{ badge.display_name }}</b>
+            {% for achievement in user.profile.earned_achievements.all %}
+                <div class="col-4 achievement-container">
+                    <img class="achievement-icon" src="{% static achievement.icon_name %}">
+                    <b>{{ achievement.display_name }}</b>
                 </div>
             {% endfor %}
-            {% for badge in badges_not_earned %}
-                <div class="col-4 badge-container">
-                    <img class="badge-icon-unachieved" src="{% static badge.icon_name %}">
+            {% for achievement in achievements_not_earned %}
+                <div class="col-4 achievement-container">
+                    <img class="achievement-icon-unachieved" src="{% static achievement.icon_name %}">
                 </div>
             {% endfor %}
         </div>
