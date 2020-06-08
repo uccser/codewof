@@ -185,7 +185,9 @@ class UserAchievementsView(LoginRequiredMixin, DetailView):
         """Get additional context data for template."""
         user = self.request.user
         context = super().get_context_data(**kwargs)
-        context['achievements_not_earned'] = Achievement.objects.all().difference(user.profile.earned_achievements.all())
+        context['achievements_not_earned'] = Achievement.objects.all().difference(
+            user.profile.earned_achievements.all()
+        )
         context['num_achievements_earned'] = user.profile.earned_achievements.all().count()
         context['num_achievements'] = Achievement.objects.all().count()
         return context

@@ -1,4 +1,8 @@
-"""Utility functions for codeWOF system. Involves points, achievements, and backdating points and achievements per user."""
+"""
+Utility functions for codeWOF system.
+
+Involves points, achievements, and backdating points and achievements per user.
+"""
 
 import datetime
 import json
@@ -118,9 +122,10 @@ def check_achievement_conditions(profile, user_attempts=None):
     """
     Check if the user profile has earned new achievements for their profile.
 
-    Checks if the user has received each available achievement. If not, check if the user has earned these achievements. Achievements
-    available to be checked for are profile creation, number of attempts made, number of questions answered, and
-    number of days with consecutive attempts.
+    Checks if the user has received each available achievement.
+    If not, check if the user has earned these achievements.
+    Achievements available to be checked for are profile creation, number of attempts made,
+    number of questions answered, and number of days with consecutive attempts.
 
     An achievement will not be removed if the user had earned it before but now doesn't meet the conditions
     """
