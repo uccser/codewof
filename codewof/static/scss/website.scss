@@ -173,7 +173,7 @@ strong {
 
 // Create achievement CSS rules off colour names
 @each $color, $value in $colors {
-  .achievement-#{$color} {
+  .badge-#{$color} {
     @include badge-variant($value);
   }
 }

@@ -34,7 +34,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
       <![endif]-->
   </head>
-  {% block body_element %}<body class="py-5">{% endblock body_element %}
+  {% block body_element %}<body class="pt-5">{% endblock body_element %}
     <nav id="codewof-navbar" class="navbar navbar-expand-md navbar-dark fixed-top">
       <div class="container">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -46,7 +46,7 @@
         </a>
 
         {% if DEPLOYMENT_TYPE == 'dev' %}
-        <span class="achievement achievement-warning">Test server</span>
+        <span class="badge badge-warning">Test server</span>
         {% endif %}
 
         <div class="collapse navbar-collapse" id="navbarContent">
