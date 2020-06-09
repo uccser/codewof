@@ -46,7 +46,7 @@
         </a>
 
         {% if DEPLOYMENT_TYPE == 'dev' %}
-        <span class="badge badge-warning">Test server</span>
+        <span class="achievement achievement-warning">Test server</span>
         {% endif %}
 
         <div class="collapse navbar-collapse" id="navbarContent">
@@ -58,7 +58,7 @@
                 {# URL provided by django-allauth/account/urls.py #}
                 <a class="nav-item nav-link" href="{% url 'users:dashboard'  %}">
                   {% svg 'icons8-points' %}
-                  <span id="user_points_navbar">{{request.user.profile.points}}</span>
+                  <span id="user_points_navbar">{{ request.user.profile.points }}</span>
                   {# URL provided by django-allauth/account/urls.py #}
                   {% svg 'icons8-user' %}
                   {{ request.user.get_short_name }}'s Dashboard</a>

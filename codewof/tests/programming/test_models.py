@@ -2,10 +2,10 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.contrib.auth import get_user_model
-from programming.codewof_utils import check_badge_conditions
+from programming.codewof_utils import check_achievement_conditions
 from programming.models import (
     Token,
-    Badge,
+    Achievement,
     Question,
     Earned,
     Attempt,
@@ -17,7 +17,7 @@ from programming.models import (
 
 from codewof.tests.codewof_test_data_generator import (
     generate_users,
-    generate_badges,
+    generate_achievements,
     generate_questions,
     generate_attempts,
 )
@@ -32,18 +32,18 @@ class ProfileModelTests(TestCase):
         # never modify this object in tests - read only
         generate_users(user)
         generate_questions()
-        generate_badges()
+        generate_achievements()
 
     def test_profile_starts_with_no_points(self):
         user = User.objects.get(id=1)
         points = user.profile.points
         self.assertEqual(points, 0)
 
-    def test_profile_starts_with_create_account_badge(self):
+    def test_profile_starts_with_create_account_achievement(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user.profile)
-        badge = Badge.objects.get(id_name="create-account")
-        earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        check_achievement_conditions(user.profile)
+        achievement = Achievement.objects.get(id_name="create-account")
+        earned = Earned.objects.filter(profile=user.profile, achievement=achievement)
         self.assertEqual(len(earned), 1)
 
     def test_attempted_questions(self):
@@ -89,67 +89,67 @@ class ProfileModelTests(TestCase):
         self.assertEqual(str(user.profile), '{} {}'.format(user.first_name, user.last_name))
 
 
-class BadgeModelTests(TestCase):
+class AchievementModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         # never modify this object in tests - read only
         generate_users(user)
-        generate_badges()
+        generate_achievements()
 
     def test_id_name_unique(self):
         with self.assertRaises(IntegrityError):
-            Badge.objects.create(
+            Achievement.objects.create(
                 id_name='questions-solved-1',
                 display_name='second',
                 description='second'
             )
 
-    def test_badge_tier_zero_default(self):
-        badge = Badge.objects.create(
-            id_name='badge_name',
-            display_name='Dummy Badge',
-            description='A badge for testing'
+    def test_achievement_tier_zero_default(self):
+        achievement = Achievement.objects.create(
+            id_name='achievement_name',
+            display_name='Dummy Achievement',
+            description='An achievement for testing'
         )
-        self.assertEqual(badge.badge_tier, 0)
+        self.assertEqual(achievement.achievement_tier, 0)
 
     def test_str_representation(self):
-        badge = Badge.objects.get(id_name='questions-solved-1')
-        self.assertEqual(str(badge), badge.display_name)
+        achievement = Achievement.objects.get(id_name='questions-solved-1')
+        self.assertEqual(str(achievement), achievement.display_name)
 
-    def test_parent_badge(self):
-        badge = Badge.objects.get(id_name='attempts-made-1')
-        parent_id = badge.parent.id_name
+    def test_parent_achievement(self):
+        achievement = Achievement.objects.get(id_name='attempts-made-1')
+        parent_id = achievement.parent.id_name
         self.assertEqual(parent_id, 'attempts-made-5')
 
     def test_new_user_awards_create_account(self):
         user = User.objects.get(pk=1)
-        check_badge_conditions(user.profile)
-        badge = Badge.objects.get(id_name="create-account")
-        earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        check_achievement_conditions(user.profile)
+        achievement = Achievement.objects.get(id_name="create-account")
+        earned = Earned.objects.filter(profile=user.profile, achievement=achievement)
         self.assertEqual(len(earned), 1)
 
-    # def test_doesnt_award_twice_create_account(self):
-    #     user = User.objects.get(pk=1)
-    #     badge = Badge.objects.get(id_name="create-account")
-    #     Earned.objects.create(profile=user.profile, badge=badge)
-    #     check_badge_conditions(user.profile)
+    def test_doesnt_award_twice_create_account(self):
+        user = User.objects.get(pk=1)
+        achievement = Achievement.objects.get(id_name="create-account")
+        Earned.objects.create(profile=user.profile, achievement=achievement)
+        check_achievement_conditions(user.profile)
 
-    #     earned = Earned.objects.filter(profile=user.profile, badge=badge)
-    #     self.assertEqual(len(earned), 1)
+        earned = Earned.objects.filter(profile=user.profile, achievement=achievement)
+        self.assertEqual(len(earned), 1)
 
-    # def test_adding_unknown_badge_doesnt_break(self):
-    #     Badge.objects.create(id_name="notrealbadge", display_name="test", description="test")
-    #     user = User.objects.get(pk=1)
-    #     check_badge_conditions(user.profile)
+    def test_adding_unknown_achievement_doesnt_break(self):
+        Achievement.objects.create(id_name="notrealachievement", display_name="test", description="test")
+        user = User.objects.get(pk=1)
+        check_achievement_conditions(user.profile)
 
     def test_award_solve_1_on_correct_attempt(self):
         user = User.objects.get(pk=1)
         question = Question.objects.create(title="Test question", question_text="Print hello world")
         Attempt.objects.create(profile=user.profile, question=question, passed_tests=True, user_code='')
 
-        check_badge_conditions(user.profile)
-        badge = Badge.objects.get(id_name="questions-solved-1")
-        earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        check_achievement_conditions(user.profile)
+        achievement = Achievement.objects.get(id_name="questions-solved-1")
+        earned = Earned.objects.filter(profile=user.profile, achievement=achievement)
         self.assertEqual(len(earned), 1)
 
     def test_not_award_solve_1_on_incorrect_attempt(self):
@@ -157,32 +157,32 @@ class BadgeModelTests(TestCase):
         question = Question.objects.create(title="Test question", question_text="Print hello world")
         Attempt.objects.create(profile=user.profile, question=question, passed_tests=False, user_code='')
 
-        check_badge_conditions(user.profile)
-        badge = Badge.objects.get(id_name="questions-solved-1")
-        earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        check_achievement_conditions(user.profile)
+        achievement = Achievement.objects.get(id_name="questions-solved-1")
+        earned = Earned.objects.filter(profile=user.profile, achievement=achievement)
         self.assertEqual(len(earned), 0)
 
     def test_queryset_ordering_questions_solved(self):
-        questions_solved_badges = Badge.objects.filter(id_name__contains="questions-solved")
+        questions_solved_achievements = Achievement.objects.filter(id_name__contains="questions-solved")
         self.assertQuerysetEqual(
-            questions_solved_badges,
+            questions_solved_achievements,
             [
-                '<Badge: Solved one question>',
-                '<Badge: Solved five questions>',
-                '<Badge: Solved ten questions>',
-                '<Badge: Solved one hundred questions>',
+                '<Achievement: Solved one question>',
+                '<Achievement: Solved five questions>',
+                '<Achievement: Solved ten questions>',
+                '<Achievement: Solved one hundred questions>',
             ]
         )
 
     def test_queryset_ordering_attempts_made(self):
-        attempts_made_badges = Badge.objects.filter(id_name__contains="attempts-made")
+        attempts_made_achievements = Achievement.objects.filter(id_name__contains="attempts-made")
         self.assertQuerysetEqual(
-            attempts_made_badges,
+            attempts_made_achievements,
             [
-                '<Badge: One attempt made>',
-                '<Badge: Five attempts made>',
-                '<Badge: Ten attempts made>',
-                '<Badge: One hundred attempts made>',
+                '<Achievement: One attempt made>',
+                '<Achievement: Five attempts made>',
+                '<Achievement: Ten attempts made>',
+                '<Achievement: One hundred attempts made>',
             ]
         )
 
@@ -192,42 +192,42 @@ class EarnedModelTests(TestCase):
     def setUpTestData(cls):
         generate_users(user)
         generate_questions()
-        generate_badges()
+        generate_achievements()
         generate_attempts()
 
     def test_questions_solved_1_earnt(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user.profile)
-        badge = Badge.objects.get(id_name="questions-solved-1")
-        qs1_earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        check_achievement_conditions(user.profile)
+        achievement = Achievement.objects.get(id_name="questions-solved-1")
+        qs1_earned = Earned.objects.filter(profile=user.profile, achievement=achievement)
         self.assertEqual(len(qs1_earned), 1)
 
     def test_create_account_earnt(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user.profile)
-        badge = Badge.objects.get(id_name="create-account")
-        create_acc_earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        check_achievement_conditions(user.profile)
+        achievement = Achievement.objects.get(id_name="create-account")
+        create_acc_earned = Earned.objects.filter(profile=user.profile, achievement=achievement)
         self.assertEqual(len(create_acc_earned), 1)
 
     def test_attempts_made_5_earnt(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user.profile)
-        badge = Badge.objects.get(id_name="attempts-made-5")
-        attempts_5_earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        check_achievement_conditions(user.profile)
+        achievement = Achievement.objects.get(id_name="attempts-made-5")
+        attempts_5_earned = Earned.objects.filter(profile=user.profile, achievement=achievement)
         self.assertEqual(len(attempts_5_earned), 1)
 
     def test_attempts_made_1_earnt(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user.profile)
-        badge = Badge.objects.get(id_name="attempts-made-1")
-        attempts1_earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        check_achievement_conditions(user.profile)
+        achievement = Achievement.objects.get(id_name="attempts-made-1")
+        attempts1_earned = Earned.objects.filter(profile=user.profile, achievement=achievement)
         self.assertEqual(len(attempts1_earned), 1)
 
     def test_consecutive_days_2_earnt(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user.profile)
-        badge = Badge.objects.get(id_name="consecutive-days-2")
-        consec_days_earned = Earned.objects.filter(profile=user.profile, badge=badge)
+        check_achievement_conditions(user.profile)
+        achievement = Achievement.objects.get(id_name="consecutive-days-2")
+        consec_days_earned = Earned.objects.filter(profile=user.profile, achievement=achievement)
         self.assertEqual(len(consec_days_earned), 1)
 
 
@@ -381,10 +381,3 @@ class QuestionTypeDebuggingModelTests(TestCase):
     def test_read_only_lines_bottom_default(self):
         debugging_question = Question.objects.get_subclass(slug="debugging-question-1")
         self.assertEqual(debugging_question.read_only_lines_bottom, 0)
-
-
-# class TestCaseModelTests(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         # never modify this object in tests - read only
-#         generate_questions()
