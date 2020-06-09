@@ -8,6 +8,8 @@ from google.cloud import logging as google_cloud_logging
 
 # GENERAL
 # ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#debug
+DEBUG = False
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 # SECURITY WARNING: App Engine's security features ensure that it is safe to
@@ -26,7 +28,7 @@ else:
 
 # Exempt Google App Engine cron job URLs from HTTPS to function correctly.
 SECURE_REDIRECT_EXEMPT = [
-    r'^/?cron/.*',
+    r'^tasks/.*',
 ]
 
 # DATABASES

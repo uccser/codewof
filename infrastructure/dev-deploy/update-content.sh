@@ -14,4 +14,5 @@ source ./codewof/load-dev-envs.sh
 # Update the database and website sample content
 ./dev start
 ./dev migrate
-./dev sampledata
+./dev sampledata --skip_backdate
+./dev raise_backdate_flags

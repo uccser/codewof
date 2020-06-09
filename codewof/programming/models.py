@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.dispatch import receiver
 from django.urls import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 from model_utils.managers import InheritanceManager
 from utils.TranslatableModel import TranslatableModel
 
@@ -24,8 +25,9 @@ class Profile(models.Model):
         default=1,
         validators=[MinValueValidator(1), MaxValueValidator(7)]
     )
-    # earned_badges = models.ManyToManyField('Badge', through='Earned')
-    # attempted_questions = models.ManyToManyField('Question', through='Attempt')
+    earned_achievements = models.ManyToManyField('Achievement', through='Earned')
+    attempted_questions = models.ManyToManyField('Question', through='Attempt')
+    has_backdated = models.BooleanField(default=False)
 
     def __str__(self):
         """Text representation of a profile."""
@@ -47,41 +49,57 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-# class LoginDay(models.Model):
-#     profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
-#     day = models.DateField(auto_now_add=True)
+class Achievement(models.Model):
+    """Achievement that can be earned by a user."""
 
-#     def __str__(self):
-#         return str(self.day)
+    id_name = models.CharField(max_length=SMALL, unique=True)
+    display_name = models.CharField(max_length=SMALL)
+    description = models.CharField(max_length=LARGE)
+    icon_name = models.CharField(null=True, max_length=SMALL)
+    achievement_tier = models.IntegerField(default=0)
+    parent = models.ForeignKey('Achievement', on_delete=models.CASCADE, null=True, default=None)
+
+    def __str__(self):
+        """Text representation of an achievement."""
+        return self.display_name
+
+    class Meta:
+        """Queryset will be ordered by achievement tier."""
+
+        ordering = ['achievement_tier']
 
 
-# class Badge(models.Model):
-#     id_name = models.CharField(max_length=SMALL, unique=True)
-#     display_name = models.CharField(max_length=SMALL)
-#     description = models.CharField(max_length=LARGE)
+class Earned(models.Model):
+    """Model that documents when an achievement is earned by a user in their profile."""
 
-#     def __str__(self):
-#         return self.display_name
+    profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
+    achievement = models.ForeignKey('Achievement', on_delete=models.CASCADE)
+    date = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        """How the name is displayed in the Admin view."""
+
+        verbose_name = "Earned achievement"
+        verbose_name_plural = "Achievements earned"
+
+    def __str__(self):
+        """Text representation of an Earned object."""
+        return str(self.date)
 
 
-# class Earned(models.Model):
-#     profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
-#     badge = models.ForeignKey('Badge', on_delete=models.CASCADE)
-#     date = models.DateTimeField(auto_now_add=True)
+class Token(models.Model):
+    """Token model for codeWOF."""
 
-#     def __str__(self):
-#         return str(self.date)
+    name = models.CharField(max_length=SMALL, primary_key=True)
+    token = models.CharField(max_length=LARGE)
 
-# class Token(models.Model):
-#     name = models.CharField(max_length=SMALL, primary_key=True)
-#     token = models.CharField(max_length=LARGE)
-
-#     def __str__(self):
-#         return self.name
+    def __str__(self):
+        """Text representation of a Token."""
+        return self.name
 
 
 class Attempt(models.Model):
-    """An user attempt for a question."""
+    """A user attempt for a question."""
 
     profile = models.ForeignKey(
         'Profile',
@@ -95,9 +113,10 @@ class Attempt(models.Model):
         'TestCase',
         through='TestCaseAttempt'
     )
-    datetime = models.DateTimeField(auto_now_add=True)
+    datetime = models.DateTimeField(default=timezone.now)
     user_code = models.TextField()
     passed_tests = models.BooleanField(default=False)
+
     # skills_hinted = models.ManyToManyField('Skill', blank=True)
 
     def __str__(self):
@@ -147,9 +166,11 @@ class Question(TranslatableModel):
         else:
             return self.title
 
-    # class Meta:
-        # verbose_name = "Parsons Problem"
-        # verbose_name_plural = "All Questions & Parsons Problems"
+    class Meta:
+        """Meta information for class."""
+
+        verbose_name = 'Question'
+        verbose_name_plural = 'Questions'
 
 
 class TestCase(TranslatableModel):
