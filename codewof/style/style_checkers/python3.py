@@ -118,7 +118,6 @@ def process_line(line_text, is_example_code):
                 'title': error_message,
                 'line_number': line_number,
             }
-    print(issue_data)
     return issue_data
 
 
