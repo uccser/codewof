@@ -34,7 +34,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
       <![endif]-->
   </head>
-  {% block body_element %}<body class="py-5">{% endblock body_element %}
+  {% block body_element %}<body class="pt-5">{% endblock body_element %}
     <nav id="codewof-navbar" class="navbar navbar-expand-md navbar-dark fixed-top">
       <div class="container">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -59,7 +59,7 @@
                 {# URL provided by django-allauth/account/urls.py #}
                 <a class="nav-item nav-link" href="{% url 'users:dashboard'  %}">
                   {% svg 'icons8-points' %}
-                  <span id="user_points_navbar">{{request.user.profile.points}}</span>
+                  <span id="user_points_navbar">{{ request.user.profile.points }}</span>
                   {# URL provided by django-allauth/account/urls.py #}
                   {% svg 'icons8-user' %}
                   {{ request.user.get_short_name }}'s Dashboard</a>

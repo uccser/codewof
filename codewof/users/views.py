@@ -20,7 +20,7 @@ from research.models import StudyRegistration
 from programming.models import (
     Question,
     Attempt,
-    Badge
+    Achievement
 )
 
 from programming.codewof_utils import get_questions_answered_in_past_month, backdate_user
@@ -138,7 +138,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context['studies'] = studies
         context['codewof_profile'] = self.object.profile
         context['goal'] = user.profile.goal
-        context['all_badges'] = Badge.objects.all()
+        context['all_achievements'] = Achievement.objects.all()
         questions_answered = get_questions_answered_in_past_month(user.profile)
         context['num_questions_answered'] = questions_answered
         logger.debug(questions_answered)
@@ -185,9 +185,11 @@ class UserAchievementsView(LoginRequiredMixin, DetailView):
         """Get additional context data for template."""
         user = self.request.user
         context = super().get_context_data(**kwargs)
-        context['badges_not_earned'] = Badge.objects.all().difference(user.profile.earned_badges.all())
-        context['num_badges_earned'] = user.profile.earned_badges.all().count()
-        context['num_badges'] = Badge.objects.all().count()
+        context['achievements_not_earned'] = Achievement.objects.all().difference(
+            user.profile.earned_achievements.all()
+        )
+        context['num_achievements_earned'] = user.profile.earned_achievements.all().count()
+        context['num_achievements'] = Achievement.objects.all().count()
         return context
 
 

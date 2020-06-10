@@ -26,7 +26,7 @@ from programming.models import (
 )
 from research.models import StudyRegistration
 
-from programming.codewof_utils import add_points, check_badge_conditions
+from programming.codewof_utils import add_points, check_achievement_conditions
 
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 BATCH_SIZE = 15
@@ -179,11 +179,11 @@ def save_question_attempt(request):
                 result['success'] = True
                 points_before = profile.points
                 points = add_points(question, profile, attempt)
-                badges = check_badge_conditions(profile)
+                achievements = check_achievement_conditions(profile)
                 points_after = profile.points
                 result['curr_points'] = points
                 result['point_diff'] = points_after - points_before
-                result['badges'] = badges
+                result['achievements'] = achievements
             else:
                 result['success'] = False
                 result['message'] = 'Attempt not saved, same as previous attempt.'
@@ -199,7 +199,7 @@ def partial_backdate(request):
     # https://cloud.google.com/appengine/docs/standard/python3/scheduling-jobs-with-cron-yaml?hl=en_US
     # #validating_cron_requests
     if settings.DEBUG or 'X-Appengine-Cron' in request.headers:
-        management.call_command("backdate_points_and_badges", profiles=BATCH_SIZE)
+        management.call_command("backdate_points_and_achievements", profiles=BATCH_SIZE)
         response = {
             'success': True,
         }
