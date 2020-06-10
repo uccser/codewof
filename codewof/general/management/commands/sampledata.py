@@ -44,7 +44,7 @@ class Command(management.base.BaseCommand):
 
         management.call_command('load_user_types')
         print(LOG_HEADER.format('Create sample users'))
-        User = get_user_model()
+        User = get_user_model()  # noqa N806
         # Create admin account
         admin = User.objects.create_superuser(
             'admin',

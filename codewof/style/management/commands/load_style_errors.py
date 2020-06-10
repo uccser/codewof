@@ -8,7 +8,6 @@ from style.utils import get_language_slugs
 from style.models import Error
 from utils.errors.VertoConversionError import VertoConversionError
 
-
 BASE_DATA_MODULE_PATH = 'style.style_checkers.{}_data'
 MARKDOWN_CONVERTER = Verto(
     extensions=[
@@ -16,12 +15,24 @@ MARKDOWN_CONVERTER = Verto(
     ],
 )
 
+
 class Command(management.base.BaseCommand):
     """Required command class for the custom Django load_style_errors command."""
 
     help = "Load progress outcomes to database."
 
     def convert_markdown(self, module_path, code, field, markdown):
+        """Render Markdown string to HTML.
+
+        Args:
+            module_path (str): Path to Python 3 module.
+            code (str): Code of style error that text belongs too.
+            field (str): Field of style error that text belongs too.
+            markdown (str): Markdown text to convert.
+
+        Returns:
+            HTML of converted text.
+        """
         MARKDOWN_CONVERTER.clear_saved_data()
         try:
             result = MARKDOWN_CONVERTER.convert(markdown)

@@ -6,56 +6,56 @@ DATA = {
     "E101": {
         "original_message": "indentation contains mixed spaces and tabs",
         "title_templated": False,
-        "title": "This line is indented using a mixture of spaces and tabs.",
+        "title": "Line is indented using a mixture of spaces and tabs.",
         "solution": "You should indent your code using only spaces.",
         "explanation": "Python expects the indentation method to be consistent line to line. Spaces are the preferred indentation method."
     },
     "E111": {
         "original_message": "indentation is not a multiple of four",
         "title_templated": False,
-        "title": "This line has an indentation level that is not a multiple of four.",
+        "title": "Line has an indentation level that is not a multiple of four.",
         "solution": "Ensure that the first indentation level is 4 spaces, the second indentation level is 8 spaces and so on.",
         "explanation": ""
     },
     "E112": {
         "original_message": "expected an indented block",
         "title_templated": False,
-        "title": "This line is not indented at the correct level.",
+        "title": "Line is not indented at the correct level.",
         "solution": "Add indentation to this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E113": {
         "original_message": "unexpected indentation",
         "title_templated": False,
-        "title": "This line is indented when it shouldn't be.",
+        "title": "Line is indented when it shouldn't be.",
         "solution": "Remove indentation from this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E114": {
         "original_message": "indentation is not a multiple of four (comment)",
         "title_templated": False,
-        "title": "This line has an indentation level that is not a multiple of four.",
+        "title": "Line has an indentation level that is not a multiple of four.",
         "solution": "Ensure that the first indentation level is 4 spaces, the second indentation level is 8 spaces and so on.",
         "explanation": ""
     },
     "E115": {
         "original_message": "expected an indented block (comment)",
         "title_templated": False,
-        "title": "This line is not indented at the correct level.",
+        "title": "Line is not indented at the correct level.",
         "solution": "Add indentation to this line until it is indented at the correct level.",
         "explanation": "Comments should be indented relative to the code block they are in."
     },
     "E116": {
         "original_message": "unexpected indentation (comment)",
         "title_templated": False,
-        "title": "This line is indented when it shouldn't be.",
+        "title": "Line is indented when it shouldn't be.",
         "solution": "Remove indentation from this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E117": {
         "original_message": "over-indented",
         "title_templated": False,
-        "title": "This line has too many indentation levels.",
+        "title": "Line has too many indentation levels.",
         "solution": "Remove indentation from this line until it is indented at the correct level.",
         "explanation": ""
     },
@@ -63,14 +63,14 @@ DATA = {
     "E121": {
         "original_message": "continuation line under-indented for hanging indent",
         "title_templated": False,
-        "title": "This line is less indented than it should be.",
+        "title": "Line is less indented than it should be.",
         "solution": "Add indentation to this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E122": {
         "original_message": "continuation line missing indentation or outdented",
         "title_templated": False,
-        "title": "This line is not indented as far as it should be or is indented too far.",
+        "title": "Line is not indented as far as it should be or is indented too far.",
         "solution": "Add or remove indentation levels until it is indented at the correct level.",
         "explanation": ""
     },
@@ -78,21 +78,21 @@ DATA = {
     "E123": {
         "original_message": "closing bracket does not match indentation of opening bracket’s line",
         "title_templated": False,
-        "title": "This line has a closing bracket that does not match the indentation level of the line that the opening bracket started on.",
+        "title": "Line has a closing bracket that does not match the indentation level of the line that the opening bracket started on.",
         "solution": "Add or remove indentation of the closing bracket so it matches the indentation of the line that the opening bracket is on.",
         "explanation": ""
     },
     "E124": {
         "original_message": "closing bracket does not match visual indentation",
         "title_templated": False,
-        "title": "This line has a closing bracket that does not match the indentation of the opening bracket.",
+        "title": "Line has a closing bracket that does not match the indentation of the opening bracket.",
         "solution": "Add or remove indentation of the closing bracket so it matches the indentation of the opening bracket.",
         "explanation": ""
     },
     "E125": {
         "original_message": "continuation line with same indent as next logical line",
         "title_templated": False,
-        "title": "This line has a continuation that should be indented one extra level so that it can be distinguished from the next logical line.",
+        "title": "Line has a continuation that should be indented one extra level so that it can be distinguished from the next logical line.",
         "solution": "Add an indentation level to the line continuation so that it is indented one more level than the next logical line.",
         "explanation": "Continuation lines should not be indented at the same level as the next logical line. Instead, they should be indented to one more level so as to distinguish them from the next line."
     },
@@ -100,35 +100,35 @@ DATA = {
     "E126": {
         "original_message": "continuation line over-indented for hanging indent",
         "title_templated": False,
-        "title": "This line is indented more than it should be.",
+        "title": "Line is indented more than it should be.",
         "solution": "Remove indentation from this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E127": {
         "original_message": "continuation line over-indented for visual indent",
         "title_templated": False,
-        "title": "This line is indented more than it should be.",
+        "title": "Line is indented more than it should be.",
         "solution": "Remove indentation from this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E128": {
         "original_message": "continuation line under-indented for visual indent",
         "title_templated": False,
-        "title": "This line is indented less than it should be.",
+        "title": "Line is indented less than it should be.",
         "solution": "Add indentation to this line until it is indented at the correct level.",
         "explanation": ""
     },
     "E129": {
         "original_message": "visually indented line with same indent as next logical line",
         "title_templated": False,
-        "title": "This line has the same indentation as the next logical line.",
+        "title": "Line has the same indentation as the next logical line.",
         "solution": "Add an indentation level to the visually indented line so that it is indented one more level than the next logical line.",
         "explanation": "A visually indented line that has the same indentation as the next logical line is hard to read."
     },
     "E131": {
         "original_message": "continuation line unaligned for hanging indent",
         "title_templated": False,
-        "title": "This line is not aligned correctly for a hanging indent.",
+        "title": "Line is not aligned correctly for a hanging indent.",
         "solution": "Add or remove indentation so that the lines are aligned with each other.",
         "explanation": ""
     },
@@ -143,223 +143,245 @@ DATA = {
     "E201": {
         "original_message": "whitespace after '{character}'",
         "title_templated": True,
-        "title": "This line contains {article} {character_description} that has a space after it.",
+        "title": "Line contains {article} {character_description} that has a space after it.",
         "solution": "Remove any spaces that appear after the `{character}` character.",
         "explanation": ""
     },
     "E202": {
         "original_message": "whitespace before '{character}'",
         "title_templated": True,
-        "title": "This line contains {article} {character_description} that has a space before it.",
+        "title": "Line contains {article} {character_description} that has a space before it.",
         "solution": "Remove any spaces that appear before the `{character}` character.",
         "explanation": ""
     },
     "E203": {
         "original_message": "whitespace before '{character}'",
         "title_templated": True,
-        "title": "This line contains {article} {character_description} that has a space before it.",
+        "title": "Line contains {article} {character_description} that has a space before it.",
         "solution": "Remove any spaces that appear before the `{character}` character.",
         "explanation": ""
     },
     "E211": {
         "original_message": "whitespace before '{character}'",
         "title_templated": True,
-        "title": "This line contains {article} {character_description} that has a space before it.",
+        "title": "Line contains {article} {character_description} that has a space before it.",
         "solution": "Remove any spaces that appear before the `{character}` character.",
         "explanation": ""
     },
     "E221": {
-        "title_templated": False,
         "original_message": "multiple spaces before operator",
-        "title": "This line has multiple spaces before an operator.",
+        "title_templated": False,
+        "title": "Line has multiple spaces before an operator.",
         "solution": "Remove any extra spaces that appear before the operator on this line.",
         "explanation": ""
     },
     "E222": {
-        "title_templated": False,
         "original_message": "multiple spaces after operator",
-        "title": "This line has multiple spaces after an operator.",
+        "title_templated": False,
+        "title": "Line has multiple spaces after an operator.",
         "solution": "Remove any extra spaces that appear after the operator on this line.",
         "explanation": ""
     },
     "E223": {
-        "title_templated": False,
         "original_message": "tab before operator",
-        "title": "This line contains a tab character before an operator.",
+        "title_templated": False,
+        "title": "Line contains a tab character before an operator.",
         "solution": "Remove any tab characters that appear before the operator on this line. Operators should only have one space before them.",
         "explanation": ""
     },
     "E224": {
-        "title_templated": False,
         "original_message": "tab after operator",
-        "title": "This line contains a tab character after an operator.",
+        "title_templated": False,
+        "title": "Line contains a tab character after an operator.",
         "solution": "Remove any tab characters that appear after the operator on this line. Operators should only have one space after them.",
         "explanation": ""
     },
     "E225": {
-        "title_templated": False,
         "original_message": "missing whitespace around operator",
-        "title": "This line is missing whitespace around an operator.",
+        "title_templated": False,
+        "title": "Line is missing whitespace around an operator.",
         "solution": "Ensure there is one space before and after all operators.",
         "explanation": ""
     },
     # E226 ignored by default
     "E226": {
-        "title_templated": False,
         "original_message": "missing whitespace around arithmetic operator",
-        "title": "This line is missing whitespace around an arithmetic operator (+, -, / and *).",
-        "solution": "Ensure there is one space before and after all arithmetic operators  (+, -, / and *).",
+        "title_templated": False,
+        "title": "Line is missing whitespace around an arithmetic operator (`+`, `-`, `/` and `*`).",
+        "solution": "Ensure there is one space before and after all arithmetic operators (`+`, `-`, `/` and `*`).",
         "explanation": ""
     },
     "E227": {
-        "title_templated": False,
         "original_message": "missing whitespace around bitwise or shift operator",
-        "title": "This line is missing whitespace around a bitwise or shift operator (<<, >>, &, |, ^).",
-        "solution": "Ensure there is one space before and after all bitwise and shift operators  (<<, >>, &, |, ^).",
+        "title_templated": False,
+        "title": "Line is missing whitespace around a bitwise or shift operator (`<<`, `>>`, `&`, `|`, `^`).",
+        "solution": "Ensure there is one space before and after all bitwise and shift operators (`<<`, `>>`, `&`, `|`, `^`).",
         "explanation": ""
     },
     "E228": {
-        "title_templated": False,
         "original_message": "missing whitespace around modulo operator",
-        "title": "This line is missing whitespace around a modulo operator (`%`).",
+        "title_templated": False,
+        "title": "Line is missing whitespace around a modulo operator (`%`).",
         "solution": "Ensure there is one space before and after the modulo operator (`%`).",
         "explanation": ""
     },
-    # TODO: Check for specific character
     "E231": {
         "original_message": "missing whitespace after ‘,’, ‘;’, or ‘:’",
-        "title": "This line is missing whitespace around one of the following characters: , ; and :.",
-        "solution": "Ensure there is one space before and after any of the following characters: , ; and :.",
+        "title_templated": False,
+        "title": "Line is missing whitespace around one of the following characters: `,` `;` and `:`.",
+        "solution": "Ensure there is one space before and after any of the following characters: `,` `;` and `:`.",
         "explanation": ""
     },
     # E241 ignored by default
     "E241": {
         "original_message": "multiple spaces after ‘,’",
-        "title": "This line has multiple spaces after the ',' character.",
-        "solution": "Ensure there is one space before and after any ',' characters.",
+        "title_templated": False,
+        "title": "Line has multiple spaces after the `,` character.",
+        "solution": "Ensure there is one space before and after any `,` characters.",
         "explanation": ""
     },
     # E242 ignored by default
     "E242": {
         "original_message": "tab after ‘,’",
-        "title": "This line contains a tab character after the ',' character.",
-        "solution": "Remove any tab characters and ensure there is one space before and after any ',' characters.",
+        "title_templated": False,
+        "title": "Line contains a tab character after the `,` character.",
+        "solution": "Remove any tab characters and ensure there is one space before and after any `,` characters.",
         "explanation": ""
     },
     "E251": {
-    "original_message": "unexpected spaces around keyword / parameter equals",
-    "title": "This line contains spaces before or after the = in a function definition.",
-    "solution": "Remove any spaces that appear either before or after the = character in your function definition.",
-    "explanation": ""
+        "original_message": "unexpected spaces around keyword / parameter equals",
+        "title_templated": False,
+        "title": "Line contains spaces before or after the `=` in a function definition.",
+        "solution": "Remove any spaces that appear either before or after the `=` character in your function definition.",
+        "explanation": ""
     },
     "E261": {
-    "original_message": "at least two spaces before inline comment",
-    "title": "This line contains an inline comment that does not have 2 spaces before it.",
-    "solution": "Ensure that your inline comment has 2 spaces before the '#' character.",
-    "explanation": ""
+        "original_message": "at least two spaces before inline comment",
+        "title_templated": False,
+        "title": "Line contains an inline comment that does not have 2 spaces before it.",
+        "solution": "Ensure that your inline comment has 2 spaces before the `#` character.",
+        "explanation": ""
     },
     "E262": {
-    "original_message": "inline comment should start with ‘# ‘",
-    "title": "Comments should start with a '#' character and have one space between the '#' character and the comment itself.",
-    "solution": "Ensure that your inline comment starts with a '#' character followed by a space and then the comment itself.",
-    "explanation": "https://lintlyci.github.io/Flake8Rules/rules/E262.html this rule seems to be more about the space after the pound sign though????"
+        "original_message": "inline comment should start with ‘# ‘",
+        "title_templated": False,
+        "title": "Comments have a space between the `#` character and the comment message.",
+        "solution": "Ensure that your inline comment has a space between the `#` character and the comment message.",
+        "explanation": ""
     },
     "E265": {
-    "original_message": "block comment should start with ‘# ‘",
-    "title": "Comments should start with a '#' character and have one space between the '#' character and the comment itself.",
-    "solution": "Ensure that your block comment starts with a '#' character followed by a space and then the comment itself.",
-    "explanation": ""
+        "original_message": "block comment should start with ‘# ‘",
+        "title_templated": False,
+        "title": "Comments should start with a `#` character and have one space between the `#` character and the comment itself.",
+        "solution": "Ensure that your block comment has a space between the `#` character and the comment message.",
+        "explanation": ""
     },
     "E266": {
-    "original_message": "too many leading ‘#’ for block comment",
-    "title": "Comments should only start with a single '#' character.",
-    "solution": "Ensure your comment only starts with one '#' character.",
-    "explanation": ""
+        "original_message": "too many leading ‘#’ for block comment",
+        "title_templated": False,
+        "title": "Comments should only start with a single `#` character.",
+        "solution": "Ensure your comment only starts with one `#` character.",
+        "explanation": ""
     },
     "E271": {
-    "original_message": "multiple spaces after keyword",
-    "title": "This line contains more than one space after a keyword.",
-    "solution": "Ensure there is only one space after any keywords.",
-    "explanation": ""
+        "original_message": "multiple spaces after keyword",
+        "title_templated": False,
+        "title": "Line contains more than one space after a keyword.",
+        "solution": "Ensure there is only one space after any keywords.",
+        "explanation": ""
     },
     "E272": {
-    "original_message": "multiple spaces before keyword",
-    "title": "This line contains more than one space before a keyword.",
-    "solution": "Ensure there is only one space before any keywords.",
-    "explanation": ""
+        "original_message": "multiple spaces before keyword",
+        "title_templated": False,
+        "title": "Line contains more than one space before a keyword.",
+        "solution": "Ensure there is only one space before any keywords.",
+        "explanation": ""
     },
     "E273": {
-    "original_message": "tab after keyword",
-    "title": "This line contains a tab character after a keyword.",
-    "solution": "Ensure there is only one space after any keywords.",
-    "explanation": ""
+        "original_message": "tab after keyword",
+        "title_templated": False,
+        "title": "Line contains a tab character after a keyword.",
+        "solution": "Ensure there is only one space after any keywords.",
+        "explanation": ""
     },
     "E274": {
-    "original_message": "tab before keyword",
-    "title": "This line contains a tab character before a keyword.",
-    "solution": "Ensure there is only one space before any keywords.",
-    "explanation": ""
+        "original_message": "tab before keyword",
+        "title_templated": False,
+        "title": "Line contains a tab character before a keyword.",
+        "solution": "Ensure there is only one space before any keywords.",
+        "explanation": ""
     },
     "E275": {
-    "original_message": "missing whitespace after keyword",
-    "title": "This line is missing a space after a keyword.",
-    "solution": "Ensure there is one space after any keywords.",
-    "explanation": ""
+        "original_message": "missing whitespace after keyword",
+        "title_templated": False,
+        "title": "Line is missing a space after a keyword.",
+        "solution": "Ensure there is one space after any keywords.",
+        "explanation": ""
     },
     "E301": {
-    "original_message": "expected 1 blank line, found 0",
-    "title": "This line is missing a blank line between the methods of a class.",
-    "solution": "Add a blank line in between your class methods.",
-    "explanation": ""
+        "original_message": "expected 1 blank line, found 0",
+        "title_templated": False,
+        "title": "Line is missing a blank line between the methods of a class.",
+        "solution": "Add a blank line in between your class methods.",
+        "explanation": ""
     },
     "E302": {
-    "original_message": "expected 2 blank lines, found 0",
-    "title": "Two blank lines are expected between functions and classes.",
-    "solution": "Ensure there are two blank lines between functions and classes.",
-    "explanation": ""
+        "original_message": "expected 2 blank lines, found 0",
+        "title_templated": False,
+        "title": "Two blank lines are expected between functions and classes.",
+        "solution": "Ensure there are two blank lines between functions and classes.",
+        "explanation": ""
     },
     "E303": {
-    "original_message": "too many blank lines (3)",
-    "title": "There are too many blank lines.",
-    "solution": "Ensure there are two blank lines between functions and classes and one blank line between methods of a class.",
-    "explanation": ""
+        "original_message": "too many blank lines (3)",
+        "title_templated": False,
+        "title": "Too many blank lines.",
+        "solution": "Ensure there are only two blank lines between functions and classes and one blank line between methods of a class.",
+        "explanation": ""
     },
     "E304": {
-    "original_message": "blank lines found after function decorator",
-    "title": "This line contains a blank line after a function decorator.",
-    "solution": "Ensure that there are no blank lines between a function decorator and the function it is decorating.",
-    "explanation": ""
+        "original_message": "blank lines found after function decorator",
+        "title_templated": False,
+        "title": "Line contains a blank line after a function decorator.",
+        "solution": "Ensure that there are no blank lines between a function decorator and the function it is decorating.",
+        "explanation": ""
     },
     "E305": {
-    "original_message": "expected 2 blank lines after end of function or class",
-    "title": "Functions and classes should have two blank lines after them.",
-    "solution": "Ensure that functions and classes should have two blank lines after them.",
-    "explanation": ""
+        "original_message": "expected 2 blank lines after end of function or class",
+        "title_templated": False,
+        "title": "Functions and classes should have two blank lines after them.",
+        "solution": "Ensure that functions and classes should have two blank lines after them.",
+        "explanation": ""
     },
     "E306": {
-    "original_message": "expected 1 blank line before a nested definition",
-    "title": "Nested definitions should have one blank line before them.",
-    "solution": "Ensure there is a blank line above your nested definition.",
-    "explanation": ""
+        "original_message": "expected 1 blank line before a nested definition",
+        "title_templated": False,
+        "title": "Nested definitions should have one blank line before them.",
+        "solution": "Ensure there is a blank line above your nested definition.",
+        "explanation": ""
     },
     "E401": {
-    "original_message": "multiple imports on one line",
-    "title": "This line contains imports from different modules on the same line.",
-    "solution": "Ensure import statements from different modules occur on their own line.",
-    "explanation": ""
+        "original_message": "multiple imports on one line",
+        "title_templated": False,
+        "title": "Line contains imports from different modules on the same line.",
+        "solution": "Ensure import statements from different modules occur on their own line.",
+        "explanation": ""
     },
     "E402": {
-    "original_message": "module level import not at top of file",
-    "title": "Module imports should be at the top of the file and there should be no statements in between module level imports.",
-    "solution": "Ensure all import statements are at the top of the file and there are no statements in between imports.",
-    "explanation": ""
+        "original_message": "module level import not at top of file",
+        "title_templated": False,
+        "title": "Module imports should be at the top of the file and there should be no statements in between module level imports.",
+        "solution": "Ensure all import statements are at the top of the file and there are no statements in between imports.",
+        "explanation": ""
     },
     "E501": {
-    "original_message": "line too long (82 > 79 characters)",
-    "title": "This line is longer than 79 characters.",
-    "solution": "You can insert a backslash character (\\) to wrap the text onto the next line.",
-    "explanation": "Limiting the line width makes it possible to have several files open side-by-side, and works well when using code review tools that present the two versions in adjacent columns."
+        "original_message": "line too long (82 > 79 characters)",
+        "title_templated": False,
+        "title": "Line is longer than 79 characters.",
+        "solution": "You should rewrite your long line of code by breaking it down across multiple lines.",
+        "explanation": "By making sure your lines of code are not too complicated means it's easier to understand by other people. Also by limiting the line width makes it possible to have several files open side-by-side, and works well when using code review tools that present the two versions in adjacent columns."
     },
+    # TODO: Continue from this point onwards with checking text and adding templating boolean
     "E502": {
     "original_message": "the backslash is redundant between brackets",
     "title": "There is no need for a backslash (\\) between brackets.",
@@ -368,26 +390,26 @@ DATA = {
     },
     "E701": {
     "original_message": "multiple statements on one line (colon)",
-    "title": "This line contains multiple statements.",
+    "title": "Line contains multiple statements.",
     "solution": "Make sure that each statement is on its own line.",
     "explanation": "This improves readability."
     },
     "E702": {
     "original_message": "multiple statements on one line (semicolon)",
-    "title": "This line contains multiple statements.",
+    "title": "Line contains multiple statements.",
     "solution": "Make sure that each statement is on its own line.",
     "explanation": "This improves readability."
     },
     "E703": {
     "original_message": "statement ends with a semicolon",
-    "title": "This line ends in a semicolon (;).",
+    "title": "Line ends in a semicolon (;).",
     "solution": "Remove the semicolon from the end of the line.",
     "explanation": ""
     },
         # E704 ignored by default
     "E704": {
     "original_message": "multiple statements on one line (def)",
-    "title": "This line contains multiple statements.",
+    "title": "Line contains multiple statements.",
     "solution": "Make sure multiple statements of a function definition are on their own separate lines.",
     "explanation": ""
     },
@@ -429,37 +451,37 @@ DATA = {
     },
     "E731": {
     "original_message": "do not assign a lambda expression, use a def",
-    "title": "This line assigns a lambda expression instead of defining it as a function using `def`.",
+    "title": "Line assigns a lambda expression instead of defining it as a function using `def`.",
     "solution": "",
     "explanation": "The primary reason for this is debugging. Lambdas show as `<lambda>` in tracebacks, where functions will display the function’s name."
     },
     "E741": {
     "original_message": "do not use variables named ‘l’, ‘O’, or ‘I’",
-    "title": "This line uses one of the variables named ‘l’, ‘O’, or ‘I’",
+    "title": "Line uses one of the variables named ‘l’, ‘O’, or ‘I’",
     "solution": "Change the names of these variables to something more descriptive.",
     "explanation": "Variables named I, O, and l can be very hard to read. This is because the letter I and the letter l are easily confused, and the letter O and the number 0 can be easily confused."
     },
     "E742": {
     "original_message": "do not define classes named ‘l’, ‘O’, or ‘I’",
-    "title": "This line contains a class named ‘l’, ‘O’, or ‘I’",
+    "title": "Line contains a class named ‘l’, ‘O’, or ‘I’",
     "solution": "Change the names of these classes to something more descriptive.",
     "explanation": "Classes named I, O, and l can be very hard to read. This is because the letter I and the letter l are easily confused, and the letter O and the number 0 can be easily confused."
     },
     "E743": {
     "original_message": "do not define functions named ‘l’, ‘O’, or ‘I’",
-    "title": "This line contains a function named ‘l’, ‘O’, or ‘I’",
+    "title": "Line contains a function named ‘l’, ‘O’, or ‘I’",
     "solution": "Change the names of these functions to something more descriptive.",
     "explanation": "Functions named I, O, and l can be very hard to read. This is because the letter I and the letter l are easily confused, and the letter O and the number 0 can be easily confused."
     },
     "W191": {
     "original_message": "indentation contains tabs",
-    "title": "This line contains tabs when only spaces are expected.",
+    "title": "Line contains tabs when only spaces are expected.",
     "solution": "Replace any tabs in your indentation with spaces.",
     "explanation": ""
     },
     "W291": {
     "original_message": "trailing whitespace",
-    "title": "This line contains whitespace after the final character.",
+    "title": "Line contains whitespace after the final character.",
     "solution": "Remove any extra whitespace at the end of each line.",
     "explanation": ""
     },
@@ -500,7 +522,7 @@ DATA = {
         # W505 ignored by default
     "W505": {
     "original_message": "doc line too long (82 > 79 characters)",
-    "title": "This line is longer than 79 characters.",
+    "title": "Line is longer than 79 characters.",
     "solution": "You can insert a backslash character (\\) to wrap the text onto the next line.",
     "explanation": ""
     },

@@ -2,10 +2,7 @@
 
 import json
 from django.conf import settings
-from django.urls import reverse_lazy
-from django.http import Http404, JsonResponse, HttpResponse
-from django.template.loader import get_template
-from django.template import TemplateDoesNotExist
+from django.http import JsonResponse
 from django.views.generic import (
     TemplateView,
     ListView,

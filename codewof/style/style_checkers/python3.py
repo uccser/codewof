@@ -1,3 +1,5 @@
+"""Style checking code for Python 3 code."""
+
 import re
 import os.path
 import uuid
@@ -6,14 +8,12 @@ from pathlib import Path
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
-from style.style_checkers import python3_data
 from style.utils import (
     CHARACTER_DESCRIPTIONS,
     get_language_info,
     get_article,
 )
 from style.models import Error
-
 
 LINE_RE = re.compile(r':(?P<line>\d+):(?P<character>\d+): (?P<error_code>\w\d+) (?P<error_message>.*)$')
 CHARACTER_RE = re.compile(r'\'(?P<character>.*)\'')
@@ -25,6 +25,14 @@ PYTHON3_DETAILS = get_language_info('python3')
 
 
 def python3_style_check(code):
+    """Run the flake8 style check on provided code.
+
+    Args:
+        code (str): String of user code.
+
+    Returns:
+        List of dictionaries of style checker result data.
+    """
     # Write file to HDD
     filename = str(uuid.uuid4()) + TEMP_FILE_EXT
     filepath = Path(os.path.join(TEMP_FILE_ROOT, filename))
@@ -75,15 +83,22 @@ def process_results(result_text, is_example_code):
 
 def process_line(line_text, is_example_code):
     """
+    Process style error by matching database entry and incrementing count.
 
     Note: Could at extracting parts of this function to a generic
           utility function.
+
+    Args:
+        line_text (str): Text of style checker result.
+        is_example_code (bool): True if program was provided example code.
+
+    Returns:
+        Dictionary of information about style error.
     """
     issue_data = dict()
     re_result = re.search(LINE_RE, line_text)
     if re_result:
         line_number = re_result.group('line')
-        char_number = re_result.group('character')
         error_code = re_result.group('error_code')
         error_message = re_result.group('error_message')
 
@@ -122,10 +137,19 @@ def process_line(line_text, is_example_code):
 
 
 def render_text(template, error_message):
+    """Render title text from error message contents.
+
+    Args:
+        template (str): Template for formatting text.
+        error_message (str): Original style error message.
+
+    Returns:
+        Rendered title text.
+    """
     re_result = re.search(CHARACTER_RE, error_message)
     character = re_result.group('character')
     character_description = CHARACTER_DESCRIPTIONS[character]
-    template_data  = {
+    template_data = {
         'character': character,
         'character_description': character_description,
         'article': get_article(character_description),

@@ -1,9 +1,7 @@
 """Utilities for the style checker application."""
 
 from django.conf import settings
-from django.db.models import F
 from django.template.loader import render_to_string
-from style.models import Error
 
 
 CHARACTER_DESCRIPTIONS = {
