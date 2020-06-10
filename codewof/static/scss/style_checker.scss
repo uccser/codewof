@@ -16,6 +16,9 @@ $highlight_colour: #ffeb3b;
     .CodeMirror {
         height: auto;
     }
+    .card-body > div:last-child > p:last-child {
+        margin-bottom: 0;
+    }
 }
 
 #code-container {
