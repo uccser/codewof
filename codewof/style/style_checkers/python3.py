@@ -5,6 +5,7 @@ import subprocess
 from pathlib import Path
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import F
 from style.style_checkers import python3_data
 from style.utils import (
     CHARACTER_DESCRIPTIONS,
