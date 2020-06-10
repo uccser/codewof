@@ -133,13 +133,13 @@ DATA = {
         "explanation": ""
     },
     # E133 ignored by default
-    "E133": {
-        "original_message": "closing bracket is missing indentation",
-        "title_templated": False,
-        "title": "",
-        "solution": "",
-        "explanation": "",
-    },
+    # "E133": {
+    #     "original_message": "closing bracket is missing indentation",
+    #     "title_templated": False,
+    #     "title": "",
+    #     "solution": "",
+    #     "explanation": "",
+    # },
     "E201": {
         "original_message": "whitespace after '{character}'",
         "title_templated": True,
@@ -558,17 +558,16 @@ DATA = {
     "solution": "Add a docstring to your method.",
     "explanation": ""
     },
-    # TODO: Still need to check rest of error.
     "D103": {
         "original_message": "Missing docstring in public function",
-        "title": "Functions should have docstrings.",
+        "title": "This function should have a docstring.",
         "solution": "Add a docstring to your function.",
         "explanation": """
 A docstring is a comment at the top of your function that briefly explains the purpose of the module.
 
 For example:
 
-```python3
+```
 def get_waypoint_latlng(number):
     \"\"\"Return the latitude and longitude values of the waypoint.\"\"\"
 ```

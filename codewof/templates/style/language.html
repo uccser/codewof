@@ -12,7 +12,11 @@
 {% endblock breadcrumbs %}
 
 {% block page_heading %}
+    <a href="{% url 'style:language_statistics' language.slug %}" class="btn btn-secondary btn-sm float-right mt-3">
+        View statistics
+    </a>
     {% include language_header %}
+    {% include language_subheader %}
 {% endblock page_heading %}
 
 {% block content_container %}
@@ -33,6 +37,12 @@
                     Check for style issues
                 </button>
             </div>
+            <p class="text-muted">
+                <small>
+                    <strong>Privacy notice:</strong> Your code is anonymously stored on our website for analysis and then instantly deleted.
+                    The count of style issues triggered by your code are stored, but the code itself is not permanently stored.
+                </small>
+            </p>
         </div>
     </div>
     <div class="col-12 col-md-6 mb-3">

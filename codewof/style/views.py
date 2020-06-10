@@ -16,6 +16,7 @@ from style.utils import (
     render_results_as_html,
     render_results_as_text,
     get_language_info,
+    CHARACTER_DESCRIPTIONS,
 )
 
 LANGUAGE_PATH_TEMPLATE = 'style/{}.html'
@@ -43,6 +44,7 @@ class LanguageStyleCheckerView(TemplateView):
         language_slug = self.kwargs.get('language', '')
         context['language'] = get_language_info(language_slug)
         context['language_header'] = 'style/language-components/{}-header.html'.format(language_slug)
+        context['language_subheader'] = 'style/language-components/{}-subheader.html'.format(language_slug)
         context['language_js'] = 'js/style_checkers/{}.js'.format(language_slug)
         context['MAX_CHARACTER_COUNT'] = settings.STYLE_CHECKER_MAX_CHARACTER_COUNT
         return context
@@ -56,9 +58,12 @@ class LanguageStatisticsView(TemplateView):
     def get_context_data(self, **kwargs):
         """Get additional context data for template."""
         context = super().get_context_data(**kwargs)
-        language = self.kwargs.get('language', '')
-        context['language_header'] = 'style/language-components/{}-header.html'.format(language)
-        context['errors'] = Error.objects.filter(language=language).order_by('-count')
+        language_slug = self.kwargs.get('language', '')
+        context['language'] = get_language_info(language_slug)
+        context['language_header'] = 'style/language-components/{}-header.html'.format(language_slug)
+        context['issues'] = Error.objects.filter(language=language_slug).order_by('-count', 'code')
+        context['max_count'] = context['issues'][0].count
+        context['characters'] = list(CHARACTER_DESCRIPTIONS.keys())
         return context
 
 

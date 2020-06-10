@@ -105,7 +105,7 @@ def process_line(line_text, is_example_code):
                 error_solution = error.solution
 
             issue_data = {
-                'error_code': error_code,
+                'code': error_code,
                 'title': error_title,
                 'line_number': line_number,
                 'solution': error_solution,
@@ -114,7 +114,7 @@ def process_line(line_text, is_example_code):
         except ObjectDoesNotExist:
             # If error is not defined in database.
             issue_data = {
-                'error_code': error_code,
+                'code': error_code,
                 'title': error_message,
                 'line_number': line_number,
             }

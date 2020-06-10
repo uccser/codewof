@@ -11,15 +11,18 @@ $highlight_colour: #ffeb3b;
 }
 
 .issue-card {
-    user-select: none;
-    cursor: pointer !important;
     .CodeMirror {
         height: auto;
     }
     .card-body > div:last-child > p:last-child {
         margin-bottom: 0;
     }
+    #run-checker-result & {
+        user-select: none;
+        cursor: pointer !important;
+    }
 }
+
 
 #code-container {
     position: sticky;

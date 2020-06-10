@@ -419,6 +419,9 @@ def fizzbuzz():
 """
     },
 }
+# Add slug key to values for each language
+for slug, data in STYLE_CHECKER_LANGUAGES.items():
+    data['slug'] = slug
 STYLE_CHECKER_TEMP_FILES_ROOT = os.path.join(str(ROOT_DIR), 'temp', 'style')
 STYLE_CHECKER_MAX_CHARACTER_COUNT = 10000
 

@@ -1,43 +1,56 @@
 {% extends "base.html" %}
 
-{% load static %}
+{% load static i18n django_bootstrap_breadcrumbs %}
 
-{% block title %}Python Style Checker for schools{% endblock %}
+{% block title %}{{ language.name }} Style Checker for beginners{% endblock %}
+
+{% block breadcrumbs %}
+    {% trans "Home" as home_label %}
+    {% breadcrumb home_label "general:home" %}
+    {% breadcrumb "Style Checkers" "style:home" %}
+    {% breadcrumb language.name "style:language" language.slug %}
+    {% breadcrumb "Statistics" "style:language_statistics" language.slug %}
+{% endblock breadcrumbs %}
 
 {% block page_heading %}
     {% include language_header %}
     <h2 class="mt-3">
-        Style statistics
+        Statistics
     </h2>
+    <p>The following table shows the occurence counts of style issues submitted to the {{ language.name }} style checker.</p>
+    <p>The text <code>{article} {character_description}</code> will mean the style issue involves one of the following characters: <code>{{ characters|join:"" }}</code></p>
 {% endblock page_heading %}
 
-{% block content_container %}
-    <div class="col-12 mb-3">
-        <table class="table thead-dark">
-            <thead>
-                <tr>
-                    <th scope="col" class="sticky-top">Code</th>
-                    <th scope="col" class="sticky-top">Description</th>
-                    <th scope="col" class="sticky-top">Count</th>
-                    <th scope="col" class="sticky-top"></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for error in errors %}
-                    <tr>
-                        <th scope="row">{{ error.code }}</th>
-                        <td>
-                            {{ error.title }}
-                            <!-- TODO: Check if title needs to be templated -->
-                        </td>
-                        <td>{{ error.count }}</td>
-                        <td>-</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-{% endblock content_container %}
+{% block content %}
+    {% for issue in issues %}
+        <div class="card issue-card mb-3 w-100">
+            <div class="card-body p-2">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-6">
+                        <small>
+                            <span class="text-muted error-code">
+                                Issue code: {{ issue.code }}
+                            </span>
+                        </small>
+                        <div class="feedback-title">
+                            {{ issue.title|safe }}
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="text-center">
+                            <small>
+                                {{ issue.count }} occurence{{ issue.count|pluralize }}
+                            </small>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width:{% widthratio issue.count max_count 100 %}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock content %}
 
 {% block css %}
     <link href="{% static 'css/style_checker.css' %}" rel="stylesheet">
