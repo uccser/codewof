@@ -110,6 +110,29 @@ function display_style_checker_results(data, textStatus, jqXHR) {
         $('#check_btn').hide();
         $('#reset-btn').show();
         $('#copy-text-btn').show();
+        // Render all code examples
+        $('.issue-card pre').each(function () {
+            var pre_block = this;
+            CodeMirror(
+                function (element) {
+                    pre_block.parentNode.replaceChild(element, pre_block);
+                }, {
+                mode: {
+                    name: 'python',
+                    version: 3,
+                    singleLineStringErrors: false
+                },
+                value: pre_block.innerText.trim(),
+                readOnly: true,
+                cursorBlinkRate: -1,
+                lineNumbers: true,
+                textWrapping: false,
+                styleActiveLine: false,
+                autofocus: false,
+                indentUnit: 4,
+                viewportMargin: 0
+            });
+        });
     } else {
         display_style_checker_error();
     }

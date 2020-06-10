@@ -12,16 +12,18 @@ $highlight_colour: #ffeb3b;
 
 .issue-card {
     user-select: none;
-    cursor: pointer;
+    cursor: pointer !important;
+    .CodeMirror {
+        height: auto;
+    }
 }
 
 #code-container {
     position: sticky;
     top: 0;
-}
-
-.CodeMirror {
-    height: 500px;
+    .CodeMirror {
+        height: 500px;
+    }
 }
 
 .read-only {
