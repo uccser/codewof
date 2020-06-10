@@ -13,7 +13,6 @@ BASE_DATA_MODULE_PATH = 'style.style_checkers.{}_data'
 MARKDOWN_CONVERTER = Verto(
     extensions=[
         "markdown.extensions.fenced_code",
-        "markdown.extensions.codehilite",
     ],
 )
 
