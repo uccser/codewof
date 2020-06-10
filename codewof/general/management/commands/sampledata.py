@@ -88,6 +88,9 @@ class Command(management.base.BaseCommand):
         management.call_command('load_achievements')
         print('Achievements loaded.\n')
 
+        management.call_command('load_style_errors')
+        print('Style errors loaded.\n')
+
         # Research
         StudyFactory.create_batch(size=5)
         StudyGroupFactory.create_batch(size=15)

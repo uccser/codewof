@@ -79,6 +79,10 @@ cmd_update() {
   cmd_migrate
 
   echo ""
+  cmd_load_questions
+  cmd_load_style_errors
+
+  echo ""
   cmd_collect_static
   echo ""
   echo -e "\n${GREEN}Content is loaded!${NC}"
