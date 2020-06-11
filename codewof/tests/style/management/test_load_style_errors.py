@@ -10,5 +10,5 @@ class LoadStyleErrorsCommandTest(TestCase):
         super().__init__(*args, **kwargs)
         self.language = "en"
 
-    def test_load_style_errors_valid(self, topic_loader, age_loader):
+    def test_load_style_errors_valid(self):
         management.call_command("load_style_errors")
