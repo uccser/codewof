@@ -9,6 +9,12 @@ Add style checker for beginners.
     - Code is anonymously stored on the website for analysis and then instantly deleted.
     - Count of style issues triggered by submitted code are stored, but the code itself is not permanently stored.
     - Statistics of style issue occurence counts are publically visible.
+- Dependency updates:
+    - Add django-bootstrap-breadcrumbs 0.9.2.
+    - Set flake8 to custom version that allows isolated configurations, to be updated to official release in next update.
+    - Add flake8-docstrings 1.5.0.
+    - Add flake8-quotes 2.1.1.
+    - Add pep8-naming 0.9.1.
 
 ## 2.0.0
 
