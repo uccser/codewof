@@ -2,7 +2,7 @@
 
 import json
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.views.generic import (
     TemplateView,
     ListView,
@@ -39,7 +39,11 @@ class LanguageStyleCheckerView(TemplateView):
         """Get additional context data for template."""
         context = super().get_context_data(**kwargs)
         language_slug = self.kwargs.get('language', '')
-        context['language'] = get_language_info(language_slug)
+        language_info = get_language_info(language_slug)
+        # If language not found
+        if not language_info:
+            raise Http404
+        context['language'] = language_info
         context['language_header'] = 'style/language-components/{}-header.html'.format(language_slug)
         context['language_subheader'] = 'style/language-components/{}-subheader.html'.format(language_slug)
         context['language_js'] = 'js/style_checkers/{}.js'.format(language_slug)
@@ -56,10 +60,15 @@ class LanguageStatisticsView(TemplateView):
         """Get additional context data for template."""
         context = super().get_context_data(**kwargs)
         language_slug = self.kwargs.get('language', '')
-        context['language'] = get_language_info(language_slug)
+        language_info = get_language_info(language_slug)
+        # If language not found
+        if not language_info:
+            raise Http404
+        context['language'] = language_info
         context['language_header'] = 'style/language-components/{}-header.html'.format(language_slug)
         context['issues'] = Error.objects.filter(language=language_slug).order_by('-count', 'code')
-        context['max_count'] = context['issues'][0].count
+        if context['issues']:
+            context['max_count'] = context['issues'][0].count
         context['characters'] = list(CHARACTER_DESCRIPTIONS.keys())
         return context
 
