@@ -331,8 +331,8 @@ DATA = {
     "E302": {
         "original_message": "expected 2 blank lines, found 0",
         "title_templated": False,
-        "title": "Two blank lines are expected between functions and classes.",
-        "solution": "Ensure there are two blank lines between functions and classes.",
+        "title": "Two blank lines are expected before and after each function or class.",
+        "solution": "Ensure there are two blank lines before and after each function and class.",
         "explanation": ""
     },
     "E303": {
@@ -490,6 +490,13 @@ DATA = {
         "title": "Line contains a function named `l`, `O`, or `I`",
         "solution": "Change the names of these functions to something more descriptive.",
         "explanation": "Functions named `l`, `O`, or `I` can be very hard to read. This is because the letter `I` and the letter `l` are easily confused, and the letter `O` and the number `0` can be easily confused."
+    },
+    "E999": {
+        "original_message": "Syntax error",
+        "title_templated": False,
+        "title": "Program failed to compile.",
+        "solution": "Make sure your code is working.",
+        "explanation": ""
     },
     # TODO: Continue from this point onwards with checking text and adding templating boolean
     "W191": {
@@ -894,15 +901,15 @@ def get_stock_level(book):
     "D402": {
         "original_message": "First line should not be the function’s signature",
         "title_templated": False,
-        "title": "The first line in docstrings should not be the function’s signature.",
-        "solution": "Move the function’s signature to a different line or remove it completely.",
+        "title": "The first line in docstrings should not be a copy of the function’s definition.",
+        "solution": "Rewrite the docstring to describe the purpose of the function.",
         "explanation": ""
     },
     "D403": {
-        "original_message": "First line should not be the function’s 'signature'",
+        "original_message": "First word of the first line should be properly capitalized",
         "title_templated": False,
-        "title": "The first line in docstrings should not be the function’s 'signature'.",
-        "solution": "Move the function’s 'signature' to a different line or remove it completely.",
+        "title": "The first word in the first line should be capitalised.",
+        "solution": "Capitalise the first word.",
         "explanation": ""
     },
     "D404": {
