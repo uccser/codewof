@@ -87,9 +87,9 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
         # TODO: Also filter by questions added before today
         questions = questions.filter(
-            Q(attempt__isnull=True) |
-            (Q(attempt__passed_tests=False) & Q(attempt__datetime__date__lte=today)) |
-            (Q(attempt__passed_tests=True) & Q(attempt__datetime__date=today))
+            Q(attempt__isnull=True)
+            | (Q(attempt__passed_tests=False) & Q(attempt__datetime__date__lte=today))
+            | (Q(attempt__passed_tests=True) & Q(attempt__datetime__date=today))
         ).order_by('pk').distinct('pk').select_subclasses()
         questions = list(questions)
 

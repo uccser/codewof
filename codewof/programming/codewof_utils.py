@@ -236,13 +236,13 @@ def backdate_user(profile):
     profile.save()
 
 
-def backdate_points_and_achievements(n=-1, ignoreFlags=True):
+def backdate_points_and_achievements(n=-1, ignore_flags=True):
     """Perform batch backdate of all points and achievements for n profiles in the system."""
     backdate_achievements_times = []
     backdate_points_times = []
     time_before = time.perf_counter()
     profiles = Profile.objects.all()
-    if not ignoreFlags:
+    if not ignore_flags:
         profiles = profiles.filter(has_backdated=False)
     if (n > 0):
         profiles = profiles[:n]
@@ -252,7 +252,7 @@ def backdate_points_and_achievements(n=-1, ignoreFlags=True):
         # The commented out part below seems to break travis somehow
         print("Backdating user: {}/{}".format(str(i + 1), str(num_profiles)))  # , end="\r")
         profile = profiles[i]
-        if not profile.has_backdated or ignoreFlags:
+        if not profile.has_backdated or ignore_flags:
             attempts = all_attempts.filter(profile=profile)
 
             achievements_time_before = time.perf_counter()

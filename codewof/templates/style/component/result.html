@@ -1,0 +1,30 @@
+{% if issue_count %}
+    <h3 class="text-danger">{{ issue_count }} style issue{{ issue_count|pluralize }} found</h3>
+    <p>Click a style issue to see where it occurs in your code.</p>
+
+    {% for issue in issues %}
+        <div class="card issue-card mb-1" data-line-number="{{ issue.line_number }}">
+            <div class="card-body p-2">
+                <small>
+                    Line {{ issue.line_number }}
+                    <span class="text-muted error-code">
+                        - Issue code: {{ issue.code }}
+                    </span>
+                </small>
+                <div class="feedback-title">
+                    {{ issue.title|safe }}
+                </div>
+                <div class="feedback-solution">
+                    {{ issue.solution|safe }}
+                </div>
+                {% if issue.explanation %}
+                    <div class="feedback-explanation">
+                        {{ issue.explanation|safe }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <h3 class="text-success">No style issues found!</h3>
+{% endif %}
