@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load static i18n django_bootstrap_breadcrumbs %}
+{% load static i18n django_bootstrap_breadcrumbs simplify_error_template %}
 
 {% block title %}{{ language.name }} Style Checker for beginners{% endblock %}
 
@@ -18,7 +18,7 @@
         Statistics
     </h2>
     <p>The following table shows the occurence counts of style issues submitted to the {{ language.name }} style checker.</p>
-    <p>The text <code>{article} {character_description}</code> will mean the style issue involves one of the following characters: <code>{{ characters|join:"" }}</code></p>
+    <p>The text <code>{character}</code> will mean the style issue involves one of the following characters: <code>{{ characters|join:"" }}</code></p>
 {% endblock page_heading %}
 
 {% block content %}
@@ -33,7 +33,7 @@
                             </span>
                         </small>
                         <div class="feedback-title">
-                            {{ issue.title|safe }}
+                            {% simplify_error_template issue.title %}
                         </div>
                     </div>
                     <div class="col-12 col-md-6">

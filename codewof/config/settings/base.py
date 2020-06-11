@@ -251,6 +251,7 @@ TEMPLATES = [
             ],
             'libraries': {
                 'query_replace': 'config.templatetags.query_replace',
+                'simplify_error_template': 'config.templatetags.simplify_error_template',
             },
         },
     },
