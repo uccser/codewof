@@ -68,7 +68,7 @@ def process_results(result_text, is_example_code):
 
     Args:
         result_text (str): Text output from style checker.
-        is_example_code (bool): True if provide code matches the example code.
+        is_example_code (bool): True if provided code matches the example code.
 
     Returns:
         List of dictionaries of result data.
