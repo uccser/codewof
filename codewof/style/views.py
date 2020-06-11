@@ -12,6 +12,7 @@ from style.models import Error
 from style.utils import (
     render_results_as_html,
     render_results_as_text,
+    get_language_slugs,
     get_language_info,
     CHARACTER_DESCRIPTIONS,
 )
@@ -82,14 +83,17 @@ def check_code(request):
     Returns:
         JSON response with result.
     """
+    # TODO: Provide message for failure
     result = {
         'success': False,
     }
     if request.is_ajax():
         request_json = json.loads(request.body.decode('utf-8'))
         user_code = request_json['user_code']
-        if 0 < len(user_code) <= settings.STYLE_CHECKER_MAX_CHARACTER_COUNT:
-            language = request_json['language']
+        language = request_json['language']
+        is_valid_length = 0 < len(user_code) <= settings.STYLE_CHECKER_MAX_CHARACTER_COUNT
+        is_valid_language = language in get_language_slugs()
+        if is_valid_length and is_valid_language:
             if language == 'python3':
                 result_data = python3_style_check(user_code)
                 result['success'] = True
