@@ -8,7 +8,7 @@ Add style checker for beginners.
     - Currently only Python 3 is supported.
     - Code is anonymously stored on the website for analysis and then instantly deleted.
     - Count of style issues triggered by submitted code are stored, but the code itself is not permanently stored.
-    - Statistics are issue occurence counts is publically visible.
+    - Statistics of style issue occurence counts are publically visible.
 
 ## 2.0.0
 
