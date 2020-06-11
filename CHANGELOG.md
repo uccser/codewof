@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.0.0
+
+Add style checker for beginners.
+
+- Style checker for beginners is a freely accessible style checker.
+    - Currently only Python 3 is supported.
+    - Code is anonymously stored on the website for analysis and then instantly deleted.
+    - Count of style issues triggered by submitted code are stored, but the code itself is not permanently stored.
+    - Statistics are issue occurence counts is publically visible.
+
 ## 2.0.0
 
 Adds gamification elements (points and achievements) to the website, including for all previous submissions for each user.
