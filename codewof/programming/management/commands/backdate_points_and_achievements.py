@@ -25,8 +25,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         """Automatically called when the backdate command is given."""
         print("Backdating points and achievements\n")
-        ignoreFlags = options['ignore_flags']
+        ignore_flags = options['ignore_flags']
         number = int(options['profiles'])
-        if ignoreFlags and number > 0:
+        if ignore_flags and number > 0:
             raise ValueError("If ignoring backdate flags you must backdate all profiles.")
-        backdate_points_and_achievements(number, ignoreFlags)
+        backdate_points_and_achievements(number, ignore_flags)

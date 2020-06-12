@@ -44,7 +44,7 @@ class Command(management.base.BaseCommand):
 
         management.call_command('load_user_types')
         print(LOG_HEADER.format('Create sample users'))
-        User = get_user_model()
+        User = get_user_model()  # noqa N806
         # Create admin account
         admin = User.objects.create_superuser(
             'admin',
@@ -87,6 +87,9 @@ class Command(management.base.BaseCommand):
 
         management.call_command('load_achievements')
         print('Achievements loaded.\n')
+
+        management.call_command('load_style_errors')
+        print('Style errors loaded.\n')
 
         # Research
         StudyFactory.create_batch(size=5)

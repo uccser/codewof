@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% load static i18n django_bootstrap_breadcrumbs simplify_error_template %}
+
+{% block title %}{{ language.name }} Style Checker for beginners{% endblock %}
+
+{% block breadcrumbs %}
+    {% trans "Home" as home_label %}
+    {% breadcrumb home_label "general:home" %}
+    {% breadcrumb "Style Checkers" "style:home" %}
+    {% breadcrumb language.name "style:language" language.slug %}
+    {% breadcrumb "Statistics" "style:language_statistics" language.slug %}
+{% endblock breadcrumbs %}
+
+{% block page_heading %}
+    {% include language_header %}
+    <h2 class="mt-3">
+        Statistics
+    </h2>
+    <p>The following table shows the occurence counts of style issues submitted to the {{ language.name }} style checker.</p>
+    <p>The text <code>{character}</code> will mean the style issue involves one of the following characters: <code>{{ characters|join:"" }}</code></p>
+{% endblock page_heading %}
+
+{% block content %}
+    {% for issue in issues %}
+        <div class="card issue-card mb-3 w-100">
+            <div class="card-body p-2">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-6">
+                        <small>
+                            <span class="text-muted error-code">
+                                Issue code: {{ issue.code }}
+                            </span>
+                        </small>
+                        <div class="feedback-title">
+                            {% simplify_error_template issue.title %}
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="text-center">
+                            <small>
+                                {{ issue.count }} occurence{{ issue.count|pluralize }}
+                            </small>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width:{% widthratio issue.count max_count 100 %}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock content %}
+
+{% block css %}
+    <link href="{% static 'css/style_checker.css' %}" rel="stylesheet">
+{% endblock css %}

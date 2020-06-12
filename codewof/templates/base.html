@@ -1,4 +1,4 @@
-{% load static i18n activeurl svg %}
+{% load static i18n activeurl svg django_bootstrap_breadcrumbs i18n %}
 
 <!doctype html>
 <html lang="en">
@@ -53,8 +53,9 @@
           {% if request %}
             {% activeurl %}
             <ul id="codewof-navbar-dashboard" class="navbar-nav w-100 d-lg-flex justify-content-end align-items-stretch">
+              <a class="nav-item nav-link" href="{% url 'programming:question_list' %}">Questions</a>
+              <a class="nav-item nav-link mr-auto" href="{% url 'style:home' %}">Style Checkers</a>
               {% if request and request.user.is_authenticated %}
-                <a class="nav-item nav-link mr-auto" href="{% url 'programming:question_list' %}">Questions</a>
                 {# URL provided by django-allauth/account/urls.py #}
                 <a class="nav-item nav-link" href="{% url 'users:dashboard'  %}">
                   {% svg 'icons8-points' %}
@@ -78,22 +79,26 @@
     </nav>
 
     {% if messages %}
-    <div class="container">
-      {% for message in messages %}
-      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show my-3"
-        role="alert">
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      {% endfor %}
-    </div>
-  {% endif %}
+        <div class="container">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show my-3"
+                role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block breadcrumbs %}
+    {% endblock breadcrumbs %}
 
     {% block body_container %}
     <div id="page-header" class="my-3">
       <div class="container">
+        {% render_breadcrumbs %}
         {% block page_heading %}
         {% endblock page_heading %}
       </div>
@@ -101,10 +106,10 @@
     <div id="content-container" class="container">
       <div class="row">
         {% block content_container %}
-        <div class="col-12">
-          {% block content %}
-          {% endblock content %}
-        </div>
+          <div class="col-12">
+            {% block content %}
+            {% endblock content %}
+          </div>
         {% endblock content_container %}
       </div>
     </div>
