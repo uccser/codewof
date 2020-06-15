@@ -171,11 +171,31 @@ strong {
     max-height: 5rem;
 }
 
-// Create badge CSS rules off colour names
+// Create achievement CSS rules off colour names
 @each $color, $value in $colors {
   .badge-#{$color} {
     @include badge-variant($value);
   }
+}
+
+.achievement-container {
+  clear: both;
+  padding-bottom: 0.5rem;
+}
+
+.achievement-icon {
+  padding: 0.3125rem;
+  float: left;
+}
+
+.achievement-icon-unachieved {
+  padding: 0.3125rem;
+  opacity: 0.2;
+}
+
+.achievements-link,
+.achievements-link:hover {
+  color: inherit;
 }
 
 .img-inline {
@@ -196,6 +216,21 @@ strong {
 }
 .img-y5 {
   max-height: 5rem;
+}
+.img-x1 {
+  max-width: 1rem;
+}
+.img-x2 {
+  max-width: 2rem;
+}
+.img-x3 {
+  max-width: 3rem;
+}
+.img-x4 {
+  max-width: 4rem;
+}
+.img-x5 {
+  max-width: 5rem;
 }
 ////////////////////////////////
 		//Variables//
@@ -247,4 +282,35 @@ $red: #b94a48;
 
 .orange-underline {
   border-bottom: 0.5rem $brand-secondary-colour solid;
+}
+
+#toast-container {
+  position: fixed;
+  top: 3rem;
+  right: 2rem;
+}
+
+.toast {
+  border: 1px solid $brand-colour;
+  background-color: brand-colour-light;
+  text-align: center;
+}
+
+.toast-header {
+  border: 1px solid $brand-colour;
+  background-color: brand-colour-light;
+  width: 100%;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.toast-header strong {
+  color: black;
+  font-weight: bold;
+}
+
+.toast-body {
+  border: 1px solid $brand-colour;
+  background-color: brand-colour-light;
+  white-space: pre;
 }

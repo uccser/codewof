@@ -1,0 +1,1 @@
+print(rectangle_perimeter(1, 2))

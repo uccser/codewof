@@ -13,9 +13,9 @@ install:
 jobs:
   include:
     - stage: test
-      # script: ./dev ci test_suite
-      # name: "Run test suite"
-      script: ./dev ci style
+      script: ./dev ci test_suite
+      name: "Run test suite"
+    - script: ./dev ci style
       name: "Run style checker"
     - stage: development deployment
       script: skip

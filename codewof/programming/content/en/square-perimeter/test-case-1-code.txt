@@ -1,0 +1,1 @@
+print(square_perimeter(2))
