@@ -13,6 +13,7 @@ urlpatterns = [
     path('', include('general.urls', namespace='general')),
     path(settings.ADMIN_URL, admin.site.urls),
     path('research/', include('research.urls', namespace='research')),
+    path('style/', include('style.urls', namespace='style')),
     path('users/', include('users.urls', namespace='users'),),
     path('accounts/', include('allauth.urls')),
     path('', include('programming.urls', namespace='programming'),),

@@ -30,11 +30,23 @@
             <strong>Sorry!</strong> We currently don't have questions for you to do today.
           </div>
         {% endif %}
+        <p>You've solved {{ num_questions_answered }} question{{ num_questions_answered|pluralize }} in the last month!</p>
       </div>
 
       <div class="col-12 col-md-4 mb-3">
-        <h2>Achievements</h2>
-        <p><em>Coming soon!</em></p>
+        <h2>Points earned: {{ user.profile.points }}</h2>
+        <h2>Achievements</a></h2>
+        <br>
+        {% for achievement in all_achievements %}
+            {% if achievement in user.profile.earned_achievements.all and achievement.parent not in user.profile.earned_achievements.all %}
+              <div class="achievement-container">
+                <a class="achievements-link" href="{% url 'users:achievements' %}">
+                  <img class="achievement-icon" src="{% static achievement.icon_name %}">
+                  <b>{{ achievement.display_name }}</b>
+                </a>
+              </div>
+            {% endif %}
+        {% endfor %}
       </div>
 
       <div class="col-12 col-md-8 mb-3">

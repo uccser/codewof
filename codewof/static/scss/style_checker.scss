@@ -1,0 +1,54 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/mixins";
+@import "core-variables";
+@import "functions";
+@import "node_modules/bootstrap/scss/variables";
+
+$highlight_colour: #ffeb3b;
+
+.style-highlight {
+    background-color: $highlight_colour;
+}
+
+.issue-card {
+    .CodeMirror {
+        height: auto;
+    }
+    p {
+        margin-bottom: 0.25rem;
+    }
+    .card-body > div:last-child > p:last-child {
+        margin-bottom: 0;
+    }
+    #run-checker-result & {
+        user-select: none;
+        cursor: pointer !important;
+    }
+}
+
+
+#code-container {
+    position: sticky;
+    top: 0;
+    .CodeMirror {
+        height: 500px;
+    }
+}
+
+.read-only {
+    background-color: #e6e6e6;
+}
+
+#run-checker-error,
+#reset-btn,
+#copy-text-btn {
+    display: none;
+}
+
+.feedback-title {
+    p {
+        margin-bottom: 0;
+        color: $red;
+        font-weight: bold;;
+    }
+}
