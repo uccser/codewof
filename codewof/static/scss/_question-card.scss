@@ -22,8 +22,8 @@
 .qc-card {
     display: grid;
     grid-template-areas:
-        "qc-checkbox qc-type qc-icon"
-        "qc-checkbox qc-title qc-icon";
+        "qc-checkbox qc-type"
+        "qc-checkbox qc-title";
     grid-template-columns: auto 1fr auto;
     grid-template-rows: auto auto;
     border: 3px solid grey;
@@ -54,10 +54,6 @@
     justify-content: center;
     align-items: center;
     margin-right: 0.5rem;
-}
-
-.qc-icon {
-    grid-area: qc-icon;
 }
 
 .qc-type {

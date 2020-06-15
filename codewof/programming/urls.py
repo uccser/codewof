@@ -20,6 +20,7 @@ urlpatterns = [
     path('questions/', views.QuestionListView.as_view(), name='question_list'),
     path('questions/create/', views.CreateView.as_view(), name='create'),
     path('questions/<int:pk>/', views.QuestionView.as_view(), name='question'),
+    path('tasks/backdate/', views.partial_backdate, name='partial_backdate'),
     path('ajax/save_question_attempt/', views.save_question_attempt, name='save_question_attempt'),
     # path('skills/<int:pk>/', views.SkillView.as_view(), name="skill"),
     # path('random/<int:current_question_id>/', views.get_random_question, name='random'),

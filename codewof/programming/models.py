@@ -25,8 +25,9 @@ class Profile(models.Model):
         default=1,
         validators=[MinValueValidator(1), MaxValueValidator(7)]
     )
-    earned_badges = models.ManyToManyField('Badge', through='Earned')
+    earned_achievements = models.ManyToManyField('Achievement', through='Earned')
     attempted_questions = models.ManyToManyField('Question', through='Attempt')
+    has_backdated = models.BooleanField(default=False)
 
     def __str__(self):
         """Text representation of a profile."""
@@ -48,38 +49,38 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-class Badge(models.Model):
-    """Badge that can be earned by a user."""
+class Achievement(models.Model):
+    """Achievement that can be earned by a user."""
 
     id_name = models.CharField(max_length=SMALL, unique=True)
     display_name = models.CharField(max_length=SMALL)
     description = models.CharField(max_length=LARGE)
     icon_name = models.CharField(null=True, max_length=SMALL)
-    badge_tier = models.IntegerField(default=0)
-    parent = models.ForeignKey('Badge', on_delete=models.CASCADE, null=True, default=None)
+    achievement_tier = models.IntegerField(default=0)
+    parent = models.ForeignKey('Achievement', on_delete=models.CASCADE, null=True, default=None)
 
     def __str__(self):
-        """Text representation of a badge."""
+        """Text representation of an achievement."""
         return self.display_name
 
     class Meta:
-        """Queryset will be ordered by badge tier."""
+        """Queryset will be ordered by achievement tier."""
 
-        ordering = ['badge_tier']
+        ordering = ['achievement_tier']
 
 
 class Earned(models.Model):
-    """Model that documents when a badge is earned by a user in their profile."""
+    """Model that documents when an achievement is earned by a user in their profile."""
 
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
-    badge = models.ForeignKey('Badge', on_delete=models.CASCADE)
+    achievement = models.ForeignKey('Achievement', on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
 
     class Meta:
         """How the name is displayed in the Admin view."""
 
-        verbose_name = "Earned badge"
-        verbose_name_plural = "Badges earned"
+        verbose_name = "Earned achievement"
+        verbose_name_plural = "Achievements earned"
 
     def __str__(self):
         """Text representation of an Earned object."""

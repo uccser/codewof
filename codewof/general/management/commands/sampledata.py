@@ -26,7 +26,7 @@ class Command(management.base.BaseCommand):
             '--skip_backdate',
             action='store_true',
             help='skip backdate step',
-            )
+        )
 
     def handle(self, *args, **options):
         """Automatically called when the sampledata command is given."""
@@ -44,7 +44,7 @@ class Command(management.base.BaseCommand):
 
         management.call_command('load_user_types')
         print(LOG_HEADER.format('Create sample users'))
-        User = get_user_model()
+        User = get_user_model()  # noqa N806
         # Create admin account
         admin = User.objects.create_superuser(
             'admin',
@@ -85,8 +85,11 @@ class Command(management.base.BaseCommand):
         management.call_command('load_questions')
         print('Programming questions loaded.\n')
 
-        management.call_command('load_badges')
-        print('Achievement badges loaded.\n')
+        management.call_command('load_achievements')
+        print('Achievements loaded.\n')
+
+        management.call_command('load_style_errors')
+        print('Style errors loaded.\n')
 
         # Research
         StudyFactory.create_batch(size=5)
@@ -97,8 +100,8 @@ class Command(management.base.BaseCommand):
         AttemptFactory.create_batch(size=50)
         print('Attempts loaded.\n')
 
-        # Award points and badges
+        # Award points and achievements
         if not skip:
-            management.call_command('backdate_points_and_badges')
+            management.call_command('backdate_points_and_achievements')
         else:
             print('Ignoring backdate step as requested.\n')

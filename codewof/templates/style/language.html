@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% load static svg i18n django_bootstrap_breadcrumbs %}
+
+{% block title %}{{ language.name }} Style Checker for beginners{% endblock %}
+
+{% block breadcrumbs %}
+    {% trans "Home" as home_label %}
+    {% breadcrumb home_label "general:home" %}
+    {% breadcrumb "Style Checkers" "style:home" %}
+    {% breadcrumb language.name "style:language" language.slug %}
+{% endblock breadcrumbs %}
+
+{% block page_heading %}
+    <a href="{% url 'style:language_statistics' language.slug %}" class="btn btn-secondary btn-sm float-right mt-3">
+        View statistics
+    </a>
+    {% include language_header %}
+    {% include language_subheader %}
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div class="col-12 col-md-6 mb-3">
+        <div id="code-container">
+            <h3>Your code</h3>
+            <div class="border">
+                <textarea id="code" class="hidden"></textarea>
+            </div>
+            <div class="d-flex justify-content-between my-3">
+                <button type="button" id="load_example_btn" class="btn btn-sm btn-secondary">
+                    Load example
+                </button>
+                <button type="button" id="reset-btn" class="btn btn-danger">
+                    Restart
+                </button>
+                <button type="button" id="check_btn" class="btn btn-primary">
+                    Check for style issues
+                </button>
+            </div>
+            <p class="text-muted">
+                <small>
+                    <strong>Privacy notice:</strong> Your code is anonymously stored on our website for analysis and then instantly deleted.
+                    The count of style issues triggered by your code are stored, but the code itself is not permanently stored.
+                </small>
+            </p>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 mb-3">
+        <div id="run-checker-result"></div>
+        <div id="run-checker-error">
+            <strong class="text-danger">Sorry!</strong>
+            We have encountered an error.
+            Feel free to <a href="{% url 'general:contact' %}">contact us</a> if this error continues.
+        </div>
+        <button type="button" id="copy-text-btn" class="btn btn-sm btn-secondary mt-2" data-placement="right">
+            Copy text version to clipboard
+        </button>
+    </div>
+
+{% endblock content_container %}
+
+{% block css %}
+    <link href="{% static 'css/style_checker.css' %}" rel="stylesheet">
+{% endblock css %}
+
+{% block scripts %}
+    {{ block.super }}
+    {% csrf_token %}
+    <script type="text/javascript">
+        var MAX_CHARACTER_COUNT = "{{ MAX_CHARACTER_COUNT }}";
+        var EXAMPLE_CODE = `{{ language.example_code|safe }}`;
+    </script>
+    <script src="{% static language_js %}"></script>
+
+{% endblock scripts %}

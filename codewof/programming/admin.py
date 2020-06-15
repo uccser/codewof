@@ -10,7 +10,7 @@ from programming.models import (
     QuestionTypeParsons,
     QuestionTypeDebugging,
     Profile,
-    Badge,
+    Achievement,
     Earned,
 )
 
@@ -27,7 +27,7 @@ class TestCaseAttemptInline(admin.TabularInline):
 
 
 class EarnedInline(admin.TabularInline):
-    """Configuration to show earned badges inline within profile admin."""
+    """Configuration to show earned achievements inline within profile admin."""
 
     model = Earned
     extra = 1
@@ -36,24 +36,25 @@ class EarnedInline(admin.TabularInline):
 class ProfileAdmin(admin.ModelAdmin):
     """Configuration for displaying profiles in admin."""
 
-    list_display = ('user', 'points', 'goal')
+    list_display = ('user', 'points', 'goal', 'has_backdated')
+    list_filter = ['goal', 'has_backdated']
     ordering = ('user', )
     inlines = (EarnedInline, )
 
 
-class BadgeAdmin(admin.ModelAdmin):
-    """Configuration for displaying badges in admin."""
+class AchievementAdmin(admin.ModelAdmin):
+    """Configuration for displaying achievements in admin."""
 
-    list_display = ('id_name', 'display_name', 'badge_tier')
-    list_filter = ['badge_tier']
+    list_display = ('id_name', 'display_name', 'achievement_tier')
+    list_filter = ['achievement_tier']
     ordering = ('id_name', )
 
 
 class EarnedAdmin(admin.ModelAdmin):
-    """Configuration for displaying earned badges in admin."""
+    """Configuration for displaying earned achievements in admin."""
 
-    list_display = ('date', 'badge', 'profile')
-    list_filter = ['badge']
+    list_display = ('date', 'achievement', 'profile')
+    list_filter = ['achievement']
     ordering = ('-date', )
 
 
@@ -61,6 +62,7 @@ class AttemptAdmin(admin.ModelAdmin):
     """Configuration for displaying attempts in admin."""
 
     list_display = ('datetime', 'question', 'profile', 'passed_tests')
+    list_filter = ['passed_tests', 'question']
     ordering = ('-datetime', )
     inlines = (TestCaseAttemptInline, )
 
@@ -78,5 +80,5 @@ admin.site.register(QuestionTypeFunction)
 admin.site.register(QuestionTypeParsons)
 admin.site.register(QuestionTypeDebugging)
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Badge, BadgeAdmin)
+admin.site.register(Achievement, AchievementAdmin)
 admin.site.register(Earned, EarnedAdmin)

@@ -1,6 +1,8 @@
 """Views for programming application."""
 
 import json
+from django.conf import settings
+from django.core import management
 from django.views import generic
 from django.utils import timezone
 from django.db.models import Count, Max
@@ -24,9 +26,10 @@ from programming.models import (
 )
 from research.models import StudyRegistration
 
-from programming.codewof_utils import add_points, check_badge_conditions
+from programming.codewof_utils import add_points, check_achievement_conditions
 
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
+BATCH_SIZE = 15
 
 
 class QuestionListView(LoginRequiredMixin, generic.ListView):
@@ -176,16 +179,33 @@ def save_question_attempt(request):
                 result['success'] = True
                 points_before = profile.points
                 points = add_points(question, profile, attempt)
-                badges = check_badge_conditions(profile)
+                achievements = check_achievement_conditions(profile)
                 points_after = profile.points
                 result['curr_points'] = points
                 result['point_diff'] = points_after - points_before
-                result['badges'] = badges
+                result['achievements'] = achievements
             else:
                 result['success'] = False
                 result['message'] = 'Attempt not saved, same as previous attempt.'
 
     return JsonResponse(result)
+
+
+def partial_backdate(request):
+    """Backdate a set number of user profiles.
+
+    Returns a 403 Forbidden response if the request was made to a live website and did not come from GCP.
+    """
+    # https://cloud.google.com/appengine/docs/standard/python3/scheduling-jobs-with-cron-yaml?hl=en_US
+    # #validating_cron_requests
+    if settings.DEBUG or 'X-Appengine-Cron' in request.headers:
+        management.call_command("backdate_points_and_achievements", profiles=BATCH_SIZE)
+        response = {
+            'success': True,
+        }
+        return JsonResponse(response)
+    else:
+        raise PermissionDenied()
 
 
 class CreateView(generic.base.TemplateView):
@@ -213,26 +233,6 @@ class CreateView(generic.base.TemplateView):
             question_types.append(data)
         context['question_types'] = question_types
         return context
-
-
-# class ProfileView(LoginRequiredMixin, generic.DetailView):
-#     """Displays a user's profile."""
-
-#     login_url = '/login/'
-#     redirect_field_name = 'next'
-#     template_name = 'users/user_detail.html'
-#     model = Profile
-
-#     def get_context_data(self, **kwargs):
-#         """Get additional context data for template."""
-#         context = super().get_context_data(**kwargs)
-
-#         user = self.request.user
-#         context['goal'] = user.profile.goal
-#         context['all_badges'] = Badge.objects.all()
-#         check_badge_conditions(user.profile)
-#         # context['past_5_weeks'] = get_past_5_weeks(user)
-#         return context
 
 
 class QuestionAPIViewSet(viewsets.ReadOnlyModelViewSet):
