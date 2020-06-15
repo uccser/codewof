@@ -7,10 +7,10 @@ from codewof.tests.codewof_test_data_generator import (
     generate_questions,
     generate_attempts,
     generate_test_cases,
-    generate_badges,
+    generate_achievements,
     generate_study_registrations,
 )
-from codewof.programming.codewof_utils import check_badge_conditions
+from codewof.programming.codewof_utils import check_achievement_conditions
 from codewof.tests.conftest import user
 import json
 
@@ -157,7 +157,7 @@ class CreateViewTest(TestCase):
 
     def test_context_object(self):
         user = User.objects.get(id=1)
-        check_badge_conditions(user.profile)  # make sure a program question has been answered
+        check_achievement_conditions(user.profile)  # make sure a program question has been answered
 
         resp = self.client.get('/questions/create/')
         self.assertEqual(resp.status_code, 200)
@@ -179,7 +179,7 @@ class SaveQuestionAttemptTest(TestCase):
         # never modify this object in tests
         generate_users(user)
         generate_questions()
-        generate_badges()
+        generate_achievements()
         generate_attempts()
         generate_test_cases()
 
@@ -193,7 +193,7 @@ class SaveQuestionAttemptTest(TestCase):
     def test_save_question_attempt_success_true(self):
         self.login_user()
         user = User.objects.get(id=1)
-        check_badge_conditions(user.profile)
+        check_achievement_conditions(user.profile)
         pk = Question.objects.get(slug='program-question-1').pk
 
         resp = self.client.post(
@@ -205,13 +205,13 @@ class SaveQuestionAttemptTest(TestCase):
         self.assertEqual(200, resp.status_code)
         self.assertJSONEqual(
             str(resp.content, encoding='utf8'),
-            {'success': True, 'curr_points': 50, 'point_diff': 0, 'badges': ''}
+            {'success': True, 'curr_points': 50, 'point_diff': 0, 'achievements': ''}
         )
 
     def test_save_question_attempt_success_false(self):
         self.login_user()
         user = User.objects.get(id=1)
-        check_badge_conditions(user.profile)
+        check_achievement_conditions(user.profile)
         question = Question.objects.get(slug='program-question-1')
 
         attempt_one_resp = self.client.post(
@@ -223,7 +223,7 @@ class SaveQuestionAttemptTest(TestCase):
         self.assertEqual(200, attempt_one_resp.status_code)
         self.assertJSONEqual(
             str(attempt_one_resp.content, encoding='utf8'),
-            {'success': True, 'curr_points': 50, 'point_diff': 0, 'badges': ''}
+            {'success': True, 'curr_points': 50, 'point_diff': 0, 'achievements': ''}
         )
 
         attempt_two_resp = self.client.post(

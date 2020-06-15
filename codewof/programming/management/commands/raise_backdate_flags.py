@@ -17,4 +17,4 @@ class Command(BaseCommand):
             profile.has_backdated = False
             profile.full_clean()
             profile.save()
-        print("done\n")
+        print("Completed raising backdate flags\n")
