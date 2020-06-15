@@ -7,7 +7,7 @@ import datetime
 from programming.models import (
     Question,
     Attempt,
-    Badge,
+    Achievement,
     QuestionTypeProgram,
     QuestionTypeFunction,
     QuestionTypeParsons,
@@ -87,75 +87,75 @@ def generate_users(user):
     user_sally.save()
 
 
-def generate_badges():
-    """Create badges for codeWOF tests. Badges created for each main current badge category."""
-    Badge.objects.create(
+def generate_achievements():
+    """Create achievements for codeWOF tests. Achievements created for each main current achievement category."""
+    Achievement.objects.create(
         id_name='create-account',
         display_name='Account created',
         description='test',
-        badge_tier=0,
+        achievement_tier=0,
     )
-    # Questions solved badges
-    Badge.objects.create(
+    # Questions solved achievements
+    Achievement.objects.create(
         id_name='questions-solved-100',
         display_name='Solved one hundred questions',
         description='test',
-        badge_tier=4,
+        achievement_tier=4,
     )
-    Badge.objects.create(
+    Achievement.objects.create(
         id_name='questions-solved-10',
         display_name='Solved ten questions',
         description='test',
-        badge_tier=3,
-        parent=Badge.objects.get(id_name='questions-solved-100')
+        achievement_tier=3,
+        parent=Achievement.objects.get(id_name='questions-solved-100')
     )
-    Badge.objects.create(
+    Achievement.objects.create(
         id_name='questions-solved-5',
         display_name='Solved five questions',
         description='test',
-        badge_tier=2,
-        parent=Badge.objects.get(id_name='questions-solved-10')
+        achievement_tier=2,
+        parent=Achievement.objects.get(id_name='questions-solved-10')
     )
-    Badge.objects.create(
+    Achievement.objects.create(
         id_name='questions-solved-1',
         display_name='Solved one question',
         description='first',
-        badge_tier=1,
-        parent=Badge.objects.get(id_name='questions-solved-5')
+        achievement_tier=1,
+        parent=Achievement.objects.get(id_name='questions-solved-5')
     )
-    # Attempts made badges
-    Badge.objects.create(
+    # Attempts made achievements
+    Achievement.objects.create(
         id_name='attempts-made-100',
         display_name='One hundred attempts made',
         description='test',
-        badge_tier=4,
+        achievement_tier=4,
     )
-    Badge.objects.create(
+    Achievement.objects.create(
         id_name='attempts-made-10',
         display_name='Ten attempts made',
         description='test',
-        badge_tier=3,
-        parent=Badge.objects.get(id_name='attempts-made-100')
+        achievement_tier=3,
+        parent=Achievement.objects.get(id_name='attempts-made-100')
     )
-    Badge.objects.create(
+    Achievement.objects.create(
         id_name='attempts-made-5',
         display_name='Five attempts made',
         description='test',
-        badge_tier=2
+        achievement_tier=2
     )
-    Badge.objects.create(
+    Achievement.objects.create(
         id_name='attempts-made-1',
         display_name='One attempt made',
         description='test',
-        badge_tier=1,
-        parent=Badge.objects.get(id_name='attempts-made-5')
+        achievement_tier=1,
+        parent=Achievement.objects.get(id_name='attempts-made-5')
     )
-    # Only need one of the consecutive days badges
-    Badge.objects.create(
+    # Only need one of the consecutive days achievements
+    Achievement.objects.create(
         id_name='consecutive-days-2',
         display_name='Two consecutive days',
         description='test',
-        badge_tier=1,
+        achievement_tier=1,
     )
 
 
@@ -164,7 +164,7 @@ def generate_attempts():
     Generate attempts for codeWOF tests.
 
     Attempts are generated for user 1 and question 1, with attempts created to cover consecutive days, failed attempts,
-    and passed attempts. These attempts cover the main requirements to gain all test badges.
+    and passed attempts. These attempts cover the main requirements to gain all test achievements.
     """
     user = User.objects.get(id=1)
     question = Question.objects.get(slug='program-question-1')

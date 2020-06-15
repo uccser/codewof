@@ -22,6 +22,7 @@ django-modeltranslation==0.14.4
 django-inline-svg==0.1.1
 django-ckeditor==5.9.0
 django-recaptcha==2.0.6
+django-bootstrap-breadcrumbs==0.9.2
 
 # Google Cloud Platform
 google-api-python-client==1.7.12
@@ -30,3 +31,10 @@ google-api-python-client==1.7.12
 verto==0.10.0
 python-markdown-math==0.6
 PyYAML==5.3.1
+
+# Style checker
+# Replace flake8 dependency once new release is created
+git+git://github.com/PyCQA/flake8.git@20906d43046096c31dfcd9b8bc536dbd21f043ef
+flake8-docstrings==1.5.0
+flake8-quotes==2.1.1
+pep8-naming==0.9.1

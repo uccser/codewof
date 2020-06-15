@@ -11,15 +11,15 @@
         <h1>{{ user.get_full_name }}</h1>
 
         <p><strong>Date joined</strong>: {{ user.date_joined }}</p>
-        <p><strong>Points earned</strong>: {{user.profile.points}}</p>
+        <p><strong>Points earned</strong>: {{ user.profile.points }}</p>
         <b>Achievements:</b>
         <br>
-        {% for badge in all_badges %}
-            {% if badge in user.profile.earned_badges.all %}
-              <img src="{% static badge.icon_name %}">
-              <u>{{badge.display_name}}</u>
+        {% for achievement in all_achievements %}
+            {% if achievement in user.profile.earned_achievements.all %}
+              <img src="{% static achievement.icon_name %}">
+              <u>{{ achievement.display_name }}</u>
             {% else %}
-            <i>{{badge.display_name}}</i>
+            <i>{{ achievement.display_name }}</i>
             {% endif %}
             <br>
         {% endfor %}

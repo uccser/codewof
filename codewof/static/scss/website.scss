@@ -171,24 +171,24 @@ strong {
     max-height: 5rem;
 }
 
-// Create badge CSS rules off colour names
+// Create achievement CSS rules off colour names
 @each $color, $value in $colors {
   .badge-#{$color} {
     @include badge-variant($value);
   }
 }
 
-.badge-container {
+.achievement-container {
   clear: both;
   padding-bottom: 0.5rem;
 }
 
-.badge-icon {
+.achievement-icon {
   padding: 0.3125rem;
   float: left;
 }
 
-.badge-icon-unachieved {
+.achievement-icon-unachieved {
   padding: 0.3125rem;
   opacity: 0.2;
 }
@@ -216,6 +216,21 @@ strong {
 }
 .img-y5 {
   max-height: 5rem;
+}
+.img-x1 {
+  max-width: 1rem;
+}
+.img-x2 {
+  max-width: 2rem;
+}
+.img-x3 {
+  max-width: 3rem;
+}
+.img-x4 {
+  max-width: 4rem;
+}
+.img-x5 {
+  max-width: 5rem;
 }
 ////////////////////////////////
 		//Variables//

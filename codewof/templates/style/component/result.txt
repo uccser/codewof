@@ -1,0 +1,20 @@
+==============================================================================
+SUBMITTED CODE
+------------------------------------------------------------------------------
+{{ user_code|safe }}
+==============================================================================
+
+==============================================================================
+{% spaceless %}
+{% if issue_count %}
+{{ issue_count }} STYLE ISSUE{{ issue_count|pluralize:"S" }} FOUND
+{% else %}
+No style issues found!
+{% endif %}
+{% endspaceless %}
+{% for issue in issues %}-----------------------------------------------------------------------------
+ISSUE {{ forloop.counter }}
+Line {{ issue.line_number }} - Issue code: {{ issue.code }}
+{{ issue.title|striptags|safe }}
+{{ issue.solution|striptags|safe }}
+{% if issue.explanation %}{{ issue.explanation|striptags|safe }}{% endif %}{% endfor %}==============================================================================
