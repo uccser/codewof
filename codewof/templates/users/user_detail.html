@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}User: {{ user.get_full_name }}{% endblock %}
+
+{% block content %}
+  <div class="container">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>{{ user.get_full_name }}</h1>
+
+        <p><strong>Date joined</strong>: {{ user.date_joined }}</p>
+        <p><strong>Points earned</strong>: {{ user.profile.points }}</p>
+        <b>Achievements:</b>
+        <br>
+        {% for achievement in all_achievements %}
+            {% if achievement in user.profile.earned_achievements.all %}
+              <img src="{% static achievement.icon_name %}">
+              <u>{{ achievement.display_name }}</u>
+            {% else %}
+            <i>{{ achievement.display_name }}</i>
+            {% endif %}
+            <br>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4">
+        <h2>Profile Settings</h2>
+        <div class="list-group">
+          <a href="{% url 'users:update' %}" class="list-group-item list-group-item-action">
+            Manage your profile
+          </a>
+          <a href="{% url 'account_email' %}" class="list-group-item list-group-item-action">
+            Manage your emails
+          </a>
+          {% if user.is_staff %}
+            <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
+              Open admin website
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
