@@ -62,7 +62,7 @@
         <a class="btn btn-outline-primary" href="{% url 'users:dashboard' %}">Return to dashboard</a>
     </div>
     <div id="toast-container">
-      <div id="achievement_toast" data-animation="true" class="toast" role="alert" data-delay=3000 aria-live="assertive" aria-atomic="true">
+      <div id="achievement_toast" data-animation="true" class="toast hide" role="alert" data-delay=8000 aria-live="assertive" aria-atomic="true">
         <div class="toast-header" id="achievement_toast_header">
           <strong>You earned a new achievement!</strong>
           <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -73,7 +73,7 @@
           Check your dashboard for details!
         </div>
       </div>
-      <div id="point_toast" data-animation="true" class="toast" role="alert" data-delay=3000 aria-live="assertive" aria-atomic="true">
+      <div id="point_toast" data-animation="true" class="toast hide" role="alert" data-delay=8000 aria-live="assertive" aria-atomic="true">
         <div class="toast-header" id="point_toast_header">
           <img src="{% static 'svg/icons8-points.svg' %}"/>
           <strong>You earned points!</strong>

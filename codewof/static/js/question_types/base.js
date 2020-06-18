@@ -34,11 +34,11 @@ function update_gamification(data) {
     $("#user_points_navbar").load(location.href + " #user_points_navbar"); // Add space between URL and selector.
 
     point_diff = parseInt(data.point_diff);
-    if(point_diff > 0) {
+    if (point_diff > 0) {
         $("#point_toast_header").text("Points earned!");
         $("#point_toast_body").text("You earned " + point_diff.toString() +" points!");
         $(document).ready(function(){
-            $("#point_toast").toast('show', {delay: 5000});
+            $("#point_toast").toast('show', {delay: 8000});
         });
     }
 
@@ -47,7 +47,7 @@ function update_gamification(data) {
         $("#achievement_toast_header").text("New achievements!");
         $("#achievement_toast_body").text(achievements);
         $(document).ready(function(){
-            $("#achievement_toast").toast('show', {delay: 5000});
+            $("#achievement_toast").toast('show', {delay: 8000});
         });
     }
 
