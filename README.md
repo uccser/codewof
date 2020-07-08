@@ -31,8 +31,11 @@ A contribution guide will be made available in the future.
 
 ## Licence
 
-This repository is licensed under the [MIT license](https://opensource.org/licenses/MIT) (`LICENCE` file).
-This licence applies to the content, such as questions and style guidelines, as well as the underlying code used to manage and display the content.
+Third-party libraries used in this project have their licenses listed within the LICENCE-THIRD-PARTY file, with a full copy of the license available within the third-party-licences directory.
+If a source file of a third-party library or system is stored within this repository, then a copyright notice should be present at the top of the file.
+
+This rest of the project is licensed under the [MIT license](https://opensource.org/licenses/MIT) (`LICENCE` file).
+This licence applies to the content and the all other underlying code used to manage and display the content.
 
 ## Contact
 
