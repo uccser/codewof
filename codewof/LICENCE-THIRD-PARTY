@@ -12,14 +12,104 @@ please bring it to our attention through the issue tracker here:
 https://github.com/uccser/codewof/issues/new
 
 ==============================================================================
+argon2-cffi
+------------------------------------------------------------------------------
+https://github.com/hynek/argon2-cffi
+Copyright 2015 Hynek Schlawack
+licensed under the MIT licence
+third-party-licences/argon2-cffi.txt
+==============================================================================
+
+==============================================================================
+coreapi (AKA Python client library)
+------------------------------------------------------------------------------
+https://github.com/core-api/python-client
+Copyright 2017-present, Tom Christie
+licensed under the BSD licence
+third-party-licences/coreapi.txt
+==============================================================================
+
+==============================================================================
 Django
 ------------------------------------------------------------------------------
 https://github.com/django/django
-Copyright Django Software Foundation and individual contributors.
+Copyright Django Software Foundation and individual contributors
     Includes code from the Python standard library
     which is licenced under the Python licence
-licensed under the three-clause BSD licence.
+licensed under the three-clause BSD licence
 third-party-licences/django.txt
+==============================================================================
+
+==============================================================================
+django-activeurl
+------------------------------------------------------------------------------
+https://github.com/hellysmile/django-activeurl
+Copyright hellysmile@gmail.com
+licensed under the Apache licence 2.0
+third-party-licences/django-activeurl.txt
+==============================================================================
+
+==============================================================================
+django-allauth
+------------------------------------------------------------------------------
+https://github.com/pennersr/django-allauth
+Copyright 2010-2017 Raymond Penners and contributors
+licensed under the MIT Licence
+third-party-licences/django-allauth.txt
+==============================================================================
+
+==============================================================================
+django-anymail
+------------------------------------------------------------------------------
+https://github.com/anymail/django-anymail
+Copyright Anymail Contributors
+licensed under the three-clause BSD licence
+third-party-licences/django-anymail.txt
+==============================================================================
+
+==============================================================================
+django-autoslug
+------------------------------------------------------------------------------
+https://github.com/justinmayer/django-autoslug
+Created by Andy Mikhailenko
+licensed under the GNU Lesser General Public License v3.0
+third-party-licences/django-autoslug.txt
+==============================================================================
+
+==============================================================================
+django-bootstrap-breadcrumbs
+------------------------------------------------------------------------------
+https://github.com/prymitive/bootstrap-breadcrumbs
+Copyright 2014 Łukasz Mierzwa
+licensed under the MIT Licence
+third-party-licences/django-bootstrap-breadcrumbs.txt
+==============================================================================
+
+==============================================================================
+django-ckeditor
+------------------------------------------------------------------------------
+https://github.com/django-ckeditor/django-ckeditor
+Copyright Shaun Sephton
+licensed under the BSD Licence
+third-party-licences/django-ckeditor.txt
+==============================================================================
+
+==============================================================================
+django-crispy-forms
+------------------------------------------------------------------------------
+https://github.com/django-crispy-forms/django-crispy-forms
+Copyright Alex Gaynor and individual contributors
+licensed under the MIT licence
+third-party-licences/django-crispy-forms.txt
+==============================================================================
+
+==============================================================================
+django-filter
+------------------------------------------------------------------------------
+https://github.com/carltongibson/django-filter/tree/master
+Copyright 2009-2015 Miguel Araujo and contributors
+licensed under the BSD licence
+third-party-licences/django-filter.txt
 ==============================================================================
 
 ==============================================================================
@@ -27,8 +117,26 @@ django-inline-svg
 ------------------------------------------------------------------------------
 https://github.com/mixxorz/django-inline-svg
 Copyright 2016 Mitchel Cabuloy
-licensed under MIT licence.
+licensed under the MIT licence
 third-party-licences/django-inline-svg.txt
+==============================================================================
+
+==============================================================================
+django-mail-templated
+------------------------------------------------------------------------------
+https://pypi.org/project/django-mail-templated
+Copyright 2012 Artem Rizhov
+licensed under the MIT licence
+third-party-licences/django-mail-templated.txt
+==============================================================================
+
+==============================================================================
+django-model-utils
+------------------------------------------------------------------------------
+https://github.com/jazzband/django-model-utils
+Copyright 2009-2019 Carl Meyer and contributors
+licensed under the three-clause BSD licence
+third-party-licences/django-model-utils.txt
 ==============================================================================
 
 ==============================================================================
@@ -36,6 +144,88 @@ django-modeltranslation (AKA Modeltranslation)
 ------------------------------------------------------------------------------
 https://github.com/deschler/django-modeltranslation
 Copyright 2009-2012 Peter Eschler, Dirk Eschler
-licensed under BSD licence.
+licensed under the three-clause BSD licence
 third-party-licences/django-modeltranslation.txt
+==============================================================================
+
+==============================================================================
+django-recaptcha (AKA Django reCAPTCHA)
+------------------------------------------------------------------------------
+https://github.com/deschler/django-modeltranslation
+Copyright Praekelt Consulting
+licensed under the three-clause BSD licence
+third-party-licences/django-recaptcha.txt
+==============================================================================
+
+==============================================================================
+django-redis
+------------------------------------------------------------------------------
+https://github.com/jazzband/django-redis
+Copyright 2011 Sean Bleier, 2011-2016 Andrey Antukh
+licensed under the three-clause BSD licence
+third-party-licences/django-redis.txt
+==============================================================================
+
+==============================================================================
+Django Rest Framework
+------------------------------------------------------------------------------
+https://github.com/encode/django-rest-framework
+Copyright 2011-present Encode OSS Ltd
+licensed under the BSD licence
+third-party-licences/django-rest-framework.txt
+==============================================================================
+
+==============================================================================
+filetype
+------------------------------------------------------------------------------
+https://github.com/h2non/filetype.py
+Copyright 2016 Tomás Aparicio
+licensed under the MIT licence
+third-party-licences/filetype.txt
+==============================================================================
+
+==============================================================================
+Pillow
+------------------------------------------------------------------------------
+https://github.com/deschler/django-modeltranslation
+Copyright 2010-2020 Alex Clark and contributors
+    forked from the Python Imaging Library (PIL)
+licensed under the PIL Software Licence
+third-party-licences/pillow.txt
+==============================================================================
+
+==============================================================================
+python-dateutil
+------------------------------------------------------------------------------
+https://github.com/dateutil/dateutil
+Copyright Dateutil contributors
+licensed under the Apache licence 2.0 and the BSD Licence
+third-party-licences/python-dateutil.txt
+==============================================================================
+
+==============================================================================
+python-slugify
+------------------------------------------------------------------------------
+https://github.com/un33k/python-slugify
+Copyright Val Neekman
+licensed under the MIT licence
+third-party-licences/python-slugify.txt
+==============================================================================
+
+==============================================================================
+pytz
+------------------------------------------------------------------------------
+https://pythonhosted.org/pytz
+Created by Stuart Bishop
+licensed under the MIT licence
+No known licence file to include
+==============================================================================
+
+==============================================================================
+redis (AKA redis-py)
+------------------------------------------------------------------------------
+https://github.com/andymccurdy/redis-py
+Copyright 2012 Andy McCurdy
+licensed under the MIT licence
+third-party-licences/redis.txt
 ==============================================================================

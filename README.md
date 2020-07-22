@@ -29,7 +29,7 @@ Don't be afraid to ask for help!
 We would love your help to make CodeWOF as useful as it can be!
 A contribution guide will be made available in the future.
 
-## Licences
+## Licence
 
 Third-party libraries used in this project have their licences listed within the LICENCE-THIRD-PARTY file, with a full copy of the licence available within the third-party-licences directory.
 If a source file of a third-party library or system is stored within this repository, then a copyright notice should be present at the top of the file.
