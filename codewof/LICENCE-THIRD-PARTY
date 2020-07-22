@@ -185,6 +185,51 @@ third-party-licences/filetype.txt
 ==============================================================================
 
 ==============================================================================
+flake8
+------------------------------------------------------------------------------
+https://gitlab.com/pycqa/flake8
+Copyright 2011-2013 Tarek Ziade, 2012-2016 Ian Cordasco
+licensed under the MIT licence
+third-party-licences/flake8.txt
+==============================================================================
+
+==============================================================================
+flake8-docstrings
+------------------------------------------------------------------------------
+https://gitlab.com/pycqa/flake8-docstrings
+Copyright 2013 Simon Andre, Ian Cordasco
+licensed under the MIT licence
+third-party-licences/flake8-docstrings.txt
+==============================================================================
+
+==============================================================================
+flake8-quotes
+------------------------------------------------------------------------------
+https://github.com/zheller/flake8-quotes
+Authored by Zachary Wright Heller
+licensed under the MIT licence
+third-party-licences/flake8-quotes.txt
+==============================================================================
+
+==============================================================================
+google-api-python-client
+------------------------------------------------------------------------------
+https://github.com/googleapis/google-api-python-client
+Copyright 2014 Google Inc
+licensed under the Apache licence 2.0
+third-party-licences/google-api-python-client.txt
+==============================================================================
+
+==============================================================================
+pep8-naming (AKA PEP 8 Naming Conventions)
+------------------------------------------------------------------------------
+https://github.com/PyCQA/pep8-naming
+Copyright 2013 Florent Xicluna
+licensed under the Expat Licence
+third-party-licences/pep8-naming.txt
+==============================================================================
+
+==============================================================================
 Pillow
 ------------------------------------------------------------------------------
 https://github.com/deschler/django-modeltranslation
@@ -201,6 +246,15 @@ https://github.com/dateutil/dateutil
 Copyright Dateutil contributors
 licensed under the Apache licence 2.0 and the BSD Licence
 third-party-licences/python-dateutil.txt
+==============================================================================
+
+==============================================================================
+python-markdown-math
+------------------------------------------------------------------------------
+https://github.com/mitya57/python-markdown-math
+Copyright 2015-2017 Dmitry Shachnev
+licensed under the three-clause BSD licence
+third-party-licences/python-markdown-math.txt
 ==============================================================================
 
 ==============================================================================
@@ -222,10 +276,28 @@ No known licence file to include
 ==============================================================================
 
 ==============================================================================
+PyYAML
+------------------------------------------------------------------------------
+https://github.com/yaml/pyyaml
+Copyright 2006-2016 Kirill Simonov, 2017-2020 Ingy döt Net
+licensed under the MIT licence
+third-party-licences/pyyaml.txt
+==============================================================================
+
+==============================================================================
 redis (AKA redis-py)
 ------------------------------------------------------------------------------
 https://github.com/andymccurdy/redis-py
 Copyright 2012 Andy McCurdy
 licensed under the MIT licence
 third-party-licences/redis.txt
+==============================================================================
+
+==============================================================================
+verto
+------------------------------------------------------------------------------
+https://github.com/uccser/verto
+Copyright University of Canterbury Computer Science Education Research and contributors
+licensed under the MIT licence
+third-party-licences/verto.txt
 ==============================================================================
