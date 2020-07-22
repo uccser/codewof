@@ -167,6 +167,15 @@ third-party-licences/django-redis.txt
 ==============================================================================
 
 ==============================================================================
+django-storages
+------------------------------------------------------------------------------
+https://github.com/jschneier/django-storages
+Copyright 2008-2019 contributors
+licensed under the three-clause BSD licence
+third-party-licences/django-storages.txt
+==============================================================================
+
+==============================================================================
 Django Rest Framework
 ------------------------------------------------------------------------------
 https://github.com/encode/django-rest-framework
@@ -218,6 +227,24 @@ https://github.com/googleapis/google-api-python-client
 Copyright 2014 Google Inc
 licensed under the Apache licence 2.0
 third-party-licences/google-api-python-client.txt
+==============================================================================
+
+==============================================================================
+google-auth (AKA Google Auth Python Library)
+------------------------------------------------------------------------------
+https://github.com/googleapis/google-auth-library-python
+Copyright holder not specified
+licensed under the Apache licence 2.0
+third-party-licences/google-auth.txt
+==============================================================================
+
+==============================================================================
+google-cloud-logging (AKA Python Client for Stackdriver Logging)
+------------------------------------------------------------------------------
+https://github.com/googleapis/python-logging
+Copyright holder not specified
+licensed under the Apache licence 2.0
+third-party-licences/google-cloud-logging.txt
 ==============================================================================
 
 ==============================================================================
