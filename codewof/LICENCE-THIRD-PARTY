@@ -24,9 +24,18 @@ third-party-licences/argon2-cffi.txt
 coreapi (AKA Python client library)
 ------------------------------------------------------------------------------
 https://github.com/core-api/python-client
-Copyright 2017-present, Tom Christie
+Copyright 2017-present Tom Christie
 licensed under the BSD licence
 third-party-licences/coreapi.txt
+==============================================================================
+
+==============================================================================
+coverage
+------------------------------------------------------------------------------
+https://github.com/nedbat/coveragepy
+Copyright 2001 Gareth Rees, 2004-2020 Ned Batchelder
+licensed under the Apache licence 2.0
+third-party-licences/coverage.txt
 ==============================================================================
 
 ==============================================================================
@@ -101,6 +110,24 @@ https://github.com/django-crispy-forms/django-crispy-forms
 Copyright Alex Gaynor and individual contributors
 licensed under the MIT licence
 third-party-licences/django-crispy-forms.txt
+==============================================================================
+
+==============================================================================
+django-debug-toolbar
+------------------------------------------------------------------------------
+https://github.com/jazzband/django-debug-toolbar
+Copyright Rob Hudson and individual contributors
+licensed under the BSD licence
+third-party-licences/django-debug-toolbar.txt
+==============================================================================
+
+==============================================================================
+django-extensions
+------------------------------------------------------------------------------
+https://github.com/django-extensions/django-extensions
+Copyright 2007 Michael Trier
+licensed under the MIT licence
+third-party-licences/django-extensions.txt
 ==============================================================================
 
 ==============================================================================
@@ -185,6 +212,15 @@ third-party-licences/django-rest-framework.txt
 ==============================================================================
 
 ==============================================================================
+factory-boy
+------------------------------------------------------------------------------
+https://github.com/FactoryBoy/factory_boy
+Copyright 2010 Mark Sandstrom, 2011-2015 Raphaël Barrois, The FactoryBoy project
+licensed under the MIT licence
+third-party-licences/factory-boy.txt
+==============================================================================
+
+==============================================================================
 filetype
 ------------------------------------------------------------------------------
 https://github.com/h2non/filetype.py
@@ -248,6 +284,15 @@ third-party-licences/google-cloud-logging.txt
 ==============================================================================
 
 ==============================================================================
+mypy
+------------------------------------------------------------------------------
+https://github.com/python/mypy
+Copyright 2015-2019 Jukka Lehtosalo and contributors
+licensed under the MIT licence
+third-party-licences/mypy.txt
+==============================================================================
+
+==============================================================================
 pep8-naming (AKA PEP 8 Naming Conventions)
 ------------------------------------------------------------------------------
 https://github.com/PyCQA/pep8-naming
@@ -264,6 +309,52 @@ Copyright 2010-2020 Alex Clark and contributors
     forked from the Python Imaging Library (PIL)
 licensed under the PIL Software Licence
 third-party-licences/pillow.txt
+==============================================================================
+
+==============================================================================
+psycopg2
+------------------------------------------------------------------------------
+https://github.com/psycopg/psycopg2
+Copyright holder not specified
+licensed under the GNU Lesser General Public License v3.0
+third-party-licences/psycopg2.txt
+==============================================================================
+
+==============================================================================
+pydocstyle
+------------------------------------------------------------------------------
+https://github.com/PyCQA/pydocstyle
+Copyright 2012 GreenSteam, 2014-2017 Amir Rachum
+licensed under the MIT licence
+third-party-licences/pydocstyle.txt
+==============================================================================
+
+==============================================================================
+pytest
+------------------------------------------------------------------------------
+https://github.com/pytest-dev/pytest
+Copyright 2004-2020 Holger Krekel and others
+licensed under the MIT licence
+third-party-licences/pytest.txt
+==============================================================================
+
+==============================================================================
+pytest-django
+------------------------------------------------------------------------------
+https://github.com/pytest-dev/pytest
+Copyright 2015-2018 pytest-django authors
+forked from pytest_django created by Ben Firshman
+licensed under the three-clause BSD licence
+third-party-licences/pytest-django.txt
+==============================================================================
+
+==============================================================================
+pytest-sugar
+------------------------------------------------------------------------------
+https://github.com/Teemu/pytest-sugar
+Copyright 2013 Teemu and Janne Vanhala
+licensed under the BSD licence
+third-party-licences/pytest-sugar.txt
 ==============================================================================
 
 ==============================================================================
@@ -318,6 +409,15 @@ https://github.com/andymccurdy/redis-py
 Copyright 2012 Andy McCurdy
 licensed under the MIT licence
 third-party-licences/redis.txt
+==============================================================================
+
+==============================================================================
+Sphinx
+------------------------------------------------------------------------------
+https://github.com/sphinx-doc/sphinx
+Copyright 2007-2020 the Sphinx team
+licensed under the BSD licence
+third-party-licences/sphinx.txt
 ==============================================================================
 
 ==============================================================================

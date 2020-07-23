@@ -31,7 +31,7 @@ A contribution guide will be made available in the future.
 
 ## Licence
 
-Third-party libraries used in this project have their licences listed within the LICENCE-THIRD-PARTY file, with a full copy of the licence available within the third-party-licences directory.
+Third-party libraries used in this project have their licences listed within the `LICENCE-THIRD-PARTY` file, with a full copy of the licence available within the `third-party-licences` directory.
 If a source file of a third-party library or system is stored within this repository, then a copyright notice should be present at the top of the file.
 
 This rest of the project is licensed under the [MIT licence](https://opensource.org/licenses/MIT) (`LICENCE` file).
