@@ -19,7 +19,6 @@
     "@babel/core": "7.4.4",
     "@babel/preset-env": "7.4.4",
     "browserify": "16.2.3",
-    "child_process": "1.0.2", /*doesn't exist? https://www.npmjs.com/package/child_process*/
     "del": "4.1.1",
     "gulp": "4.0.2",
     "gulplog": "1.0.0",
