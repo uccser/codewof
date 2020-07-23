@@ -21,6 +21,60 @@ third-party-licences/argon2-cffi.txt
 ==============================================================================
 
 ==============================================================================
+autoprefixer
+------------------------------------------------------------------------------
+https://github.com/postcss/autoprefixer
+Copyright 2013 Andrey Sitnik
+licensed under the MIT licence
+third-party-licences/autoprefixer.txt
+==============================================================================
+
+==============================================================================
+Babel
+------------------------------------------------------------------------------
+https://github.com/babel/babel
+Copyright 2014-present Sebastian McKenzie and other contributors
+licensed under the MIT licence
+third-party-licences/babel.txt
+==============================================================================
+
+==============================================================================
+bootstrap
+------------------------------------------------------------------------------
+https://github.com/twbs/bootstrap
+Copyright 2011-2020 Twitter, Inc and The Bootstrap Authors
+licensed under the MIT licence
+third-party-licences/bootstrap.txt
+==============================================================================
+
+==============================================================================
+browserify
+------------------------------------------------------------------------------
+https://github.com/browserify/browserify
+Copyright 2010 James Halliday
+licensed under the MIT licence
+third-party-licences/browserify.txt
+==============================================================================
+
+==============================================================================
+clipboard
+------------------------------------------------------------------------------
+https://github.com/zenorocha/clipboard.js
+Copyright Zeno Rocha
+licensed under the MIT licence
+third-party-licences/clipboard.txt
+==============================================================================
+
+==============================================================================
+codemirror
+------------------------------------------------------------------------------
+https://github.com/codemirror/CodeMirror
+Copyright 2017 Marijn Haverbeke
+licensed under the MIT licence
+third-party-licences/codemirror.txt
+==============================================================================
+
+==============================================================================
 coreapi (AKA Python client library)
 ------------------------------------------------------------------------------
 https://github.com/core-api/python-client
@@ -36,6 +90,24 @@ https://github.com/nedbat/coveragepy
 Copyright 2001 Gareth Rees, 2004-2020 Ned Batchelder
 licensed under the Apache licence 2.0
 third-party-licences/coverage.txt
+==============================================================================
+
+==============================================================================
+del
+------------------------------------------------------------------------------
+https://github.com/sindresorhus/del
+Copyright Sindre Sorhus
+licensed under the MIT licence
+third-party-licences/del.txt
+==============================================================================
+
+==============================================================================
+details-element-polyfill
+------------------------------------------------------------------------------
+https://github.com/javan/details-element-polyfill
+Copyright 2019 Javan Makhmali
+licensed under the MIT licence
+third-party-licences/details-element-polyfill.txt
 ==============================================================================
 
 ==============================================================================
@@ -257,6 +329,15 @@ third-party-licences/flake8-quotes.txt
 ==============================================================================
 
 ==============================================================================
+fuse.js
+------------------------------------------------------------------------------
+https://github.com/krisk/Fuse
+Copyright 2017 Kirollos Risk
+licensed under the Apache licence 2.0
+third-party-licences/fuse.txt
+==============================================================================
+
+==============================================================================
 google-api-python-client
 ------------------------------------------------------------------------------
 https://github.com/googleapis/google-api-python-client
@@ -284,12 +365,183 @@ third-party-licences/google-cloud-logging.txt
 ==============================================================================
 
 ==============================================================================
+gulp
+------------------------------------------------------------------------------
+https://github.com/gulpjs/gulp
+Copyright 2013-2018 Blaine Bublitz, Eric Schoffstall and other contributors
+licensed under the MIT licence
+third-party-licences/gulp.txt
+==============================================================================
+
+==============================================================================
+gulplog
+------------------------------------------------------------------------------
+https://github.com/gulpjs/gulplog
+Copyright 2015 Blaine Bublitz, Eric Schoffstall and other contributors
+licensed under the MIT licence
+third-party-licences/gulplog.txt
+==============================================================================
+
+==============================================================================
+gulp-babel
+------------------------------------------------------------------------------
+https://github.com/babel/gulp-babel
+Copyright 2014-2018 Sindre Sorhus
+licensed under the MIT licence
+third-party-licences/gulp-babel.txt
+==============================================================================
+
+==============================================================================
+gulp-error-handle
+------------------------------------------------------------------------------
+https://www.npmjs.com/package/gulp-error-handle
+Created by mhmadhamster
+licensed under the MIT licence
+No known licence file to include
+==============================================================================
+
+==============================================================================
+gulp-filter
+------------------------------------------------------------------------------
+https://github.com/sindresorhus/gulp-filter
+Copyright Sindre Sorhus
+licensed under the MIT licence
+third-party-licences/gulp-filter.txt
+==============================================================================
+
+==============================================================================
+gulp-if
+------------------------------------------------------------------------------
+https://github.com/robrich/gulp-if
+Copyright 2014 Richardson & Sons, LLC
+licensed under the MIT licence
+third-party-licences/gulp-if.txt
+==============================================================================
+
+==============================================================================
+gulp-jshint
+------------------------------------------------------------------------------
+https://github.com/spalger/gulp-jshint
+Copyright 2015 Spencer Alger
+licensed under the MIT licence
+third-party-licences/gulp-jshint.txt
+==============================================================================
+
+==============================================================================
+gulp-notify
+------------------------------------------------------------------------------
+https://github.com/mikaelbr/gulp-notify
+Copyright 2014 Mikael Brevik
+licensed under the MIT licence
+third-party-licences/gulp-notify.txt
+==============================================================================
+
+==============================================================================
+gulp-postcss
+------------------------------------------------------------------------------
+https://github.com/postcss/gulp-postcss
+Copyright 2014 Andrey Kuzmin
+licensed under the MIT licence
+third-party-licences/gulp-postcss.txt
+==============================================================================
+
+==============================================================================
+gulp-rename
+------------------------------------------------------------------------------
+https://github.com/hparra/gulp-rename
+Copyright 2013 Hector Guillermo Parra Alvarez
+licensed under the MIT licence
+third-party-licences/gulp-rename.txt
+==============================================================================
+
+==============================================================================
+gulp-sass
+------------------------------------------------------------------------------
+https://github.com/dlmanning/gulp-sass
+Copyright 2013 David Manning
+licensed under the MIT licence
+third-party-licences/gulp-sass.txt
+==============================================================================
+
+==============================================================================
+gulp-sourcemaps
+------------------------------------------------------------------------------
+https://github.com/gulp-sourcemaps/gulp-sourcemaps
+Copyright 2014 Florian Reiterer
+licensed under the ISC licence
+third-party-licences/gulp-sourcemaps.txt
+==============================================================================
+
+==============================================================================
+gulp-tap
+------------------------------------------------------------------------------
+https://github.com/geejs/gulp-tap
+Copyright 2014 Mario Gutierrez
+licensed under the MIT licence
+third-party-licences/gulp-tap.txt
+==============================================================================
+
+==============================================================================
+gulp-terser
+------------------------------------------------------------------------------
+https://github.com/duan602728596/gulp-terser
+Copyright 2017 段昊辰
+licensed under the MIT licence
+third-party-licences/gulp-terser.txt
+==============================================================================
+
+==============================================================================
+gulp-util
+------------------------------------------------------------------------------
+https://github.com/gulpjs/gulp-util
+Copyright 2014 Fractal
+licensed under the MIT licence
+third-party-licences/gulp-util.txt
+==============================================================================
+
+==============================================================================
+jquery
+------------------------------------------------------------------------------
+https://github.com/jquery/jquery
+Copyright OpenJS Foundation and other contributors
+licensed under the MIT licence
+third-party-licences/jquery.txt
+==============================================================================
+
+==============================================================================
+jshint
+------------------------------------------------------------------------------
+https://github.com/jshint/jshint
+Copyright 2012 Anton Kovalyov
+licensed under the MIT licence
+third-party-licences/jshint.txt
+==============================================================================
+
+==============================================================================
+jshint-stylish
+------------------------------------------------------------------------------
+https://github.com/sindresorhus/jshint-stylish
+Copyright Sindre Sorhus
+licensed under the MIT licence
+third-party-licences/jshint-stylish.txt
+==============================================================================
+
+==============================================================================
 mypy
 ------------------------------------------------------------------------------
 https://github.com/python/mypy
 Copyright 2015-2019 Jukka Lehtosalo and contributors
 licensed under the MIT licence
 third-party-licences/mypy.txt
+==============================================================================
+
+==============================================================================
+node-gyp
+------------------------------------------------------------------------------
+https://github.com/nodejs/node-gyp
+Copyright 2012 Nathan Rajlich
+licensed under the MIT licence
+third-party-licences/node-gyp.txt
 ==============================================================================
 
 ==============================================================================
@@ -309,6 +561,24 @@ Copyright 2010-2020 Alex Clark and contributors
     forked from the Python Imaging Library (PIL)
 licensed under the PIL Software Licence
 third-party-licences/pillow.txt
+==============================================================================
+
+==============================================================================
+popper.js
+------------------------------------------------------------------------------
+https://github.com/popperjs/popper-core
+Copyright 2019 Federico Zivolo
+licensed under the MIT licence
+third-party-licences/popper.txt
+==============================================================================
+
+==============================================================================
+postcss-flexbugs-fixes
+------------------------------------------------------------------------------
+https://github.com/luisrudge/postcss-flexbugs-fixes
+Copyright 2015 Luis Rudge
+licensed under the MIT licence
+third-party-licences/postcss-flexbugs-fixes.txt
 ==============================================================================
 
 ==============================================================================
@@ -412,6 +682,42 @@ third-party-licences/redis.txt
 ==============================================================================
 
 ==============================================================================
+request
+------------------------------------------------------------------------------
+https://github.com/request/request
+Copyright holder not specified
+licensed under the Apache licence 2.0
+third-party-licences/request.txt
+==============================================================================
+
+==============================================================================
+run-sequence
+------------------------------------------------------------------------------
+https://github.com/OverZealous/run-sequence
+Copyright 2014 Phil DeJarnett
+licensed under the MIT licence
+third-party-licences/run-sequence.txt
+==============================================================================
+
+==============================================================================
+skulpt
+------------------------------------------------------------------------------
+https://github.com/skulpt/skulpt
+Copyright 2009-2016 Scott Graham and contributors to the Skulpt Project
+licensed under the MIT licence
+third-party-licences/skulpt.txt
+==============================================================================
+
+==============================================================================
+sortablejs (AKA Sortable)
+------------------------------------------------------------------------------
+https://github.com/SortableJS/Sortable
+Copyright 2019 All contributors to Sortable
+licensed under the MIT licence
+third-party-licences/sortable.txt
+==============================================================================
+
+==============================================================================
 Sphinx
 ------------------------------------------------------------------------------
 https://github.com/sphinx-doc/sphinx
@@ -427,4 +733,22 @@ https://github.com/uccser/verto
 Copyright University of Canterbury Computer Science Education Research and contributors
 licensed under the MIT licence
 third-party-licences/verto.txt
+==============================================================================
+
+==============================================================================
+vinyl-buffer
+------------------------------------------------------------------------------
+https://github.com/hughsk/vinyl-buffer
+Copyright 2014 Hugh Kennedy
+licensed under the MIT licence
+third-party-licences/vinyl-buffer.txt
+==============================================================================
+
+==============================================================================
+yargs
+------------------------------------------------------------------------------
+https://github.com/yargs/yargs
+Copyright 2010 James Halliday, 2014 Contributors
+licensed under the MIT licence
+third-party-licences/yargs.txt
 ==============================================================================
