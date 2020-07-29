@@ -395,9 +395,9 @@ third-party-licences/gulp-babel.txt
 gulp-error-handle
 ------------------------------------------------------------------------------
 https://www.npmjs.com/package/gulp-error-handle
-Created by mhmadhamster
+Copyright 2017 Maxim Burmagin
 licensed under the MIT licence
-No known licence file to include
+third-party-licences/gulp-error-handle.txt
 ==============================================================================
 
 ==============================================================================
@@ -658,9 +658,9 @@ third-party-licences/python-slugify.txt
 pytz
 ------------------------------------------------------------------------------
 https://pythonhosted.org/pytz
-Created by Stuart Bishop
+Copyright 2003-2005 Stuart Bishop
 licensed under the MIT licence
-No known licence file to include
+third-party-licences/pytz.txt
 ==============================================================================
 
 ==============================================================================
