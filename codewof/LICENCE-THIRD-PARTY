@@ -1,0 +1,754 @@
+CodeWOF uses third-party libraries or other resources that may
+be distributed under licences different than the CodeWOF licence.
+
+A summary of all third-party licences are listed below, with a full copy of
+each licence available within the 'third-party-licences' directory.
+
+If a particular source file of a library is included with the repository, it
+should contain a copyright notice at the top of the file.
+
+In the event that we accidentally failed to list a required licence,
+please bring it to our attention through the issue tracker here:
+https://github.com/uccser/codewof/issues/new
+
+==============================================================================
+argon2-cffi
+------------------------------------------------------------------------------
+https://github.com/hynek/argon2-cffi
+Copyright 2015 Hynek Schlawack
+licensed under the MIT licence
+third-party-licences/argon2-cffi.txt
+==============================================================================
+
+==============================================================================
+autoprefixer
+------------------------------------------------------------------------------
+https://github.com/postcss/autoprefixer
+Copyright 2013 Andrey Sitnik
+licensed under the MIT licence
+third-party-licences/autoprefixer.txt
+==============================================================================
+
+==============================================================================
+Babel
+------------------------------------------------------------------------------
+https://github.com/babel/babel
+Copyright 2014-present Sebastian McKenzie and other contributors
+licensed under the MIT licence
+third-party-licences/babel.txt
+==============================================================================
+
+==============================================================================
+bootstrap
+------------------------------------------------------------------------------
+https://github.com/twbs/bootstrap
+Copyright 2011-2020 Twitter, Inc and The Bootstrap Authors
+licensed under the MIT licence
+third-party-licences/bootstrap.txt
+==============================================================================
+
+==============================================================================
+browserify
+------------------------------------------------------------------------------
+https://github.com/browserify/browserify
+Copyright 2010 James Halliday
+licensed under the MIT licence
+third-party-licences/browserify.txt
+==============================================================================
+
+==============================================================================
+clipboard
+------------------------------------------------------------------------------
+https://github.com/zenorocha/clipboard.js
+Copyright Zeno Rocha
+licensed under the MIT licence
+third-party-licences/clipboard.txt
+==============================================================================
+
+==============================================================================
+codemirror
+------------------------------------------------------------------------------
+https://github.com/codemirror/CodeMirror
+Copyright 2017 Marijn Haverbeke
+licensed under the MIT licence
+third-party-licences/codemirror.txt
+==============================================================================
+
+==============================================================================
+coreapi (AKA Python client library)
+------------------------------------------------------------------------------
+https://github.com/core-api/python-client
+Copyright 2017-present Tom Christie
+licensed under the BSD licence
+third-party-licences/coreapi.txt
+==============================================================================
+
+==============================================================================
+coverage
+------------------------------------------------------------------------------
+https://github.com/nedbat/coveragepy
+Copyright 2001 Gareth Rees, 2004-2020 Ned Batchelder
+licensed under the Apache licence 2.0
+third-party-licences/coverage.txt
+==============================================================================
+
+==============================================================================
+del
+------------------------------------------------------------------------------
+https://github.com/sindresorhus/del
+Copyright Sindre Sorhus
+licensed under the MIT licence
+third-party-licences/del.txt
+==============================================================================
+
+==============================================================================
+details-element-polyfill
+------------------------------------------------------------------------------
+https://github.com/javan/details-element-polyfill
+Copyright 2019 Javan Makhmali
+licensed under the MIT licence
+third-party-licences/details-element-polyfill.txt
+==============================================================================
+
+==============================================================================
+Django
+------------------------------------------------------------------------------
+https://github.com/django/django
+Copyright Django Software Foundation and individual contributors
+    Includes code from the Python standard library
+    which is licenced under the Python licence
+licensed under the three-clause BSD licence
+third-party-licences/django.txt
+==============================================================================
+
+==============================================================================
+django-activeurl
+------------------------------------------------------------------------------
+https://github.com/hellysmile/django-activeurl
+Copyright hellysmile@gmail.com
+licensed under the Apache licence 2.0
+third-party-licences/django-activeurl.txt
+==============================================================================
+
+==============================================================================
+django-allauth
+------------------------------------------------------------------------------
+https://github.com/pennersr/django-allauth
+Copyright 2010-2017 Raymond Penners and contributors
+licensed under the MIT Licence
+third-party-licences/django-allauth.txt
+==============================================================================
+
+==============================================================================
+django-anymail
+------------------------------------------------------------------------------
+https://github.com/anymail/django-anymail
+Copyright Anymail Contributors
+licensed under the three-clause BSD licence
+third-party-licences/django-anymail.txt
+==============================================================================
+
+==============================================================================
+django-autoslug
+------------------------------------------------------------------------------
+https://github.com/justinmayer/django-autoslug
+Created by Andy Mikhailenko
+licensed under the GNU Lesser General Public License v3.0
+third-party-licences/django-autoslug.txt
+==============================================================================
+
+==============================================================================
+django-bootstrap-breadcrumbs
+------------------------------------------------------------------------------
+https://github.com/prymitive/bootstrap-breadcrumbs
+Copyright 2014 Łukasz Mierzwa
+licensed under the MIT Licence
+third-party-licences/django-bootstrap-breadcrumbs.txt
+==============================================================================
+
+==============================================================================
+django-ckeditor
+------------------------------------------------------------------------------
+https://github.com/django-ckeditor/django-ckeditor
+Copyright Shaun Sephton
+licensed under the BSD Licence
+third-party-licences/django-ckeditor.txt
+==============================================================================
+
+==============================================================================
+django-crispy-forms
+------------------------------------------------------------------------------
+https://github.com/django-crispy-forms/django-crispy-forms
+Copyright Alex Gaynor and individual contributors
+licensed under the MIT licence
+third-party-licences/django-crispy-forms.txt
+==============================================================================
+
+==============================================================================
+django-debug-toolbar
+------------------------------------------------------------------------------
+https://github.com/jazzband/django-debug-toolbar
+Copyright Rob Hudson and individual contributors
+licensed under the BSD licence
+third-party-licences/django-debug-toolbar.txt
+==============================================================================
+
+==============================================================================
+django-extensions
+------------------------------------------------------------------------------
+https://github.com/django-extensions/django-extensions
+Copyright 2007 Michael Trier
+licensed under the MIT licence
+third-party-licences/django-extensions.txt
+==============================================================================
+
+==============================================================================
+django-filter
+------------------------------------------------------------------------------
+https://github.com/carltongibson/django-filter/tree/master
+Copyright 2009-2015 Miguel Araujo and contributors
+licensed under the BSD licence
+third-party-licences/django-filter.txt
+==============================================================================
+
+==============================================================================
+django-inline-svg
+------------------------------------------------------------------------------
+https://github.com/mixxorz/django-inline-svg
+Copyright 2016 Mitchel Cabuloy
+licensed under the MIT licence
+third-party-licences/django-inline-svg.txt
+==============================================================================
+
+==============================================================================
+django-mail-templated
+------------------------------------------------------------------------------
+https://pypi.org/project/django-mail-templated
+Copyright 2012 Artem Rizhov
+licensed under the MIT licence
+third-party-licences/django-mail-templated.txt
+==============================================================================
+
+==============================================================================
+django-model-utils
+------------------------------------------------------------------------------
+https://github.com/jazzband/django-model-utils
+Copyright 2009-2019 Carl Meyer and contributors
+licensed under the three-clause BSD licence
+third-party-licences/django-model-utils.txt
+==============================================================================
+
+==============================================================================
+django-modeltranslation (AKA Modeltranslation)
+------------------------------------------------------------------------------
+https://github.com/deschler/django-modeltranslation
+Copyright 2009-2012 Peter Eschler, Dirk Eschler
+licensed under the three-clause BSD licence
+third-party-licences/django-modeltranslation.txt
+==============================================================================
+
+==============================================================================
+django-recaptcha (AKA Django reCAPTCHA)
+------------------------------------------------------------------------------
+https://github.com/deschler/django-modeltranslation
+Copyright Praekelt Consulting
+licensed under the three-clause BSD licence
+third-party-licences/django-recaptcha.txt
+==============================================================================
+
+==============================================================================
+django-redis
+------------------------------------------------------------------------------
+https://github.com/jazzband/django-redis
+Copyright 2011 Sean Bleier, 2011-2016 Andrey Antukh
+licensed under the three-clause BSD licence
+third-party-licences/django-redis.txt
+==============================================================================
+
+==============================================================================
+django-storages
+------------------------------------------------------------------------------
+https://github.com/jschneier/django-storages
+Copyright 2008-2019 contributors
+licensed under the three-clause BSD licence
+third-party-licences/django-storages.txt
+==============================================================================
+
+==============================================================================
+Django Rest Framework
+------------------------------------------------------------------------------
+https://github.com/encode/django-rest-framework
+Copyright 2011-present Encode OSS Ltd
+licensed under the BSD licence
+third-party-licences/django-rest-framework.txt
+==============================================================================
+
+==============================================================================
+factory-boy
+------------------------------------------------------------------------------
+https://github.com/FactoryBoy/factory_boy
+Copyright 2010 Mark Sandstrom, 2011-2015 Raphaël Barrois, The FactoryBoy project
+licensed under the MIT licence
+third-party-licences/factory-boy.txt
+==============================================================================
+
+==============================================================================
+filetype
+------------------------------------------------------------------------------
+https://github.com/h2non/filetype.py
+Copyright 2016 Tomás Aparicio
+licensed under the MIT licence
+third-party-licences/filetype.txt
+==============================================================================
+
+==============================================================================
+flake8
+------------------------------------------------------------------------------
+https://gitlab.com/pycqa/flake8
+Copyright 2011-2013 Tarek Ziade, 2012-2016 Ian Cordasco
+licensed under the MIT licence
+third-party-licences/flake8.txt
+==============================================================================
+
+==============================================================================
+flake8-docstrings
+------------------------------------------------------------------------------
+https://gitlab.com/pycqa/flake8-docstrings
+Copyright 2013 Simon Andre, Ian Cordasco
+licensed under the MIT licence
+third-party-licences/flake8-docstrings.txt
+==============================================================================
+
+==============================================================================
+flake8-quotes
+------------------------------------------------------------------------------
+https://github.com/zheller/flake8-quotes
+Authored by Zachary Wright Heller
+licensed under the MIT licence
+third-party-licences/flake8-quotes.txt
+==============================================================================
+
+==============================================================================
+fuse.js
+------------------------------------------------------------------------------
+https://github.com/krisk/Fuse
+Copyright 2017 Kirollos Risk
+licensed under the Apache licence 2.0
+third-party-licences/fuse.txt
+==============================================================================
+
+==============================================================================
+google-api-python-client
+------------------------------------------------------------------------------
+https://github.com/googleapis/google-api-python-client
+Copyright 2014 Google Inc
+licensed under the Apache licence 2.0
+third-party-licences/google-api-python-client.txt
+==============================================================================
+
+==============================================================================
+google-auth (AKA Google Auth Python Library)
+------------------------------------------------------------------------------
+https://github.com/googleapis/google-auth-library-python
+Copyright holder not specified
+licensed under the Apache licence 2.0
+third-party-licences/google-auth.txt
+==============================================================================
+
+==============================================================================
+google-cloud-logging (AKA Python Client for Stackdriver Logging)
+------------------------------------------------------------------------------
+https://github.com/googleapis/python-logging
+Copyright holder not specified
+licensed under the Apache licence 2.0
+third-party-licences/google-cloud-logging.txt
+==============================================================================
+
+==============================================================================
+gulp
+------------------------------------------------------------------------------
+https://github.com/gulpjs/gulp
+Copyright 2013-2018 Blaine Bublitz, Eric Schoffstall and other contributors
+licensed under the MIT licence
+third-party-licences/gulp.txt
+==============================================================================
+
+==============================================================================
+gulplog
+------------------------------------------------------------------------------
+https://github.com/gulpjs/gulplog
+Copyright 2015 Blaine Bublitz, Eric Schoffstall and other contributors
+licensed under the MIT licence
+third-party-licences/gulplog.txt
+==============================================================================
+
+==============================================================================
+gulp-babel
+------------------------------------------------------------------------------
+https://github.com/babel/gulp-babel
+Copyright 2014-2018 Sindre Sorhus
+licensed under the MIT licence
+third-party-licences/gulp-babel.txt
+==============================================================================
+
+==============================================================================
+gulp-error-handle
+------------------------------------------------------------------------------
+https://www.npmjs.com/package/gulp-error-handle
+Copyright 2017 Maxim Burmagin
+licensed under the MIT licence
+third-party-licences/gulp-error-handle.txt
+==============================================================================
+
+==============================================================================
+gulp-filter
+------------------------------------------------------------------------------
+https://github.com/sindresorhus/gulp-filter
+Copyright Sindre Sorhus
+licensed under the MIT licence
+third-party-licences/gulp-filter.txt
+==============================================================================
+
+==============================================================================
+gulp-if
+------------------------------------------------------------------------------
+https://github.com/robrich/gulp-if
+Copyright 2014 Richardson & Sons, LLC
+licensed under the MIT licence
+third-party-licences/gulp-if.txt
+==============================================================================
+
+==============================================================================
+gulp-jshint
+------------------------------------------------------------------------------
+https://github.com/spalger/gulp-jshint
+Copyright 2015 Spencer Alger
+licensed under the MIT licence
+third-party-licences/gulp-jshint.txt
+==============================================================================
+
+==============================================================================
+gulp-notify
+------------------------------------------------------------------------------
+https://github.com/mikaelbr/gulp-notify
+Copyright 2014 Mikael Brevik
+licensed under the MIT licence
+third-party-licences/gulp-notify.txt
+==============================================================================
+
+==============================================================================
+gulp-postcss
+------------------------------------------------------------------------------
+https://github.com/postcss/gulp-postcss
+Copyright 2014 Andrey Kuzmin
+licensed under the MIT licence
+third-party-licences/gulp-postcss.txt
+==============================================================================
+
+==============================================================================
+gulp-rename
+------------------------------------------------------------------------------
+https://github.com/hparra/gulp-rename
+Copyright 2013 Hector Guillermo Parra Alvarez
+licensed under the MIT licence
+third-party-licences/gulp-rename.txt
+==============================================================================
+
+==============================================================================
+gulp-sass
+------------------------------------------------------------------------------
+https://github.com/dlmanning/gulp-sass
+Copyright 2013 David Manning
+licensed under the MIT licence
+third-party-licences/gulp-sass.txt
+==============================================================================
+
+==============================================================================
+gulp-sourcemaps
+------------------------------------------------------------------------------
+https://github.com/gulp-sourcemaps/gulp-sourcemaps
+Copyright 2014 Florian Reiterer
+licensed under the ISC licence
+third-party-licences/gulp-sourcemaps.txt
+==============================================================================
+
+==============================================================================
+gulp-tap
+------------------------------------------------------------------------------
+https://github.com/geejs/gulp-tap
+Copyright 2014 Mario Gutierrez
+licensed under the MIT licence
+third-party-licences/gulp-tap.txt
+==============================================================================
+
+==============================================================================
+gulp-terser
+------------------------------------------------------------------------------
+https://github.com/duan602728596/gulp-terser
+Copyright 2017 段昊辰
+licensed under the MIT licence
+third-party-licences/gulp-terser.txt
+==============================================================================
+
+==============================================================================
+gulp-util
+------------------------------------------------------------------------------
+https://github.com/gulpjs/gulp-util
+Copyright 2014 Fractal
+licensed under the MIT licence
+third-party-licences/gulp-util.txt
+==============================================================================
+
+==============================================================================
+jquery
+------------------------------------------------------------------------------
+https://github.com/jquery/jquery
+Copyright OpenJS Foundation and other contributors
+licensed under the MIT licence
+third-party-licences/jquery.txt
+==============================================================================
+
+==============================================================================
+jshint
+------------------------------------------------------------------------------
+https://github.com/jshint/jshint
+Copyright 2012 Anton Kovalyov
+licensed under the MIT licence
+third-party-licences/jshint.txt
+==============================================================================
+
+==============================================================================
+jshint-stylish
+------------------------------------------------------------------------------
+https://github.com/sindresorhus/jshint-stylish
+Copyright Sindre Sorhus
+licensed under the MIT licence
+third-party-licences/jshint-stylish.txt
+==============================================================================
+
+==============================================================================
+mypy
+------------------------------------------------------------------------------
+https://github.com/python/mypy
+Copyright 2015-2019 Jukka Lehtosalo and contributors
+licensed under the MIT licence
+third-party-licences/mypy.txt
+==============================================================================
+
+==============================================================================
+node-gyp
+------------------------------------------------------------------------------
+https://github.com/nodejs/node-gyp
+Copyright 2012 Nathan Rajlich
+licensed under the MIT licence
+third-party-licences/node-gyp.txt
+==============================================================================
+
+==============================================================================
+pep8-naming (AKA PEP 8 Naming Conventions)
+------------------------------------------------------------------------------
+https://github.com/PyCQA/pep8-naming
+Copyright 2013 Florent Xicluna
+licensed under the Expat Licence
+third-party-licences/pep8-naming.txt
+==============================================================================
+
+==============================================================================
+Pillow
+------------------------------------------------------------------------------
+https://github.com/deschler/django-modeltranslation
+Copyright 2010-2020 Alex Clark and contributors
+    forked from the Python Imaging Library (PIL)
+licensed under the PIL Software Licence
+third-party-licences/pillow.txt
+==============================================================================
+
+==============================================================================
+popper.js
+------------------------------------------------------------------------------
+https://github.com/popperjs/popper-core
+Copyright 2019 Federico Zivolo
+licensed under the MIT licence
+third-party-licences/popper.txt
+==============================================================================
+
+==============================================================================
+postcss-flexbugs-fixes
+------------------------------------------------------------------------------
+https://github.com/luisrudge/postcss-flexbugs-fixes
+Copyright 2015 Luis Rudge
+licensed under the MIT licence
+third-party-licences/postcss-flexbugs-fixes.txt
+==============================================================================
+
+==============================================================================
+psycopg2
+------------------------------------------------------------------------------
+https://github.com/psycopg/psycopg2
+Copyright holder not specified
+licensed under the GNU Lesser General Public License v3.0
+third-party-licences/psycopg2.txt
+==============================================================================
+
+==============================================================================
+pydocstyle
+------------------------------------------------------------------------------
+https://github.com/PyCQA/pydocstyle
+Copyright 2012 GreenSteam, 2014-2017 Amir Rachum
+licensed under the MIT licence
+third-party-licences/pydocstyle.txt
+==============================================================================
+
+==============================================================================
+pytest
+------------------------------------------------------------------------------
+https://github.com/pytest-dev/pytest
+Copyright 2004-2020 Holger Krekel and others
+licensed under the MIT licence
+third-party-licences/pytest.txt
+==============================================================================
+
+==============================================================================
+pytest-django
+------------------------------------------------------------------------------
+https://github.com/pytest-dev/pytest
+Copyright 2015-2018 pytest-django authors
+forked from pytest_django created by Ben Firshman
+licensed under the three-clause BSD licence
+third-party-licences/pytest-django.txt
+==============================================================================
+
+==============================================================================
+pytest-sugar
+------------------------------------------------------------------------------
+https://github.com/Teemu/pytest-sugar
+Copyright 2013 Teemu and Janne Vanhala
+licensed under the BSD licence
+third-party-licences/pytest-sugar.txt
+==============================================================================
+
+==============================================================================
+python-dateutil
+------------------------------------------------------------------------------
+https://github.com/dateutil/dateutil
+Copyright Dateutil contributors
+licensed under the Apache licence 2.0 and the BSD Licence
+third-party-licences/python-dateutil.txt
+==============================================================================
+
+==============================================================================
+python-markdown-math
+------------------------------------------------------------------------------
+https://github.com/mitya57/python-markdown-math
+Copyright 2015-2017 Dmitry Shachnev
+licensed under the three-clause BSD licence
+third-party-licences/python-markdown-math.txt
+==============================================================================
+
+==============================================================================
+python-slugify
+------------------------------------------------------------------------------
+https://github.com/un33k/python-slugify
+Copyright Val Neekman
+licensed under the MIT licence
+third-party-licences/python-slugify.txt
+==============================================================================
+
+==============================================================================
+pytz
+------------------------------------------------------------------------------
+https://pythonhosted.org/pytz
+Copyright 2003-2005 Stuart Bishop
+licensed under the MIT licence
+third-party-licences/pytz.txt
+==============================================================================
+
+==============================================================================
+PyYAML
+------------------------------------------------------------------------------
+https://github.com/yaml/pyyaml
+Copyright 2006-2016 Kirill Simonov, 2017-2020 Ingy döt Net
+licensed under the MIT licence
+third-party-licences/pyyaml.txt
+==============================================================================
+
+==============================================================================
+redis (AKA redis-py)
+------------------------------------------------------------------------------
+https://github.com/andymccurdy/redis-py
+Copyright 2012 Andy McCurdy
+licensed under the MIT licence
+third-party-licences/redis.txt
+==============================================================================
+
+==============================================================================
+request
+------------------------------------------------------------------------------
+https://github.com/request/request
+Copyright holder not specified
+licensed under the Apache licence 2.0
+third-party-licences/request.txt
+==============================================================================
+
+==============================================================================
+run-sequence
+------------------------------------------------------------------------------
+https://github.com/OverZealous/run-sequence
+Copyright 2014 Phil DeJarnett
+licensed under the MIT licence
+third-party-licences/run-sequence.txt
+==============================================================================
+
+==============================================================================
+skulpt
+------------------------------------------------------------------------------
+https://github.com/skulpt/skulpt
+Copyright 2009-2016 Scott Graham and contributors to the Skulpt Project
+licensed under the MIT licence
+third-party-licences/skulpt.txt
+==============================================================================
+
+==============================================================================
+sortablejs (AKA Sortable)
+------------------------------------------------------------------------------
+https://github.com/SortableJS/Sortable
+Copyright 2019 All contributors to Sortable
+licensed under the MIT licence
+third-party-licences/sortable.txt
+==============================================================================
+
+==============================================================================
+Sphinx
+------------------------------------------------------------------------------
+https://github.com/sphinx-doc/sphinx
+Copyright 2007-2020 the Sphinx team
+licensed under the BSD licence
+third-party-licences/sphinx.txt
+==============================================================================
+
+==============================================================================
+verto
+------------------------------------------------------------------------------
+https://github.com/uccser/verto
+Copyright University of Canterbury Computer Science Education Research and contributors
+licensed under the MIT licence
+third-party-licences/verto.txt
+==============================================================================
+
+==============================================================================
+vinyl-buffer
+------------------------------------------------------------------------------
+https://github.com/hughsk/vinyl-buffer
+Copyright 2014 Hugh Kennedy
+licensed under the MIT licence
+third-party-licences/vinyl-buffer.txt
+==============================================================================
+
+==============================================================================
+yargs
+------------------------------------------------------------------------------
+https://github.com/yargs/yargs
+Copyright 2010 James Halliday, 2014 Contributors
+licensed under the MIT licence
+third-party-licences/yargs.txt
+==============================================================================
