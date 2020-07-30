@@ -35,7 +35,7 @@ Third-party libraries used in this project have their licences listed within the
 If a source file of a third-party library or system is stored within this repository, then a copyright notice should be present at the top of the file.
 
 This rest of the project is licensed under the [MIT licence](https://opensource.org/licenses/MIT) (`LICENCE` file).
-This licence applies to the content and the all other underlying code used to manage and display the content.
+This licence applies to the content and all other underlying code used to manage and display the content.
 
 ## Contact
 
