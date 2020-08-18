@@ -1,5 +1,6 @@
 var base = require('./base.js');
 var CodeMirror = require('codemirror');
+const introJS = require('intro.js');
 require('codemirror/mode/python/python.js');
 
 var test_cases = {};
@@ -37,6 +38,11 @@ $(document).ready(function () {
     if (editor.getValue()) {
         run_code(editor, false)
     }
+
+    setTutorialAttributes();
+    $("#tutorial").click(function() {
+        introJS.introJs().start();
+    });
 });
 
 function run_code(editor, submit) {
@@ -111,4 +117,20 @@ function run_python_code(user_code, test_case) {
         test_case.received_output = 'No Python code provided.';
         test_case.runtime_error = true;
     }
+}
+
+
+function setTutorialAttributes() {
+    $(".question-text").attr(
+        'data-intro',
+        'This is the question you will be solving. It will tell you what your code should return (or print) for certain inputs.'
+    );
+    $("#python-editor").attr(
+        'data-intro',
+        "This is where you enter your code to solve the problem. Click 'Run code' to test your code against our test cases!"
+    );
+    $('#test-case-table tr td:nth-child(1)').attr(
+        'data-intro',
+        'These are the various inputs that will be passed to your code.'
+    );
 }
