@@ -1,7 +1,7 @@
 var base = require('./base.js');
 var CodeMirror = require('codemirror');
-const introJS = require('intro.js');
 require('codemirror/mode/python/python.js');
+const introJS = require('intro.js');
 
 var test_cases = {};
 
@@ -123,14 +123,42 @@ function run_python_code(user_code, test_case) {
 function setTutorialAttributes() {
     $(".question-text").attr(
         'data-intro',
-        'This is the question you will be solving. It will tell you what your code should return (or print) for certain inputs.'
+        'This is the question you will be solving. It will tell you what your program should return (or print) for certain inputs.'
     );
     $("#python-editor").attr(
         'data-intro',
-        "This is where you enter your code to solve the problem. Click 'Run code' to test your code against our test cases!"
+        "This is where you enter your code to solve the problem. Click 'Run code' to test your program against our test cases!"
     );
-    $('#test-case-table tr td:nth-child(1)').attr(
+    $("#test-case-table").attr(
         'data-intro',
-        'These are the various inputs that will be passed to your code.'
+        "These are the test cases that will be run against your program."
+    );
+    // the first row in the test case table
+    $('#test-case-table tbody tr:nth-child(1)').attr(
+        'data-intro',
+        'Here is the first test case.'
+    );
+    // the input for the first test case
+    $('#test-case-table tbody tr:nth-child(1) td:eq(0)').attr(
+        'data-intro',
+        'This is the input that will be passed to your program for this particular test.'
+    );
+    // the expected output for the first test case
+    $('#test-case-table tbody tr:nth-child(1) td:eq(1)').attr(
+        'data-intro',
+        'This is the output that the test expects your program to return (or print) for the given input.'
+    );
+    // the received output for the first test case
+    $('#test-case-table tbody tr:nth-child(1) td:eq(2)').attr(
+        'data-intro',
+        'This is the output that your program has returned (or printed) for the given input.'
+    );
+    // the status of the first test case
+    $('#test-case-table tbody tr:nth-child(1) td:eq(3)').attr(
+        'data-intro',
+        "This is the status of the test. It will say one of three things: 'Not yet run', 'Passed' or 'Failed'.\
+        'Not yet run' means your code has not yet been run against the test case.\
+        'Passed' means the received output matched the expected output. The test case has passed.\
+        'Failed' means the received output did not match the expected output. The test case has failed."
     );
 }
