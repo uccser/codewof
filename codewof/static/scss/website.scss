@@ -315,3 +315,9 @@ $red: #b94a48;
   background-color: brand-colour-light;
   white-space: pre;
 }
+
+@include media-breakpoint-down(md) {
+  #introjs-tutorial {
+    display: none;
+  }
+}

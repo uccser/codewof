@@ -40,7 +40,7 @@ $(document).ready(function () {
     }
 
     setTutorialAttributes();
-    $("#tutorial").click(function() {
+    $("#introjs-tutorial").click(function() {
         introJS.introJs().start();
     });
 });
