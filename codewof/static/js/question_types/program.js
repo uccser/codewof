@@ -123,7 +123,7 @@ function run_python_code(user_code, test_case) {
 function setTutorialAttributes() {
     $(".question-text").attr(
         'data-intro',
-        'This is the question you will be solving. It will tell you what your program should return (or print) for certain inputs.'
+        'This is a description of what the code should do. It will tell you what your program should print for certain inputs.'
     );
     $("#python-editor").attr(
         'data-intro',
@@ -141,24 +141,24 @@ function setTutorialAttributes() {
     // the input for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(0)').attr(
         'data-intro',
-        'This is the input that will be passed to your program for this particular test.'
+        'Each line will be passed to your program as input for this particular test.'
     );
     // the expected output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(1)').attr(
         'data-intro',
-        'This is the output that the test expects your program to return (or print) for the given input.'
+        'This is the output that the test expects your program to print for the given input.'
     );
     // the received output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(2)').attr(
         'data-intro',
-        'This is the output that your program has returned (or printed) for the given input.'
+        'This is the output that your program has printed for the given input.'
     );
     // the status of the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(3)').attr(
         'data-intro',
         "This is the status of the test. It will say one of three things: 'Not yet run', 'Passed' or 'Failed'.\
         'Not yet run' means your code has not yet been run against the test case.\
-        'Passed' means the received output matched the expected output. The test case has passed.\
-        'Failed' means the received output did not match the expected output. The test case has failed."
+        'Passed' means the received output matched the expected output.\
+        'Failed' means the received output did not match the expected output."
     );
 }

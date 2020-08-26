@@ -119,7 +119,7 @@ function run_python_code(user_code, test_case) {
 function setTutorialAttributes() {
     $(".question-text").attr(
         'data-intro',
-        'This is the question you will be solving. It will tell you what your function should return (or print) for certain inputs.'
+        'This is a description of what the code should do. It will tell you what your function should return (or print) in order to pass the tests.'
     );
     $("#python-editor").attr(
         'data-intro',
@@ -154,7 +154,7 @@ function setTutorialAttributes() {
         'data-intro',
         "This is the status of the test. It will say one of three things: 'Not yet run', 'Passed' or 'Failed'.\
         'Not yet run' means your code has not yet been run against the test case.\
-        'Passed' means the received output matched the expected output. The test case has passed.\
-        'Failed' means the received output did not match the expected output. The test case has failed."
+        'Passed' means the received output matched the expected output.\
+        'Failed' means the received output did not match the expected output."
     );
 }

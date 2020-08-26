@@ -163,15 +163,23 @@ function run_python_code(user_code, test_case) {
 function setTutorialAttributes() {
     $(".question-text").attr(
         'data-intro',
-        'This is the question that the code should solve. In debugging questions there will be a bug in the given code that you have to find and correct in order for all the tests to pass. Highlighted lines cannot be edited.'
+        'This is a description of what the code should do. In debugging questions there will be one or more bugs in the given code that you have to find and correct in order for all the tests to pass.'
     );
     $("#python-editor").attr(
         'data-intro',
-        "This is the code that contains the bug. Find the bug and correct it, then click 'Run code' to see if all of the tests pass! You can click 'Reset to initial code' at any time to discard all of your changes."
+        "This is the code that contains the bug(s). Find the bug(s) and correct them, the greyed out lines cannot be edited."
+    );
+    $("#run_code").attr(
+        'data-intro',
+        "Click 'Run code' to run your code against the test cases and see if you fixed the bug!"
+    );
+    $("reset_code").attr(
+        'data-intro',
+        "You can click 'Reset to initial code' at any time to discard all of your changes."
     );
     $("#test-case-table").attr(
         'data-intro',
-        "These are the test cases that will be run against your code."
+        "These are the test cases that have been run against the given code."
     );
     // the first row in the test case table
     $('#test-case-table tbody tr:nth-child(1)').attr(
@@ -181,24 +189,24 @@ function setTutorialAttributes() {
     // the input for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(0)').attr(
         'data-intro',
-        'This is the input that will be passed to your code for this particular test.'
+        'This is the test code that has been run for this particular test.'
     );
     // the expected output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(1)').attr(
         'data-intro',
-        'This is the output that the test expects your code to return (or print) for the given input.'
+        'This is the output that the test expects the code to return (or print) for the given input.'
     );
     // the received output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(2)').attr(
         'data-intro',
-        'This is the output that your code has returned (or printed) for the given input.'
+        'This is the output that the code has returned (or printed) for the given input.'
     );
     // the status of the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(3)').attr(
         'data-intro',
         "This is the status of the test. It will say one of three things: 'Not yet run', 'Passed' or 'Failed'.\
         'Not yet run' means your code has not yet been run against the test case.\
-        'Passed' means the received output matched the expected output. The test case has passed.\
-        'Failed' means the received output did not match the expected output. The test case has failed."
+        'Passed' means the received output matched the expected output.\
+        'Failed' means the received output did not match the expected output."
     );
 }
