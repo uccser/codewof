@@ -127,7 +127,11 @@ function setTutorialAttributes() {
     );
     $("#python-editor").attr(
         'data-intro',
-        "This is where you enter your code to solve the problem. Click 'Run code' to test your program against our test cases!"
+        "This is where you enter your code to solve the problem."
+    );
+    $("#run_code").attr(
+        'data-intro',
+        "Click 'Run code' to test your program against our test cases and see if they pass!"
     );
     $("#test-case-table").attr(
         'data-intro',

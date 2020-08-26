@@ -119,11 +119,16 @@ function run_python_code(user_code, test_case) {
 function setTutorialAttributes() {
     $(".question-text").attr(
         'data-intro',
-        'This is a description of what the code should do. It will tell you what your function should return (or print) in order to pass the tests.'
+        'This is a description of what the function should do. It will tell you what your function should return (or print) in order to pass the tests.\
+        Make sure to pay close attention to whether your function should return or print a value!'
     );
     $("#python-editor").attr(
         'data-intro',
-        "This is where you enter your code to solve the problem. Click 'Run code' to test your function against our test cases!"
+        "This is where you enter your code to solve the problem."
+    );
+    $("#run_code").attr(
+        'data-intro',
+        "Click 'Run code' to test your function against our test cases and see if they pass!"
     );
     $("#test-case-table").attr(
         'data-intro',
@@ -142,12 +147,13 @@ function setTutorialAttributes() {
     // the expected output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(1)').attr(
         'data-intro',
-        'This is the output that the test expects your function to return (or print) for the given input.'
+        'This is the output that the test case expects to be printed for the given input.'
     );
     // the received output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(2)').attr(
         'data-intro',
-        'This is the output that your function has returned (or printed) for the given input.'
+        'This is the output that has been printed by the test case.\
+        The test case either prints the return value of the function, or the function executed by the test prints it itself.'
     );
     // the status of the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(3)').attr(

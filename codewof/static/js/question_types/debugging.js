@@ -167,13 +167,13 @@ function setTutorialAttributes() {
     );
     $("#python-editor").attr(
         'data-intro',
-        "This is the code that contains the bug(s). Find the bug(s) and correct them, the greyed out lines cannot be edited."
+        "This is the code that contains the bug(s). Find the bug(s) and correct them. The greyed out lines cannot be edited."
     );
     $("#run_code").attr(
         'data-intro',
         "Click 'Run code' to run your code against the test cases and see if you fixed the bug!"
     );
-    $("reset_code").attr(
+    $("#reset_to_initial").attr(
         'data-intro',
         "You can click 'Reset to initial code' at any time to discard all of your changes."
     );
@@ -194,12 +194,13 @@ function setTutorialAttributes() {
     // the expected output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(1)').attr(
         'data-intro',
-        'This is the output that the test expects the code to return (or print) for the given input.'
+        'This is the output that the test case expects to be printed for the given input.'
     );
     // the received output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(2)').attr(
         'data-intro',
-        'This is the output that the code has returned (or printed) for the given input.'
+        'This is the output that has been printed by the test case.\
+        The test case either prints the return value of the code, or the code executed by the test prints it itself.'
     );
     // the status of the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(3)').attr(

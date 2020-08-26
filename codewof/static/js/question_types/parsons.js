@@ -133,7 +133,8 @@ function run_python_code(user_code, test_case) {
 function setTutorialAttributes() {
     $(".question-text").attr(
         'data-intro',
-        'This is a description of what the code should do. It will tell you what your code should return (or print) for certain inputs.'
+        'This is a description of what the code should do. It will tell you what your code should return (or print) for certain inputs.\
+        Make sure you pay close attention to whether your code should return or print a value!'
     );
     $("#available-lines").attr(
         'data-intro',
@@ -141,7 +142,11 @@ function setTutorialAttributes() {
     );
     $("#user-code-lines").attr(
         'data-intro',
-        "This is where you will drop lines from the 'Available lines' section to build your solution. This is the code that will be run against the test cases when you click the 'Run code' button."
+        "This is where you will drop lines from the 'Available lines' section to build your solution. This is the code that will be run against the test cases."
+    );
+    $("#run_code").attr(
+        'data-intro',
+        "Click 'Run code' to test your solution against our test cases and see if they pass!"
     );
     $("#test-case-table").attr(
         'data-intro',
@@ -160,12 +165,13 @@ function setTutorialAttributes() {
     // the expected output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(1)').attr(
         'data-intro',
-        'This is the output that the test expects your code to return (or print) for the given input.'
+        'This is the output that the test case expects to be printed for the given input.'
     );
     // the received output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(2)').attr(
         'data-intro',
-        'This is the output that your code has returned (or printed) for the given input.'
+        'This is the output that has been printed by the test case.\
+        The test case either prints the return value of the code, or the code executed by the test prints it itself.'
     );
     // the status of the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(3)').attr(
