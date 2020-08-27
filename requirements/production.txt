@@ -6,4 +6,4 @@
 # ------------------------------------------------------------------------------
 django-storages[google]==1.9.1  # https://github.com/jschneier/django-storages
 google-auth==1.20.1  # https://github.com/googleapis/google-auth-library-python
-google-cloud-logging==1.15.0
+google-cloud-logging==1.15.1
