@@ -120,7 +120,7 @@ function setTutorialAttributes() {
     $(".question-text").attr(
         'data-intro',
         'This is a description of what the function should do. It will tell you what your function should return (or print) in order to pass the tests.\
-        Make sure to pay close attention to whether your function should return or print a value!'
+        Pay close attention to whether your function should return or print a value!'
     );
     $("#python-editor").attr(
         'data-intro',
@@ -128,7 +128,7 @@ function setTutorialAttributes() {
     );
     $("#run_code").attr(
         'data-intro',
-        "Click 'Run code' to test your function against our test cases and see if they pass!"
+        "Clicking this button will run your code against the test cases."
     );
     $("#test-case-table").attr(
         'data-intro',
@@ -142,7 +142,7 @@ function setTutorialAttributes() {
     // the input for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(0)').attr(
         'data-intro',
-        'This is how your function will be called. Pay close attention to the input that is passed to the function.'
+        'This is the test code that is run for this particular test. Pay close attention to the input that is passed to the function.'
     );
     // the expected output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(1)').attr(
@@ -152,15 +152,11 @@ function setTutorialAttributes() {
     // the received output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(2)').attr(
         'data-intro',
-        'This is the output that has been printed by the test case.\
-        The test case either prints the return value of the function, or the function executed by the test prints it itself.'
+        'This is the output that has been printed by the test code.'
     );
     // the status of the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(3)').attr(
         'data-intro',
-        "This is the status of the test. It will say one of three things: 'Not yet run', 'Passed' or 'Failed'.\
-        'Not yet run' means your code has not yet been run against the test case.\
-        'Passed' means the received output matched the expected output.\
-        'Failed' means the received output did not match the expected output."
+        "A test case will pass if the received output matches the expected output. If all test cases pass the question has been solved."
     );
 }

@@ -49,6 +49,16 @@ $(document).ready(function () {
     setTutorialAttributes();
     $("#introjs-tutorial").click(function() {
         introJS.introJs().start();
+        // introJS.introJs().start().onafterchange(function() {
+        //     // console.log($(this._introItems[this._currentStep - 1].element));
+        //     currentElement = $(this._introItems[this._currentStep - 1].element);
+        //     ignoreOutOfView = (this._currentStep === 5) || (this._currentStep === 6);
+        //     console.log(!(ignoreOutOfView));
+        //     if (!(ignoreOutOfView) && !elementInView(currentElement)) {
+        //         containerId = 'table-container';
+        //         scrollToElement(containerId, currentElement);
+        //     }
+        // });
     });
 });
 
@@ -171,7 +181,7 @@ function setTutorialAttributes() {
     );
     $("#run_code").attr(
         'data-intro',
-        "Click 'Run code' to run your code against the test cases and see if you fixed the bug!"
+        "Clicking this button will run your code against the test cases."
     );
     $("#reset_to_initial").attr(
         'data-intro',
@@ -199,15 +209,37 @@ function setTutorialAttributes() {
     // the received output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(2)').attr(
         'data-intro',
-        'This is the output that has been printed by the test case.\
-        The test case either prints the return value of the code, or the code executed by the test prints it itself.'
+        'This is the output that has been printed by the test code.'
     );
     // the status of the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(3)').attr(
         'data-intro',
-        "This is the status of the test. It will say one of three things: 'Not yet run', 'Passed' or 'Failed'.\
-        'Not yet run' means your code has not yet been run against the test case.\
-        'Passed' means the received output matched the expected output.\
-        'Failed' means the received output did not match the expected output."
+        "A test case will pass if the received output matches the expected output. If all test cases pass the question has been solved."
     );
 }
+
+
+// function scrollToElement(containerId, row) {
+//     var container = document.getElementById(containerId);
+//     var scrollLeftValue = row.offset().left;
+//     console.log(scrollLeftValue);
+//     container.scrollLeft = scrollLeftValue;
+// }
+
+
+// function elementInView(elem) {
+//     var container = $("#table-container");
+//     var contWidth = container.width();
+//     console.log('contwidth: ' + contWidth);
+//     var contLeft = container.scrollLeft();
+//     console.log('contleft: ' + contLeft);
+
+//     var elemLeft = $(elem).offset().left - container.offset().left;
+//     var elemWidth = elem.width();
+//     console.log('elemleft: ' + elemLeft);
+//     console.log('elemwidth: ' + elemWidth);
+
+//     var isTotal = (elemLeft >= 0 && ((elemLeft + elemWidth)  <=contWidth));
+
+//     return isTotal;
+// }

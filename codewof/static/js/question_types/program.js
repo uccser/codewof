@@ -131,7 +131,7 @@ function setTutorialAttributes() {
     );
     $("#run_code").attr(
         'data-intro',
-        "Click 'Run code' to test your program against our test cases and see if they pass!"
+        "Clicking this button will run your code against the test cases."
     );
     $("#test-case-table").attr(
         'data-intro',
@@ -160,9 +160,6 @@ function setTutorialAttributes() {
     // the status of the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(3)').attr(
         'data-intro',
-        "This is the status of the test. It will say one of three things: 'Not yet run', 'Passed' or 'Failed'.\
-        'Not yet run' means your code has not yet been run against the test case.\
-        'Passed' means the received output matched the expected output.\
-        'Failed' means the received output did not match the expected output."
+        "A test case will pass if the received output matches the expected output. If all test cases pass the question has been solved."
     );
 }
