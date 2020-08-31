@@ -147,7 +147,7 @@ function setTutorialAttributes() {
     // the expected output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(1)').attr(
         'data-intro',
-        'This is the output that the test case expects to be printed for the given input.'
+        'This is the output that the test code is expected to print.'
     );
     // the received output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(2)').attr(

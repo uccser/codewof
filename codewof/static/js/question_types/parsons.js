@@ -134,7 +134,7 @@ function setTutorialAttributes() {
     $(".question-text").attr(
         'data-intro',
         'This is a description of what the code should do. It will tell you what your code should return (or print) for certain inputs.\
-        Make sure you pay close attention to whether your code should return or print a value!'
+        Pay close attention to whether your code should return or print a value!'
     );
     $("#available-lines").attr(
         'data-intro',
@@ -160,12 +160,12 @@ function setTutorialAttributes() {
     // the input for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(0)').attr(
         'data-intro',
-        'This is the test code that has been run for this particular test.'
+        'This is the test code that is run for this particular test.'
     );
     // the expected output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(1)').attr(
         'data-intro',
-        'This is the output that the test case expects to be printed for the given input.'
+        'This is the output that the test code is expected to print.'
     );
     // the received output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(2)').attr(
