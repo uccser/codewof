@@ -145,7 +145,7 @@ function setTutorialAttributes() {
     // the input for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(0)').attr(
         'data-intro',
-        'Each line will be passed to your program as input for this particular test.'
+        'If your program asks a user for input, each of these lines will be passed to your program in place of a real user.'
     );
     // the expected output for the first test case
     $('#test-case-table tbody tr:nth-child(1) td:eq(1)').attr(
