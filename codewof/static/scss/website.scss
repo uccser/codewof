@@ -316,7 +316,7 @@ $red: #b94a48;
   white-space: pre;
 }
 
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down(sm) {
   #introjs-tutorial {
     display: none;
   }

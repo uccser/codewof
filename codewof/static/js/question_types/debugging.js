@@ -48,17 +48,17 @@ $(document).ready(function () {
 
     setTutorialAttributes();
     $("#introjs-tutorial").click(function() {
-        introJS.introJs().start();
-        // introJS.introJs().start().onafterchange(function() {
-        //     // console.log($(this._introItems[this._currentStep - 1].element));
-        //     currentElement = $(this._introItems[this._currentStep - 1].element);
-        //     ignoreOutOfView = (this._currentStep === 5) || (this._currentStep === 6);
-        //     console.log(!(ignoreOutOfView));
-        //     if (!(ignoreOutOfView) && !elementInView(currentElement)) {
-        //         containerId = 'table-container';
-        //         scrollToElement(containerId, currentElement);
-        //     }
-        // });
+        introJS().start().onbeforechange(function() {
+            currentElement = $(this._introItems[this._currentStep].element);
+            node = currentElement.prop('nodeName');
+            // When looking at a full row of the table, force it to scroll to the far left
+            // so the highlight only overhangs to the right
+            if (node == 'TABLE' || node == 'TR') {
+                currentElement = currentElement.find('td:first-of-type')
+            }
+            containerId = 'table-container';
+            base.scroll_to_element(containerId, currentElement);
+        });
     });
 });
 
@@ -185,7 +185,7 @@ function setTutorialAttributes() {
     );
     $("#reset_to_initial").attr(
         'data-intro',
-        "You can click 'Reset to initial code' at any time to discard all of your changes."
+        "Click this button at any time to discard all of your changes."
     );
     $("#test-case-table").attr(
         'data-intro',
@@ -217,29 +217,3 @@ function setTutorialAttributes() {
         "A test case will pass if the received output matches the expected output. If all test cases pass the question has been solved."
     );
 }
-
-
-// function scrollToElement(containerId, row) {
-//     var container = document.getElementById(containerId);
-//     var scrollLeftValue = row.offset().left;
-//     console.log(scrollLeftValue);
-//     container.scrollLeft = scrollLeftValue;
-// }
-
-
-// function elementInView(elem) {
-//     var container = $("#table-container");
-//     var contWidth = container.width();
-//     console.log('contwidth: ' + contWidth);
-//     var contLeft = container.scrollLeft();
-//     console.log('contleft: ' + contLeft);
-
-//     var elemLeft = $(elem).offset().left - container.offset().left;
-//     var elemWidth = elem.width();
-//     console.log('elemleft: ' + elemLeft);
-//     console.log('elemwidth: ' + elemWidth);
-
-//     var isTotal = (elemLeft >= 0 && ((elemLeft + elemWidth)  <=contWidth));
-
-//     return isTotal;
-// }

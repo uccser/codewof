@@ -129,9 +129,24 @@ function run_test_cases(test_cases, user_code, code_function) {
     return test_cases;
 }
 
+function scroll_to_element(containerId, element) {
+    // For use by the tutorials
+    var container = $('#' + containerId);
+    var contWidth = container.width();
+    var elemLeft = $(element).offset().left - container.offset().left;
+    var elemWidth = element.width();
+    var isInView = (elemLeft >= 0 && ((elemLeft + elemWidth) <= contWidth));
+
+    if (!isInView) {
+        var scrollLeftValue = element.offset().left;
+        container.scrollLeft(scrollLeftValue);
+    }
+}
+
 
 exports.ajax_request = ajax_request;
 exports.clear_submission_feedback = clear_submission_feedback;
 exports.display_submission_feedback = display_submission_feedback;
 exports.update_test_case_status = update_test_case_status;
 exports.run_test_cases = run_test_cases;
+exports.scroll_to_element = scroll_to_element;
