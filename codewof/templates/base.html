@@ -26,8 +26,11 @@
     {% endif %}
 
     <!-- Styling -->
-    <link href="{% static 'css/website.css' %}" rel="stylesheet">
     {% block css %}
+      <link href="{% static 'css/website.css' %}" rel="stylesheet">
+      <link href="{% static 'css/third-party/introjs.css' %}" rel="stylesheet">
+      <!-- Add Modern template -->
+      <link href="{% static 'css/third-party/introjs-modern.css' %}" rel="stylesheet">
     {% endblock css %}
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -241,8 +244,9 @@
 
     {% block modal %}{% endblock modal %}
 
-    <script src="{% static 'js/website.js' %}"></script>
     {% block scripts %}
+      <script src="{% static 'js/website.js' %}"></script>
+      <script src="{% static 'js/third-party/intro.js' %}"></script>
     {% endblock scripts %}
   </body>
 </html>

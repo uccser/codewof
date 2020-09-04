@@ -6,8 +6,13 @@
 
 {% block content %}
     <div class="col-12 my-3">
-        <h3>{{ question.title }}</h3>
-        {{ question.question_text|safe }}
+        <div class="mb-2">
+            <h3 class="d-inline">{{ question.title }}</h3>
+            <button id="introjs-tutorial" class="btn btn-outline-secondary btn-sm float-right">How does this page work?</button>
+        </div>
+        <div class="question-text">
+            {{ question.question_text|safe }}
+        </div>
 
         {% if not request.user.is_authenticated %}
             <div class="alert alert-warning" role="alert">
