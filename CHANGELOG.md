@@ -2,13 +2,9 @@
 
 ## 3.1.0
 
-Add style checker for beginners.
-
-- Style checker for beginners is a freely accessible style checker.
-    - Currently only Python 3 is supported.
-    - Code is anonymously stored on the website for analysis and then instantly deleted.
-    - Count of style issues triggered by submitted code are stored, but the code itself is not permanently stored.
-    - Statistics of style issue occurence counts are publically visible.
+- Add step by step introduction/tutorial to question pages.
+- Add third party licence files.
+- Update README.
 - Dependency updates:
     - Update coverage from 5.1 to 5.2.1.
     - Update django-extensions from 2.2.9 to 3.0.8.
