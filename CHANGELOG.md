@@ -1,5 +1,29 @@
 # Changelog
 
+## 3.1.0
+
+Add style checker for beginners.
+
+- Style checker for beginners is a freely accessible style checker.
+    - Currently only Python 3 is supported.
+    - Code is anonymously stored on the website for analysis and then instantly deleted.
+    - Count of style issues triggered by submitted code are stored, but the code itself is not permanently stored.
+    - Statistics of style issue occurence counts are publically visible.
+- Dependency updates:
+    - Update coverage from 5.1 to 5.2.1.
+    - Update django-extensions from 2.2.9 to 3.0.8.
+    - Update django-storages[google] from 1.9.1 to 1.10.
+    - Update google-auth from 1.12.0 to 1.21.1.
+    - Update google-cloud-logging from 1.15.0 to 1.15.1.
+    - Update mypy from 0.770 to 0.782.
+    - Update Pillow from 7.0.0 to 7.2.0.
+    - Update psycopg2-binary from 3.0.4 to 3.2.1.
+    - Update pydocstyle from 5.0.2 to 5.1.1.
+    - Update pytest from 5.3.5 to 6.0.1.
+    - Update pytest-django from 3.8.0 to 3.9.0.
+    - Update pytest-sugar from 0.9.2 to 0.9.4.
+    - Update Sphinx from 2.8.4 to 2.8.6.
+
 ## 3.0.0
 
 Add style checker for beginners.
