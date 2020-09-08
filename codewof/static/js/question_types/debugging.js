@@ -1,6 +1,7 @@
 var base = require('./base.js');
 var CodeMirror = require('codemirror');
 require('codemirror/mode/python/python.js');
+const introJS = require('intro.js');
 
 var test_cases = {};
 
@@ -44,6 +45,21 @@ $(document).ready(function () {
     if (editor.getValue()) {
         run_code(editor, false);
     }
+
+    setTutorialAttributes();
+    $("#introjs-tutorial").click(function() {
+        introJS().start().onbeforechange(function() {
+            currentElement = $(this._introItems[this._currentStep].element);
+            node = currentElement.prop('nodeName');
+            // When looking at a full row of the table, force it to scroll to the far left
+            // so the highlight only overhangs to the right
+            if (node == 'TABLE' || node == 'TR') {
+                currentElement = currentElement.find('td:first-of-type')
+            }
+            containerId = 'table-container';
+            base.scroll_to_element(containerId, currentElement);
+        });
+    });
 });
 
 
@@ -151,4 +167,53 @@ function run_python_code(user_code, test_case) {
         test_case.received_output = 'No Python code provided.';
         test_case.runtime_error = true;
     }
+}
+
+
+function setTutorialAttributes() {
+    $(".question-text").attr(
+        'data-intro',
+        'This is a description of what the code should do. In debugging questions there will be one or more bugs in the given code that you have to find and correct in order for all the tests to pass.'
+    );
+    $("#python-editor").attr(
+        'data-intro',
+        "This is the code that contains the bug(s). Find the bug(s) and correct them. Greyed out lines cannot be edited."
+    );
+    $("#run_code").attr(
+        'data-intro',
+        "Clicking this button will run your code against the test cases."
+    );
+    $("#reset_to_initial").attr(
+        'data-intro',
+        "Click this button at any time to discard all of your changes."
+    );
+    $("#test-case-table").attr(
+        'data-intro',
+        "These are the test cases that have been run against the given code."
+    );
+    // the first row in the test case table
+    $('#test-case-table tbody tr:nth-child(1)').attr(
+        'data-intro',
+        'Here is the first test case.'
+    );
+    // the input for the first test case
+    $('#test-case-table tbody tr:nth-child(1) td:eq(0)').attr(
+        'data-intro',
+        'This is the test code that has been run for this particular test.'
+    );
+    // the expected output for the first test case
+    $('#test-case-table tbody tr:nth-child(1) td:eq(1)').attr(
+        'data-intro',
+        'This is the output that the test code is expected to print.'
+    );
+    // the received output for the first test case
+    $('#test-case-table tbody tr:nth-child(1) td:eq(2)').attr(
+        'data-intro',
+        'This is the output that has been printed by the test code.'
+    );
+    // the status of the first test case
+    $('#test-case-table tbody tr:nth-child(1) td:eq(3)').attr(
+        'data-intro',
+        "A test case will pass if the received output matches the expected output. If all test cases pass the question has been solved."
+    );
 }
