@@ -99,7 +99,8 @@ function update_test_case_status(test_case, user_code) {
     output_element.text(received_output);
     if (test_case.runtime_error) {
         output_element.addClass('error')
-        regex_match = /line (\d+)/.exec(received_output)
+        // the following is implemented because of https://github.com/uccser/codewof/issues/351
+        regex_match = /line (\d+)/.exec(received_output) // looking for line number
         if (regex_match !== null) {
             error_line_number = regex_match[1] // first capture group - should be the line number
             num_user_code_lines = user_code.split('\n').length; // number of lines in the users code
