@@ -76,7 +76,7 @@ function display_submission_feedback(test_cases) {
     }
 }
 
-function update_test_case_status(test_case) {
+function update_test_case_status(test_case, user_code) {
     var test_case_id = test_case.id;
     var expected_output = test_case.expected_output.replace(/\s*$/, '');
     var received_output = test_case.received_output.replace(/\s*$/, '');
@@ -95,11 +95,22 @@ function update_test_case_status(test_case) {
 
     // Update output cell
     var output_element = $('#test-case-' + test_case_id + '-output');
+    var output_element_help_text = $('#test-case-' + test_case_id + '-output-help-text');
     output_element.text(received_output);
     if (test_case.runtime_error) {
         output_element.addClass('error')
+        // the following is implemented because of https://github.com/uccser/codewof/issues/351
+        regex_match = /line (\d+)/.exec(received_output) // looking for line number
+        if (regex_match !== null) {
+            error_line_number = regex_match[1] // first capture group - should be the line number
+            num_user_code_lines = user_code.split('\n').length; // number of lines in the users code
+            if (error_line_number > num_user_code_lines) {
+                output_element_help_text.removeClass('d-none');
+            }
+        }
     } else {
         output_element.removeClass('error')
+        output_element_help_text.addClass('d-none');
     }
 
     // Update row
@@ -123,7 +134,7 @@ function run_test_cases(test_cases, user_code, code_function) {
                 code = code + '\n' + test_case.test_code;
             }
             code_function(code, test_case);
-            update_test_case_status(test_case);
+            update_test_case_status(test_case, user_code);
         }
     }
     return test_cases;
