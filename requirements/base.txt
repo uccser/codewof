@@ -30,7 +30,7 @@ google-api-python-client==1.7.12
 # Content loading
 verto==0.10.0
 python-markdown-math==0.6
-PyYAML==5.3.1
+PyYAML==5.4
 
 # Style checker
 # Replace flake8 dependency once new release is created
