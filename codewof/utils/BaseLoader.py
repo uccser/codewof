@@ -174,7 +174,7 @@ class BaseLoader():
         self.converter = Verto(
             html_templates=templates,
             extensions=extensions,
-            custom_argument_rules=custom_argument_rules,
+            custom_settings={"processor_argument_overrides" : custom_argument_rules},
             processors=custom_processors
         )
         """ End of hack. """

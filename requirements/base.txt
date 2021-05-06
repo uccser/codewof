@@ -1,5 +1,5 @@
 pytz==2019.3
-python-slugify==4.0.0
+python-slugify>=3.0.2
 python-dateutil==2.8.1
 Pillow==7.2.0
 argon2-cffi==19.2.0
@@ -28,7 +28,7 @@ django-bootstrap-breadcrumbs==0.9.2
 google-api-python-client==1.7.12
 
 # Content loading
-verto==0.10.0
+verto==0.11.0
 python-markdown-math==0.6
 PyYAML==5.3.1
 
