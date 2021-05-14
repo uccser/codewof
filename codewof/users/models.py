@@ -47,6 +47,17 @@ class User(AbstractUser):
         on_delete=models.CASCADE,
     )
 
+    # Which days of the week to get email reminders
+    remind_on_monday = models.BooleanField(default=False)
+    remind_on_tuesday = models.BooleanField(default=False)
+    remind_on_wednesday = models.BooleanField(default=False)
+    remind_on_thursday = models.BooleanField(default=False)
+    remind_on_friday = models.BooleanField(default=False)
+    remind_on_saturday = models.BooleanField(default=False)
+    remind_on_sunday = models.BooleanField(default=False)
+
+    REMINDER_DAYS = [remind_on_monday, remind_on_tuesday, remind_on_wednesday, remind_on_thursday, remind_on_friday,
+                     remind_on_saturday, remind_on_sunday]
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = ['first_name', 'user_type']
 

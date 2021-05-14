@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 from users.models import UserType
 from captcha.fields import ReCaptchaField
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, HTML
+from crispy_forms.layout import Layout, Submit, HTML, Fieldset, ButtonHolder
 
 User = auth.get_user_model()
 POLICY_STATEMENT = '<p>By clicking Sign Up, you agree to our <a href="{0}#terms-of-service">Terms</a>, <a href="{0}#privacy-policy">Privacy Policy</a> and <a href="{0}#cookie-policy">Cookie Policy</a>.</p>'  # noqa E501
@@ -80,11 +80,49 @@ class UserChangeForm(forms.ModelForm):
         empty_label=None,
     )
 
+    remind_on_monday = forms.BooleanField(required=False, label='Monday')
+    remind_on_tuesday = forms.BooleanField(required=False, label='Tuesday')
+    remind_on_wednesday = forms.BooleanField(required=False, label='Wednesday')
+    remind_on_thursday = forms.BooleanField(required=False, label='Thursday')
+    remind_on_friday = forms.BooleanField(required=False, label='Friday')
+    remind_on_saturday = forms.BooleanField(required=False, label='Saturday')
+    remind_on_sunday = forms.BooleanField(required=False, label='Sunday')
+
+    def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            HTML("<h2>Details</h2>"),
+            Fieldset(
+                None,
+                'first_name',
+                'last_name',
+                'user_type',
+            ),
+            HTML("<h2>Emails</h2>"),
+            Fieldset(
+                'Send reminders to my primary email on:',
+                'remind_on_monday',
+                'remind_on_tuesday',
+                'remind_on_wednesday',
+                'remind_on_thursday',
+                'remind_on_friday',
+                'remind_on_saturday',
+                'remind_on_sunday'
+            ),
+            ButtonHolder(
+                Submit('submit', 'Submit', css_class='btn btn-primary')
+            )
+        )
+
     class Meta:
         """Metadata for UserChangeForm class."""
 
         model = User
-        fields = ('first_name', 'last_name', 'user_type')
+        fields = ('first_name', 'last_name', 'user_type', 'remind_on_monday', 'remind_on_tuesday',
+                  'remind_on_wednesday', 'remind_on_thursday', 'remind_on_friday', 'remind_on_saturday',
+                  'remind_on_sunday')
 
 
 class UserAdminChangeForm(auth.forms.UserChangeForm):
