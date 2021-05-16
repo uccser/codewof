@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 from users.models import UserType
 from captcha.fields import ReCaptchaField
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, HTML, Fieldset, ButtonHolder
+from crispy_forms.layout import Layout, Submit, HTML, Fieldset, ButtonHolder, Button, Field, Div
 
 User = auth.get_user_model()
 POLICY_STATEMENT = '<p>By clicking Sign Up, you agree to our <a href="{0}#terms-of-service">Terms</a>, <a href="{0}#privacy-policy">Privacy Policy</a> and <a href="{0}#cookie-policy">Cookie Policy</a>.</p>'  # noqa E501
@@ -101,8 +101,11 @@ class UserChangeForm(forms.ModelForm):
                 'user_type',
             ),
             HTML("<h2>Emails</h2>"),
-            Fieldset(
-                'Send reminders to my primary email on:',
+            Button('emails', 'Manage your emails', css_class='btn btn-outline-primary',
+                   onclick="window.location.href = '{}';".format(reverse('account_email'))),
+
+            Div(
+                HTML("<p id=\"notifications-p\">Send me notifications on:</p>"),
                 'remind_on_monday',
                 'remind_on_tuesday',
                 'remind_on_wednesday',
@@ -112,8 +115,8 @@ class UserChangeForm(forms.ModelForm):
                 'remind_on_sunday'
             ),
             ButtonHolder(
-                Submit('submit', 'Submit', css_class='btn btn-primary')
-            )
+                Submit('submit', 'Update', css_class='btn btn-primary')
+            ),
         )
 
     class Meta:
