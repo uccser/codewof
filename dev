@@ -196,6 +196,11 @@ cmd_sampledata() {
 }
 defhelp sampledata "Add sample data to website."
 
+cmd_send_email_reminders() {
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py send_email_reminders
+}
+defhelp send_email_reminders "Send an email reminder to all users who opted to receive one today."
+
 cmd_raise_backdate_flags() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py raise_backdate_flags
 }
