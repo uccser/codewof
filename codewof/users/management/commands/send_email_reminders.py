@@ -240,8 +240,7 @@ class Command(BaseCommand):
         :return:
         """
 
-        # TODO May need to replace datetime.datetime with timezone
-        today = datetime.datetime.now().date()
+        today = timezone.now().date()
         weekday_num = today.weekday()
 
         users_to_email = get_users_to_email(weekday_num)
