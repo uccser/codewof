@@ -1,10 +1,12 @@
+import datetime
 from enum import Enum
 
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.management import BaseCommand
-from django.utils.datetime_safe import date
+from django.utils import timezone
 from users.models import User
+from programming.models import Attempt
 
 # Email body html. Split into two parts so a custom message can be inserted between <p> tags.
 email_first_half = """
@@ -131,7 +133,7 @@ email_first_half = """
         <p>
 """
 email_second_half = """
-</p>
+        </p>
 
         <!-- This link uses descriptive text to inform the user what will happen with the link is tapped. -->
         <!-- It also uses inline styles since some email clients won't render embedded styles from the head. -->
@@ -184,38 +186,72 @@ def build_email(message):
     return email_first_half + message + email_second_half
 
 
+def get_users_to_email(weekday_num):
+    """
+    Gets a list of users that have opted to receive a reminder for the inputted day of the week
+    :param weekday_num: The day of the week as an int.
+    :return: A QuerySet of Users.
+    """
+    if weekday_num == Weekday.MONDAY.value:
+        users_to_email = User.objects.filter(remind_on_monday=True)
+    elif weekday_num == Weekday.TUESDAY.value:
+        users_to_email = User.objects.filter(remind_on_tuesday=True)
+    elif weekday_num == Weekday.WEDNESDAY.value:
+        users_to_email = User.objects.filter(remind_on_wednesday=True)
+    elif weekday_num == Weekday.THURSDAY.value:
+        users_to_email = User.objects.filter(remind_on_thursday=True)
+    elif weekday_num == Weekday.FRIDAY.value:
+        users_to_email = User.objects.filter(remind_on_friday=True)
+    elif weekday_num == Weekday.SATURDAY.value:
+        users_to_email = User.objects.filter(remind_on_saturday=True)
+    else:
+        users_to_email = User.objects.filter(remind_on_sunday=True)
+    return users_to_email
+
+
+def create_message(days_since_last_attempt):
+    """
+    Returns a unique message based on recent usage.
+    :param days_since_last_attempt: The int days since their last attempt.
+    :return: a string message.
+    """
+    if days_since_last_attempt < 7:
+        message = "You've been practicing recently. Keep it up!"
+    elif days_since_last_attempt > 14:
+        message = "You haven't attempted a question in a long time. " \
+                  "Try to use CodeWOF regularly to keep your coding skills sharp. " \
+                  "If you don't want to use CodeWOF anymore, " \
+                  "then click the link at the bottom of this email to stop getting reminders."
+    else:
+        message = "It's been awhile since your last attempt. " \
+                  "Remember to use CodeWOF regularly to keep your coding skills sharp."
+    return message
+
+
 class Command(BaseCommand):
     """Required command class for the custom Django load_user_types command."""
 
     def handle(self, *args, **options):
         """
         Gets the current day of the week, then obtains the list of Users who should get a reminder today. Sends an
-        email to each user.
+        email to each user with a customised message based on recent usage.
         :param args:
         :param options:
         :return:
         """
-        today = date.today()
+
+        # TODO May need to replace datetime.datetime with timezone
+        today = datetime.datetime.now().date()
         weekday_num = today.weekday()
 
-        if weekday_num == Weekday.MONDAY:
-            users_to_email = User.objects.filter(remind_on_monday=True)
-        elif weekday_num == Weekday.TUESDAY:
-            users_to_email = User.objects.filter(remind_on_tuesday=True)
-        elif weekday_num == Weekday.WEDNESDAY:
-            users_to_email = User.objects.filter(remind_on_wednesday=True)
-        elif weekday_num == Weekday.THURSDAY:
-            users_to_email = User.objects.filter(remind_on_thursday=True)
-        elif weekday_num == Weekday.FRIDAY:
-            users_to_email = User.objects.filter(remind_on_friday=True)
-        elif weekday_num == Weekday.SATURDAY:
-            users_to_email = User.objects.filter(remind_on_saturday=True)
-        else:
-            users_to_email = User.objects.filter(remind_on_sunday=True)
+        users_to_email = get_users_to_email(weekday_num)
 
         for user in users_to_email:
-            # TODO Replace with a custom message based on recent usage
-            html = build_email("Keep up the good work.")
+            date_of_last_attempt = Attempt.objects.filter(profile=user.profile).order_by('datetime')[0].datetime.date()
+            days_since_last_attempt = (today - date_of_last_attempt).days
+
+            message = create_message(days_since_last_attempt)
+            html = build_email(message)
 
             send_mail(
                 'CodeWOF Reminder',
@@ -225,3 +261,5 @@ class Command(BaseCommand):
                 fail_silently=False,
                 html_message=html
             )
+
+
