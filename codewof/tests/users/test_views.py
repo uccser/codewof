@@ -89,6 +89,65 @@ class TestUserUpdateView:
         assert view.get_object() == user
 
 
+class UserUpdateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get('/users/update/')
+        self.assertRedirects(resp, '/accounts/login/?next=/users/update/')
+
+    def test_view_url_exists(self):
+        self.client.login(email='john@uclive.ac.nz', password='onion')
+        response = self.client.get("/users/update/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        self.client.login(email='john@uclive.ac.nz', password='onion')
+        response = self.client.get('/users/update/')
+        self.assertTemplateUsed(response, 'users/user_form.html')
+
+    # Test HTML elements exist
+
+    def test_main_title_exists(self):
+        self.client.login(email='john@uclive.ac.nz', password='onion')
+        response = self.client.get("/users/update/")
+        self.assertContains(response, "<h1>Update your profile</h1>", html=True)
+
+    def test_details_subtitle_exists(self):
+        self.client.login(email='john@uclive.ac.nz', password='onion')
+        response = self.client.get("/users/update/")
+        self.assertContains(response, "<h2>Details</h2>", html=True)
+
+    def test_emails_subtitle_exists(self):
+        self.client.login(email='john@uclive.ac.nz', password='onion')
+        response = self.client.get("/users/update/")
+        self.assertContains(response, "<h2>Emails</h2>", html=True)
+
+    def test_first_name_value(self):
+        self.client.login(email='john@uclive.ac.nz', password='onion')
+        response = self.client.get("/users/update/")
+        user = User.objects.get(id=1)
+        self.assertContains(response, user.first_name)
+
+    def test_last_name_value(self):
+        self.client.login(email='john@uclive.ac.nz', password='onion')
+        response = self.client.get("/users/update/")
+        user = User.objects.get(id=1)
+        self.assertContains(response, user.last_name)
+
+    def test_user_type(self):
+        self.client.login(email='john@uclive.ac.nz', password='onion')
+        response = self.client.get("/users/update/")
+        user = User.objects.get(id=1)
+        self.assertContains(response, user.user_type)
+
+
 class TestUserRedirectView:
 
     def test_get_redirect_url(self, user, request_factory):
