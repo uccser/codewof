@@ -211,3 +211,97 @@ def generate_study_registrations():
         study_group=study_group,
         user=user,
     )
+
+
+def generate_users_with_notifications(user):
+    """Generate users for codeWOF tests with notification days set. Creates two basic users for unit tests."""
+    management.call_command("load_user_types")
+    user_john = User.objects.create_user(
+        id=1,
+        username='john',
+        first_name='John',
+        last_name='Doe',
+        email='john@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='student'),
+        remind_on_monday=True,
+        remind_on_tuesday=False,
+        remind_on_wednesday=False,
+        remind_on_thursday=True,
+        remind_on_friday=False,
+        remind_on_saturday=False,
+        remind_on_sunday=False
+    )
+    user_john.save()
+
+    user_sally = User.objects.create_user(
+        id=2,
+        username='sally',
+        first_name='Sally',
+        last_name='Jones',
+        email='sally@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='other'),
+        remind_on_monday=True,
+        remind_on_tuesday=False,
+        remind_on_wednesday=True,
+        remind_on_thursday=False,
+        remind_on_friday=True,
+        remind_on_saturday=False,
+        remind_on_sunday=False
+    )
+    user_sally.save()
+
+    user_jane = User.objects.create_user(
+        id=3,
+        username='jane',
+        first_name='Jane',
+        last_name='Doe',
+        email='jane@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='other'),
+        remind_on_monday=False,
+        remind_on_tuesday=False,
+        remind_on_wednesday=False,
+        remind_on_thursday=False,
+        remind_on_friday=False,
+        remind_on_saturday=True,
+        remind_on_sunday=False
+    )
+    user_jane.save()
+
+    user_lazy = User.objects.create_user(
+        id=4,
+        username='lazy',
+        first_name='Lazy',
+        last_name='Dog',
+        email='lazy@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='teacher'),
+        remind_on_monday=False,
+        remind_on_tuesday=False,
+        remind_on_wednesday=False,
+        remind_on_thursday=False,
+        remind_on_friday=False,
+        remind_on_saturday=False,
+        remind_on_sunday=False
+    )
+    user_lazy.save()
+
+    user_brown = User.objects.create_user(
+        id=5,
+        username='brown',
+        first_name='Brown',
+        last_name='Fox',
+        email='brown@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='student'),
+        remind_on_monday=True,
+        remind_on_tuesday=True,
+        remind_on_wednesday=True,
+        remind_on_thursday=True,
+        remind_on_friday=True,
+        remind_on_saturday=True,
+        remind_on_sunday=False
+    )
+    user_brown.save()
