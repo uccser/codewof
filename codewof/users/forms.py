@@ -101,7 +101,7 @@ class UserChangeForm(forms.ModelForm):
                 'user_type',
             ),
             HTML("<h2>Emails</h2>"),
-            Button('emails', 'Manage your emails', css_class='btn btn-outline-primary',
+            Button('emails', 'Manage your email addresses', css_class='btn btn-outline-primary',
                    onclick="window.location.href = '{}';".format(reverse('account_email'))),
 
             Div(
