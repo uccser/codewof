@@ -24,8 +24,8 @@ class Command(BaseCommand):
         :return:
         """
 
-        today = timezone.now().date()
-        weekday = Weekday(today.weekday())
+        today = timezone.now()
+        weekday = Weekday(today.date().weekday())
 
         users_to_email = self.get_users_to_email(weekday)
 
@@ -52,7 +52,7 @@ class Command(BaseCommand):
         :param user: The User.
         :return: The number of days since their last attempt.
         """
-        date_of_last_attempt = Attempt.objects.filter(profile=user.profile).order_by('datetime')[0].datetime.date()
+        date_of_last_attempt = Attempt.objects.filter(profile=user.profile).order_by('-datetime')[0].datetime
         if today < date_of_last_attempt:
             raise ValueError("Specified date is behind the user's last attempt")
         return (today - date_of_last_attempt).days
@@ -95,7 +95,7 @@ class Command(BaseCommand):
         :param days_since_last_attempt: The int days since their last attempt.
         :return: a string message.
         """
-        if days_since_last_attempt < 7:
+        if days_since_last_attempt <= 7:
             message = "You've been practicing recently. Keep it up!"
         elif days_since_last_attempt > 14:
             message = "You haven't attempted a question in a long time. " \
