@@ -1,10 +1,12 @@
 import datetime
+from io import StringIO
 
 import pytz
+from django.core.management import call_command
 from django.test import TestCase
 from django.utils.timezone import make_aware
 from users.management.commands.send_email_reminders import Command
-from codewof.tests.codewof_test_data_generator import generate_users_with_notifications, generate_users, generate_questions
+from codewof.tests.codewof_test_data_generator import generate_users_with_notifications, generate_users, generate_questions, generate_attempts_no_defaults
 from codewof.tests.conftest import user
 from django.contrib.auth import get_user_model
 from utils.Weekday import Weekday
@@ -12,8 +14,13 @@ from programming.models import Attempt, Question
 from django.utils import timezone
 from django.http import HttpResponse
 from unittest.mock import patch
+from django.core import mail
 
 User = get_user_model()
+
+
+def mocked_today():
+    return datetime.datetime(2021, 5, 24, tzinfo=timezone.get_current_timezone())
 
 
 class GetUsersToEmailTests(TestCase):
@@ -136,11 +143,11 @@ class CreateMessageTests(TestCase):
                                   "then click the link at the bottom of this email to stop getting reminders.")
 
 
-class BuildEmailTests(TestCase):
+class BuildEmailHTMLTests(TestCase):
     def setUp(self):
         self.username = "User123"
         self.message = "A cool message"
-        self.html = Command().build_email(self.username, self.message)
+        self.html = Command().build_email_html(self.username, self.message)
         self.response = HttpResponse(self.html)
 
     def test_html_contains_username(self):
@@ -148,3 +155,35 @@ class BuildEmailTests(TestCase):
 
     def test_html_contains_password(self):
         self.assertContains(self.response, "<p>{}</p>".format(self.message), html=True)
+
+
+class HandleTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests - read only
+        generate_users_with_notifications(user)
+        generate_questions()
+        generate_attempts_no_defaults()
+
+    def setUp(self):
+        self.john = User.objects.get(id=1)
+        self.sally = User.objects.get(id=2)
+        self.jane = User.objects.get(id=3)
+        self.lazy = User.objects.get(id=4)
+        self.brown = User.objects.get(id=5)
+
+    def call_command(self, *args, **kwargs):
+        call_command(
+            "send_email_reminders",
+            *args,
+            stdout=StringIO(),
+            stderr=StringIO(),
+            **kwargs,
+        )
+
+    @patch("users.management.commands.send_email_reminders.timezone.now", mocked_today)
+    def test_monday_notifies_three_users(self):
+        self.call_command()
+        outbox_sorted = sorted(mail.outbox, key=lambda x: x.to)
+
+        self.assertEqual(len(mail.outbox), 3)

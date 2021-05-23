@@ -166,6 +166,21 @@ def generate_attempts():
     Attempts are generated for user 1 and question 1, with attempts created to cover consecutive days, failed attempts,
     and passed attempts. These attempts cover the main requirements to gain all test achievements.
     """
+    user = User.objects.get(id=1)
+    question = Question.objects.get(slug='program-question-1')
+    Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
+    Attempt.objects.create(profile=user.profile, question=question, passed_tests=False)
+    Attempt.objects.create(profile=user.profile, question=question, passed_tests=False)
+    Attempt.objects.create(profile=user.profile, question=question, passed_tests=True,
+                           datetime=datetime.date(2019, 9, 9))
+    Attempt.objects.create(profile=user.profile, question=question, passed_tests=True,
+                           datetime=datetime.date(2019, 9, 10))
+
+def generate_attempts_no_defaults():
+    """
+    Generate attempts for codeWOF tests. Always supplies the datetime to ensure consistent testing for
+    test_send_email_reminders.py
+    """
     user1 = User.objects.get(id=1)
     user2 = User.objects.get(id=2)
     user3 = User.objects.get(id=3)
@@ -187,21 +202,6 @@ def generate_attempts():
                            datetime=datetime.date(2020, 5, 13))
     Attempt.objects.create(profile=user3.profile, question=question, passed_tests=True,
                            datetime=datetime.date(2021, 2, 1))
-
-def generate_attempts_no_defaults():
-    """
-    Generate attempts for codeWOF tests. Always supplies the datetime to ensure consistent testing for
-    test_send_email_reminders.py
-    """
-    user = User.objects.get(id=1)
-    question = Question.objects.get(slug='program-question-1')
-    Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
-    Attempt.objects.create(profile=user.profile, question=question, passed_tests=False)
-    Attempt.objects.create(profile=user.profile, question=question, passed_tests=False)
-    Attempt.objects.create(profile=user.profile, question=question, passed_tests=True,
-                           datetime=datetime.date(2019, 9, 9))
-    Attempt.objects.create(profile=user.profile, question=question, passed_tests=True,
-                           datetime=datetime.date(2019, 9, 10))
 
 
 def generate_test_cases():
@@ -248,7 +248,7 @@ def generate_users_with_notifications(user):
         username='john',
         first_name='John',
         last_name='Doe',
-        email='john@uclive.ac.nz',
+        email='user1@uclive.ac.nz',
         password='onion',
         user_type=UserType.objects.get(slug='student'),
         remind_on_monday=True,
@@ -266,7 +266,7 @@ def generate_users_with_notifications(user):
         username='sally',
         first_name='Sally',
         last_name='Jones',
-        email='sally@uclive.ac.nz',
+        email='user2@uclive.ac.nz',
         password='onion',
         user_type=UserType.objects.get(slug='other'),
         remind_on_monday=True,
@@ -284,7 +284,7 @@ def generate_users_with_notifications(user):
         username='jane',
         first_name='Jane',
         last_name='Doe',
-        email='jane@uclive.ac.nz',
+        email='user3@uclive.ac.nz',
         password='onion',
         user_type=UserType.objects.get(slug='other'),
         remind_on_monday=False,
@@ -302,7 +302,7 @@ def generate_users_with_notifications(user):
         username='lazy',
         first_name='Lazy',
         last_name='Dog',
-        email='lazy@uclive.ac.nz',
+        email='user4@uclive.ac.nz',
         password='onion',
         user_type=UserType.objects.get(slug='teacher'),
         remind_on_monday=False,
@@ -320,7 +320,7 @@ def generate_users_with_notifications(user):
         username='brown',
         first_name='Brown',
         last_name='Fox',
-        email='brown@uclive.ac.nz',
+        email='user5@uclive.ac.nz',
         password='onion',
         user_type=UserType.objects.get(slug='student'),
         remind_on_monday=True,

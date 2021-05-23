@@ -10,6 +10,7 @@ from programming.models import Attempt
 from utils.Weekday import Weekday
 from django.template.loader import get_template
 from django.template import Context
+from django.urls import reverse
 
 
 class Command(BaseCommand):
@@ -33,11 +34,12 @@ class Command(BaseCommand):
             days_since_last_attempt = self.get_days_since_last_attempt(today, user)
 
             message = self.create_message(days_since_last_attempt)
-            html = self.build_email(user.first_name, message)
+            html = self.build_email_html(user.first_name, message)
+            body = self.build_email_plain(user.first_name, message)
 
             send_mail(
                 'CodeWOF Reminder',
-                None,
+                body,
                 settings.DEFAULT_FROM_EMAIL,
                 [user.email],
                 fail_silently=False,
@@ -61,7 +63,7 @@ class Command(BaseCommand):
             raise ValueError("Specified date is behind the user's last attempt")
         return (today - date_of_last_attempt).days
 
-    def build_email(self, username, message):
+    def build_email_html(self, username, message):
         """
         Constructs HTML for the email body using the email_reminder.html template.
         :param username: The string username to insert in the template.
@@ -70,6 +72,12 @@ class Command(BaseCommand):
         """
         email_template = get_template("users/email_reminder.html")
         return email_template.render({"username": username, "message": message})
+
+    def build_email_plain(self, username, message):
+        return "Hi {},\n\n{}\n\nThanks,\n\nThe Computer Science Education Research Group\n\nYou received this email " \
+               "because you opted into reminders. You can <a href=\"{}\" change your reminder " \
+                                                                                           "settings here</a>."\
+            .format(username, message, reverse('users:update'))
 
     def get_users_to_email(self, weekday_num):
         """
@@ -115,3 +123,4 @@ class Command(BaseCommand):
             message = "It's been awhile since your last attempt. " \
                       "Remember to use CodeWOF regularly to keep your coding skills sharp."
         return message
+
