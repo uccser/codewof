@@ -11,6 +11,7 @@ from utils.Weekday import Weekday
 from django.template.loader import get_template
 from django.template import Context
 from django.urls import reverse
+from django.contrib.sites.models import Site
 
 
 class Command(BaseCommand):
@@ -74,10 +75,11 @@ class Command(BaseCommand):
         return email_template.render({"username": username, "message": message})
 
     def build_email_plain(self, username, message):
-        return "Hi {},\n\n{}\n\nThanks,\n\nThe Computer Science Education Research Group\n\nYou received this email " \
-               "because you opted into reminders. You can <a href=\"{}\" change your reminder " \
-                                                                                           "settings here</a>."\
-            .format(username, message, reverse('users:update'))
+        return "Hi {},\n\n{}\nLet's practice!: {}\n\nThanks,\nThe Computer Science Education Research " \
+               "Group\n\nYou received this email because you opted into reminders. You can change " \
+               "your reminder settings here: {}."\
+            .format(username, message, Site.objects.get_current().domain + reverse('users:dashboard'),
+                    Site.objects.get_current().domain + reverse('users:update'))
 
     def get_users_to_email(self, weekday_num):
         """
