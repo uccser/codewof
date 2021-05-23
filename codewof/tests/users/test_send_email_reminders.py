@@ -11,6 +11,7 @@ from utils.Weekday import Weekday
 from programming.models import Attempt, Question
 from django.utils import timezone
 from django.http import HttpResponse
+from unittest.mock import patch
 
 User = get_user_model()
 
@@ -96,6 +97,10 @@ class GetDaysSinceLastAttemptTests(TestCase):
                                datetime=attempt_date)
         self.assertRaises(ValueError, Command().get_days_since_last_attempt, self.current_date, self.user)
 
+    def test_no_attempts_is_none(self):
+        days = Command().get_days_since_last_attempt(self.current_date, self.user)
+        self.assertIsNone(days)
+
 
 class CreateMessageTests(TestCase):
     def test_zero_days_is_recent(self):
@@ -121,6 +126,13 @@ class CreateMessageTests(TestCase):
         self.assertEqual(message, "You haven't attempted a question in a long time. "
                                   "Try to use CodeWOF regularly to keep your coding skills sharp. "
                                   "If you don't want to use CodeWOF anymore, "
+                                  "then click the link at the bottom of this email to stop getting reminders.")
+
+    def test_no_attempts(self):
+        message = Command().create_message(None)
+        self.assertEqual(message, "You haven't attempted a question yet! "
+                                  "Use CodeWOF regularly to keep your coding skills sharp."
+                                  "If you don't want to use CodeWOF, "
                                   "then click the link at the bottom of this email to stop getting reminders.")
 
 

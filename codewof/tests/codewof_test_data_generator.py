@@ -166,6 +166,33 @@ def generate_attempts():
     Attempts are generated for user 1 and question 1, with attempts created to cover consecutive days, failed attempts,
     and passed attempts. These attempts cover the main requirements to gain all test achievements.
     """
+    user1 = User.objects.get(id=1)
+    user2 = User.objects.get(id=2)
+    user3 = User.objects.get(id=3)
+    question = Question.objects.get(slug='program-question-1')
+
+    Attempt.objects.create(profile=user1.profile, question=question, passed_tests=True,
+                           datetime=datetime.date(2021, 5, 20))
+    Attempt.objects.create(profile=user1.profile, question=question, passed_tests=True,
+                           datetime=datetime.date(2021, 5, 21))
+    Attempt.objects.create(profile=user1.profile, question=question, passed_tests=True,
+                           datetime=datetime.date(2021, 3, 1))
+
+    Attempt.objects.create(profile=user2.profile, question=question, passed_tests=True,
+                           datetime=datetime.date(2021, 5, 13))
+    Attempt.objects.create(profile=user2.profile, question=question, passed_tests=True,
+                           datetime=datetime.date(2021, 5, 13))
+
+    Attempt.objects.create(profile=user3.profile, question=question, passed_tests=True,
+                           datetime=datetime.date(2020, 5, 13))
+    Attempt.objects.create(profile=user3.profile, question=question, passed_tests=True,
+                           datetime=datetime.date(2021, 2, 1))
+
+def generate_attempts_no_defaults():
+    """
+    Generate attempts for codeWOF tests. Always supplies the datetime to ensure consistent testing for
+    test_send_email_reminders.py
+    """
     user = User.objects.get(id=1)
     question = Question.objects.get(slug='program-question-1')
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=True)
