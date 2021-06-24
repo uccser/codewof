@@ -129,6 +129,13 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             visible=True,
             groups__isnull=False,
         ).distinct()
+
+        # TODO: Do something similar to this for groups
+        # studies = user.user_type.studies.filter(
+        #     visible=True,
+        #     groups__isnull=False,
+        # ).distinct()
+
         # TODO: Simplify to one database query
         for study in studies:
             study.registered = StudyRegistration.objects.filter(
@@ -136,6 +143,8 @@ class UserDetailView(LoginRequiredMixin, DetailView):
                 study_group__in=study.groups.all(),
             ).exists()
         context['studies'] = studies
+        # TODO: Do something similar to this for groups
+        # context['studies'] = studies
         context['codewof_profile'] = self.object.profile
         context['goal'] = user.profile.goal
         context['all_achievements'] = Achievement.objects.all()
