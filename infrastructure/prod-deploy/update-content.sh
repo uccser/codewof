@@ -15,6 +15,7 @@ source ./codewof/load-prod-envs.sh
 ./dev start
 ./dev migrate
 docker-compose exec django /docker_venv/bin/python3 ./manage.py load_user_types
+docker-compose exec django /docker_venv/bin/python3 ./manage.py load_group_roles
 ./dev load_questions
 ./dev load_style_errors
 ./dev load_achievements
