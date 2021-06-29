@@ -125,7 +125,7 @@ class GroupRole(models.Model):
 class Membership(models.Model):
     """A class representing the relationship between a User and a Group."""
 
-    person = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     role = models.ForeignKey(
         GroupRole,

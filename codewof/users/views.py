@@ -129,7 +129,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             visible=True,
             groups__isnull=False,
         ).distinct()
-        memberships = user.membership_set.all()
+        memberships = user.membership_set.all().order_by('group__name')
 
         # TODO: Simplify to one database query
         for study in studies:
