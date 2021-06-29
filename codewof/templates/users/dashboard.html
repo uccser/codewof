@@ -52,9 +52,13 @@
       <div class="col-12 col-md-8 mb-3">
         <h2>Groups</h2>
 
-        {% for membership in memberships %}
-          {% include "users/group-card.html" %}
-        {% endfor %}
+        {% if memberships %}
+          {% for membership in memberships %}
+            {% include "users/group-card.html" %}
+          {% endfor %}
+        {% else %}
+          <p>You are not in any groups.</p>
+        {% endif %}
       </div>
 
       <div class="col-12 col-md-8 mb-3">
