@@ -50,6 +50,16 @@
       </div>
 
       <div class="col-12 col-md-8 mb-3">
+        <h2>Groups</h2>
+
+        {% for membership in memberships %}
+          <h3>{{ membership.group.name }}</h3>
+          <p>{{ membership.group.description }}</p>
+          <p>{{ membership.role }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="col-12 col-md-8 mb-3">
         <h2>Research</h2>
 
         {% if studies %}
