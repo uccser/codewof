@@ -21,7 +21,7 @@ from research.models import (
     StudyRegistration,
 )
 
-from users.models import UserType
+from users.models import UserType, Group, GroupRole, Membership
 
 User = get_user_model()
 
@@ -85,6 +85,70 @@ def generate_users(user):
         user_type=UserType.objects.get(slug='other'),
     )
     user_sally.save()
+
+
+def generate_groups():
+    """Generate groups for codeWOF tests. Groups are generated for user 1, covering all the GroupRoles."""
+    group_1 = Group.objects.create(
+        name='Group North',
+        description='Group North is the best group.'
+    )
+    group_2 = Group.objects.create(
+        name='Group East',
+        description='Group East is the best group.'
+    )
+    group_3 = Group.objects.create(
+        name='Group West',
+        description='Group West is the best group.'
+    )
+    group_4 = Group.objects.create(
+        name='Group South',
+        description='Group South is the best group.'
+    )
+
+    group_1.save()
+    group_2.save()
+    group_3.save()
+    group_4.save()
+
+
+def generate_memberships():
+    """Generate memberships for codeWOF tests. Memberships are generated for user 1 and every group created in
+    generate_groups, covering all the GroupRoles."""
+    group_north = Group.objects.get(name='Group North')
+    group_east = Group.objects.get(name='Group East')
+    group_west = Group.objects.get(name='Group West')
+    group_south = Group.objects.get(name='Group South')
+    management.call_command("load_group_roles")
+    user = User.objects.get(id=1)
+    admin_role = GroupRole.objects.get(name='Admin')
+    member_role = GroupRole.objects.get(name='Member')
+
+    membership_1 = Membership.objects.create(
+        user=user,
+        group=group_north,
+        role=admin_role
+    )
+    membership_2 = Membership.objects.create(
+        user=user,
+        group=group_east,
+        role=member_role
+    )
+    membership_3 = Membership.objects.create(
+        user=user,
+        group=group_west,
+        role=member_role
+    )
+    membership_4 = Membership.objects.create(
+        user=user,
+        group=group_south,
+        role=member_role
+    )
+
+    membership_1.save()
+    membership_2.save()
+    membership_3.save()
+    membership_4.save()
 
 
 def generate_achievements():

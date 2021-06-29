@@ -35,7 +35,7 @@
 
       <div class="col-12 col-md-4 mb-3">
         <h2>Points earned: {{ user.profile.points }}</h2>
-        <h2>Achievements</a></h2>
+        <h2>Achievements</h2>
         <br>
         {% for achievement in all_achievements %}
             {% if achievement in user.profile.earned_achievements.all and achievement.parent not in user.profile.earned_achievements.all %}

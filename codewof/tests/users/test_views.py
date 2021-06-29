@@ -8,10 +8,13 @@ from codewof.tests.codewof_test_data_generator import (
     generate_users,
     generate_achievements,
     generate_attempts,
-    generate_questions
+    generate_questions,
+    generate_groups,
+    generate_memberships
 )
 from codewof.programming.codewof_utils import check_achievement_conditions
 from programming.models import Achievement
+from users.models import Group
 pytestmark = pytest.mark.django_db
 User = get_user_model()
 
@@ -24,9 +27,16 @@ class UserDetailViewTest(TestCase):
         generate_achievements()
         generate_questions()
         generate_attempts()
+        generate_groups()
+        generate_memberships()
 
     def setUp(self):
         self.client = Client()
+        self.group_north = Group.objects.get(name="Group North")
+        self.group_east = Group.objects.get(name="Group East")
+        self.group_west = Group.objects.get(name="Group West")
+        self.group_south = Group.objects.get(name="Group South")
+
 
     def login_user(self):
         login = self.client.login(email='john@uclive.ac.nz', password='onion')
@@ -63,6 +73,58 @@ class UserDetailViewTest(TestCase):
         self.assertEqual(resp.context['codewof_profile'], user.profile)
         self.assertEqual(resp.context['goal'], user.profile.goal)
         self.assertEqual(resp.context['num_questions_answered'], 1)
+
+        # Test the number of memberships and that the memberships are in the correct order (by group name)
+        self.assertEqual(len(resp.context['memberships']), 4)
+        self.assertEqual(resp.context['memberships'][0].group, self.group_east)
+        self.assertEqual(resp.context['memberships'][1].group, self.group_north)
+        self.assertEqual(resp.context['memberships'][2].group, self.group_south)
+        self.assertEqual(resp.context['memberships'][3].group, self.group_west)
+
+    def test_view_contains_groups_title(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertContains(resp, "<h2>Groups</h2>", html=True)
+
+    def test_view_contains_group_east_title(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertContains(resp, "<h5 class=\"card-title\">Group East</h5>", html=True)
+
+    def test_view_contains_group_east_subtitle(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group East is the best group.</h6>", html=True)
+
+    def test_view_contains_group_north_title(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertContains(resp, "<h5 class=\"card-title\">Group North</h5>", html=True)
+
+    def test_view_contains_group_north_subtitle(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group North is the best group.</h6>", html=True)
+
+    def test_view_contains_group_south_title(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertContains(resp, "<h5 class=\"card-title\">Group South</h5>", html=True)
+
+    def test_view_contains_group_south_subtitle(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group South is the best group.</h6>", html=True)
+
+    def test_view_contains_group_west_title(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertContains(resp, "<h5 class=\"card-title\">Group West</h5>", html=True)
+
+    def test_view_contains_group_west_subtitle(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group West is the best group.</h6>", html=True)
 
 
 class TestUserUpdateView:
