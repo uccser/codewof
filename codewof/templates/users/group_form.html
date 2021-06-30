@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "New Group" %}{% endblock %}
+
+{% block content %}
+  <div class="col-md-6 offset-md-3">
+    <h1>{% trans "New Group" %}</h1>
+    <form method="post">
+      {% csrf_token %}
+      {% crispy form %}
+
+      <input class="btn btn-success" type="submit" value="Create Group">
+    </form>
+  </div>
+{% endblock %}

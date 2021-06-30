@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import DetailView, RedirectView, UpdateView
+from django.views.generic import DetailView, RedirectView, UpdateView, CreateView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 from users.serializers import UserSerializer
@@ -22,6 +22,7 @@ from programming.models import (
     Attempt,
     Achievement
 )
+from users.models import Group
 
 from programming.codewof_utils import get_questions_answered_in_past_month, backdate_user
 
@@ -202,3 +203,16 @@ class UserAPIViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class GroupCreateView(LoginRequiredMixin, CreateView):
+    model = Group
+    fields = ['name', 'description']
+
+    def get_success_url(self):
+        """URL to route to on successful update."""
+        return reverse('users:dashboard')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
