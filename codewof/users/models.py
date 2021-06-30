@@ -87,6 +87,7 @@ class Group(models.Model):
     )
     description = models.CharField(
         max_length=200,
+        blank=True
     )
     date_created = models.DateTimeField(default=timezone.now)
     users = models.ManyToManyField(User, through='Membership')
