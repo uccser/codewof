@@ -126,6 +126,13 @@ class UserDetailViewTest(TestCase):
         resp = self.client.get('/users/dashboard/')
         self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group West is the best group.</h6>", html=True)
 
+    def test_message_displayed_if_no_groups(self):
+        self.login_user()
+        User.objects.get(id=1).group_set.clear()
+        resp = self.client.get('/users/dashboard/')
+        self.assertContains(resp, "<p>You are not in any groups.</p>", html=True)
+        self.assertQuerysetEqual(resp.context['memberships'], [])
+
 
 class TestUserUpdateView:
     """Extracting view initialization code as class-scoped fixture.
@@ -260,3 +267,41 @@ class TestUserAchievementView(TestCase):
         self.assertEqual(len(resp.context['achievements_not_earned']), 9)
         self.assertEqual(resp.context['num_achievements_earned'], 1)
         self.assertEqual(resp.context['num_achievements'], 10)
+
+
+class TestGroupCreateView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+
+    def setUp(self):
+        self.client = Client()
+
+    def login_user(self):
+        login = self.client.login(email='john@uclive.ac.nz', password='onion')
+        self.assertTrue(login)
+
+    # tests begin
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get('/users/group/add/')
+        self.assertRedirects(resp, '/accounts/login/?next=/users/group/add/')
+
+    def test_view_url_exists(self):
+        self.login_user()
+        resp = self.client.get('/users/group/add/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        self.login_user()
+        resp = self.client.get('/users/group/add/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'users/group_form.html')
+
+    def test_group_is_not_added_if_name_is_empty(self):
+        self.login_user()
+        self.client.post('/users/group/add/', {'description': 'This is a group with no name'})
+        user = User.objects.get(id=1)
+        self.assertEqual(len(user.group_set.all()), 0)
+
