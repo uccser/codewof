@@ -22,7 +22,7 @@ from programming.models import (
     Attempt,
     Achievement
 )
-from users.models import Group
+from users.models import Group, Membership, GroupRole
 
 from programming.codewof_utils import get_questions_answered_in_past_month, backdate_user
 
@@ -214,5 +214,7 @@ class GroupCreateView(LoginRequiredMixin, CreateView):
         return reverse('users:dashboard')
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        membership = Membership(user=self.request.user, group=form.instance, role=GroupRole.objects.get(name="Admin"))
+        membership.save()
+        return response
