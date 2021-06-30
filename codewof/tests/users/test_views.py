@@ -1,6 +1,7 @@
 import pytest
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
+from django.core import management
 from users.views import UserRedirectView, UserUpdateView
 from codewof.tests.conftest import user
 
@@ -14,7 +15,7 @@ from codewof.tests.codewof_test_data_generator import (
 )
 from codewof.programming.codewof_utils import check_achievement_conditions
 from programming.models import Achievement
-from users.models import Group
+from users.models import Group, Membership
 pytestmark = pytest.mark.django_db
 User = get_user_model()
 
@@ -274,6 +275,7 @@ class TestGroupCreateView(TestCase):
     def setUpTestData(cls):
         # never modify this object in tests
         generate_users(user)
+        management.call_command("load_group_roles")
 
     def setUp(self):
         self.client = Client()
@@ -299,9 +301,48 @@ class TestGroupCreateView(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'users/group_form.html')
 
+    def test_2_groups_and_2_memberships_are_added_for_2_requests(self):
+        self.login_user()
+        self.client.post('/users/group/add/', {'name': 'Cool Group', 'description': 'This is a cool group'})
+        self.client.post('/users/group/add/', {'name': 'Cool Group 2', 'description': 'This is another cool group'})
+        user = User.objects.get(id=1)
+        group1 = Group.objects.get(name='Cool Group')
+        group2 = Group.objects.get(name='Cool Group 2')
+        membership1 = Membership.objects.get(group__name='Cool Group')
+        membership2 = Membership.objects.get(group__name='Cool Group 2')
+
+        self.assertEqual(len(user.group_set.all()), 2)
+        self.assertEqual(len(user.membership_set.all()), 2)
+
+        self.assertTrue(group1 in user.group_set.all())
+        self.assertTrue(group2 in user.group_set.all())
+
+        self.assertTrue(membership1 in user.membership_set.all())
+        self.assertTrue(membership2 in user.membership_set.all())
+
     def test_group_is_not_added_if_name_is_empty(self):
         self.login_user()
         self.client.post('/users/group/add/', {'description': 'This is a group with no name'})
         user = User.objects.get(id=1)
         self.assertEqual(len(user.group_set.all()), 0)
 
+    def test_group_is_not_added_if_description_is_empty(self):
+        self.login_user()
+        self.client.post('/users/group/add/', {'name': 'No Description Group'})
+        user = User.objects.get(id=1)
+        group = Group.objects.get(name='No Description Group')
+        membership = Membership.objects.get(group__name='No Description Group')
+
+        self.assertEqual(len(user.group_set.all()), 1)
+        self.assertTrue(group in user.group_set.all())
+        self.assertTrue(membership in user.membership_set.all())
+
+    def test_redirects(self):
+        self.login_user()
+        resp = self.client.post('/users/group/add/', {'name': 'No Description Group'})
+        self.assertRedirects(resp, '/users/dashboard/')
+
+    def test_view_contains_title(self):
+        self.login_user()
+        resp = self.client.get('/users/group/add/')
+        self.assertContains(resp, "<h1>New Group</h1>", html=True)
