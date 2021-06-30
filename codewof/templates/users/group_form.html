@@ -10,7 +10,7 @@
     <h1>{% trans "New Group" %}</h1>
     <form method="post">
       {% csrf_token %}
-      {% crispy form %}
+      {{ form|crispy }}
 
       <input class="btn btn-success" type="submit" value="Create Group">
     </form>
