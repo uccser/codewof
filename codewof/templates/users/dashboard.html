@@ -60,20 +60,7 @@
           <p>You are not in any groups.</p>
         {% endif %}
 
-        <a class="btn btn-primary" href="{% url 'users:group-add' %}">Add</a>
-      </div>
-
-      <div class="col-12 col-md-8 mb-3">
-        <h2>Research</h2>
-
-        {% if studies %}
-          <p>The following studies are open for you to register for, to help improve programming education.</p>
-          {% for study in studies %}
-            {% include "research/components/research-card.html" %}
-          {% endfor %}
-        {% else %}
-          <p>Currently no studies are listed.</p>
-        {% endif %}
+        <a class="btn btn-primary btn-sm" href="{% url 'users:group-add' %}">Create Group</a>
       </div>
 
       <div class="col-12 col-md-4 mb-3">
@@ -88,6 +75,19 @@
             </a>
           {% endif %}
         </div>
+      </div>
+
+      <div class="col-12 col-md-8 mb-3">
+        <h2>Research</h2>
+
+        {% if studies %}
+          <p>The following studies are open for you to register for, to help improve programming education.</p>
+          {% for study in studies %}
+            {% include "research/components/research-card.html" %}
+          {% endfor %}
+        {% else %}
+          <p>Currently no studies are listed.</p>
+        {% endif %}
       </div>
     </div>
   </div>
