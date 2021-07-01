@@ -10,5 +10,5 @@ urlpatterns = [
     path("redirect/", view=views.UserRedirectView.as_view(), name="redirect"),
     path("update/", view=views.UserUpdateView.as_view(), name="update"),
     path("achievements/", view=views.UserAchievementsView.as_view(), name="achievements"),
-    path("group/add/", view=views.GroupCreateView.as_view(), name="group-add"),
+    path("groups/add/", view=views.GroupCreateView.as_view(), name="groups-add"),
 ]
