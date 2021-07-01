@@ -2,6 +2,7 @@ import pytest
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
 from django.core import management
+from django.urls import reverse
 from users.views import UserRedirectView, UserUpdateView
 from codewof.tests.conftest import user
 
@@ -279,6 +280,7 @@ class TestGroupCreateView(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.url = reverse('users:groups-add')
 
     def login_user(self):
         login = self.client.login(email='john@uclive.ac.nz', password='onion')
@@ -287,24 +289,24 @@ class TestGroupCreateView(TestCase):
     # tests begin
 
     def test_redirect_if_not_logged_in(self):
-        resp = self.client.get('/users/groups/add/')
-        self.assertRedirects(resp, '/accounts/login/?next=/users/groups/add/')
+        resp = self.client.get(self.url)
+        self.assertRedirects(resp, '/accounts/login/?next=' + self.url)
 
     def test_view_url_exists(self):
         self.login_user()
-        resp = self.client.get('/users/groups/add/')
+        resp = self.client.get(self.url)
         self.assertEqual(resp.status_code, 200)
 
     def test_view_uses_correct_template(self):
         self.login_user()
-        resp = self.client.get('/users/groups/add/')
+        resp = self.client.get(self.url)
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'users/group_form.html')
 
     def test_2_groups_and_2_memberships_are_added_for_2_requests(self):
         self.login_user()
-        self.client.post('/users/groups/add/', {'name': 'Cool Group', 'description': 'This is a cool group'})
-        self.client.post('/users/groups/add/', {'name': 'Cool Group 2', 'description': 'This is another cool group'})
+        self.client.post(self.url, {'name': 'Cool Group', 'description': 'This is a cool group'})
+        self.client.post(self.url, {'name': 'Cool Group 2', 'description': 'This is another cool group'})
         user = User.objects.get(id=1)
         group1 = Group.objects.get(name='Cool Group')
         group2 = Group.objects.get(name='Cool Group 2')
@@ -322,13 +324,13 @@ class TestGroupCreateView(TestCase):
 
     def test_group_is_not_added_if_name_is_empty(self):
         self.login_user()
-        self.client.post('/users/groups/add/', {'description': 'This is a group with no name'})
+        self.client.post(self.url, {'description': 'This is a group with no name'})
         user = User.objects.get(id=1)
         self.assertEqual(len(user.group_set.all()), 0)
 
     def test_group_is_not_added_if_description_is_empty(self):
         self.login_user()
-        self.client.post('/users/groups/add/', {'name': 'No Description Group'})
+        self.client.post(self.url, {'name': 'No Description Group'})
         user = User.objects.get(id=1)
         group = Group.objects.get(name='No Description Group')
         membership = Membership.objects.get(group__name='No Description Group')
@@ -339,10 +341,10 @@ class TestGroupCreateView(TestCase):
 
     def test_redirects(self):
         self.login_user()
-        resp = self.client.post('/users/groups/add/', {'name': 'No Description Group'})
+        resp = self.client.post(self.url, {'name': 'No Description Group'})
         self.assertRedirects(resp, '/users/dashboard/')
 
     def test_view_contains_title(self):
         self.login_user()
-        resp = self.client.get('/users/groups/add/')
+        resp = self.client.get(self.url)
         self.assertContains(resp, "<h1>New Group</h1>", html=True)
