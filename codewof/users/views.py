@@ -218,3 +218,12 @@ class GroupCreateView(LoginRequiredMixin, CreateView):
         membership = Membership(user=self.request.user, group=form.instance, role=GroupRole.objects.get(name="Admin"))
         membership.save()
         return response
+
+
+class GroupUpdateView(LoginRequiredMixin, UpdateView):
+    model = Group
+    fields = ['name', 'description']
+
+    def get_success_url(self):
+        """URL to route to on successful update."""
+        return reverse('users:dashboard')

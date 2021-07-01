@@ -7,12 +7,22 @@
 
 {% block content %}
   <div class="col-md-6 offset-md-3">
-    <h1>{% trans "New Group" %}</h1>
+    <h1>
+      {% if object %}
+        {% trans "Update Group" %}
+      {% else %}
+        {% trans "New Group" %}
+      {% endif %}
+    </h1>
     <form method="post">
       {% csrf_token %}
       {{ form|crispy }}
 
-      <input class="btn btn-success" type="submit" value="Create Group">
+      {% if object %}
+        <input class="btn btn-success" type="submit" value="Edit Group">
+      {% else %}
+        <input class="btn btn-success" type="submit" value="Create Group">
+      {% endif %}
     </form>
   </div>
 {% endblock %}

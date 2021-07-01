@@ -11,4 +11,5 @@ urlpatterns = [
     path("update/", view=views.UserUpdateView.as_view(), name="update"),
     path("achievements/", view=views.UserAchievementsView.as_view(), name="achievements"),
     path("groups/add/", view=views.GroupCreateView.as_view(), name="groups-add"),
+    path("groups/<int:pk>/edit/", view=views.GroupUpdateView.as_view(), name="groups-edit"),
 ]
