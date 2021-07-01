@@ -2,12 +2,14 @@
 
 import logging
 from random import Random
+
+from django.http import HttpResponseForbidden
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.views.generic import DetailView, RedirectView, UpdateView, CreateView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
@@ -206,6 +208,8 @@ class UserAPIViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class GroupCreateView(LoginRequiredMixin, CreateView):
+    """View for creating a new group."""
+
     model = Group
     fields = ['name', 'description']
 
@@ -220,7 +224,20 @@ class GroupCreateView(LoginRequiredMixin, CreateView):
         return response
 
 
-class GroupUpdateView(LoginRequiredMixin, UpdateView):
+class AdminRequiredMixin:
+    """Mixin for checking the user is an Admin of the Group."""
+
+    def dispatch(self, request, *args, **kwargs):
+        admin_role = GroupRole.objects.get(name="Admin")
+        if Membership.objects.all().filter(user=self.request.user, group=self.get_object(), role=admin_role):
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
+
+
+class GroupUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
+    """View for updating a group."""
+
     model = Group
     fields = ['name', 'description']
 
