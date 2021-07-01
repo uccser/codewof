@@ -17,6 +17,7 @@ from codewof.tests.codewof_test_data_generator import (
 from codewof.programming.codewof_utils import check_achievement_conditions
 from programming.models import Achievement
 from users.models import Group, Membership
+
 pytestmark = pytest.mark.django_db
 User = get_user_model()
 
@@ -38,7 +39,6 @@ class UserDetailViewTest(TestCase):
         self.group_east = Group.objects.get(name="Group East")
         self.group_west = Group.objects.get(name="Group West")
         self.group_south = Group.objects.get(name="Group South")
-
 
     def login_user(self):
         login = self.client.login(email='john@uclive.ac.nz', password='onion')
@@ -96,7 +96,8 @@ class UserDetailViewTest(TestCase):
     def test_view_contains_group_east_subtitle(self):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
-        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group East is the best group.</h6>", html=True)
+        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group East is the best group.</h6>",
+                            html=True)
 
     def test_view_contains_group_north_title(self):
         self.login_user()
@@ -106,7 +107,8 @@ class UserDetailViewTest(TestCase):
     def test_view_contains_group_north_subtitle(self):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
-        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group North is the best group.</h6>", html=True)
+        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group North is the best group.</h6>",
+                            html=True)
 
     def test_view_contains_group_south_title(self):
         self.login_user()
@@ -116,7 +118,8 @@ class UserDetailViewTest(TestCase):
     def test_view_contains_group_south_subtitle(self):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
-        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group South is the best group.</h6>", html=True)
+        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group South is the best group.</h6>",
+                            html=True)
 
     def test_view_contains_group_west_title(self):
         self.login_user()
@@ -126,7 +129,8 @@ class UserDetailViewTest(TestCase):
     def test_view_contains_group_west_subtitle(self):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
-        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group West is the best group.</h6>", html=True)
+        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group West is the best group.</h6>",
+                            html=True)
 
     def test_message_displayed_if_no_groups(self):
         self.login_user()
@@ -328,7 +332,7 @@ class TestGroupCreateView(TestCase):
         user = User.objects.get(id=1)
         self.assertEqual(len(user.group_set.all()), 0)
 
-    def test_group_is_not_added_if_description_is_empty(self):
+    def test_group_is_added_if_description_is_empty(self):
         self.login_user()
         self.client.post(self.url, {'name': 'No Description Group'})
         user = User.objects.get(id=1)
@@ -344,7 +348,112 @@ class TestGroupCreateView(TestCase):
         resp = self.client.post(self.url, {'name': 'No Description Group'})
         self.assertRedirects(resp, '/users/dashboard/')
 
-    def test_view_contains_title(self):
+    def test_view_uses_correct_title(self):
         self.login_user()
         resp = self.client.get(self.url)
         self.assertContains(resp, "<h1>New Group</h1>", html=True)
+
+    def test_view_uses_correct_button(self):
+        self.login_user()
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "<input class=\"btn btn-success\" type=\"submit\" value=\"Create Group\">", html=True)
+
+
+class TestGroupUpdateView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_groups()
+        generate_memberships()
+        management.call_command("load_group_roles")
+
+    def setUp(self):
+        self.client = Client()
+        self.group_north = Group.objects.get(name="Group North")
+        self.group_east = Group.objects.get(name="Group East")
+        self.group_west = Group.objects.get(name="Group West")
+        self.group_south = Group.objects.get(name="Group South")
+        self.group_mystery = Group.objects.get(name="Group Mystery")
+
+    def login_user(self):
+        login = self.client.login(email='john@uclive.ac.nz', password='onion')
+        self.assertTrue(login)
+
+    # tests begin
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get(reverse('users:groups-edit', args=[self.group_north.pk]))
+        self.assertRedirects(resp, '/accounts/login/?next=' + reverse('users:groups-edit', args=[self.group_north.pk]))
+
+    def test_view_exists_if_admin(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-edit', args=[self.group_north.pk]))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_does_not_exist_if_member(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-edit', args=[self.group_east.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_view_does_not_exist_if_not_admin_or_member(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-edit', args=[self.group_mystery.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_view_uses_correct_template(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-edit', args=[self.group_north.pk]))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'users/group_form.html')
+
+    def test_update_name_and_description(self):
+        self.login_user()
+        self.client.post(reverse('users:groups-edit', args=[self.group_north.pk]),
+                         {'name': 'Group Up', 'description': 'Because Cardinal directions are too hard to remember.'})
+        group_north_updated = Group.objects.get(pk=self.group_north.pk)
+        self.assertEqual(group_north_updated.name, 'Group Up')
+        self.assertEqual(group_north_updated.description, 'Because Cardinal directions are too hard to remember.')
+
+    def test_group_is_not_modified_if_name_is_empty(self):
+        self.login_user()
+        self.client.post(reverse('users:groups-edit', args=[self.group_north.pk]),
+                         {'description': 'This is a group with no name'})
+        group_north_updated = Group.objects.get(pk=self.group_north.pk)
+        self.assertEqual(group_north_updated.description, "Group North is the best group.")
+
+    def test_group_is_modified_if_description_is_empty(self):
+        self.login_user()
+        self.client.post(reverse('users:groups-edit', args=[self.group_north.pk]), {'name': 'No Description Group'})
+        group_north_updated = Group.objects.get(pk=self.group_north.pk)
+        self.assertEqual(group_north_updated.name, 'No Description Group')
+
+    def test_redirects(self):
+        self.login_user()
+        resp = self.client.post(reverse('users:groups-edit', args=[self.group_north.pk]),
+                                {'name': 'No Description Group'})
+        self.assertRedirects(resp, '/users/dashboard/')
+
+    def test_view_contains_title(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-edit', args=[self.group_north.pk]))
+        self.assertContains(resp, "<h1>Update Group</h1>", html=True)
+
+    def test_view_uses_correct_button(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-edit', args=[self.group_north.pk]))
+        self.assertContains(resp, "<input class=\"btn btn-success\" type=\"submit\" value=\"Edit Group\">", html=True)
+
+    def test_cannot_edit_if_user_is_only_a_member(self):
+        self.login_user()
+        resp = self.client.post(reverse('users:groups-edit', args=[self.group_south.pk]),
+                                {'name': 'Group Up',
+                                 'description': 'Because Cardinal directions are too hard to remember.'})
+        self.assertEqual(resp.status_code, 403)
+
+    def test_cannot_edit_if_user_is_not_an_admin_or_a_member(self):
+        self.login_user()
+        resp = self.client.post(reverse('users:groups-edit', args=[self.group_mystery.pk]),
+                                {'name': 'Group Infiltrate',
+                                 'description': 'I infiltrated Group Mystery!.'})
+        self.assertEqual(resp.status_code, 403)

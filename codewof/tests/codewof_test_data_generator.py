@@ -105,11 +105,16 @@ def generate_groups():
         name='Group South',
         description='Group South is the best group.'
     )
+    group_5 = Group.objects.create(
+        name='Group Mystery',
+        description='Few know of this group...'
+    )
 
     group_1.save()
     group_2.save()
     group_3.save()
     group_4.save()
+    group_5.save()
 
 
 def generate_memberships():
