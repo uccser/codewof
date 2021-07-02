@@ -457,3 +457,62 @@ class TestGroupUpdateView(TestCase):
                                 {'name': 'Group Infiltrate',
                                  'description': 'I infiltrated Group Mystery!.'})
         self.assertEqual(resp.status_code, 403)
+
+
+class TestGroupDetailView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_groups()
+        generate_memberships()
+        management.call_command("load_group_roles")
+
+    def setUp(self):
+        self.client = Client()
+        self.group_north = Group.objects.get(name="Group North")
+        self.group_east = Group.objects.get(name="Group East")
+        self.group_west = Group.objects.get(name="Group West")
+        self.group_south = Group.objects.get(name="Group South")
+        self.group_mystery = Group.objects.get(name="Group Mystery")
+
+    def login_user(self):
+        login = self.client.login(email='john@uclive.ac.nz', password='onion')
+        self.assertTrue(login)
+
+    # tests begin
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertRedirects(resp, '/accounts/login/?next=' + reverse('users:groups-detail', args=[self.group_north.pk]))
+
+    def test_view_exists_if_admin(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_exists_if_member(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_east.pk]))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_does_not_exist_if_not_admin_or_member(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_mystery.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_view_uses_correct_template(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'users/group_detail.html')
+
+    def test_view_displays_correct_group(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertContains(resp, "<h1>Group North</h1>", html=True)
+
+    def test_view_displays_correct_description(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertContains(resp, "<p>Group North is the best group.</p>", html=True)
