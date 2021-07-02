@@ -432,7 +432,7 @@ class TestGroupUpdateView(TestCase):
         self.login_user()
         resp = self.client.post(reverse('users:groups-edit', args=[self.group_north.pk]),
                                 {'name': 'No Description Group'})
-        self.assertRedirects(resp, '/users/dashboard/')
+        self.assertRedirects(resp, '/users/groups/' + str(self.group_north.pk) + '/')
 
     def test_view_contains_title(self):
         self.login_user()

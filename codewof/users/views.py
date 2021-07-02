@@ -253,7 +253,7 @@ class GroupUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
 
     def get_success_url(self):
         """URL to route to on successful update."""
-        return reverse('users:dashboard')
+        return reverse('users:groups-detail', args=[self.get_object().pk])
 
 
 class GroupDetailView(LoginRequiredMixin, AdminOrMemberRequiredMixin, DetailView):
