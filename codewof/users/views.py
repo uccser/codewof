@@ -235,6 +235,16 @@ class AdminRequiredMixin:
             raise PermissionDenied()
 
 
+class AdminOrMemberRequiredMixin:
+    """Mixin for checking the user is an Admin or Member of the Group."""
+
+    def dispatch(self, request, *args, **kwargs):
+        if Membership.objects.all().filter(user=self.request.user, group=self.get_object()):
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
+
+
 class GroupUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
     """View for updating a group."""
 
@@ -244,3 +254,9 @@ class GroupUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
     def get_success_url(self):
         """URL to route to on successful update."""
         return reverse('users:dashboard')
+
+
+class GroupDetailView(LoginRequiredMixin, AdminOrMemberRequiredMixin, DetailView):
+    """View for viewing the details of a group."""
+
+    model = Group

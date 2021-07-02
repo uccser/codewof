@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "New Group" %}{% endblock %}
+
+{% block content %}
+  <div class="container">
+
+    <div class="row">
+      <div class="col-12 col-md-8 mb-3">
+        <div class="row">
+          <div class="col">
+            <h1>{{ group.name }}</h1>
+            <p>{{ group.description }}</p>
+          </div>
+
+          <div class="col-sm-auto">
+            <a class="btn btn-primary btn-sm d-block mb-1 mt-2" href="{% url 'users:groups-edit' group.pk %}">Edit Group</a>
+            <a class="btn btn-danger btn-sm d-block mb-1" href="{% url 'users:groups-add' %}">Delete Group</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
