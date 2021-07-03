@@ -560,3 +560,99 @@ class TestGroupDetailView(TestCase):
         self.login_user()
         resp = self.client.get(reverse('users:groups-detail', args=[self.group_east.pk]))
         self.assertNotContains(resp, "Delete Group")
+
+
+class TestGroupUpdateView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_groups()
+        generate_memberships()
+        management.call_command("load_group_roles")
+
+    def setUp(self):
+        self.client = Client()
+        self.group_north = Group.objects.get(name="Group North")
+        self.group_east = Group.objects.get(name="Group East")
+        self.group_west = Group.objects.get(name="Group West")
+        self.group_south = Group.objects.get(name="Group South")
+        self.group_mystery = Group.objects.get(name="Group Mystery")
+
+    def login_user(self):
+        login = self.client.login(email='john@uclive.ac.nz', password='onion')
+        self.assertTrue(login)
+
+    # tests begin
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get(reverse('users:groups-delete', args=[self.group_north.pk]))
+        self.assertRedirects(resp, '/accounts/login/?next=' + reverse('users:groups-delete', args=[self.group_north.pk]))
+
+    def test_view_exists_if_admin(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-delete', args=[self.group_north.pk]))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_does_not_exist_if_member(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-delete', args=[self.group_east.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_view_does_not_exist_if_not_admin_or_member(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-delete', args=[self.group_mystery.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_view_uses_correct_template(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-delete', args=[self.group_north.pk]))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'users/group_confirm_delete.html')
+
+    def test_delete_group(self):
+        self.login_user()
+        groups_with_key = Group.objects.filter(pk=self.group_north.pk)
+        self.assertEqual(len(groups_with_key), 1)
+        self.client.post(reverse('users:groups-delete', args=[self.group_north.pk]))
+        groups_with_key = Group.objects.filter(pk=self.group_north.pk)
+        self.assertEqual(len(groups_with_key), 0)
+
+    def test_delete_group_deletes_membership(self):
+        self.login_user()
+        user = User.objects.get(id=1)
+        memberships = Membership.objects.filter(group=self.group_north, user=user)
+        self.assertEqual(len(memberships), 1)
+        self.client.post(reverse('users:groups-delete', args=[self.group_north.pk]))
+        memberships = Membership.objects.filter(group=self.group_north, user=user)
+        self.assertEqual(len(memberships), 0)
+
+    def test_redirects(self):
+        self.login_user()
+        resp = self.client.post(reverse('users:groups-delete', args=[self.group_north.pk]))
+        self.assertRedirects(resp, reverse('users:dashboard'))
+
+    def test_view_contains_title(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-delete', args=[self.group_north.pk]))
+        self.assertContains(resp, "<h1>Delete Group</h1>", html=True)
+
+    def test_view_contains_correct_message(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-delete', args=[self.group_north.pk]))
+        self.assertContains(resp, "<p>Are you sure you want to delete the Group 'Group North'?</p>", html=True)
+
+    def test_view_contains_warning(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-delete', args=[self.group_north.pk]))
+        self.assertContains(resp, "<p>There is no way to undo this action!</p>", html=True)
+
+    def test_cannot_delete_if_user_is_only_a_member(self):
+        self.login_user()
+        resp = self.client.post(reverse('users:groups-delete', args=[self.group_south.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_cannot_delete_if_user_is_not_an_admin_or_a_member(self):
+        self.login_user()
+        resp = self.client.post(reverse('users:groups-delete', args=[self.group_mystery.pk]))
+        self.assertEqual(resp.status_code, 403)
