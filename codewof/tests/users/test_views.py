@@ -139,6 +139,20 @@ class UserDetailViewTest(TestCase):
         self.assertContains(resp, "<p>You are not in any groups.</p>", html=True)
         self.assertQuerysetEqual(resp.context['memberships'], [])
 
+    def test_view_contains_group_north_link(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        print(resp)
+        link = "<a class=\"card-link  stretched-link\" href=\"/users/groups/" + str(self.group_north.pk) + "/\">View</a>"
+        self.assertContains(resp, link, html=True)
+
+    def test_view_contains_group_east_link(self):
+        self.login_user()
+        resp = self.client.get('/users/dashboard/')
+        print(resp)
+        link = "<a class=\"card-link  stretched-link\" href=\"/users/groups/" + str(self.group_east.pk) + "/\">View</a>"
+        self.assertContains(resp, link, html=True)
+
 
 class TestUserUpdateView:
     """Extracting view initialization code as class-scoped fixture.

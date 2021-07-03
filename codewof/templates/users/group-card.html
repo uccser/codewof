@@ -5,7 +5,6 @@
     {% endif %}
     <h5 class="card-title">{{ membership.group.name }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">{{ membership.group.description }}</h6>
-    <!--TODO: Add a link to the Group page-->
-    <!--<a href="{{ study.get_absolute_url }}" class="card-link  stretched-link">Read more</a>-->
+    <a href="{% url 'users:groups-detail' membership.group.pk %}" class="card-link  stretched-link">View</a>
   </div>
 </div>
