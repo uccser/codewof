@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-from django.views.generic import DetailView, RedirectView, UpdateView, CreateView
+from django.views.generic import DetailView, RedirectView, UpdateView, CreateView, DeleteView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 from users.serializers import UserSerializer
@@ -269,3 +269,13 @@ class GroupDetailView(LoginRequiredMixin, AdminOrMemberRequiredMixin, DetailView
         context['is_admin'] = len(Membership.objects.all().filter(user=user, group=self.get_object(),
                                                                   role=admin_role)) != 0
         return context
+
+
+class GroupDeleteView(LoginRequiredMixin, AdminRequiredMixin, DeleteView):
+    """View for deleting a group."""
+
+    model = Group
+
+    def get_success_url(self):
+        """URL to route to on successful delete."""
+        return reverse('users:dashboard')

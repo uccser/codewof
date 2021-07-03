@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Delete Group" %}{% endblock %}
+
+{% block content %}
+  <div class="col-md-6 offset-md-3">
+    <h1>{% trans "Delete Group" %}</h1>
+    <p>Are you sure you want to delete the Group '{{ group.name }}'?</p>
+
+    <p>There is no way to undo this action!</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+        <a class="btn btn-primary" href="{% url 'users:groups-detail' group.pk %}">Cancel</a>
+        <input class="btn btn-danger float-right" type="submit" value="Delete Group">
+    </form>
+  </div>
+{% endblock %}
