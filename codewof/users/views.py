@@ -260,3 +260,11 @@ class GroupDetailView(LoginRequiredMixin, AdminOrMemberRequiredMixin, DetailView
     """View for viewing the details of a group."""
 
     model = Group
+
+    def get_context_data(self, **kwargs):
+        """Get additional context data for template."""
+        user = self.request.user
+        context = super().get_context_data(**kwargs)
+        admin_role = GroupRole.objects.get(name="Admin")
+        context['is_admin'] = Membership.objects.all().filter(user=user, group=self.get_object(), role=admin_role)
+        return context

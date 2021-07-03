@@ -16,10 +16,12 @@
             <p>{{ group.description }}</p>
           </div>
 
+          {% if is_admin %}
           <div class="col-sm-auto">
             <a class="btn btn-primary btn-sm d-block mb-1 mt-2" href="{% url 'users:groups-edit' group.pk %}">Edit Group</a>
             <a class="btn btn-danger btn-sm d-block mb-1" href="{% url 'users:groups-add' %}">Delete Group</a>
           </div>
+          {% endif %}
         </div>
       </div>
     </div>
