@@ -516,3 +516,33 @@ class TestGroupDetailView(TestCase):
         self.login_user()
         resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
         self.assertContains(resp, "<p>Group North is the best group.</p>", html=True)
+
+    def test_context_object_is_admin(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertEqual(resp.context['is_admin'], True)
+
+    def test_context_object_is_member(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_east.pk]))
+        self.assertEqual(resp.context['is_admin'], False)
+
+    def test_has_edit_button_if_admin(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertContains(resp, "Edit Group")
+
+    def test_has_delete_button_if_admin(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertContains(resp, "Delete Group")
+
+    def test_has_no_edit_button_if_member(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_east.pk]))
+        self.assertNotContains(resp, "Edit Group")
+
+    def test_has_no_delete_button_if_member(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_east.pk]))
+        self.assertNotContains(resp, "Delete Group")
