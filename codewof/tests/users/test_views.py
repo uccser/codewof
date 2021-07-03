@@ -562,7 +562,7 @@ class TestGroupDetailView(TestCase):
         self.assertNotContains(resp, "Delete Group")
 
 
-class TestGroupUpdateView(TestCase):
+class TestGroupDeleteView(TestCase):
     @classmethod
     def setUpTestData(cls):
         # never modify this object in tests
