@@ -4,7 +4,7 @@ from django import forms
 from django.contrib import auth
 from django.urls import reverse
 from django.utils.translation import gettext as _
-from users.models import UserType
+from users.models import UserType, Group
 from captcha.fields import ReCaptchaField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML, Fieldset, ButtonHolder, Button, Field, Div
@@ -146,3 +146,12 @@ class UserAdminCreationForm(auth.forms.UserCreationForm):
 
         model = User
         fields = ('email', 'first_name', 'last_name', 'user_type')
+
+
+class GroupCreateUpdateForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput)
+    description = forms.CharField(widget=forms.Textarea)
+
+    class Meta:
+        model = Group
+        fields = ('email', 'first_name')

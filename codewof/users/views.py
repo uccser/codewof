@@ -15,7 +15,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 from users.serializers import UserSerializer
 from programming import settings
-from users.forms import UserChangeForm
+from users.forms import UserChangeForm, GroupCreateUpdateForm
 from research.models import StudyRegistration
 
 
@@ -211,6 +211,7 @@ class GroupCreateView(LoginRequiredMixin, CreateView):
     """View for creating a new group."""
 
     model = Group
+    form_class = GroupCreateUpdateForm
     fields = ['name', 'description']
 
     def get_success_url(self):
@@ -249,6 +250,7 @@ class GroupUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
     """View for updating a group."""
 
     model = Group
+    form_class = GroupCreateUpdateForm
     fields = ['name', 'description']
 
     def get_success_url(self):
