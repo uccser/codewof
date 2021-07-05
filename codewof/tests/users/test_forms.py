@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from users.forms import UserChangeForm
+from users.forms import UserChangeForm, GroupCreateUpdateForm
 from django.core import management
 
 from users.models import UserType
@@ -53,3 +53,47 @@ class UserFormTests(TestCase):
         form = UserChangeForm(data={"last_name": ""})
 
         self.assertEqual(form.errors["last_name"], ["This field is required."])
+
+
+class TestGroupCreateUpdateForm(TestCase):
+    def test_name_and_description_works(self):
+        form_data = {"name": "Group", "description": "Group description"}
+        form = GroupCreateUpdateForm(data=form_data)
+
+        self.assertTrue(form.is_valid())
+
+    def test_name_only_works(self):
+        form_data = {"name": "Group"}
+        form = GroupCreateUpdateForm(data=form_data)
+
+        self.assertTrue(form.is_valid())
+
+    def test_description_only_does_not_work(self):
+        form_data = {"description": "Group description"}
+        form = GroupCreateUpdateForm(data=form_data)
+
+        self.assertEqual(form.errors["name"], ["This field is required."])
+
+    def test_name_too_long(self):
+        form_data = {"name": "x" * 51, "description": "Group description"}
+        form = GroupCreateUpdateForm(data=form_data)
+
+        self.assertTrue(form.errors["name"], ["This field is required."])
+
+    def test_name_length_boundary(self):
+        form_data = {"name": "x" * 50, "description": "Group description"}
+        form = GroupCreateUpdateForm(data=form_data)
+
+        self.assertTrue(form.is_valid())
+
+    def test_description_too_long(self):
+        form_data = {"name": "Group", "description": "x" * 201}
+        form = GroupCreateUpdateForm(data=form_data)
+
+        self.assertTrue(form.errors["description"], ["This field is required."])
+
+    def test_description_length_boundary(self):
+        form_data = {"name": "Group", "description": "x" * 200}
+        form = GroupCreateUpdateForm(data=form_data)
+
+        self.assertTrue(form.is_valid())

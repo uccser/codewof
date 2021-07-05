@@ -160,6 +160,7 @@ class GroupCreateUpdateForm(forms.ModelForm):
                 'placeholder': _('Name'),
             },
         ),
+        required=not Group._meta.get_field('name').blank
     )
 
     description = forms.CharField(
@@ -171,6 +172,7 @@ class GroupCreateUpdateForm(forms.ModelForm):
                 'placeholder': _('Description'),
             },
         ),
+        required=not Group._meta.get_field('description').blank
     )
 
     class Meta:
