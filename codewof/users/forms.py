@@ -149,9 +149,30 @@ class UserAdminCreationForm(auth.forms.UserCreationForm):
 
 
 class GroupCreateUpdateForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput)
-    description = forms.CharField(widget=forms.Textarea)
+    """Form class for creating or updating a group."""
+
+    name = forms.CharField(
+        max_length=Group._meta.get_field('name').max_length,
+        label='Name',
+        widget=forms.TextInput(
+            attrs={
+                'type': 'text',
+                'placeholder': _('Name'),
+            },
+        ),
+    )
+
+    description = forms.CharField(
+        max_length=Group._meta.get_field('description').max_length,
+        label='Description',
+        widget=forms.Textarea(
+            attrs={
+                'type': 'text',
+                'placeholder': _('Description'),
+            },
+        ),
+    )
 
     class Meta:
         model = Group
-        fields = ('email', 'first_name')
+        fields = ('name', 'description')

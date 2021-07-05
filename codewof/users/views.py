@@ -212,7 +212,6 @@ class GroupCreateView(LoginRequiredMixin, CreateView):
 
     model = Group
     form_class = GroupCreateUpdateForm
-    fields = ['name', 'description']
 
     def get_success_url(self):
         """URL to route to on successful update."""
@@ -251,7 +250,6 @@ class GroupUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
 
     model = Group
     form_class = GroupCreateUpdateForm
-    fields = ['name', 'description']
 
     def get_success_url(self):
         """URL to route to on successful update."""
