@@ -118,35 +118,41 @@ def generate_groups():
 
 
 def generate_memberships():
-    """Generate memberships for codeWOF tests. Memberships are generated for user 1 and every group created in
-    generate_groups, covering all the GroupRoles."""
+    """Generate memberships for codeWOF tests. Memberships are generated for user 1 and user 2, and every group created
+    in generate_groups, covering all the GroupRoles."""
     group_north = Group.objects.get(name='Group North')
     group_east = Group.objects.get(name='Group East')
     group_west = Group.objects.get(name='Group West')
     group_south = Group.objects.get(name='Group South')
     management.call_command("load_group_roles")
-    user = User.objects.get(id=1)
+    user1 = User.objects.get(id=1)
+    user2 = User.objects.get(id=2)
     admin_role = GroupRole.objects.get(name='Admin')
     member_role = GroupRole.objects.get(name='Member')
 
     membership_1 = Membership.objects.create(
-        user=user,
+        user=user1,
         group=group_north,
         role=admin_role
     )
     membership_2 = Membership.objects.create(
-        user=user,
+        user=user1,
         group=group_east,
         role=member_role
     )
     membership_3 = Membership.objects.create(
-        user=user,
+        user=user1,
         group=group_west,
         role=member_role
     )
     membership_4 = Membership.objects.create(
-        user=user,
+        user=user1,
         group=group_south,
+        role=member_role
+    )
+    membership_5 = Membership.objects.create(
+        user=user2,
+        group=group_north,
         role=member_role
     )
 
@@ -154,6 +160,7 @@ def generate_memberships():
     membership_2.save()
     membership_3.save()
     membership_4.save()
+    membership_5.save()
 
 
 def generate_achievements():

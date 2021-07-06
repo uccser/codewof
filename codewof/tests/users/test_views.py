@@ -541,6 +541,15 @@ class TestGroupDetailView(TestCase):
         resp = self.client.get(reverse('users:groups-detail', args=[self.group_east.pk]))
         self.assertEqual(resp.context['is_admin'], False)
 
+    def test_context_object_has_memberships(self):
+        self.login_user()
+        user_john = User.objects.get(id=1)
+        user_sally = User.objects.get(id=2)
+        membership_john = Membership.objects.get(user=user_john, group=self.group_north)
+        membership_sally = Membership.objects.get(user=user_sally, group=self.group_north)
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertEqual(set(resp.context['memberships']), {membership_john, membership_sally})
+
     def test_has_edit_button_if_admin(self):
         self.login_user()
         resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
