@@ -25,5 +25,46 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-12 col-md-8 mb-3">
+        <h2>Members</h2>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Email</th>
+              <th scope="col">Name</th>
+              <th scope="col">Role</th>
+              {% if is_admin %}
+                <th scope="col">Delete?</th>
+              {% endif %}
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for membership in memberships %}
+              <tr>
+                <td>{{ membership.user.email }}</td>
+                <td>{{ membership.user.first_name }} {{ membership.user.last_name }}</td>
+                {% if is_admin %}
+                  <td>
+                    <select class="form-select" aria-label="Default select example">
+                      {% for role in roles %}
+                        <option>{{ role }}</option>
+                      {% endfor %}
+                    </select>
+                  </td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox" value=""></td>
+                {% else %}
+                  <td>{{ membership.role }}</td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+    </div>
   </div>
 {% endblock %}

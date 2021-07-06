@@ -269,6 +269,7 @@ class GroupDetailView(LoginRequiredMixin, AdminOrMemberRequiredMixin, DetailView
         context['is_admin'] = len(Membership.objects.all().filter(user=user, group=self.get_object(),
                                                                   role=admin_role)) != 0
         context['memberships'] = Membership.objects.filter(group=self.get_object())
+        context['roles'] = GroupRole.objects.all()
         return context
 
 

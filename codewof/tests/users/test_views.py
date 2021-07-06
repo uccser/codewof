@@ -16,7 +16,7 @@ from codewof.tests.codewof_test_data_generator import (
 )
 from codewof.programming.codewof_utils import check_achievement_conditions
 from programming.models import Achievement
-from users.models import Group, Membership
+from users.models import Group, Membership, GroupRole
 
 pytestmark = pytest.mark.django_db
 User = get_user_model()
@@ -549,6 +549,13 @@ class TestGroupDetailView(TestCase):
         membership_sally = Membership.objects.get(user=user_sally, group=self.group_north)
         resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
         self.assertEqual(set(resp.context['memberships']), {membership_john, membership_sally})
+
+    def test_context_object_has_roles(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        admin_role = GroupRole.objects.get(name="Admin")
+        member_role = GroupRole.objects.get(name="Member")
+        self.assertEqual(set(resp.context['roles']), {admin_role, member_role})
 
     def test_has_edit_button_if_admin(self):
         self.login_user()
