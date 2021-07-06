@@ -31,7 +31,7 @@
       <div class="col-12 col-md-8 mb-3">
         <h2>Members</h2>
 
-        <table class="table">
+        <table id="members-table" class="table">
           <thead>
             <tr>
               <th scope="col">Email</th>
@@ -43,14 +43,14 @@
             </tr>
           </thead>
 
-          <tbody>
+          <tbody id="members-table-tbody">
             {% for membership in memberships %}
-              <tr>
+              <tr id="membership-{{ membership.pk }}">
                 <td>{{ membership.user.email }}</td>
                 <td>{{ membership.user.first_name }} {{ membership.user.last_name }}</td>
                 {% if is_admin %}
                   <td>
-                    <select class="form-select" aria-label="Default select example">
+                    <select id="membership-{{ membership.pk }}-select" class="form-select" aria-label="Default select example">
                       {% for role in roles %}
                         {% if role == membership.role %}
                           <option selected>{{ role }}</option>
@@ -60,7 +60,7 @@
                       {% endfor %}
                     </select>
                   </td>
-                  <td class="text-center"><input class="form-check-input" type="checkbox" value=""></td>
+                  <td class="text-center"><input id="membership-{{ membership.pk }}-checkbox" class="form-check-input" type="checkbox" value=""></td>
                 {% else %}
                   <td>{{ membership.role }}</td>
                 {% endif %}
@@ -73,3 +73,9 @@
     </div>
   </div>
 {% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    {% csrf_token %}
+    <script src="{% static js %}"></script>
+{% endblock scripts %}

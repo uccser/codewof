@@ -270,6 +270,7 @@ class GroupDetailView(LoginRequiredMixin, AdminOrMemberRequiredMixin, DetailView
                                                                   role=admin_role)) != 0
         context['memberships'] = Membership.objects.filter(group=self.get_object())
         context['roles'] = GroupRole.objects.all()
+        context['js'] = "js/group_detail.js"
         return context
 
 
