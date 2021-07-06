@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% load i18n %}
 {% load crispy_forms_tags %}
@@ -51,7 +52,11 @@
                   <td>
                     <select class="form-select" aria-label="Default select example">
                       {% for role in roles %}
-                        <option>{{ role }}</option>
+                        {% if role == membership.role %}
+                          <option selected>{{ role }}</option>
+                        {% else %}
+                          <option>{{ role }}</option>
+                        {% endif %}}
                       {% endfor %}
                     </select>
                   </td>
