@@ -77,5 +77,8 @@
 {% block scripts %}
     {{ block.super }}
     {% csrf_token %}
-    <script src="{% static js %}"></script>
+
+    {% if is_admin %}
+      <script src="{% static js %}"></script>
+    {% endif %}
 {% endblock scripts %}
