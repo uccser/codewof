@@ -345,4 +345,4 @@ def update_memberships(request, pk, group):
     if len(Membership.objects.filter(group=group, role=GroupRole.objects.get(name='Admin'))) == 0:
         raise Exception("Must have at least one Admin in the group.")
 
-    return HttpResponse
+    return HttpResponse()

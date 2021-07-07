@@ -51,7 +51,7 @@
           <td>{{ membership.user.first_name }} {{ membership.user.last_name }}</td>
           {% if is_admin %}
           <td>
-            <select id="membership-{{ membership.pk }}-select" class="form-select" aria-label="Default select example">
+            <select id="membership-{{ membership.pk }}-select" class="form-select" aria-label="Default select example" autocomplete=off>
               {% for role in roles %}
               {% if role == membership.role %}
               <option selected>{{ role }}</option>
@@ -61,8 +61,9 @@
               {% endfor %}
             </select>
           </td>
-          <td class="text-center"><input id="membership-{{ membership.pk }}-checkbox" class="form-check-input"
-                                         type="checkbox" value=""></td>
+          <td class="text-center">
+            <input id="membership-{{ membership.pk }}-checkbox" class="form-check-input" type="checkbox" value="" autocomplete=off {% if user.pk == membership.user.pk %}disabled{% endif %}>
+          </td>
           {% else %}
           <td>{{ membership.role }}</td>
           {% endif %}

@@ -78,16 +78,25 @@ function getID(full) {
 }
 
 /**
- * Sends an HTTP request to update the memberships.
+ * Iterates through the changedIDs, building the JSON body, then sends an HTTP request to update the memberships.
  */
 function updateMemberships() {
+    let memberships = []
+
+    for (let id of changedIDs) {
+        memberships.push({
+            id: id,
+            delete: document.getElementById("membership-" + id + "-checkbox").checked,
+            role: document.getElementById("membership-" + id + "-select").value
+        })
+    }
+
     $.ajax({
       type: "PUT",
       url: membershipsUpdateURL,
-      data: "",
+      data: JSON.stringify({memberships: memberships}),
       async: true,
       cache: true,
-      dataType: "json",
       headers: { "X-CSRFToken": csrftoken },
       success: updateSuccess,
       error: updateFailure,
@@ -97,13 +106,13 @@ function updateMemberships() {
 /**
  * Called when the HTTP request to update the memberships succeeds.
  */
-function updateSuccess() {
-    alert("Success")
+function updateSuccess(data, textStatus, xhr) {
+    alert(xhr.status)
 }
 
 /**
  * Called when the HTTP request to update the memberships fails.
  */
 function updateFailure() {
-    alert("Success")
+    alert("Failure")
 }
