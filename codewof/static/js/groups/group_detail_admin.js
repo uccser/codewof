@@ -26,6 +26,8 @@ let originalMemberships = []
  * has changed, the row is yellow. If both, then the row is red.
  */
 $(document).ready(function () {
+    $("#save-button").click(updateMemberships)
+
     let table_tbody = document.getElementById("members-table-tbody")
     for (let row of table_tbody.rows) {
         let select = document.getElementById("membership-" + getID(row.id) + "-select")
@@ -73,5 +75,35 @@ $(document).ready(function () {
  */
 function getID(full) {
     return parseInt(full.substr(full.indexOf("-") + 1, full.length))
+}
+
+/**
+ * Sends an HTTP request to update the memberships.
+ */
+function updateMemberships() {
+    $.ajax({
+      type: "PUT",
+      url: membershipsUpdateURL,
+      data: "",
+      async: true,
+      cache: true,
+      dataType: "json",
+      success: updateSuccess,
+      error: updateFailure,
+    });
+}
+
+/**
+ * Called when the HTTP request to update the memberships succeeds.
+ */
+function updateSuccess() {
+    alert("Success")
+}
+
+/**
+ * Called when the HTTP request to update the memberships fails.
+ */
+function updateFailure() {
+    alert("Success")
 }
 
