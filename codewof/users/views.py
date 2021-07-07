@@ -310,7 +310,7 @@ def update_memberships(request, pk, group):
     """
     View for updating memberships from JSON.
 
-    TODO: Replace Exception with a more description Exception
+    TODO: Replace Exception with a more descriptive Exception
     """
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
@@ -322,7 +322,7 @@ def update_memberships(request, pk, group):
         role = membership['role']
 
         if type(id) != int:
-            raise Exception("One of the membership objects has an id that is not an integer.")
+            raise Exception("One of the membership objects has an id that is not an integer (id={}).".format(id))
         if type(delete) != bool:
             raise Exception("One of the membership objects has delete value that is not a boolean (id={}).".format(id))
 

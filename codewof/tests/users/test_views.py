@@ -1,4 +1,7 @@
+import json
+
 import pytest
+from django.core.exceptions import ObjectDoesNotExist
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
 from django.core import management
@@ -143,7 +146,8 @@ class UserDetailViewTest(TestCase):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
         print(resp)
-        link = "<a class=\"card-link  stretched-link\" href=\"/users/groups/" + str(self.group_north.pk) + "/\">View</a>"
+        link = "<a class=\"card-link  stretched-link\" href=\"/users/groups/" + str(
+            self.group_north.pk) + "/\">View</a>"
         self.assertContains(resp, link, html=True)
 
     def test_view_contains_group_east_link(self):
@@ -498,7 +502,8 @@ class TestGroupDetailView(TestCase):
 
     def test_redirect_if_not_logged_in(self):
         resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
-        self.assertRedirects(resp, '/accounts/login/?next=' + reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertRedirects(resp,
+                             '/accounts/login/?next=' + reverse('users:groups-detail', args=[self.group_north.pk]))
 
     def test_view_exists_if_admin(self):
         self.login_user()
@@ -603,7 +608,8 @@ class TestGroupDeleteView(TestCase):
 
     def test_redirect_if_not_logged_in(self):
         resp = self.client.get(reverse('users:groups-delete', args=[self.group_north.pk]))
-        self.assertRedirects(resp, '/accounts/login/?next=' + reverse('users:groups-delete', args=[self.group_north.pk]))
+        self.assertRedirects(resp,
+                             '/accounts/login/?next=' + reverse('users:groups-delete', args=[self.group_north.pk]))
 
     def test_view_exists_if_admin(self):
         self.login_user()
@@ -672,3 +678,268 @@ class TestGroupDeleteView(TestCase):
         self.login_user()
         resp = self.client.post(reverse('users:groups-delete', args=[self.group_mystery.pk]))
         self.assertEqual(resp.status_code, 403)
+
+
+class TestAdminRequired(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_groups()
+        generate_memberships()
+
+    def setUp(self):
+        self.client = Client()
+        self.group_north = Group.objects.get(name="Group North")
+
+    def login_user(self):
+        login = self.client.login(email='john@uclive.ac.nz', password='onion')
+        self.assertTrue(login)
+
+    def test_invalid_id_is_500(self):
+        self.login_user()
+        body = json.dumps(
+            {
+                "memberships": [
+                    {
+                        "id": "string",
+                        "delete": False,
+                        "role": "Member"
+                    }
+                ]
+            }
+        )
+        with self.assertRaisesMessage(Exception, "One of the membership objects has an id that is not an integer "
+                                                 "(id=string)."):
+            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+                                   content_type="application/json")
+            self.assertEqual(resp.status_code, 500)
+
+    def test_invalid_delete_is_500(self):
+        self.login_user()
+        body = json.dumps(
+            {
+                "memberships": [
+                    {
+                        "id": 1,
+                        "delete": "True",
+                        "role": "Member"
+                    }
+                ]
+            }
+        )
+        with self.assertRaisesMessage(Exception, "One of the membership objects has delete value that is not a boolean "
+                                                 "(id=1)."):
+            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+                                   content_type="application/json")
+            self.assertEqual(resp.status_code, 500)
+
+    def test_invalid_role_is_500(self):
+        self.login_user()
+        membership = Membership.objects.all()[0]
+        body = json.dumps(
+            {
+                "memberships": [
+                    {
+                        "id": membership.pk,
+                        "delete": False,
+                        "role": "Follower"
+                    }
+                ]
+            }
+        )
+        with self.assertRaisesMessage(Exception, "One of the membership objects has a non-existent role "
+                                                 "(id={}).".format(membership.pk)):
+            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+                                   content_type="application/json")
+            self.assertEqual(resp.status_code, 500)
+
+    def test_membership_does_not_exist(self):
+        self.login_user()
+        body = json.dumps(
+            {
+                "memberships": [
+                    {
+                        "id": -1,
+                        "delete": False,
+                        "role": "Member"
+                    }
+                ]
+            }
+        )
+        with self.assertRaises(ObjectDoesNotExist):
+            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+                                   content_type="application/json")
+            self.assertEqual(resp.status_code, 500)
+
+    def test_delete_removes_membership(self):
+        self.login_user()
+        john = User.objects.get(pk=1)
+        sally = User.objects.get(pk=2)
+        membership_to_remove = Membership.objects.get(group=self.group_north, user=sally)
+        membership_to_keep = Membership.objects.get(group=self.group_north, user=john)
+        self.assertEqual(set(self.group_north.membership_set.all()), {membership_to_remove, membership_to_keep})
+
+        body = json.dumps(
+            {
+                "memberships": [
+                    {
+                        "id": membership_to_remove.pk,
+                        "delete": True,
+                        "role": "Member"
+                    }
+                ]
+            }
+        )
+        resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+                               content_type="application/json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(set(self.group_north.membership_set.all()), {membership_to_keep})
+
+    def test_cannot_delete_if_last_admin(self):
+        self.login_user()
+        john = User.objects.get(pk=1)
+        membership_to_remove = Membership.objects.get(group=self.group_north, user=john)
+
+        body = json.dumps(
+            {
+                "memberships": [
+                    {
+                        "id": membership_to_remove.pk,
+                        "delete": True,
+                        "role": "Member"
+                    }
+                ]
+            }
+        )
+        with self.assertRaisesMessage(Exception, "Must have at least one Admin in the group."):
+            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+                                   content_type="application/json")
+            self.assertEqual(resp.status_code, 500)
+
+    def test_update_member_to_admin(self):
+        self.login_user()
+        sally = User.objects.get(pk=2)
+        membership_to_update = Membership.objects.get(group=self.group_north, user=sally)
+        self.assertEqual(membership_to_update.role, GroupRole.objects.get(name='Member'))
+
+        body = json.dumps(
+            {
+                "memberships": [
+                    {
+                        "id": membership_to_update.pk,
+                        "delete": False,
+                        "role": "Admin"
+                    }
+                ]
+            }
+        )
+        self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+                               content_type="application/json")
+        membership_to_update = Membership.objects.get(group=self.group_north, user=sally)
+        self.assertEqual(membership_to_update.role, GroupRole.objects.get(name='Admin'))
+
+    def test_cannot_update_admin_to_member_if_last_admin(self):
+        self.login_user()
+        john = User.objects.get(pk=1)
+        membership_to_update = Membership.objects.get(group=self.group_north, user=john)
+
+        body = json.dumps(
+            {
+                "memberships": [
+                    {
+                        "id": membership_to_update.pk,
+                        "delete": False,
+                        "role": "Member"
+                    }
+                ]
+            }
+        )
+        with self.assertRaisesMessage(Exception, "Must have at least one Admin in the group."):
+            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+                                   content_type="application/json")
+            self.assertEqual(resp.status_code, 500)
+
+    def test_cannot_delete_all_admins_and_memberships_updates_are_undone(self):
+        self.login_user()
+        john = User.objects.get(pk=1)
+        sally = User.objects.get(pk=2)
+        john_membership = Membership.objects.get(group=self.group_north, user=john)
+        sally_membership = Membership.objects.get(group=self.group_north, user=sally)
+        admin_role = GroupRole.objects.get(name='Admin')
+        sally_membership.role = admin_role
+        sally_membership.save()
+        self.assertEqual(set(Membership.objects.filter(group=self.group_north, role=admin_role)),
+                         {john_membership, sally_membership})
+        initial_memberships = Membership.objects.filter(group=self.group_north)
+
+        body = json.dumps(
+            {
+                "memberships": [
+                    {
+                        "id": john_membership.pk,
+                        "delete": True,
+                        "role": "Admin"
+                    },
+                    {
+                        "id": sally_membership.pk,
+                        "delete": True,
+                        "role": "Admin"
+                    }
+                ]
+            }
+        )
+        with self.assertRaisesMessage(Exception, "Must have at least one Admin in the group."):
+            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+                                   content_type="application/json")
+            self.assertEqual(resp.status_code, 500)
+            self.assertEqual(Membership.objects.filter(group=self.group_north), initial_memberships)
+
+    def test_cannot_update_all_admins_to_members_and_memberships_updates_are_undone(self):
+        self.login_user()
+        john = User.objects.get(pk=1)
+        sally = User.objects.get(pk=2)
+        john_membership = Membership.objects.get(group=self.group_north, user=john)
+        sally_membership = Membership.objects.get(group=self.group_north, user=sally)
+        admin_role = GroupRole.objects.get(name='Admin')
+        sally_membership.role = admin_role
+        sally_membership.save()
+        self.assertEqual(set(Membership.objects.filter(group=self.group_north, role=admin_role)),
+                         {john_membership, sally_membership})
+        initial_memberships = Membership.objects.filter(group=self.group_north)
+
+        body = json.dumps(
+            {
+                "memberships": [
+                    {
+                        "id": john_membership.pk,
+                        "delete": False,
+                        "role": "Member"
+                    },
+                    {
+                        "id": sally_membership.pk,
+                        "delete": False,
+                        "role": "Member"
+                    }
+                ]
+            }
+        )
+        with self.assertRaisesMessage(Exception, "Must have at least one Admin in the group."):
+            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+                                   content_type="application/json")
+            self.assertEqual(resp.status_code, 500)
+            self.assertEqual(Membership.objects.filter(group=self.group_north), initial_memberships)
+
+
+    def test_empty_memberships_list_changes_nothing(self):
+        self.login_user()
+        initial_memberships = set(Membership.objects.filter(group=self.group_north))
+        body = json.dumps(
+            {
+                "memberships": []
+            }
+        )
+        resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+                        content_type="application/json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(set(Membership.objects.filter(group=self.group_north)), initial_memberships)
