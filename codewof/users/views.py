@@ -1,8 +1,9 @@
 """Views for users application."""
-
+import json
 import logging
 from random import Random
 
+from django.db import transaction
 from django.http import HttpResponseForbidden, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import get_user_model
@@ -292,9 +293,10 @@ def admin_required(f):
     @wraps(f)
     def g(request, *args, **kwargs):
         admin_role = GroupRole.objects.get(name="Admin")
-        group = Group.objects.get(pk=args[0])
+        group = Group.objects.get(pk=kwargs['pk'])
         if Membership.objects.all().filter(user=request.user, group=group, role=admin_role):
-            return f(request, *args.__add__(group), **kwargs)
+            kwargs['group'] = group
+            return f(request, *args, **kwargs)
         else:
             raise PermissionDenied()
     return g
@@ -302,5 +304,45 @@ def admin_required(f):
 
 @require_http_methods(["PUT"])
 @login_required()
-def update_memberships(request, pk):
-    return HttpResponse(pk)
+@admin_required
+@transaction.atomic
+def update_memberships(request, pk, group):
+    """
+    View for updating memberships from JSON.
+
+    TODO: Replace Exception with a more description Exception
+    """
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    memberships = body['memberships']
+
+    for membership in memberships:
+        id = membership['id']
+        delete = membership['delete']
+        role = membership['role']
+
+        if type(id) != int:
+            raise Exception("One of the membership objects has an id that is not an integer.")
+        if type(delete) != bool:
+            raise Exception("One of the membership objects has delete value that is not a boolean (id={}).".format(id))
+
+        membership_object = Membership.objects.filter(id=id)
+        if len(membership_object) == 0:
+            raise ObjectDoesNotExist
+        else:
+            membership_object = membership_object[0]
+
+        if delete:
+            membership_object.delete()
+        else:
+            role_object = GroupRole.objects.filter(name=role)
+            if len(role_object) == 0:
+                raise Exception("One of the membership objects has a non-existent role (id={}).".format(id))
+            else:
+                membership_object.role = role_object[0]
+                membership_object.save()
+
+    if len(Membership.objects.filter(group=group, role=GroupRole.objects.get(name='Admin'))) == 0:
+        raise Exception("Must have at least one Admin in the group.")
+
+    return HttpResponse
