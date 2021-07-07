@@ -3,20 +3,23 @@
 import logging
 from random import Random
 
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.views.generic import DetailView, RedirectView, UpdateView, CreateView, DeleteView
+from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 from users.serializers import UserSerializer
 from programming import settings
 from users.forms import UserChangeForm, GroupCreateUpdateForm
 from research.models import StudyRegistration
+from functools import wraps
 
 
 from programming.models import (
@@ -282,3 +285,23 @@ class GroupDeleteView(LoginRequiredMixin, AdminRequiredMixin, DeleteView):
     def get_success_url(self):
         """URL to route to on successful delete."""
         return reverse('users:dashboard')
+
+
+def admin_required(f):
+    """Decorator for checking the user is an Admin of the Group."""
+    @wraps(f)
+    def g(request, *args, **kwargs):
+        admin_role = GroupRole.objects.get(name="Admin")
+        group = Group.objects.get(pk=args[0])
+        if Membership.objects.all().filter(user=request.user, group=group, role=admin_role):
+            return f(request, *args.__add__(group), **kwargs)
+        else:
+            raise PermissionDenied()
+    return g
+
+
+@require_http_methods(["PUT"])
+@login_required()
+@admin_required
+def update_memberships(request, group_id):
+    return HttpResponse('<h1>Yay</h1>')
