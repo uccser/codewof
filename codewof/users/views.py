@@ -302,6 +302,5 @@ def admin_required(f):
 
 @require_http_methods(["PUT"])
 @login_required()
-@admin_required
-def update_memberships(request, group_id):
-    return HttpResponse('<h1>Yay</h1>')
+def update_memberships(request, pk):
+    return HttpResponse(pk)

@@ -89,6 +89,9 @@
 {% block scripts %}
 {{ block.super }}
 {% csrf_token %}
+<script>
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+</script>
 
 {% if is_admin %}
 <script src="{% static js %}"></script>

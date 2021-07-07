@@ -88,6 +88,7 @@ function updateMemberships() {
       async: true,
       cache: true,
       dataType: "json",
+      headers: { "X-CSRFToken": csrftoken },
       success: updateSuccess,
       error: updateFailure,
     });
@@ -106,4 +107,3 @@ function updateSuccess() {
 function updateFailure() {
     alert("Success")
 }
-
