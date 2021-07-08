@@ -107,12 +107,22 @@ function updateMemberships() {
  * Called when the HTTP request to update the memberships succeeds.
  */
 function updateSuccess(data, textStatus, xhr) {
-    alert(xhr.status)
+    $('#update-success-alert').show()
+
+    $("#update-success-alert").fadeTo(2000, 500).slideUp(500, function(){
+        $("#update-success-alert").slideUp(500);
+    });
 }
 
 /**
  * Called when the HTTP request to update the memberships fails.
  */
-function updateFailure() {
-    alert("Failure")
+function updateFailure(data, textStatus, xhr) {
+    document.getElementById('update-danger-alert').innerText = "An error occurred while updating the " +
+        "Memberships. Please try again later."
+    $('#update-danger-alert').show()
+
+    $("#update-danger-alert").fadeTo(2000, 500).slideUp(500, function(){
+        $("#update-danger-alert").slideUp(500);
+    });
 }
