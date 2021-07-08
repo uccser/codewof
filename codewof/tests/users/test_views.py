@@ -546,14 +546,16 @@ class TestGroupDetailView(TestCase):
         resp = self.client.get(reverse('users:groups-detail', args=[self.group_east.pk]))
         self.assertEqual(resp.context['is_admin'], False)
 
-    def test_context_object_has_memberships(self):
+    def test_context_object_has_sorted_memberships(self):
         self.login_user()
         user_john = User.objects.get(id=1)
         user_sally = User.objects.get(id=2)
+        user_alex = User.objects.get(id=3)
         membership_john = Membership.objects.get(user=user_john, group=self.group_north)
         membership_sally = Membership.objects.get(user=user_sally, group=self.group_north)
+        membership_alex = Membership.objects.get(user=user_alex, group=self.group_north)
         resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
-        self.assertEqual(set(resp.context['memberships']), {membership_john, membership_sally})
+        self.assertEqual(list(resp.context['memberships']), [membership_john, membership_alex, membership_sally])
 
     def test_context_object_has_roles(self):
         self.login_user()
@@ -776,9 +778,12 @@ class TestAdminRequired(TestCase):
         self.login_user()
         john = User.objects.get(pk=1)
         sally = User.objects.get(pk=2)
+        alex = User.objects.get(pk=3)
         membership_to_remove = Membership.objects.get(group=self.group_north, user=sally)
         membership_to_keep = Membership.objects.get(group=self.group_north, user=john)
-        self.assertEqual(set(self.group_north.membership_set.all()), {membership_to_remove, membership_to_keep})
+        membership_to_keep2 = Membership.objects.get(group=self.group_north, user=alex)
+        self.assertEqual(set(self.group_north.membership_set.all()), {membership_to_remove, membership_to_keep,
+                                                                      membership_to_keep2})
 
         body = json.dumps(
             {
@@ -794,7 +799,7 @@ class TestAdminRequired(TestCase):
         resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
                                content_type="application/json")
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(set(self.group_north.membership_set.all()), {membership_to_keep})
+        self.assertEqual(set(self.group_north.membership_set.all()), {membership_to_keep, membership_to_keep2})
 
     def test_cannot_delete_if_last_admin(self):
         self.login_user()

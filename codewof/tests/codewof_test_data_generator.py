@@ -62,7 +62,7 @@ def generate_questions():
 
 
 def generate_users(user):
-    """Generate users for codeWOF tests. Creates two basic users for unit tests."""
+    """Generate users for codeWOF tests. Creates three basic users for unit tests."""
     management.call_command("load_user_types")
     user_john = User.objects.create_user(
         id=1,
@@ -85,6 +85,17 @@ def generate_users(user):
         user_type=UserType.objects.get(slug='other'),
     )
     user_sally.save()
+
+    user_alex = User.objects.create_user(
+        id=3,
+        username='alex',
+        first_name='Alex',
+        last_name='Atkinson',
+        email='alex@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='teacher'),
+    )
+    user_alex.save()
 
 
 def generate_groups():
@@ -118,7 +129,7 @@ def generate_groups():
 
 
 def generate_memberships():
-    """Generate memberships for codeWOF tests. Memberships are generated for user 1 and user 2, and every group created
+    """Generate memberships for codeWOF tests. Memberships are generated for users 1, 2, and 3, and every group created
     in generate_groups, covering all the GroupRoles."""
     group_north = Group.objects.get(name='Group North')
     group_east = Group.objects.get(name='Group East')
@@ -127,6 +138,7 @@ def generate_memberships():
     management.call_command("load_group_roles")
     user1 = User.objects.get(id=1)
     user2 = User.objects.get(id=2)
+    user3 = User.objects.get(id=3)
     admin_role = GroupRole.objects.get(name='Admin')
     member_role = GroupRole.objects.get(name='Member')
 
@@ -155,12 +167,18 @@ def generate_memberships():
         group=group_north,
         role=member_role
     )
+    membership_6 = Membership.objects.create(
+        user=user3,
+        group=group_north,
+        role=member_role
+    )
 
     membership_1.save()
     membership_2.save()
     membership_3.save()
     membership_4.save()
     membership_5.save()
+    membership_6.save()
 
 
 def generate_achievements():
