@@ -70,7 +70,7 @@ $(document).ready(function () {
 
 /**
  * Extracts the number portion of the id.
- * @param full The original HTML element id, intented to be the form of <text>-<number>.
+ * @param full The original HTML element id, intended to be the form of <text>-<number>.
  * @returns {number} The number part of the id as an int.
  */
 function getID(full) {
@@ -81,31 +81,36 @@ function getID(full) {
  * Iterates through the changedIDs, building the JSON body, then sends an HTTP request to update the memberships.
  */
 function updateMemberships() {
-    let memberships = []
+    if (atLeastOneAdmin()) {
+        let memberships = []
 
-    for (let id of changedIDs) {
-        memberships.push({
-            id: id,
-            delete: document.getElementById("membership-" + id + "-checkbox").checked,
-            role: document.getElementById("membership-" + id + "-select").value
-        })
+        for (let id of changedIDs) {
+            memberships.push({
+                id: id,
+                delete: document.getElementById("membership-" + id + "-checkbox").checked,
+                role: document.getElementById("membership-" + id + "-select").value
+            })
+        }
+
+        $.ajax({
+            type: "PUT",
+            url: membershipsUpdateURL,
+            data: JSON.stringify({memberships: memberships}),
+            async: true,
+            cache: true,
+            headers: {"X-CSRFToken": csrftoken},
+            success: updateSuccess,
+            error: function(data, textStatus, xhr) { updateFailure("An error occurred while updating the " +
+                "Memberships. Please try again later.") },
+        });
+    } else {
+        updateFailure("The Group needs at least one Admin.")
     }
-
-    $.ajax({
-      type: "PUT",
-      url: membershipsUpdateURL,
-      data: JSON.stringify({memberships: memberships}),
-      async: true,
-      cache: true,
-      headers: { "X-CSRFToken": csrftoken },
-      success: updateSuccess,
-      error: updateFailure,
-    });
 }
 
 /**
  * Called when the HTTP request to update the memberships succeeds. Show the success alert which fades away after a
- * period. Updates the originalMemberships list, and resets changedIDs. Also resets the row colors.
+ * period. Updates the originalMemberships list, and resets changedIDs. Also removes the row or resets the row colors.
  */
 function updateSuccess(data, textStatus, xhr) {
     $('#update-success-alert').show()
@@ -115,12 +120,18 @@ function updateSuccess(data, textStatus, xhr) {
     });
 
     for (let id of changedIDs) {
-        let membershipToUpdate = originalMemberships.find(x => x.id === id)
-        let select = document.getElementById("membership-" + id + "-select")
-        membershipToUpdate.role = select.value.toString()
         let row = document.getElementById("membership-" + id)
-        row.classList.remove("table-warning")
-        row.classList.remove("table-danger")
+        let membershipToUpdate = originalMemberships.find(x => x.id === id)
+
+        if (document.getElementById("membership-" + id + "-checkbox").checked) {
+            row.parentNode.removeChild(row);
+            originalMemberships.splice(originalMemberships.indexOf(membershipToUpdate))
+        } else {
+            let select = document.getElementById("membership-" + id + "-select")
+            membershipToUpdate.role = select.value.toString()
+            row.classList.remove("table-warning")
+            row.classList.remove("table-danger")
+        }
     }
 
     changedIDs.clear()
@@ -129,12 +140,32 @@ function updateSuccess(data, textStatus, xhr) {
 /**
  * Called when the HTTP request to update the memberships fails. Show the error alert which fades away after a period.
  */
-function updateFailure(data, textStatus, xhr) {
-    document.getElementById('update-danger-alert').innerText = "An error occurred while updating the " +
-        "Memberships. Please try again later."
+function updateFailure(message) {
+    document.getElementById('update-danger-alert').innerText = message
     $('#update-danger-alert').show()
 
     $("#update-danger-alert").fadeTo(2000, 500).slideUp(500, function(){
         $("#update-danger-alert").slideUp(500);
     });
+}
+
+/**
+ * Checks there is at least one admin by iterating through the rows and incrementing a counter if the member's role is
+ * Admin and is not to be deleted.
+ * @returns {boolean} Whether there is at least one Admin.
+ */
+function atLeastOneAdmin() {
+    let counter = 0
+
+    let table_tbody = document.getElementById("members-table-tbody")
+    for (let row of table_tbody.rows) {
+        let select = document.getElementById("membership-" + getID(row.id) + "-select")
+        let checkbox = document.getElementById("membership-" + getID(row.id) + "-checkbox")
+
+        if (!checkbox.checked && select.value.toString() === "Admin") {
+            counter += 1
+        }
+    }
+
+    return counter > 0
 }
