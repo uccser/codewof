@@ -104,7 +104,8 @@ function updateMemberships() {
 }
 
 /**
- * Called when the HTTP request to update the memberships succeeds.
+ * Called when the HTTP request to update the memberships succeeds. Show the success alert which fades away after a
+ * period. Updates the originalMemberships list, and resets changedIDs. Also resets the row colors.
  */
 function updateSuccess(data, textStatus, xhr) {
     $('#update-success-alert').show()
@@ -112,10 +113,21 @@ function updateSuccess(data, textStatus, xhr) {
     $("#update-success-alert").fadeTo(2000, 500).slideUp(500, function(){
         $("#update-success-alert").slideUp(500);
     });
+
+    for (let id of changedIDs) {
+        let membershipToUpdate = originalMemberships.find(x => x.id === id)
+        let select = document.getElementById("membership-" + id + "-select")
+        membershipToUpdate.role = select.value.toString()
+        let row = document.getElementById("membership-" + id)
+        row.classList.remove("table-warning")
+        row.classList.remove("table-danger")
+    }
+
+    changedIDs.clear()
 }
 
 /**
- * Called when the HTTP request to update the memberships fails.
+ * Called when the HTTP request to update the memberships fails. Show the error alert which fades away after a period.
  */
 function updateFailure(data, textStatus, xhr) {
     document.getElementById('update-danger-alert').innerText = "An error occurred while updating the " +
