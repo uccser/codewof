@@ -9,12 +9,13 @@
 {% block content %}
 <div class="container">
   {% if is_admin %}
+  <div id="alert-div" class="sticky-top" style="top: 40px">
     <div id="update-success-alert" class="alert alert-success alert-dismissible collapse" role="alert">
-      Memberships successfully updated
+      Memberships successfully updated.
     </div>
 
-    <div id="update-danger-alert" class="alert alert-danger alert-dismissible collapse" role="alert">
-    </div>
+    <div id="update-danger-alert" class="alert alert-danger alert-dismissible collapse" role="alert"></div>
+  </div>
   {% endif %}
 
   <div class="row">

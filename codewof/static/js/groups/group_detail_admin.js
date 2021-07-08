@@ -115,7 +115,7 @@ function updateMemberships() {
 function updateSuccess(data, textStatus, xhr) {
     $('#update-success-alert').show()
 
-    $("#update-success-alert").fadeTo(2000, 500).slideUp(500, function(){
+    $("#update-success-alert").fadeTo(5000, 500).slideUp(500, function(){
         $("#update-success-alert").slideUp(500);
     });
 
@@ -144,7 +144,7 @@ function updateFailure(message) {
     document.getElementById('update-danger-alert').innerText = message
     $('#update-danger-alert').show()
 
-    $("#update-danger-alert").fadeTo(2000, 500).slideUp(500, function(){
+    $("#update-danger-alert").fadeTo(5000, 500).slideUp(500, function(){
         $("#update-danger-alert").slideUp(500);
     });
 }
