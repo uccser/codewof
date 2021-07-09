@@ -18,15 +18,9 @@ let originalMemberships = []
 
 /**
  * Iterates through each row. Adds an object to originalMemberships. Adds onchange listeners to the select and checkbox.
- * If the select value is the same as the role of the corresponding object in originalMemberships and the checkbox is
- * unticked, it follows the row is back to the original and thus can be removed from changedIDs. Otherwise, it is added
- * to changedIDs.
- *
- * Also changes the row color depending on how the row has changed. If delete is ticked, the row is red. If the role
- * has changed, the row is yellow. If both, then the row is red.
  */
 $(document).ready(function () {
-    $("#save-button").click(updateMemberships)
+    $("#save-button").click(performChecks)
 
     let table_tbody = document.getElementById("members-table-tbody")
     for (let row of table_tbody.rows) {
@@ -40,33 +34,43 @@ $(document).ready(function () {
             }
         )
 
-        select.onchange = checkbox.onchange = function() {
-            let originalRole = originalMemberships.find(x => x.id === getID(row.id)).role.toString()
-            if (select.value.toString() === originalRole && !checkbox.checked) {
-                changedIDs.delete(getID(row.id))
-            } else {
-                changedIDs.add(getID(row.id))
-                if (select.value.toString() !== originalRole) {
-                    row.classList.add("table-warning")
-                } else {
-                    row.classList.add("table-danger")
-                }
-            }
-
-            if (select.value.toString() !== originalRole) {
-                row.classList.add("table-warning")
-            } else {
-                row.classList.remove("table-warning")
-            }
-
-            if (checkbox.checked) {
-                row.classList.add("table-danger")
-            } else {
-                row.classList.remove("table-danger")
-            }
-        }
+        select.onchange = checkbox.onchange = function() { rowUpdate(row, select, checkbox) }
     }
 })
+
+
+/**
+ * Callback for changes to a row. If the select value is the same as the role of the corresponding object in
+ * originalMemberships and the checkbox is unticked, it follows the row is back to the original and thus can be removed
+ * from changedIDs. Otherwise, it is added to changedIDs.
+ *
+ * Also changes the row color depending on how the row has changed. If delete is ticked, the row is red. If the role
+ * has changed, the row is yellow. If both, then the row is red.
+ * @param row
+ * @param select
+ * @param checkbox
+ */
+function rowUpdate(row, select, checkbox) {
+    let originalRole = originalMemberships.find(x => x.id === getID(row.id)).role.toString()
+    if (select.value.toString() === originalRole && !checkbox.checked) {
+        changedIDs.delete(getID(row.id))
+    } else {
+        changedIDs.add(getID(row.id))
+    }
+
+    if (select.value.toString() !== originalRole) {
+        row.classList.add("table-warning")
+    } else {
+        row.classList.remove("table-warning")
+    }
+
+    if (checkbox.checked) {
+        row.classList.add("table-danger")
+    } else {
+        row.classList.remove("table-danger")
+    }
+}
+
 
 /**
  * Extracts the number portion of the id.
@@ -77,42 +81,69 @@ function getID(full) {
     return parseInt(full.substr(full.indexOf("-") + 1, full.length))
 }
 
+
 /**
- * Iterates through the changedIDs, building the JSON body, then sends an HTTP request to update the memberships.
+ * Performs validity checks. If there is at least one admin but the user is demoting themselves, a warning modal is
+ * displayed first. Upon confirming, updateMemberships is called. Otherwise, updateMemberships is immediately called.
  */
-function updateMemberships() {
+function performChecks() {
     if (atLeastOneAdmin()) {
-        let memberships = []
-
-        for (let id of changedIDs) {
-            memberships.push({
-                id: id,
-                delete: document.getElementById("membership-" + id + "-checkbox").checked,
-                role: document.getElementById("membership-" + id + "-select").value
+        let demoteSelf = false;
+        if (document.getElementById("membership-" + currentUserMembershipID + "-select").value.toString() ===
+        "Member") {
+            $('#demote-self-modal').modal('show');
+            $('#demote-self-modal-button').click(function () {
+                demoteSelf = true;
+                updateMemberships(demoteSelf)
             })
+        } else {
+            updateMemberships(demoteSelf)
         }
-
-        $.ajax({
-            type: "PUT",
-            url: membershipsUpdateURL,
-            data: JSON.stringify({memberships: memberships}),
-            async: true,
-            cache: true,
-            headers: {"X-CSRFToken": csrftoken},
-            success: updateSuccess,
-            error: function(data, textStatus, xhr) { updateFailure("An error occurred while updating the " +
-                "Memberships. Please try again later.") },
-        });
     } else {
         updateFailure("The Group needs at least one Admin.")
     }
 }
 
+
 /**
- * Called when the HTTP request to update the memberships succeeds. Show the success alert which fades away after a
- * period. Updates the originalMemberships list, and resets changedIDs. Also removes the row or resets the row colors.
+ * Iterates through the changedIDs, building the JSON body, then sends an HTTP request to update the memberships.
  */
-function updateSuccess(data, textStatus, xhr) {
+function updateMemberships(demoteSelf) {
+    let memberships = []
+
+    for (let id of changedIDs) {
+        memberships.push({
+            id: id,
+            delete: document.getElementById("membership-" + id + "-checkbox").checked,
+            role: document.getElementById("membership-" + id + "-select").value
+        })
+    }
+
+    $.ajax({
+        type: "PUT",
+        url: membershipsUpdateURL,
+        data: JSON.stringify({memberships: memberships}),
+        async: true,
+        cache: true,
+        headers: {"X-CSRFToken": csrftoken},
+        success: function(data, textStatus, xhr) { updateSuccess(demoteSelf) },
+        error: function(data, textStatus, xhr) { updateFailure("An error occurred while updating the " +
+            "Memberships. Please try again later.") },
+    });
+}
+
+
+/**
+ * Called when the HTTP request to update the memberships succeeds. If the user is demoting themselves, the page is
+ * refreshed. Otherwise, show the success alert which fades away after a period. Updates the originalMemberships list,
+ * and resets changedIDs. Also removes the row or resets the row colors.
+ */
+function updateSuccess(refresh) {
+    if (refresh) {
+        location.reload()
+        return
+    }
+
     $('#update-success-alert').show()
 
     $("#update-success-alert").fadeTo(5000, 500).slideUp(500, function(){
@@ -137,6 +168,7 @@ function updateSuccess(data, textStatus, xhr) {
     changedIDs.clear()
 }
 
+
 /**
  * Called when the HTTP request to update the memberships fails. Show the error alert which fades away after a period.
  */
@@ -148,6 +180,7 @@ function updateFailure(message) {
         $("#update-danger-alert").slideUp(500);
     });
 }
+
 
 /**
  * Checks there is at least one admin by iterating through the rows and incrementing a counter if the member's role is

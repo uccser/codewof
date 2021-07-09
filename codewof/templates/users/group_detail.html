@@ -16,6 +16,28 @@
 
     <div id="update-danger-alert" class="alert alert-danger alert-dismissible collapse" role="alert"></div>
   </div>
+
+  <div id="demote-self-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Warning!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>You are about to demote yourself. You will lose access to Admin privileges for this group.</p>
+
+          <p>Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+          <button id="demote-self-modal-button" type="button" class="btn btn-primary">Continue</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   {% endif %}
 
   <div class="row">
@@ -48,13 +70,16 @@
           <th scope="col">Name</th>
           <th scope="col">Role</th>
           {% if is_admin %}
-          <th scope="col">Delete?</th>
+          <th scope="col">Remove?</th>
           {% endif %}
         </tr>
         </thead>
 
         <tbody id="members-table-tbody">
         {% for membership in memberships %}
+        {% if user.pk == membership.user.pk %}
+        <script>const currentUserMembershipID = "{{ membership.pk }}"</script>
+        {% endif %}
         <tr id="membership-{{ membership.pk }}">
           <td>{{ membership.user.email }}</td>
           <td>{{ membership.user.first_name }} {{ membership.user.last_name }}</td>
@@ -92,8 +117,6 @@
     </div>
   </div>
 </div>
-
-<script>let membershipsUpdateURL = "{% url 'users:groups-update-memberships' group.pk %}"</script>
 {% endblock %}
 
 {% block scripts %}
@@ -101,6 +124,7 @@
 {% csrf_token %}
 <script>
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+const membershipsUpdateURL = "{% url 'users:groups-update-memberships' group.pk %}"
 </script>
 
 {% if is_admin %}
