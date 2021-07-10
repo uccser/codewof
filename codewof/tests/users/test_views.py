@@ -713,7 +713,7 @@ class TestAdminRequired(TestCase):
         )
         with self.assertRaisesMessage(Exception, "One of the membership objects has an id that is not an integer "
                                                  "(id=string)."):
-            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+            resp = self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
                                    content_type="application/json")
             self.assertEqual(resp.status_code, 500)
 
@@ -732,7 +732,7 @@ class TestAdminRequired(TestCase):
         )
         with self.assertRaisesMessage(Exception, "One of the membership objects has delete value that is not a boolean "
                                                  "(id=1)."):
-            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+            resp = self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
                                    content_type="application/json")
             self.assertEqual(resp.status_code, 500)
 
@@ -752,7 +752,7 @@ class TestAdminRequired(TestCase):
         )
         with self.assertRaisesMessage(Exception, "One of the membership objects has a non-existent role "
                                                  "(id={}).".format(membership.pk)):
-            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+            resp = self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
                                    content_type="application/json")
             self.assertEqual(resp.status_code, 500)
 
@@ -770,7 +770,7 @@ class TestAdminRequired(TestCase):
             }
         )
         with self.assertRaises(ObjectDoesNotExist):
-            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+            resp = self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
                                    content_type="application/json")
             self.assertEqual(resp.status_code, 500)
 
@@ -796,7 +796,7 @@ class TestAdminRequired(TestCase):
                 ]
             }
         )
-        resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+        resp = self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
                                content_type="application/json")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(set(self.group_north.membership_set.all()), {membership_to_keep, membership_to_keep2})
@@ -818,7 +818,7 @@ class TestAdminRequired(TestCase):
             }
         )
         with self.assertRaisesMessage(Exception, "Must have at least one Admin in the group."):
-            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+            resp = self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
                                    content_type="application/json")
             self.assertEqual(resp.status_code, 500)
 
@@ -839,7 +839,7 @@ class TestAdminRequired(TestCase):
                 ]
             }
         )
-        self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+        self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
                                content_type="application/json")
         membership_to_update = Membership.objects.get(group=self.group_north, user=sally)
         self.assertEqual(membership_to_update.role, GroupRole.objects.get(name='Admin'))
@@ -861,7 +861,7 @@ class TestAdminRequired(TestCase):
             }
         )
         with self.assertRaisesMessage(Exception, "Must have at least one Admin in the group."):
-            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+            resp = self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
                                    content_type="application/json")
             self.assertEqual(resp.status_code, 500)
 
@@ -895,7 +895,7 @@ class TestAdminRequired(TestCase):
             }
         )
         with self.assertRaisesMessage(Exception, "Must have at least one Admin in the group."):
-            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+            resp = self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
                                    content_type="application/json")
             self.assertEqual(resp.status_code, 500)
             self.assertEqual(Membership.objects.filter(group=self.group_north), initial_memberships)
@@ -930,7 +930,7 @@ class TestAdminRequired(TestCase):
             }
         )
         with self.assertRaisesMessage(Exception, "Must have at least one Admin in the group."):
-            resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+            resp = self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
                                    content_type="application/json")
             self.assertEqual(resp.status_code, 500)
             self.assertEqual(Membership.objects.filter(group=self.group_north), initial_memberships)
@@ -944,7 +944,7 @@ class TestAdminRequired(TestCase):
                 "memberships": []
             }
         )
-        resp = self.client.put(reverse('users:groups-update-memberships', args=[self.group_north.pk]), body,
+        resp = self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
                         content_type="application/json")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(set(Membership.objects.filter(group=self.group_north)), initial_memberships)

@@ -347,3 +347,14 @@ def update_memberships(request, pk, group):
         raise Exception("Must have at least one Admin in the group.")
 
     return HttpResponse()
+
+
+@require_http_methods(["DELETE"])
+@login_required()
+def leave_group(request, pk, membership_pk):
+    """View for leaving a Group.
+
+    TODO: Check the user is a part of the group. Check the user is the user of the membership to be deleted. Check that there will be enough admins.
+    """
+
+

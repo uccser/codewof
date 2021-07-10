@@ -125,7 +125,7 @@
 {% csrf_token %}
 <script>
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-const membershipsUpdateURL = "{% url 'users:groups-update-memberships' group.pk %}"
+const membershipsUpdateURL = "{% url 'users:groups-memberships-update' group.pk %}"
 </script>
 
 {% if is_admin %}
