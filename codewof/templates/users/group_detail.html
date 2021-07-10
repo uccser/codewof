@@ -111,8 +111,9 @@
 
   <div class="row">
     <div class="col-12 col-md-8 mb-3">
+      <a id="email-button" class="btn btn-primary mb-1 btn-sm float-right">Email All</a>
       {% if is_admin %}
-        <button id="save-button" class="btn btn-success mb-1">Save</button>
+        <button id="save-button" class="btn btn-success btn-sm mb-1">Save</button>
       {% endif %}
     </div>
   </div>
@@ -128,6 +129,7 @@ const membershipsUpdateURL = "{% url 'users:groups-update-memberships' group.pk 
 </script>
 
 {% if is_admin %}
-<script src="{% static js %}"></script>
+<script src="{% static 'js/groups/group_detail_admin.js' %}"></script>
+<script src="{% static 'js/groups/group_detail_general.js' %}"></script>
 {% endif %}
 {% endblock scripts %}

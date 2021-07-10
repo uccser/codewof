@@ -276,7 +276,6 @@ class GroupDetailView(LoginRequiredMixin, AdminOrMemberRequiredMixin, DetailView
                                                                                              'user__first_name',
                                                                                              'user__last_name')
         context['roles'] = GroupRole.objects.all()
-        context['js'] = "js/groups/group_detail_admin.js"
         return context
 
 
