@@ -48,13 +48,14 @@
           <p>{{ group.description }}</p>
         </div>
 
-        {% if is_admin %}
         <div class="col-sm-auto">
-          <a class="btn btn-primary btn-sm d-block mb-1 mt-2" href="{% url 'users:groups-edit' group.pk %}">
-            Edit Group</a>
-          <a class="btn btn-danger btn-sm d-block mb-1" href="{% url 'users:groups-delete' group.pk %}">Delete Group</a>
+          {% if is_admin %}
+            <a class="btn btn-primary btn-sm d-block mb-1 mt-2" href="{% url 'users:groups-edit' group.pk %}">
+              Edit Group</a>
+            <a class="btn btn-danger btn-sm d-block mb-1" href="{% url 'users:groups-delete' group.pk %}">Delete Group</a>
+          {% endif %}
+          <a class="btn btn-warning btn-sm d-block mb-1" href="{% url 'users:groups-memberships-delete' user_membership.pk %}">Leave Group</a>
         </div>
-        {% endif %}
       </div>
     </div>
   </div>
@@ -111,7 +112,7 @@
 
   <div class="row">
     <div class="col-12 col-md-8 mb-3">
-      <a id="email-button" class="btn btn-primary mb-1 btn-sm float-right">Email All</a>
+      <a id="email-button" class="btn btn-primary mb-1 btn-sm float-right" href="">Email All</a>
       {% if is_admin %}
         <button id="save-button" class="btn btn-success btn-sm mb-1">Save</button>
       {% endif %}
@@ -128,8 +129,8 @@ const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 const membershipsUpdateURL = "{% url 'users:groups-memberships-update' group.pk %}"
 </script>
 
+<script src="{% static 'js/groups/group_detail_general.js' %}"></script>
 {% if is_admin %}
 <script src="{% static 'js/groups/group_detail_admin.js' %}"></script>
-<script src="{% static 'js/groups/group_detail_general.js' %}"></script>
 {% endif %}
 {% endblock scripts %}

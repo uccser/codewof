@@ -270,8 +270,11 @@ class GroupDetailView(LoginRequiredMixin, AdminOrMemberRequiredMixin, DetailView
         user = self.request.user
         context = super().get_context_data(**kwargs)
         admin_role = GroupRole.objects.get(name="Admin")
-        context['is_admin'] = len(Membership.objects.all().filter(user=user, group=self.get_object(),
-                                                                  role=admin_role)) != 0
+
+        user_membership = Membership.objects.all().get(user=user, group=self.get_object())
+        context['is_admin'] = user_membership.role == admin_role
+        context['user_membership'] = user_membership
+
         context['memberships'] = Membership.objects.filter(group=self.get_object()).order_by('role__name',
                                                                                              'user__first_name',
                                                                                              'user__last_name')
