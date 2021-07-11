@@ -349,12 +349,34 @@ def update_memberships(request, pk, group):
     return HttpResponse()
 
 
-@require_http_methods(["DELETE"])
-@login_required()
-def leave_group(request, pk, membership_pk):
-    """View for leaving a Group.
+class SufficientAdminsMixin:
+    """Mixin for checking there will be enough Admins if deleting an Admin Membership."""
 
-    TODO: Check the user is a part of the group. Check the user is the user of the membership to be deleted. Check that there will be enough admins.
-    """
+    def dispatch(self, request, *args, **kwargs):
+        membership = self.get_object()
+        admin_role = GroupRole.objects.get(name='Admin')
+        if len(Membership.objects.all().filter(group=membership.group, role=admin_role)) > 1 or membership.role != admin_role:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            raise Exception("A Group must have at least one Admin.")
 
 
+class RequestUserIsMembershipUserMixin:
+    """Mixin for checking the user making the request is the user of the Membership."""
+
+    def dispatch(self, request, *args, **kwargs):
+        membership = self.get_object()
+        if request.user == membership.user:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
+
+
+class MembershipDeleteView(LoginRequiredMixin, RequestUserIsMembershipUserMixin, SufficientAdminsMixin, DeleteView):
+    """View for deleting a membership."""
+
+    model = Membership
+
+    def get_success_url(self):
+        """URL to route to on successful delete."""
+        return reverse('users:dashboard')
