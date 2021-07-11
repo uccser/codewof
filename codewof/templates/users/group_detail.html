@@ -54,7 +54,8 @@
               Edit Group</a>
             <a class="btn btn-danger btn-sm d-block mb-1" href="{% url 'users:groups-delete' group.pk %}">Delete Group</a>
           {% endif %}
-          <a class="btn btn-warning btn-sm d-block mb-1" href="{% url 'users:groups-memberships-delete' user_membership.pk %}">Leave Group</a>
+          <a id="leave-button" class="btn btn-warning btn-sm d-block mb-1 {% if not is_admin %} mt-2 {% endif %}"
+             href="{% url 'users:groups-memberships-delete' user_membership.pk %}">Leave Group</a>
         </div>
       </div>
     </div>
@@ -78,9 +79,6 @@
 
         <tbody id="members-table-tbody">
         {% for membership in memberships %}
-        {% if user.pk == membership.user.pk %}
-        <script>const currentUserMembershipID = "{{ membership.pk }}"</script>
-        {% endif %}
         <tr id="membership-{{ membership.pk }}">
           <td>{{ membership.user.email }}</td>
           <td>{{ membership.user.first_name }} {{ membership.user.last_name }}</td>
@@ -127,6 +125,7 @@
 <script>
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 const membershipsUpdateURL = "{% url 'users:groups-memberships-update' group.pk %}"
+const currentUserMembershipID = "{{ user_membership.pk }}"
 </script>
 
 <script src="{% static 'js/groups/group_detail_general.js' %}"></script>

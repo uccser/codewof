@@ -3,7 +3,7 @@
  * be deleted
  * @type {Set<any>} A set of ID ints.
  */
-let changedIDs = new Set()
+let changedIDs = new Set();
 
 /**
  * A list of objects representing the original Memberships of the following format:
@@ -13,29 +13,30 @@ let changedIDs = new Set()
  * Used to check whether the Membership has changed or not
  * @type {*[]}
  */
-let originalMemberships = []
+let originalMemberships = [];
 
 
 /**
  * Iterates through each row. Adds an object to originalMemberships. Adds onchange listeners to the select and checkbox.
  */
 $(document).ready(function () {
-    $("#save-button").click(performChecks)
+    $("#save-button").click(performChecks);
 
-    let table_tbody = document.getElementById("members-table-tbody")
+    let table_tbody = document.getElementById("members-table-tbody");
     for (let row of table_tbody.rows) {
-        let select = document.getElementById("membership-" + getID(row.id) + "-select")
-        let checkbox = document.getElementById("membership-" + getID(row.id) + "-checkbox")
+        let select = document.getElementById("membership-" + getID(row.id) + "-select");
+        let checkbox = document.getElementById("membership-" + getID(row.id) + "-checkbox");
 
         originalMemberships.push(
             {
                 id: getID(row.id),
                 role: select.value.toString()
             }
-        )
+        );
 
-        select.onchange = checkbox.onchange = function() { rowUpdate(row, select, checkbox) }
+        select.onchange = checkbox.onchange = function() { rowUpdate(row, select, checkbox); };
     }
+    setLeaveButton();
 })
 
 
@@ -51,23 +52,23 @@ $(document).ready(function () {
  * @param checkbox
  */
 function rowUpdate(row, select, checkbox) {
-    let originalRole = originalMemberships.find(x => x.id === getID(row.id)).role.toString()
+    let originalRole = originalMemberships.find(x => x.id === getID(row.id)).role.toString();
     if (select.value.toString() === originalRole && !checkbox.checked) {
-        changedIDs.delete(getID(row.id))
+        changedIDs.delete(getID(row.id));
     } else {
-        changedIDs.add(getID(row.id))
+        changedIDs.add(getID(row.id));
     }
 
     if (select.value.toString() !== originalRole) {
-        row.classList.add("table-warning")
+        row.classList.add("table-warning");
     } else {
-        row.classList.remove("table-warning")
+        row.classList.remove("table-warning");
     }
 
     if (checkbox.checked) {
-        row.classList.add("table-danger")
+        row.classList.add("table-danger");
     } else {
-        row.classList.remove("table-danger")
+        row.classList.remove("table-danger");
     }
 }
 
@@ -78,7 +79,7 @@ function rowUpdate(row, select, checkbox) {
  * @returns {number} The number part of the id as an int.
  */
 function getID(full) {
-    return parseInt(full.substr(full.indexOf("-") + 1, full.length))
+    return parseInt(full.substr(full.indexOf("-") + 1, full.length));
 }
 
 
@@ -94,13 +95,13 @@ function performChecks() {
             $('#demote-self-modal').modal('show');
             $('#demote-self-modal-button').click(function () {
                 demoteSelf = true;
-                updateMemberships(demoteSelf)
+                updateMemberships(demoteSelf);
             })
         } else {
-            updateMemberships(demoteSelf)
+            updateMemberships(demoteSelf);
         }
     } else {
-        updateFailure("The Group needs at least one Admin.")
+        updateFailure("The Group needs at least one Admin.");
     }
 }
 
@@ -109,14 +110,14 @@ function performChecks() {
  * Iterates through the changedIDs, building the JSON body, then sends an HTTP request to update the memberships.
  */
 function updateMemberships(demoteSelf) {
-    let memberships = []
+    let memberships = [];
 
     for (let id of changedIDs) {
         memberships.push({
             id: id,
             delete: document.getElementById("membership-" + id + "-checkbox").checked,
             role: document.getElementById("membership-" + id + "-select").value
-        })
+        });
     }
 
     $.ajax({
@@ -140,32 +141,33 @@ function updateMemberships(demoteSelf) {
  */
 function updateSuccess(refresh) {
     if (refresh) {
-        location.reload()
-        return
+        location.reload();
+        return;
     }
 
-    $('#update-success-alert').show()
+    $('#update-success-alert').show();
 
-    $("#update-success-alert").fadeTo(5000, 500).slideUp(500, function(){
+    $("#update-success-alert").fadeTo(5000, 500).slideUp(500, function () {
         $("#update-success-alert").slideUp(500);
     });
 
     for (let id of changedIDs) {
-        let row = document.getElementById("membership-" + id)
-        let membershipToUpdate = originalMemberships.find(x => x.id === id)
+        let row = document.getElementById("membership-" + id);
+        let membershipToUpdate = originalMemberships.find(x => x.id === id);
 
         if (document.getElementById("membership-" + id + "-checkbox").checked) {
             row.parentNode.removeChild(row);
-            originalMemberships.splice(originalMemberships.indexOf(membershipToUpdate))
+            originalMemberships.splice(originalMemberships.indexOf(membershipToUpdate));
         } else {
-            let select = document.getElementById("membership-" + id + "-select")
-            membershipToUpdate.role = select.value.toString()
-            row.classList.remove("table-warning")
-            row.classList.remove("table-danger")
+            let select = document.getElementById("membership-" + id + "-select");
+            membershipToUpdate.role = select.value.toString();
+            row.classList.remove("table-warning");
+            row.classList.remove("table-danger");
         }
     }
 
-    changedIDs.clear()
+    changedIDs.clear();
+    setLeaveButton();
 }
 
 
@@ -173,10 +175,10 @@ function updateSuccess(refresh) {
  * Called when the HTTP request to update the memberships fails. Show the error alert which fades away after a period.
  */
 function updateFailure(message) {
-    document.getElementById('update-danger-alert').innerText = message
-    $('#update-danger-alert').show()
+    document.getElementById('update-danger-alert').innerText = message;
+    $('#update-danger-alert').show();
 
-    $("#update-danger-alert").fadeTo(5000, 500).slideUp(500, function(){
+    $("#update-danger-alert").fadeTo(5000, 500).slideUp(500, function () {
         $("#update-danger-alert").slideUp(500);
     });
 }
@@ -188,17 +190,38 @@ function updateFailure(message) {
  * @returns {boolean} Whether there is at least one Admin.
  */
 function atLeastOneAdmin() {
-    let counter = 0
+    let counter = 0;
 
-    let table_tbody = document.getElementById("members-table-tbody")
+    let table_tbody = document.getElementById("members-table-tbody");
     for (let row of table_tbody.rows) {
-        let select = document.getElementById("membership-" + getID(row.id) + "-select")
-        let checkbox = document.getElementById("membership-" + getID(row.id) + "-checkbox")
+        let select = document.getElementById("membership-" + getID(row.id) + "-select");
+        let checkbox = document.getElementById("membership-" + getID(row.id) + "-checkbox");
 
         if (!checkbox.checked && select.value.toString() === "Admin") {
-            counter += 1
+            counter += 1;
         }
     }
 
-    return counter > 0
+    return counter > 0;
+}
+
+/**
+ * Determines whether the leave button should be visible or not depending on if the user is the only admin. If so, then
+ * the button is hidden. Otherwise, the button is visible.
+ */
+function setLeaveButton() {
+    let counter = 0;
+
+    for (let membership of originalMemberships) {
+        if (membership.role === "Admin") {
+            counter++;
+        }
+    }
+
+    let leaveButton = document.getElementById("leave-button");
+    if (counter === 1) {
+        leaveButton.style.visibility = "hidden";
+    } else {
+        leaveButton.style.visibility = "visible";
+    }
 }
