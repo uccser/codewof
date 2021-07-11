@@ -546,6 +546,12 @@ class TestGroupDetailView(TestCase):
         resp = self.client.get(reverse('users:groups-detail', args=[self.group_east.pk]))
         self.assertEqual(resp.context['is_admin'], False)
 
+    def test_context_object_has_own_membership(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertEqual(resp.context['user_membership'], Membership.objects.get(user=User.objects.get(pk=1),
+                         group=self.group_north))
+
     def test_context_object_has_sorted_memberships(self):
         self.login_user()
         user_john = User.objects.get(id=1)
@@ -935,7 +941,6 @@ class TestAdminRequired(TestCase):
             self.assertEqual(resp.status_code, 500)
             self.assertEqual(Membership.objects.filter(group=self.group_north), initial_memberships)
 
-
     def test_empty_memberships_list_changes_nothing(self):
         self.login_user()
         initial_memberships = set(Membership.objects.filter(group=self.group_north))
@@ -948,3 +953,100 @@ class TestAdminRequired(TestCase):
                         content_type="application/json")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(set(Membership.objects.filter(group=self.group_north)), initial_memberships)
+
+
+class TestMembershipDeleteView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_groups()
+        generate_memberships()
+        management.call_command("load_group_roles")
+
+    def setUp(self):
+        self.client = Client()
+        self.john = User.objects.get(pk=1)
+        self.sally = User.objects.get(pk=2)
+        self.group_north = Group.objects.get(name="Group North")
+        self.john_north_membership = Membership.objects.get(group=self.group_north, user=self.john)
+        self.sally_north_membership = Membership.objects.get(group=self.group_north, user=self.sally)
+
+    def login_user(self, user):
+        login = self.client.login(email=user.email, password='onion')
+        self.assertTrue(login)
+
+    # tests begin
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get(reverse('users:groups-memberships-delete', args=[self.john_north_membership.pk]))
+        self.assertRedirects(resp, '/accounts/login/?next=' + reverse('users:groups-memberships-delete',
+                                                                      args=[self.john_north_membership.pk]))
+
+    def test_view_exists_if_own_membership(self):
+        self.login_user(self.sally)
+        resp = self.client.get(reverse('users:groups-memberships-delete', args=[self.sally_north_membership.pk]))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_does_not_exist_if_other_membership(self):
+        self.login_user(self.john)
+        resp = self.client.get(reverse('users:groups-memberships-delete', args=[self.sally_north_membership.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_view_does_not_exist_if_insufficient_admins(self):
+        self.login_user(self.john)
+        with self.assertRaisesMessage(Exception, "A Group must have at least one Admin."):
+            resp = self.client.get(reverse('users:groups-memberships-delete', args=[self.john_north_membership.pk]))
+            self.assertEqual(resp.status_code, 500)
+
+    def test_view_uses_correct_template(self):
+        self.login_user(self.sally)
+        resp = self.client.get(reverse('users:groups-memberships-delete', args=[self.sally_north_membership.pk]))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'users/membership_confirm_delete.html')
+
+    def test_redirects(self):
+        self.login_user(self.sally)
+        resp = self.client.post(reverse('users:groups-memberships-delete', args=[self.sally_north_membership.pk]))
+        self.assertRedirects(resp, reverse('users:dashboard'))
+
+    def test_view_contains_title(self):
+        self.login_user(self.sally)
+        resp = self.client.get(reverse('users:groups-memberships-delete', args=[self.sally_north_membership.pk]))
+        self.assertContains(resp, "<h1>Leave Group</h1>", html=True)
+
+    def test_view_contains_correct_message(self):
+        self.login_user(self.sally)
+        resp = self.client.get(reverse('users:groups-memberships-delete', args=[self.sally_north_membership.pk]))
+        self.assertContains(resp, "<p>Are you sure you want to leave the Group 'Group North'?</p>", html=True)
+
+    def test_view_contains_warning(self):
+        self.login_user(self.sally)
+        resp = self.client.get(reverse('users:groups-memberships-delete', args=[self.sally_north_membership.pk]))
+        self.assertContains(resp, "<p>You will have to be re-invited to view and participate in the Group again.</p>",
+                            html=True)
+
+    def test_admin_can_leave_if_other_admins(self):
+        self.login_user(self.john)
+        new_membership = self.sally_north_membership
+        new_membership.role = GroupRole.objects.get(name='Admin')
+        new_membership.save()
+        self.client.post(reverse('users:groups-memberships-delete', args=[self.john_north_membership.pk]))
+        self.assertEqual(len(Membership.objects.filter(group=self.group_north, user=self.john)), 0)
+
+    def test_member_can_leave(self):
+        self.login_user(self.sally)
+        self.client.post(reverse('users:groups-memberships-delete', args=[self.sally_north_membership.pk]))
+        self.assertEqual(len(Membership.objects.filter(group=self.group_north, user=self.sally)), 0)
+
+    def test_cannot_leave_if_other_membership(self):
+        self.login_user(self.john)
+        resp = self.client.post(reverse('users:groups-memberships-delete', args=[self.sally_north_membership.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_cannot_leave_if_insufficient_admins(self):
+        self.login_user(self.john)
+        with self.assertRaisesMessage(Exception, "A Group must have at least one Admin."):
+            resp = self.client.post(reverse('users:groups-memberships-delete', args=[self.john_north_membership.pk]))
+            self.assertEqual(resp.status_code, 500)
+            self.assertEqual(len(Membership.objects.filter(group=self.group_north, user=self.john)), 1)
