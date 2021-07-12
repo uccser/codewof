@@ -570,6 +570,26 @@ class TestGroupDetailView(TestCase):
         member_role = GroupRole.objects.get(name="Member")
         self.assertEqual(set(resp.context['roles']), {admin_role, member_role})
 
+    def test_context_object_is_only_admin(self):
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertTrue(resp.context['only_admin'])
+
+    def test_context_object_member_is_not_only_admin(self):
+        self.client.login(email='sally@uclive.ac.nz', password='onion')
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertFalse(resp.context['only_admin'])
+
+    def test_context_object_is_not_only_admin(self):
+        self.login_user()
+        sally = User.objects.get(id=2)
+        sally_membership = Membership.objects.get(user=sally, group=self.group_north.pk)
+        admin_role = GroupRole.objects.get(name="Admin")
+        sally_membership.role = admin_role
+        sally_membership.save()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        self.assertFalse(resp.context['only_admin'])
+
     def test_has_edit_button_if_admin(self):
         self.login_user()
         resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))

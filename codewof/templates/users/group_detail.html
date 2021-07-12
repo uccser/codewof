@@ -55,6 +55,7 @@
             <a class="btn btn-danger btn-sm d-block mb-1" href="{% url 'users:groups-delete' group.pk %}">Delete Group</a>
           {% endif %}
           <a id="leave-button" class="btn btn-warning btn-sm d-block mb-1 {% if not is_admin %} mt-2 {% endif %}"
+             {% if only_admin %} style="visibility: hidden" {% endif %}
              href="{% url 'users:groups-memberships-delete' user_membership.pk %}">Leave Group</a>
         </div>
       </div>

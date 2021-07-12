@@ -36,7 +36,6 @@ $(document).ready(function () {
 
         select.onchange = checkbox.onchange = function() { rowUpdate(row, select, checkbox); };
     }
-    setLeaveButton();
 })
 
 

@@ -278,6 +278,10 @@ class GroupDetailView(LoginRequiredMixin, AdminOrMemberRequiredMixin, DetailView
         context['memberships'] = Membership.objects.filter(group=self.get_object()).order_by('role__name',
                                                                                              'user__first_name',
                                                                                              'user__last_name')
+        context['only_admin'] = False
+        admins = context['memberships'].filter(role=admin_role)
+        if len(admins) == 1 and admins[0] == user_membership:
+            context['only_admin'] = True
         context['roles'] = GroupRole.objects.all()
         return context
 
