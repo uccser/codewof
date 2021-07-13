@@ -4,7 +4,7 @@ import logging
 from random import Random
 
 from django.db import transaction
-from django.http import HttpResponseForbidden, HttpResponse
+from django.http import HttpResponseForbidden, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
 from django.contrib.auth import get_user_model
@@ -32,6 +32,8 @@ from programming.models import (
 from users.models import Group, Membership, GroupRole
 
 from programming.codewof_utils import get_questions_answered_in_past_month, backdate_user
+
+from codewof.users.forms import GroupInvitationsForm
 
 User = get_user_model()
 
@@ -395,4 +397,12 @@ class MembershipDeleteView(LoginRequiredMixin, RequestUserIsMembershipUserMixin,
 def create_invitations(request, pk, group):
     """View for sending invitations to join a group."""
 
-    return render(request, 'users/create_invitations.html')
+    if request.method == 'POST':
+        form = GroupInvitationsForm(request.POST)
+        if form.is_valid():
+            # TODO Add code to process form.cleaned_data
+            return HttpResponseRedirect(reverse('users:groups-detail', args=[pk]))
+    else:
+        form = GroupInvitationsForm()
+
+    return render(request, 'users/create_invitations.html', {'form': form})
