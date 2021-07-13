@@ -16,4 +16,5 @@ urlpatterns = [
     path("groups/<int:pk>/delete/", view=views.GroupDeleteView.as_view(), name="groups-delete"),
     path("groups/<int:pk>/memberships/", view=views.update_memberships, name="groups-memberships-update"),
     path("memberships/<int:pk>/delete/", view=views.MembershipDeleteView.as_view(), name="groups-memberships-delete"),
+    path("groups/<int:pk>/memberships/invite/", view=views.create_invitations, name="groups-memberships-invite"),
 ]

@@ -5,6 +5,7 @@ from random import Random
 
 from django.db import transaction
 from django.http import HttpResponseForbidden, HttpResponse
+from django.shortcuts import render
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -387,3 +388,11 @@ class MembershipDeleteView(LoginRequiredMixin, RequestUserIsMembershipUserMixin,
     def get_success_url(self):
         """URL to route to on successful delete."""
         return reverse('users:dashboard')
+
+
+@login_required()
+@admin_required
+def create_invitations(request, pk, group):
+    """View for sending invitations to join a group."""
+
+    return render(request, 'users/create_invitations.html')
