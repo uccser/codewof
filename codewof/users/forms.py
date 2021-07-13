@@ -178,3 +178,17 @@ class GroupCreateUpdateForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = ('name', 'description')
+
+
+class GroupInvitationsForm(forms.Form):
+    """Form class for sending out invitations to join a group."""
+
+    emails = forms.CharField(
+        label='Emails one per line',
+        widget=forms.Textarea(
+            attrs={
+                'type': 'text',
+                'placeholder': _('Description'),
+            },
+        ),
+    )
