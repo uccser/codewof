@@ -188,7 +188,6 @@ class GroupInvitationsForm(forms.Form):
         widget=forms.Textarea(
             attrs={
                 'type': 'text',
-                'placeholder': _('Description'),
             },
         ),
     )
