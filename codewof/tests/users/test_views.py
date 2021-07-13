@@ -1070,3 +1070,63 @@ class TestMembershipDeleteView(TestCase):
             resp = self.client.post(reverse('users:groups-memberships-delete', args=[self.john_north_membership.pk]))
             self.assertEqual(resp.status_code, 500)
             self.assertEqual(len(Membership.objects.filter(group=self.group_north, user=self.john)), 1)
+
+
+class TestCreateInvitationsView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_groups()
+        generate_memberships()
+        management.call_command("load_group_roles")
+
+    def setUp(self):
+        self.john = User.objects.get(pk=1)
+        self.sally = User.objects.get(pk=2)
+        self.group_north = Group.objects.get(name="Group North")
+        self.client = Client()
+
+    def login_user(self, user):
+        login = self.client.login(email=user.email, password='onion')
+        self.assertTrue(login)
+
+    # tests begin
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get(reverse('users:groups-memberships-invite', args=[self.group_north.pk]))
+        self.assertRedirects(resp, '/accounts/login/?next=' + reverse('users:groups-memberships-invite',
+                                                                      args=[self.group_north.pk]))
+
+    def test_view_exists_if_admin(self):
+        self.login_user(self.john)
+        resp = self.client.get(reverse('users:groups-memberships-invite', args=[self.group_north.pk]))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_does_not_exist_if_not_admin(self):
+        self.login_user(self.sally)
+        resp = self.client.get(reverse('users:groups-memberships-invite', args=[self.group_north.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_view_uses_correct_template(self):
+        self.login_user(self.john)
+        resp = self.client.get(reverse('users:groups-memberships-invite', args=[self.group_north.pk]))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'users/create_invitations.html')
+
+    def test_redirects(self):
+        self.login_user(self.john)
+        resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
+                                {'emails': "test@mail.com"})
+        self.assertRedirects(resp, reverse('users:groups-detail', args=[self.group_north.pk]))
+
+    def test_cannot_post_if_member(self):
+        self.login_user(self.sally)
+        resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
+                                {'emails': "test@mail.com"})
+        self.assertEqual(resp.status_code, 403)
+
+    def test_view_contains_title(self):
+        self.login_user(self.john)
+        resp = self.client.get(reverse('users:groups-memberships-invite', args=[self.group_north.pk]))
+        self.assertContains(resp, "<h1>Send Invitations</h1>", html=True)
