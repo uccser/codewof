@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from users.forms import UserChangeForm, GroupCreateUpdateForm
+from users.forms import UserChangeForm, GroupCreateUpdateForm, GroupInvitationsForm
 from django.core import management
 
 from users.models import UserType
@@ -97,3 +97,29 @@ class TestGroupCreateUpdateForm(TestCase):
         form = GroupCreateUpdateForm(data=form_data)
 
         self.assertTrue(form.is_valid())
+
+
+class TestGroupInvitationsForm(TestCase):
+    def test_single_email_is_valid(self):
+        form_data = {"emails": "test@mail.com"}
+        form = GroupInvitationsForm(data=form_data)
+
+        self.assertTrue(form.is_valid())
+
+    def test_empty_emails_is_invalid(self):
+        form_data = {"emails": ""}
+        form = GroupInvitationsForm(data=form_data)
+
+        self.assertTrue(form.errors["emails"], ["This field is required."])
+
+    def test_white_space_emails_is_invalid(self):
+        form_data = {"emails": "   \n   "}
+        form = GroupInvitationsForm(data=form_data)
+
+        self.assertTrue(form.errors["emails"], ["This field is required."])
+
+    def test_missing_emails_is_invalid(self):
+        form_data = {}
+        form = GroupInvitationsForm(data=form_data)
+
+        self.assertTrue(form.errors["emails"], ["This field is required."])
