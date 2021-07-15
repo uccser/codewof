@@ -22,7 +22,6 @@ from programming import settings
 from users.forms import UserChangeForm, GroupCreateUpdateForm, GroupInvitationsForm
 from research.models import StudyRegistration
 from functools import wraps
-from invitations.utils import get_invitation_model
 
 
 from programming.models import (
@@ -35,7 +34,6 @@ from users.models import Group, Membership, GroupRole
 from programming.codewof_utils import get_questions_answered_in_past_month, backdate_user
 
 User = get_user_model()
-Invitation = get_invitation_model()
 
 logger = logging.getLogger(__name__)
 del logging
@@ -403,9 +401,7 @@ def create_invitations(request, pk, group):
             # TODO Add code to process form.cleaned_data
             emails = form.cleaned_data.get('emails').splitlines()
 
-            for email in emails:
-                invite = Invitation.create(email.strip(), inviter=request.user)
-                invite.send_invitation(request)
+            # for email in emails:
 
             return HttpResponseRedirect(reverse('users:groups-detail', args=[pk]))
     else:

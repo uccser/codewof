@@ -118,7 +118,6 @@ THIRD_PARTY_APPS = [
     'ckeditor_uploader',
     'captcha',
     'django_bootstrap_breadcrumbs',
-    'invitations',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',

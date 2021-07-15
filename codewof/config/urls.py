@@ -18,7 +18,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('', include('programming.urls', namespace='programming'),),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('invitations/', include('invitations.urls', namespace='invitations')),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )
