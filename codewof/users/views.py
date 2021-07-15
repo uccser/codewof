@@ -3,9 +3,12 @@ import json
 import logging
 from random import Random
 
+from django.conf import settings as django_settings
+from django.core.mail import send_mail
 from django.db import transaction
 from django.http import HttpResponseForbidden, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.template.loader import get_template
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -22,14 +25,14 @@ from programming import settings
 from users.forms import UserChangeForm, GroupCreateUpdateForm, GroupInvitationsForm
 from research.models import StudyRegistration
 from functools import wraps
-
+from allauth.account.admin import EmailAddress
 
 from programming.models import (
     Question,
     Attempt,
     Achievement
 )
-from users.models import Group, Membership, GroupRole
+from users.models import Group, Membership, GroupRole, Invitation
 
 from programming.codewof_utils import get_questions_answered_in_past_month, backdate_user
 
@@ -299,6 +302,7 @@ class GroupDeleteView(LoginRequiredMixin, AdminRequiredMixin, DeleteView):
 
 def admin_required(f):
     """Decorator for checking the user is an Admin of the Group."""
+
     @wraps(f)
     def g(request, *args, **kwargs):
         admin_role = GroupRole.objects.get(name="Admin")
@@ -308,6 +312,7 @@ def admin_required(f):
             return f(request, *args, **kwargs)
         else:
             raise PermissionDenied()
+
     return g
 
 
@@ -363,7 +368,8 @@ class SufficientAdminsMixin:
     def dispatch(self, request, *args, **kwargs):
         membership = self.get_object()
         admin_role = GroupRole.objects.get(name='Admin')
-        if len(Membership.objects.all().filter(group=membership.group, role=admin_role)) > 1 or membership.role != admin_role:
+        if len(Membership.objects.all().filter(group=membership.group,
+                                               role=admin_role)) > 1 or membership.role != admin_role:
             return super().dispatch(request, *args, **kwargs)
         else:
             raise Exception("A Group must have at least one Admin.")
@@ -398,13 +404,93 @@ def create_invitations(request, pk, group):
     if request.method == 'POST':
         form = GroupInvitationsForm(request.POST)
         if form.is_valid():
-            # TODO Add code to process form.cleaned_data
             emails = form.cleaned_data.get('emails').splitlines()
 
-            # for email in emails:
+            for email in emails:
+                try:
+                    user = EmailAddress.objects.get(email=email).user
+                except EmailAddress.DoesNotExist:
+                    user = None
+
+                Invitation(group=group, inviter=request.user, email=email).save()
+                if user is None:
+                    html = create_invitation_html(False, None, request.user.first_name + " " +
+                                                  request.user.last_name, group.name, email)
+                    plain = create_invitation_plaintext(False, None, request.user.first_name + " " +
+                                                        request.user.last_name, group.name, email)
+                else:
+                    html = create_invitation_html(True, user.first_name, request.user.first_name + " " +
+                                                  request.user.last_name, group.name, email)
+                    plain = create_invitation_plaintext(True, user.first_name, request.user.first_name + " " +
+                                                        request.user.last_name, group.name, email)
+
+                send_mail(
+                    'CodeWOF Invitation',
+                    plain,
+                    django_settings.DEFAULT_FROM_EMAIL,
+                    [email],
+                    fail_silently=False,
+                    html_message=html
+                )
 
             return HttpResponseRedirect(reverse('users:groups-detail', args=[pk]))
     else:
         form = GroupInvitationsForm()
 
     return render(request, 'users/create_invitations.html', {'form': form})
+
+
+def create_invitation_plaintext(user_exists, invitee_name, inviter_name, group_name, email):
+    """
+    Builds the plaintext for the invitation email, which is different depending if an account with the email exists or
+    not.
+    :param user_exists: Whether a User object with this email exists.
+    :param invitee_name: The name of the invitee.
+    :param inviter_name: The name of the inviter.
+    :param group_name: The name of the group.
+    :param email: The email address.
+    :return:
+    """
+    if user_exists:
+        plaintext = "Hi {},\n\n{} has invited you to join the Group '{}'. Click the link below to sign in. You will " \
+                    "see your invitation in the dashboard, where you can join the group.\n\n{}\n\nThanks,\nThe " \
+                    "Computer Science Education Research Group".format(invitee_name, inviter_name, group_name,
+                                                                       reverse('account_login'))
+    else:
+        plaintext = "Hi,\n\n{} has invited you to join the Group '{}'. CodeWOF helps you maintain your " \
+                    "programming fitness with short daily programming exercises. With a free account you can save your " \
+                    "progress and track your programming fitness over time. Click the link below to make an account," \
+                    " using the email {}. You will see your invitation in the dashboard, where you can join the group. " \
+                    "If you already have a CodeWOF account, then add {} to your profile to make the invitation appear." \
+                    "\n\n{}\n\nThanks,\nThe Computer Science Education Research Group".format(inviter_name, group_name,
+                                                                                              email, email,
+                                                                                              reverse('account_signup'))
+    return plaintext
+
+
+def create_invitation_html(user_exists, invitee_name, inviter_name, group_name, email):
+    """
+    Builds the html for the invitation email, which is different depending if an account with the email exists or not.
+    :param user_exists: Whether a User object with this email exists.
+    :param invitee_name: The name of the invitee.
+    :param inviter_name: The name of the inviter.
+    :param group_name: The name of the group.
+    :param email: The email address.
+    :return:
+    """
+    email_template = get_template("users/group_invitation.html")
+    if user_exists:
+        message = "{} has invited you to join the Group '{}'. Click the button below to sign in. You will " \
+                  "see your invitation in the dashboard, where you can join the group.".format(inviter_name, group_name)
+        html = email_template.render({"user_exists": user_exists, "invitee_name": invitee_name, "message": message,
+                                      "url": reverse('account_login'), "button_text": "Sign In"})
+    else:
+        message = "{} has invited you to join the Group '{}'. CodeWOF helps you maintain your " \
+                  "programming fitness with short daily programming exercises. With a free account you can save your " \
+                  "progress and track your programming fitness over time. Click the link below to make an account," \
+                  " using the email {}. You will see your invitation in the dashboard, where you can join the group. " \
+                  "If you already have a CodeWOF account, then add {} to your profile to make the invitation appear." \
+            .format(inviter_name, group_name, email, email)
+        html = email_template.render({"user_exists": user_exists, "invitee_name": invitee_name, "message": message,
+                                      "url": reverse('account_signup'), "button_text": "Sign Up"})
+    return html
