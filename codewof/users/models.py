@@ -134,3 +134,13 @@ class Membership(models.Model):
         on_delete=models.CASCADE,
     )
     date_joined = models.DateTimeField(default=timezone.now)
+
+
+class Invitation(models.Model):
+    """A class representing an invitation to join a Group."""
+
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    inviter = models.ForeignKey(User, on_delete=models.CASCADE)
+    email = models.EmailField()
+    date_joined = models.DateTimeField(default=timezone.now)
+    date_expires = models.DateTimeField(default=timezone.now()+timezone.timedelta(days=7))
