@@ -2,6 +2,7 @@ import json
 
 import pytest
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
 from django.core import management
@@ -1151,3 +1152,47 @@ class TestCreateInvitationPlaintext(TestCase):
         self.assertEqual(create_invitation_plaintext(True, self.sally.first_name, self.john.first_name + " " +
                                                      self.john.last_name, self.group_north.name, self.sally.email),
                          expected)
+
+    def test_user_does_not_exist(self):
+        expected = "Hi,\n\nJohn Doe has invited you to join the Group 'Group North'. CodeWOF helps you maintain your " \
+                   "programming fitness with short daily programming exercises. With a free account you can save your" \
+                   " progress and track your programming fitness over time. Click the link below to make an account," \
+                   " using the email unknown@mail.com. You will see your invitation in the dashboard, where you can " \
+                   "join the group. If you already have a CodeWOF account, then add unknown@mail.com to your profile " \
+                   "to make the invitation appear.\n\n{}\n\nThanks,\nThe Computer Science Education Research Group"\
+            .format(reverse('account_signup'))
+        self.assertEqual(create_invitation_plaintext(False, None, self.john.first_name + " " +
+                                                     self.john.last_name, self.group_north.name, "unknown@mail.com"),
+                         expected)
+
+
+class TestCreateInvitationHTML(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_groups()
+
+    def setUp(self):
+        self.john = User.objects.get(pk=1)
+        self.sally = User.objects.get(pk=2)
+        self.group_north = Group.objects.get(name="Group North")
+
+    def test_user_exists_html_contains_name(self):
+        expected = "<p>Hi Sally,</p>"
+        response = HttpResponse(create_invitation_html(True, self.sally.first_name, self.john.first_name + " " +
+                                                       self.john.last_name, self.group_north.name, self.sally.email))
+        self.assertContains(response, expected, html=True)
+
+    def test_user_exists_html_contains_correct_message(self):
+        expected = "<p>John Doe has invited you to join the Group &#39;Group North&#39;. Click the link below to " \
+                   "sign in. You will see your invitation in the dashboard, where you can join the group.</p>"
+        response = HttpResponse(create_invitation_html(True, self.sally.first_name, self.john.first_name + " " +
+                                                       self.john.last_name, self.group_north.name, self.sally.email))
+        self.assertContains(response, expected, html=True)
+
+    def test_user_exists_html_contains_correct_link(self):
+        expected = "<a href=\"/accounts/login/\" style=\"color: #007bff; text-decoration: underline;\">Sign In</a>"
+        response = HttpResponse(create_invitation_html(True, self.sally.first_name, self.john.first_name + " " +
+                                                       self.john.last_name, self.group_north.name, self.sally.email))
+        self.assertContains(response, expected, html=True)

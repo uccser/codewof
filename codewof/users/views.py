@@ -490,7 +490,7 @@ def create_invitation_html(user_exists, invitee_name, inviter_name, group_name, 
     """
     email_template = get_template("users/group_invitation.html")
     if user_exists:
-        message = "{} has invited you to join the Group '{}'. Click the button below to sign in. You will " \
+        message = "{} has invited you to join the Group '{}'. Click the link below to sign in. You will " \
                   "see your invitation in the dashboard, where you can join the group.".format(inviter_name, group_name)
         html = email_template.render({"user_exists": user_exists, "invitee_name": invitee_name, "message": message,
                                       "url": reverse('account_login'), "button_text": "Sign In"})
