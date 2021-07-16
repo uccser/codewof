@@ -1198,17 +1198,22 @@ class TestCreateInvitationHTML(TestCase):
                                                        self.john.last_name, self.group_north.name, self.sally.email))
         self.assertContains(response, expected, html=True)
 
-    def test_user_does_not_exist_html_contains_name(self):
+    def test_user_does_not_exist_html_contains_no_name(self):
         expected = "<p>Hi,</p>"
         response = HttpResponse(create_invitation_html(False, None, self.john.first_name + " " +
                                                        self.john.last_name, self.group_north.name, "unknown@mail.com"))
         self.assertContains(response, expected, html=True)
 
     def test_user_does_not_exist_html_contains_correct_message(self):
-        expected = "<p>John Doe has invited you to join the Group &#39;Group North&#39;. Click the link below to " \
-                   "sign in. You will see your invitation in the dashboard, where you can join the group.</p>"
+        expected = "<p>John Doe has invited you to join the Group &#39;Group North&#39;. CodeWOF helps you maintain " \
+                   "your programming fitness with short daily programming exercises. With a free account you can " \
+                   "save your progress and track your programming fitness over time. Click the link below to make an " \
+                   "account, using the email unknown@mail.com. You will see your invitation in the dashboard, where " \
+                   "you can join the group. If you already have a CodeWOF account, then add unknown@mail.com to your " \
+                   "profile to make the invitation appear.</p>"
         response = HttpResponse(create_invitation_html(False, None, self.john.first_name + " " +
                                                        self.john.last_name, self.group_north.name, "unknown@mail.com"))
+        print(response.content)
         self.assertContains(response, expected, html=True)
 
     def test_user_does_not_exist_html_contains_correct_link(self):
