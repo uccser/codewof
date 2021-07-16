@@ -399,7 +399,7 @@ class MembershipDeleteView(LoginRequiredMixin, RequestUserIsMembershipUserMixin,
 @login_required()
 @admin_required
 def create_invitations(request, pk, group):
-    """View for sending invitations to join a group."""
+    """View for creating invitations to join a group and sending out emails."""
 
     if request.method == 'POST':
         form = GroupInvitationsForm(request.POST)
@@ -413,31 +413,41 @@ def create_invitations(request, pk, group):
                     user = None
 
                 Invitation(group=group, inviter=request.user, email=email).save()
-                if user is None:
-                    html = create_invitation_html(False, None, request.user.first_name + " " +
-                                                  request.user.last_name, group.name, email)
-                    plain = create_invitation_plaintext(False, None, request.user.first_name + " " +
-                                                        request.user.last_name, group.name, email)
-                else:
-                    html = create_invitation_html(True, user.first_name, request.user.first_name + " " +
-                                                  request.user.last_name, group.name, email)
-                    plain = create_invitation_plaintext(True, user.first_name, request.user.first_name + " " +
-                                                        request.user.last_name, group.name, email)
-
-                send_mail(
-                    'CodeWOF Invitation',
-                    plain,
-                    django_settings.DEFAULT_FROM_EMAIL,
-                    [email],
-                    fail_silently=False,
-                    html_message=html
-                )
+                send_invitation_email(user, request.user, group.name, email)
 
             return HttpResponseRedirect(reverse('users:groups-detail', args=[pk]))
     else:
         form = GroupInvitationsForm()
 
     return render(request, 'users/create_invitations.html', {'form': form})
+
+
+def send_invitation_email(invitee, inviter, group_name, email):
+    """
+    A function to handle sending an invitation email.
+    :param invitee: The User receiving the invite, which is null if the User does not exist yet.
+    :param inviter: The User creating the invite.
+    :param group_name: The name of the Group to be joined.
+    :param email: The invitee's email address.
+    :return:
+    """
+    if invitee is None:
+        html = create_invitation_html(False, None, inviter.first_name + " " + inviter.last_name, group_name, email)
+        plain = create_invitation_plaintext(False, None, inviter.first_name + " " + inviter.last_name, group_name, email)
+    else:
+        html = create_invitation_html(True, invitee.first_name, inviter.first_name + " " + inviter.last_name,
+                                      group_name, email)
+        plain = create_invitation_plaintext(True, invitee.first_name, inviter.first_name + " " + inviter.last_name,
+                                            group_name, email)
+
+    send_mail(
+        'CodeWOF Invitation',
+        plain,
+        django_settings.DEFAULT_FROM_EMAIL,
+        [email],
+        fail_silently=False,
+        html_message=html
+    )
 
 
 def create_invitation_plaintext(user_exists, invitee_name, inviter_name, group_name, email):
