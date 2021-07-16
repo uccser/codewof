@@ -6,7 +6,7 @@ from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
 from django.core import management
 from django.urls import reverse
-from users.views import UserRedirectView, UserUpdateView
+from users.views import UserRedirectView, UserUpdateView, send_invitation_email, create_invitation_plaintext, create_invitation_html
 from codewof.tests.conftest import user
 
 from codewof.tests.codewof_test_data_generator import (
@@ -1130,3 +1130,24 @@ class TestCreateInvitationsView(TestCase):
         self.login_user(self.john)
         resp = self.client.get(reverse('users:groups-memberships-invite', args=[self.group_north.pk]))
         self.assertContains(resp, "<h1>Send Invitations</h1>", html=True)
+
+
+class TestCreateInvitationPlaintext(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_groups()
+
+    def setUp(self):
+        self.john = User.objects.get(pk=1)
+        self.sally = User.objects.get(pk=2)
+        self.group_north = Group.objects.get(name="Group North")
+
+    def test_user_exists(self):
+        expected = "Hi Sally,\n\nJohn Doe has invited you to join the Group 'Group North'. Click the link below to " \
+                   "sign in. You will see your invitation in the dashboard, where you can join the group.\n\n{}" \
+                   "\n\nThanks,\nThe Computer Science Education Research Group".format(reverse('account_login'))
+        self.assertEqual(create_invitation_plaintext(True, self.sally.first_name, self.john.first_name + " " +
+                                                     self.john.last_name, self.group_north.name, self.sally.email),
+                         expected)
