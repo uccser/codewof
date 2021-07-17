@@ -13,6 +13,7 @@ from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.urls import reverse
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
@@ -405,21 +406,56 @@ def create_invitations(request, pk, group):
         form = GroupInvitationsForm(request.POST)
         if form.is_valid():
             emails = form.cleaned_data.get('emails').splitlines()
+            sent = []
+            skipped = []
 
             for email in emails:
+                email = email.strip()
+                if len(Invitation.objects.filter(email=email, group=group)) > 0:
+                    skipped.append(email)
+                    continue
+
                 try:
                     user = EmailAddress.objects.get(email=email).user
                 except EmailAddress.DoesNotExist:
                     user = None
 
+                if user is not None and len(Membership.objects.filter(user=user, group=group)):
+                    skipped.append(email)
+                    continue
+
                 Invitation(group=group, inviter=request.user, email=email).save()
                 send_invitation_email(user, request.user, group.name, email)
+                sent.append(email)
 
+            build_messages(sent, skipped, request)
             return HttpResponseRedirect(reverse('users:groups-detail', args=[pk]))
     else:
         form = GroupInvitationsForm()
 
     return render(request, 'users/create_invitations.html', {'form': form})
+
+
+def build_messages(sent, skipped, request):
+    """
+    Builds Django messages to notify the user which invitation emails were successful.
+    :param sent: A list of emails that invitations were sent to.
+    :param skipped: A list of emails that were skipped.
+    :param request: The request object.
+    :return:
+    """
+    sent_message = "The following emails had invitations sent to them: "
+    skipped_message = "The following emails were skipped either because they have already been invited or " \
+                      "are already a member of the group: "
+    for email in sent:
+        sent_message += email + ", "
+    for email in skipped:
+        skipped_message += email + ", "
+
+    if len(sent) > 0:
+        messages.add_message(request, messages.SUCCESS, sent_message.rstrip(' ,'))
+    if len(skipped) > 0:
+        messages.add_message(request, messages.WARNING, skipped_message.rstrip(' ,'))
 
 
 def send_invitation_email(invitee, inviter, group_name, email):
