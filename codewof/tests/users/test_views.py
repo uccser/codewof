@@ -21,7 +21,7 @@ from codewof.tests.codewof_test_data_generator import (
 )
 from codewof.programming.codewof_utils import check_achievement_conditions
 from programming.models import Achievement
-from users.models import Group, Membership, GroupRole
+from users.models import Group, Membership, GroupRole, Invitation
 
 pytestmark = pytest.mark.django_db
 User = get_user_model()
@@ -1087,6 +1087,7 @@ class TestCreateInvitationsView(TestCase):
         self.john = User.objects.get(pk=1)
         self.sally = User.objects.get(pk=2)
         self.group_north = Group.objects.get(name="Group North")
+        self.group_mystery = Group.objects.get(name="Group Mystery")
         self.client = Client()
 
     def login_user(self, user):
@@ -1110,6 +1111,11 @@ class TestCreateInvitationsView(TestCase):
         resp = self.client.get(reverse('users:groups-memberships-invite', args=[self.group_north.pk]))
         self.assertEqual(resp.status_code, 403)
 
+    def test_view_does_not_exist_if_not_admin_or_member(self):
+        self.login_user(self.john)
+        resp = self.client.get(reverse('users:groups-memberships-invite', args=[self.group_mystery.pk]))
+        self.assertEqual(resp.status_code, 403)
+
     def test_view_uses_correct_template(self):
         self.login_user(self.john)
         resp = self.client.get(reverse('users:groups-memberships-invite', args=[self.group_north.pk]))
@@ -1127,6 +1133,31 @@ class TestCreateInvitationsView(TestCase):
         resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
                                 {'emails': "test@mail.com"})
         self.assertEqual(resp.status_code, 403)
+
+    def test_cannot_post_if_not_admin_or_member(self):
+        self.login_user(self.sally)
+        resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
+                                {'emails': "test@mail.com"})
+        self.assertEqual(resp.status_code, 403)
+
+    def test_new_emails_only(self):
+        self.login_user(self.john)
+        emails = ['user1@mail.com', 'user2@mail.com', 'user3@mail.com']
+        resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
+                                {'emails': '\n'.join(emails)}, follow=True)
+        messages = list(resp.context['messages'])
+        outbox = get_outbox_sorted()
+
+        self.assertEqual(len(outbox), 3)
+        self.assertEqual(outbox[0].to[0], emails[0])
+        self.assertEqual(outbox[1].to[0], emails[1])
+        self.assertEqual(outbox[2].to[0], emails[2])
+        self.assertTrue(Invitation.objects.filter(email=emails[0], group=self.group_north).exists())
+        self.assertTrue(Invitation.objects.filter(email=emails[1], group=self.group_north).exists())
+        self.assertTrue(Invitation.objects.filter(email=emails[2], group=self.group_north).exists())
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'The following emails had invitations sent to them: user1@mail.com, '
+                                           'user2@mail.com, user3@mail.com')
 
     def test_view_contains_title(self):
         self.login_user(self.john)
@@ -1213,7 +1244,6 @@ class TestCreateInvitationHTML(TestCase):
                    "profile to make the invitation appear.</p>"
         response = HttpResponse(create_invitation_html(False, None, self.john.first_name + " " +
                                                        self.john.last_name, self.group_north.name, "unknown@mail.com"))
-        print(response.content)
         self.assertContains(response, expected, html=True)
 
     def test_user_does_not_exist_html_contains_correct_link(self):
