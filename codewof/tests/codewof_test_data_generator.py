@@ -212,6 +212,7 @@ def generate_email_accounts():
 def generate_invitations():
     """Generate invitations for codeWOF tests."""
     group_north = Group.objects.get(name='Group North')
+    group_east = Group.objects.get(name='Group East')
     group_mystery = Group.objects.get(name='Group Mystery')
     user1 = User.objects.get(id=1)
     user2 = User.objects.get(id=2)
@@ -219,16 +220,25 @@ def generate_invitations():
     invitation_1 = Invitation.objects.create(
         email=user1.email,
         group=group_north,
-        inviter=user2
+        inviter=user2,
+        date_sent=datetime.date(2020, 10, 21)
     )
     invitation_2 = Invitation.objects.create(
         email="john@mail.com",
         group=group_mystery,
-        inviter=user2
+        inviter=user2,
+        date_sent=datetime.date(2020, 10, 22)
+    )
+    invitation_3 = Invitation.objects.create(
+        email=user1.email,
+        group=group_east,
+        inviter=user2,
+        date_sent=datetime.date(2020, 10, 20)
     )
 
     invitation_1.save()
     invitation_2.save()
+    invitation_3.save()
 
 
 def generate_achievements():

@@ -142,5 +142,5 @@ class Invitation(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     inviter = models.ForeignKey(User, on_delete=models.CASCADE)
     email = models.EmailField()
-    date_joined = models.DateTimeField(default=timezone.now)
+    date_sent = models.DateTimeField(default=timezone.now)
     date_expires = models.DateTimeField(default=timezone.now()+timezone.timedelta(days=7))

@@ -19,7 +19,8 @@ from codewof.tests.codewof_test_data_generator import (
     generate_questions,
     generate_groups,
     generate_memberships,
-    generate_email_accounts
+    generate_email_accounts,
+    generate_invitations
 )
 from codewof.programming.codewof_utils import check_achievement_conditions
 from programming.models import Achievement
@@ -39,6 +40,8 @@ class UserDetailViewTest(TestCase):
         generate_attempts()
         generate_groups()
         generate_memberships()
+        generate_email_accounts()
+        generate_invitations()
 
     def setUp(self):
         self.client = Client()
@@ -46,6 +49,16 @@ class UserDetailViewTest(TestCase):
         self.group_east = Group.objects.get(name="Group East")
         self.group_west = Group.objects.get(name="Group West")
         self.group_south = Group.objects.get(name="Group South")
+        self.group_mystery = Group.objects.get(name="Group Mystery")
+        self.john = User.objects.get(pk=1)
+        self.sally = User.objects.get(pk=2)
+        self.membership1 = Membership.objects.get(user=self.john, group=self.group_north)
+        self.membership2 = Membership.objects.get(user=self.john, group=self.group_east)
+        self.membership3 = Membership.objects.get(user=self.john, group=self.group_west)
+        self.membership4 = Membership.objects.get(user=self.john, group=self.group_south)
+        self.invitation1 = Invitation.objects.get(email=self.john.email, group=self.group_north, inviter=self.sally)
+        self.invitation2 = Invitation.objects.get(email="john@mail.com", group=self.group_mystery, inviter=self.sally)
+        self.invitation3 = Invitation.objects.get(email=self.john.email, group=self.group_east, inviter=self.sally)
 
     def login_user(self):
         login = self.client.login(email='john@uclive.ac.nz', password='onion')
@@ -83,12 +96,28 @@ class UserDetailViewTest(TestCase):
         self.assertEqual(resp.context['goal'], user.profile.goal)
         self.assertEqual(resp.context['num_questions_answered'], 1)
 
-        # Test the number of memberships and that the memberships are in the correct order (by group name)
+    def test_context_object_memberships(self):
+        self.login_user()
+        user = User.objects.get(id=1)
+        check_achievement_conditions(user.profile)
+        resp = self.client.get('/users/dashboard/')
+
         self.assertEqual(len(resp.context['memberships']), 4)
-        self.assertEqual(resp.context['memberships'][0].group, self.group_east)
-        self.assertEqual(resp.context['memberships'][1].group, self.group_north)
-        self.assertEqual(resp.context['memberships'][2].group, self.group_south)
-        self.assertEqual(resp.context['memberships'][3].group, self.group_west)
+        self.assertEqual(resp.context['memberships'][0], self.membership2)
+        self.assertEqual(resp.context['memberships'][1], self.membership1)
+        self.assertEqual(resp.context['memberships'][2], self.membership4)
+        self.assertEqual(resp.context['memberships'][3], self.membership3)
+
+    def test_context_object_invitations(self):
+        self.login_user()
+        user = User.objects.get(id=1)
+        check_achievement_conditions(user.profile)
+        resp = self.client.get('/users/dashboard/')
+
+        self.assertEqual(len(resp.context['invitations']), 3)
+        self.assertEqual(resp.context['invitations'][0], self.invitation2)
+        self.assertEqual(resp.context['invitations'][1], self.invitation1)
+        self.assertEqual(resp.context['invitations'][2], self.invitation3)
 
     def test_view_contains_groups_title(self):
         self.login_user()
