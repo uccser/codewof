@@ -1,6 +1,7 @@
 """Class to generate test data required for testing codewof system."""
 
 from django.contrib.auth import get_user_model
+from allauth.account.admin import EmailAddress
 from django.core import management
 import datetime
 
@@ -21,7 +22,7 @@ from research.models import (
     StudyRegistration,
 )
 
-from users.models import UserType, Group, GroupRole, Membership
+from users.models import UserType, Group, GroupRole, Membership, Invitation
 
 User = get_user_model()
 
@@ -179,6 +180,40 @@ def generate_memberships():
     membership_4.save()
     membership_5.save()
     membership_6.save()
+
+
+def generate_secondary_emails():
+    """Generates an extra email for user 1 for codeWOF tests."""
+    user = User.objects.get(id=1)
+    email = EmailAddress(
+        user=user,
+        email="john@mail.com",
+        primary=False,
+        verified=True
+    )
+    email.save()
+
+
+def generate_invitations():
+    """Generate invitations for codeWOF tests."""
+    group_north = Group.objects.get(name='Group North')
+    group_mystery = Group.objects.get(name='Group Mystery')
+    user1 = User.objects.get(id=1)
+    user2 = User.objects.get(id=2)
+
+    invitation_1 = Invitation.objects.create(
+        email=user1.email,
+        group=group_north,
+        inviter=user2
+    )
+    invitation_2 = Invitation.objects.create(
+        email="john@mail.com",
+        group=group_mystery,
+        inviter=user2
+    )
+
+    invitation_1.save()
+    invitation_2.save()
 
 
 def generate_achievements():

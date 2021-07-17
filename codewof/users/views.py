@@ -142,6 +142,8 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             groups__isnull=False,
         ).distinct()
         memberships = user.membership_set.all().order_by('group__name')
+        emails = EmailAddress.objects.filter(user=user)
+        invitations = Invitation.objects.filter(email__in=emails.values('email')).order_by('-date_joined')
 
         # TODO: Simplify to one database query
         for study in studies:
@@ -151,6 +153,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             ).exists()
         context['studies'] = studies
         context['memberships'] = memberships
+        context['invitations'] = invitations
         context['codewof_profile'] = self.object.profile
         context['goal'] = user.profile.goal
         context['all_achievements'] = Achievement.objects.all()
