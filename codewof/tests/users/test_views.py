@@ -10,6 +10,7 @@ from django.core import mail
 from django.urls import reverse
 from users.views import UserRedirectView, UserUpdateView, send_invitation_email, create_invitation_plaintext, create_invitation_html
 from codewof.tests.conftest import user
+from allauth.account.admin import EmailAddress
 
 from codewof.tests.codewof_test_data_generator import (
     generate_users,
@@ -17,7 +18,8 @@ from codewof.tests.codewof_test_data_generator import (
     generate_attempts,
     generate_questions,
     generate_groups,
-    generate_memberships
+    generate_memberships,
+    generate_email_accounts
 )
 from codewof.programming.codewof_utils import check_achievement_conditions
 from programming.models import Achievement
@@ -147,7 +149,6 @@ class UserDetailViewTest(TestCase):
     def test_view_contains_group_north_link(self):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
-        print(resp)
         link = "<a class=\"card-link  stretched-link\" href=\"/users/groups/" + str(
             self.group_north.pk) + "/\">View</a>"
         self.assertContains(resp, link, html=True)
@@ -155,7 +156,6 @@ class UserDetailViewTest(TestCase):
     def test_view_contains_group_east_link(self):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
-        print(resp)
         link = "<a class=\"card-link  stretched-link\" href=\"/users/groups/" + str(self.group_east.pk) + "/\">View</a>"
         self.assertContains(resp, link, html=True)
 
@@ -1081,6 +1081,7 @@ class TestCreateInvitationsView(TestCase):
         generate_users(user)
         generate_groups()
         generate_memberships()
+        generate_email_accounts()
         management.call_command("load_group_roles")
 
     def setUp(self):
@@ -1162,7 +1163,7 @@ class TestCreateInvitationsView(TestCase):
     def test_existing_invitation(self):
         self.login_user(self.john)
         email = 'user1@mail.com'
-        Invitation(email=email, group=self.group_north, invitee=self.john).save()
+        Invitation(email=email, group=self.group_north, inviter=self.john).save()
         resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
                                 {'emails': email}, follow=True)
         messages = list(resp.context['messages'])
@@ -1191,7 +1192,7 @@ class TestCreateInvitationsView(TestCase):
     def test_mix_of_new_emails_and_existing_invitations_and_existing_memberships(self):
         self.login_user(self.john)
         emails = ['user1@mail.com', 'user2@mail.com', self.sally.email, 'user3@mail.com']
-        Invitation(email='user2@mail.com', group=self.group_north, invitee=self.john).save()
+        Invitation(email='user2@mail.com', group=self.group_north, inviter=self.john).save()
         resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
                                 {'emails': '\n'.join(emails)}, follow=True)
         messages = list(resp.context['messages'])
@@ -1209,7 +1210,7 @@ class TestCreateInvitationsView(TestCase):
                          'The following emails had invitations sent to them: user1@mail.com, user3@mail.com')
         self.assertEqual(str(messages[1]),
                          'The following emails were skipped either because they have already been '
-                         'invited or are already a member of the group: user2@mail.com ' + self.sally.email)
+                         'invited or are already a member of the group: user2@mail.com, ' + self.sally.email)
 
     def test_view_contains_title(self):
         self.login_user(self.john)

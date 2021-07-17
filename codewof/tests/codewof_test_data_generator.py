@@ -182,16 +182,31 @@ def generate_memberships():
     membership_6.save()
 
 
-def generate_secondary_emails():
-    """Generates an extra email for user 1 for codeWOF tests."""
-    user = User.objects.get(id=1)
-    email = EmailAddress(
-        user=user,
+def generate_email_accounts():
+    """Generates email accounts for user 1 and 2 for codeWOF tests."""
+    user1 = User.objects.get(id=1)
+    user2 = User.objects.get(id=2)
+    email1 = EmailAddress(
+        user=user1,
+        email=user1.email,
+        primary=True,
+        verified=True
+    )
+    email2 = EmailAddress(
+        user=user1,
         email="john@mail.com",
         primary=False,
         verified=True
     )
-    email.save()
+    email3 = EmailAddress(
+        user=user2,
+        email=user2.email,
+        primary=True,
+        verified=True
+    )
+    email1.save()
+    email2.save()
+    email3.save()
 
 
 def generate_invitations():

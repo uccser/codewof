@@ -423,7 +423,7 @@ def create_invitations(request, pk, group):
                 except EmailAddress.DoesNotExist:
                     user = None
 
-                if user is not None and len(Membership.objects.filter(user=user, group=group)):
+                if user is not None and len(Membership.objects.filter(user=user, group=group)) > 0:
                     skipped.append(email)
                     continue
 
