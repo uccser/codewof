@@ -1159,6 +1159,58 @@ class TestCreateInvitationsView(TestCase):
         self.assertEqual(str(messages[0]), 'The following emails had invitations sent to them: user1@mail.com, '
                                            'user2@mail.com, user3@mail.com')
 
+    def test_existing_invitation(self):
+        self.login_user(self.john)
+        email = 'user1@mail.com'
+        Invitation(email=email, group=self.group_north, invitee=self.john).save()
+        resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
+                                {'emails': email}, follow=True)
+        messages = list(resp.context['messages'])
+        outbox = get_outbox_sorted()
+
+        self.assertEqual(len(outbox), 0)
+        self.assertEqual(len(Invitation.objects.filter(email=email, group=self.group_north)), 1)
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'The following emails were skipped either because they have already been '
+                                           'invited or are already a member of the group: user1@mail.com')
+
+    def test_existing_membership(self):
+        self.login_user(self.john)
+        resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
+                                {'emails': self.sally.email}, follow=True)
+        messages = list(resp.context['messages'])
+        outbox = get_outbox_sorted()
+
+        self.assertEqual(len(outbox), 0)
+        self.assertFalse(Invitation.objects.filter(email=self.sally.email, group=self.group_north).exists())
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]),
+                         'The following emails were skipped either because they have already been '
+                         'invited or are already a member of the group: ' + self.sally.email)
+
+    def test_mix_of_new_emails_and_existing_invitations_and_existing_memberships(self):
+        self.login_user(self.john)
+        emails = ['user1@mail.com', 'user2@mail.com', self.sally.email, 'user3@mail.com']
+        Invitation(email='user2@mail.com', group=self.group_north, invitee=self.john).save()
+        resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
+                                {'emails': '\n'.join(emails)}, follow=True)
+        messages = list(resp.context['messages'])
+        outbox = get_outbox_sorted()
+
+        self.assertEqual(len(outbox), 2)
+        self.assertEqual(outbox[0].to[0], emails[0])
+        self.assertEqual(outbox[1].to[0], emails[3])
+        self.assertTrue(Invitation.objects.filter(email=emails[0], group=self.group_north).exists())
+        self.assertTrue(Invitation.objects.filter(email=emails[3], group=self.group_north).exists())
+        self.assertEqual(len(Invitation.objects.filter(email=emails[1], group=self.group_north)), 1)
+        self.assertFalse(Invitation.objects.filter(email=self.sally.email, group=self.group_north).exists())
+        self.assertEqual(len(messages), 2)
+        self.assertEqual(str(messages[0]),
+                         'The following emails had invitations sent to them: user1@mail.com, user3@mail.com')
+        self.assertEqual(str(messages[1]),
+                         'The following emails were skipped either because they have already been '
+                         'invited or are already a member of the group: user2@mail.com ' + self.sally.email)
+
     def test_view_contains_title(self):
         self.login_user(self.john)
         resp = self.client.get(reverse('users:groups-memberships-invite', args=[self.group_north.pk]))
