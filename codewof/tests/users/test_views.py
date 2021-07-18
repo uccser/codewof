@@ -1375,3 +1375,51 @@ class TestSendInvitationEmail(TestCase):
             .format(reverse('account_signup'))
         self.assertEqual(len(outbox), 1)
         self.assertTrue(expected in outbox[0].body)
+
+
+class TestAcceptInvitation(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_groups()
+        generate_memberships()
+        generate_invitations()
+        generate_email_accounts()
+
+    def setUp(self):
+        self.john = User.objects.get(pk=1)
+        self.sally = User.objects.get(pk=2)
+        self.group_mystery = Group.objects.get(name="Group Mystery")
+        self.invitation = Invitation.objects.get(email="john@mail.com", group=self.group_mystery)
+        self.client = Client()
+
+    def login_user(self, user):
+        login = self.client.login(email=user.email, password='onion')
+        self.assertTrue(login)
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation.pk]))
+        self.assertRedirects(resp, '/accounts/login/?next=' + reverse('users:groups-invitations-accept',
+                                                                      args=[self.invitation.pk]))
+
+    def test_cannot_accept_if_other_invitation(self):
+        self.login_user(self.sally)
+        resp = self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_can_accept_if_invitee(self):
+        self.login_user(self.john)
+        resp = self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation.pk]))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_accepting_deletes_the_invitation(self):
+        self.login_user(self.john)
+        self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation.pk]))
+        self.assertFalse(Invitation.objects.filter(email="john@mail.com", group=self.group_mystery).exists())
+
+    def test_accepting_creates_membership(self):
+        self.login_user(self.john)
+        self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation.pk]))
+        member_role = GroupRole.objects.get(name="Member")
+        self.assertTrue(Membership.objects.filter(user=self.john, group=self.group_mystery, role=member_role).exists())

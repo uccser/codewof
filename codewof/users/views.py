@@ -543,3 +543,30 @@ def create_invitation_html(user_exists, invitee_name, inviter_name, group_name, 
         html = email_template.render({"user_exists": user_exists, "invitee_name": invitee_name, "message": message,
                                       "url": reverse('account_signup'), "button_text": "Sign Up"})
     return html
+
+
+def invitee_required(f):
+    """Decorator for checking the user is the invitee of the Invitation."""
+
+    @wraps(f)
+    def g(request, *args, **kwargs):
+        emails = EmailAddress.objects.filter(user=request.user)
+        if Invitation.objects.filter(pk=kwargs['pk'], email__in=emails.values('email')):
+            return f(request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
+
+    return g
+
+
+@require_http_methods(["POST"])
+@login_required()
+@invitee_required
+def accept_invitation(request, pk):
+    """View for accepting an invitation and creating a membership."""
+
+    invitation = Invitation.objects.get(pk=pk)
+    membership_role = GroupRole.objects.get(name="Member")
+    Membership(user=request.user, group=invitation.group, role=membership_role).save()
+    invitation.delete()
+    return HttpResponse()
