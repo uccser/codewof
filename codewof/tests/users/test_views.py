@@ -1423,3 +1423,45 @@ class TestAcceptInvitation(TestCase):
         self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation.pk]))
         member_role = GroupRole.objects.get(name="Member")
         self.assertTrue(Membership.objects.filter(user=self.john, group=self.group_mystery, role=member_role).exists())
+
+
+class TestRejectInvitation(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_groups()
+        generate_memberships()
+        generate_invitations()
+        generate_email_accounts()
+
+    def setUp(self):
+        self.john = User.objects.get(pk=1)
+        self.sally = User.objects.get(pk=2)
+        self.group_mystery = Group.objects.get(name="Group Mystery")
+        self.invitation = Invitation.objects.get(email="john@mail.com", group=self.group_mystery)
+        self.client = Client()
+
+    def login_user(self, user):
+        login = self.client.login(email=user.email, password='onion')
+        self.assertTrue(login)
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.delete(reverse('users:groups-invitations-reject', args=[self.invitation.pk]))
+        self.assertRedirects(resp, '/accounts/login/?next=' + reverse('users:groups-invitations-reject',
+                                                                      args=[self.invitation.pk]))
+
+    def test_cannot_reject_if_other_invitation(self):
+        self.login_user(self.sally)
+        resp = self.client.delete(reverse('users:groups-invitations-reject', args=[self.invitation.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_can_reject_if_invitee(self):
+        self.login_user(self.john)
+        resp = self.client.delete(reverse('users:groups-invitations-reject', args=[self.invitation.pk]))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_rejecting_deletes_the_invitation(self):
+        self.login_user(self.john)
+        self.client.delete(reverse('users:groups-invitations-reject', args=[self.invitation.pk]))
+        self.assertFalse(Invitation.objects.filter(email="john@mail.com", group=self.group_mystery).exists())

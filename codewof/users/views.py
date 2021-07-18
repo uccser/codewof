@@ -570,3 +570,13 @@ def accept_invitation(request, pk):
     Membership(user=request.user, group=invitation.group, role=membership_role).save()
     invitation.delete()
     return HttpResponse()
+
+
+@require_http_methods(["DELETE"])
+@login_required()
+@invitee_required
+def reject_invitation(request, pk):
+    """View for rejecting an invitation."""
+
+    Invitation.objects.get(pk=pk).delete()
+    return HttpResponse()

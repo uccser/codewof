@@ -18,4 +18,5 @@ urlpatterns = [
     path("memberships/<int:pk>/delete/", view=views.MembershipDeleteView.as_view(), name="groups-memberships-delete"),
     path("groups/<int:pk>/memberships/invite/", view=views.create_invitations, name="groups-memberships-invite"),
     path("invitations/<int:pk>/accept/", view=views.accept_invitation, name="groups-invitations-accept"),
+    path("invitations/<int:pk>/reject/", view=views.reject_invitation, name="groups-invitations-reject"),
 ]
