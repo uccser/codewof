@@ -108,13 +108,15 @@ class UserDetailViewTest(TestCase):
         self.assertEqual(resp.context['memberships'][2], self.membership4)
         self.assertEqual(resp.context['memberships'][3], self.membership3)
 
-    def test_context_object_invitations(self):
+    def test_context_object_invitations_in_correct_order_and_missing_invitation_for_unverified_email(self):
         self.login_user()
         user = User.objects.get(id=1)
         check_achievement_conditions(user.profile)
         resp = self.client.get('/users/dashboard/')
+        john_emails = EmailAddress.objects.filter(user=self.john)
+        john_invitations = Invitation.objects.filter(email__in=john_emails.values('email'))
 
-        self.assertEqual(len(resp.context['invitations']), 3)
+        self.assertEqual(len(resp.context['invitations']), len(john_invitations) - 1)
         self.assertEqual(resp.context['invitations'][0], self.invitation2)
         self.assertEqual(resp.context['invitations'][1], self.invitation1)
         self.assertEqual(resp.context['invitations'][2], self.invitation3)
@@ -1218,6 +1220,46 @@ class TestCreateInvitationsView(TestCase):
                          'The following emails were skipped either because they have already been '
                          'invited or are already a member of the group: ' + self.sally.email)
 
+    def test_existing_invitation_to_different_email(self):
+        self.login_user(self.sally)
+        admin_role = GroupRole.objects.get(name="Admin")
+        Membership(user=self.sally, group=self.group_mystery, role=admin_role).save()
+        Invitation(email=self.john.email, group=self.group_mystery, inviter=self.sally).save()
+        resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_mystery.pk]),
+                                {'emails': "john@mail.com"}, follow=True)
+        messages = list(resp.context['messages'])
+        outbox = get_outbox_sorted()
+        john_emails = EmailAddress.objects.filter(user=self.john)
+        john_invitations = Invitation.objects.filter(email__in=john_emails.values('email'), group=self.group_mystery)
+
+        self.assertEqual(len(outbox), 0)
+        self.assertEqual(len(john_invitations), 1)
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]),
+                         'The following emails were skipped either because they have already been '
+                         'invited or are already a member of the group: john@mail.com')
+
+    def test_existing_invitation_to_different_email_in_same_request(self):
+        self.login_user(self.sally)
+        admin_role = GroupRole.objects.get(name="Admin")
+        Membership(user=self.sally, group=self.group_mystery, role=admin_role).save()
+        resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_mystery.pk]),
+                                {'emails': "john@mail.com\n" + self.john.email}, follow=True)
+        messages = list(resp.context['messages'])
+        outbox = get_outbox_sorted()
+        john_emails = EmailAddress.objects.filter(user=self.john)
+        john_invitations = Invitation.objects.filter(email__in=john_emails.values('email'), group=self.group_mystery)
+
+        self.assertEqual(len(outbox), 1)
+        self.assertEqual(outbox[0].to[0], "john@mail.com")
+        self.assertEqual(len(john_invitations), 1)
+        self.assertEqual(len(messages), 2)
+        self.assertEqual(str(messages[0]),
+                         'The following emails had invitations sent to them: john@mail.com')
+        self.assertEqual(str(messages[1]),
+                         'The following emails were skipped either because they have already been '
+                         'invited or are already a member of the group: ' + self.john.email)
+
     def test_mix_of_new_emails_and_existing_invitations_and_existing_memberships(self):
         self.login_user(self.john)
         emails = ['user1@mail.com', 'user2@mail.com', self.sally.email, 'user3@mail.com']
@@ -1391,7 +1433,9 @@ class TestAcceptInvitation(TestCase):
         self.john = User.objects.get(pk=1)
         self.sally = User.objects.get(pk=2)
         self.group_mystery = Group.objects.get(name="Group Mystery")
+        self.group_south = Group.objects.get(name="Group South")
         self.invitation = Invitation.objects.get(email="john@mail.com", group=self.group_mystery)
+        self.invitation_unverified_email = Invitation.objects.get(email="jack@mail.com", group=self.group_south)
         self.client = Client()
 
     def login_user(self, user):
@@ -1406,6 +1450,11 @@ class TestAcceptInvitation(TestCase):
     def test_cannot_accept_if_other_invitation(self):
         self.login_user(self.sally)
         resp = self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_cannot_accept_if_email_unverified(self):
+        self.login_user(self.john)
+        resp = self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation_unverified_email.pk]))
         self.assertEqual(resp.status_code, 403)
 
     def test_can_accept_if_invitee(self):
@@ -1439,7 +1488,9 @@ class TestRejectInvitation(TestCase):
         self.john = User.objects.get(pk=1)
         self.sally = User.objects.get(pk=2)
         self.group_mystery = Group.objects.get(name="Group Mystery")
+        self.group_south = Group.objects.get(name="Group South")
         self.invitation = Invitation.objects.get(email="john@mail.com", group=self.group_mystery)
+        self.invitation_unverified_email = Invitation.objects.get(email="jack@mail.com", group=self.group_south)
         self.client = Client()
 
     def login_user(self, user):
@@ -1454,6 +1505,11 @@ class TestRejectInvitation(TestCase):
     def test_cannot_reject_if_other_invitation(self):
         self.login_user(self.sally)
         resp = self.client.delete(reverse('users:groups-invitations-reject', args=[self.invitation.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_cannot_reject_if_email_unverified(self):
+        self.login_user(self.john)
+        resp = self.client.delete(reverse('users:groups-invitations-reject', args=[self.invitation_unverified_email.pk]))
         self.assertEqual(resp.status_code, 403)
 
     def test_can_reject_if_invitee(self):
