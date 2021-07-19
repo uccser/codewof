@@ -142,7 +142,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             groups__isnull=False,
         ).distinct()
         memberships = user.membership_set.all().order_by('group__name')
-        emails = EmailAddress.objects.filter(user=user)
+        emails = EmailAddress.objects.filter(user=user, verified=True)
         invitations = Invitation.objects.filter(email__in=emails.values('email')).order_by('-date_sent')
 
         # TODO: Simplify to one database query
@@ -420,10 +420,13 @@ def create_invitations(request, pk, group):
 
                 try:
                     user = EmailAddress.objects.get(email=email).user
+                    invitee_emails = EmailAddress.objects.filter(user=user)
                 except EmailAddress.DoesNotExist:
                     user = None
 
-                if user is not None and len(Membership.objects.filter(user=user, group=group)) > 0:
+                if user is not None and (len(Membership.objects.filter(user=user, group=group)) > 0 or
+                                         len(Invitation.objects.filter(email__in=invitee_emails.values('email'),
+                                                                       group=group)) > 0):
                     skipped.append(email)
                     continue
 
@@ -550,7 +553,7 @@ def invitee_required(f):
 
     @wraps(f)
     def g(request, *args, **kwargs):
-        emails = EmailAddress.objects.filter(user=request.user)
+        emails = EmailAddress.objects.filter(user=request.user, verified=True)
         if Invitation.objects.filter(pk=kwargs['pk'], email__in=emails.values('email')):
             return f(request, *args, **kwargs)
         else:
