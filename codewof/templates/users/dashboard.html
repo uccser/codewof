@@ -115,6 +115,12 @@
 {% csrf_token %}
 <script>
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+function getAcceptURL(invitationID) {
+  return `{% url 'users:groups-invitations-accept' 0 %}`.replace("0", invitationID);
+}
+function getRejectURL(invitationID) {
+  return `{% url 'users:groups-invitations-reject' 0 %}`.replace("0", invitationID);
+}
 </script>
 
 <script src="{% static 'js/groups/invitations.js' %}"></script>
