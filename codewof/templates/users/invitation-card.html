@@ -1,8 +1,8 @@
-<div class="card mb-3">
+<div id="{{ invitation.pk }}" class="card mb-3">
   <div class="card-body">
     <h5 class="card-title">{{ invitation.group.name }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">Invited by {{ invitation.inviter.full_name }}</h6>
-    <a href="#" class="card-link">Accept</a>
-    <a href="#" class="card-link text-danger float-right">Ignore</a>
+    <button type="button" class="btn btn-link btn-anchor invitation-accept-link">Accept</button>
+    <button type="button" class="btn btn-link btn-anchor text-danger float-right invitation-reject-link">Ignore</button>
   </div>
 </div>
