@@ -1446,7 +1446,9 @@ class TestAcceptInvitation(TestCase):
         self.sally = User.objects.get(pk=2)
         self.group_mystery = Group.objects.get(name="Group Mystery")
         self.group_class_1 = Group.objects.get(name="Class 1")
+        self.group_north = Group.objects.get(name="Group North")
         self.invitation = Invitation.objects.get(email="john@mail.com", group=self.group_mystery)
+        self.invitation_already_member = Invitation.objects.get(email=self.john.email, group=self.group_north)
         self.invitation_unverified_email = Invitation.objects.get(email="jack@mail.com", group=self.group_class_1)
         self.client = Client()
 
@@ -1479,11 +1481,24 @@ class TestAcceptInvitation(TestCase):
         self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation.pk]))
         self.assertFalse(Invitation.objects.filter(email="john@mail.com", group=self.group_mystery).exists())
 
+    def test_accepting_deletes_duplicate_invitation(self):
+        self.login_user(self.john)
+        self.assertTrue(Invitation.objects.filter(email=self.john.email, group=self.group_mystery).exists())
+        self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation.pk]))
+        self.assertFalse(Invitation.objects.filter(email=self.john.email, group=self.group_mystery).exists())
+
     def test_accepting_creates_membership(self):
         self.login_user(self.john)
         self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation.pk]))
         member_role = GroupRole.objects.get(name="Member")
         self.assertTrue(Membership.objects.filter(user=self.john, group=self.group_mystery, role=member_role).exists())
+
+    def test_accepting_invitation_when_user_is_already_a_member(self):
+        self.login_user(self.john)
+        self.assertEqual(len(Membership.objects.filter(user=self.john, group=self.group_north)), 1)
+        self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation_already_member.pk]))
+        self.assertEqual(len(Membership.objects.filter(user=self.john, group=self.group_north)), 1)
+        self.assertFalse(Invitation.objects.filter(email=self.john.email, group=self.group_north).exists())
 
 
 class TestRejectInvitation(TestCase):

@@ -267,16 +267,15 @@ def generate_invalid_invitations():
     """Generate invalid invitations (unverified email, duplicate invitation, invitation where the user is already a
      member) for codeWOF tests."""
     group_north = Group.objects.get(name='Group North')
-    group_team_300 = Group.objects.get(name='Team 300')
-    group_class_1 = Group.objects.get(name='Class 1')
     group_mystery = Group.objects.get(name='Group Mystery')
+    group_class_1 = Group.objects.get(name='Class 1')
     user1 = User.objects.get(id=1)
     user2 = User.objects.get(id=2)
 
     # Duplicate
     invitation_1 = Invitation.objects.create(
         email=user1.email,
-        group=group_team_300,
+        group=group_mystery,
         inviter=user2,
         date_sent=datetime.date(2020, 10, 21)
     )

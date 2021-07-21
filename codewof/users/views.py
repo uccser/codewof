@@ -145,7 +145,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         memberships = user.membership_set.all().order_by('group__name')
         groups = memberships.values('group').distinct()
         emails = EmailAddress.objects.filter(user=user, verified=True)
-        invitations = Invitation.objects.filter(email__in=emails.values('email'), ).exclude(group__in=groups)\
+        invitations = Invitation.objects.filter(email__in=emails.values('email')).exclude(group__in=groups)\
             .order_by('group__pk', '-date_sent').distinct('group__pk')
 
         # TODO: Simplify to one database query
@@ -573,8 +573,13 @@ def accept_invitation(request, pk):
 
     invitation = Invitation.objects.get(pk=pk)
     membership_role = GroupRole.objects.get(name="Member")
-    Membership(user=request.user, group=invitation.group, role=membership_role).save()
+    if not Membership.objects.filter(user=request.user, group=invitation.group).exists():
+        Membership(user=request.user, group=invitation.group, role=membership_role).save()
+
     invitation.delete()
+    emails = EmailAddress.objects.filter(user=request.user)
+    Invitation.objects.filter(email__in=emails.values('email'), group=invitation.group).delete()
+
     return HttpResponse()
 
 
