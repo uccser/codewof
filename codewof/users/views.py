@@ -576,7 +576,6 @@ def accept_invitation(request, pk):
     if not Membership.objects.filter(user=request.user, group=invitation.group).exists():
         Membership(user=request.user, group=invitation.group, role=membership_role).save()
 
-    invitation.delete()
     emails = EmailAddress.objects.filter(user=request.user)
     Invitation.objects.filter(email__in=emails.values('email'), group=invitation.group).delete()
 
@@ -589,5 +588,8 @@ def accept_invitation(request, pk):
 def reject_invitation(request, pk):
     """View for rejecting an invitation."""
 
-    Invitation.objects.get(pk=pk).delete()
+    invitation = Invitation.objects.get(pk=pk)
+    emails = EmailAddress.objects.filter(user=request.user)
+    Invitation.objects.filter(email__in=emails.values('email'), group=invitation.group).delete()
+
     return HttpResponse()

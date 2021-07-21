@@ -1549,3 +1549,9 @@ class TestRejectInvitation(TestCase):
         self.login_user(self.john)
         self.client.delete(reverse('users:groups-invitations-reject', args=[self.invitation.pk]))
         self.assertFalse(Invitation.objects.filter(email="john@mail.com", group=self.group_mystery).exists())
+
+    def test_rejecting_deletes_duplicate_invitation(self):
+        self.login_user(self.john)
+        self.assertTrue(Invitation.objects.filter(email=self.john.email, group=self.group_mystery).exists())
+        self.client.delete(reverse('users:groups-invitations-reject', args=[self.invitation.pk]))
+        self.assertFalse(Invitation.objects.filter(email=self.john.email, group=self.group_mystery).exists())
