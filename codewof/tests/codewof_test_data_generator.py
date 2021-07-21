@@ -121,12 +121,27 @@ def generate_groups():
         name='Group Mystery',
         description='Few know of this group...'
     )
+    group_6 = Group.objects.create(
+        name='Team 300',
+        description='Rite of Passage'
+    )
+    group_7 = Group.objects.create(
+        name='Team CSERG',
+        description='We made CodeWOF.'
+    )
+    group_8 = Group.objects.create(
+        name='Class 1',
+        description='The Group for Class 1.'
+    )
 
     group_1.save()
     group_2.save()
     group_3.save()
     group_4.save()
     group_5.save()
+    group_6.save()
+    group_7.save()
+    group_8.save()
 
 
 def generate_memberships():
@@ -218,16 +233,15 @@ def generate_email_accounts():
 
 def generate_invitations():
     """Generate invitations for codeWOF tests."""
-    group_north = Group.objects.get(name='Group North')
-    group_east = Group.objects.get(name='Group East')
-    group_south = Group.objects.get(name='Group South')
+    group_team_300 = Group.objects.get(name='Team 300')
+    group_team_cserg = Group.objects.get(name='Team CSERG')
     group_mystery = Group.objects.get(name='Group Mystery')
     user1 = User.objects.get(id=1)
     user2 = User.objects.get(id=2)
 
     invitation_1 = Invitation.objects.create(
         email=user1.email,
-        group=group_north,
+        group=group_team_300,
         inviter=user2,
         date_sent=datetime.date(2020, 10, 21)
     )
@@ -239,21 +253,51 @@ def generate_invitations():
     )
     invitation_3 = Invitation.objects.create(
         email=user1.email,
-        group=group_east,
+        group=group_team_cserg,
         inviter=user2,
         date_sent=datetime.date(2020, 10, 20)
-    )
-    invitation_4 = Invitation.objects.create(
-        email="jack@mail.com",
-        group=group_south,
-        inviter=user2,
-        date_sent=datetime.date(2019, 10, 21)
     )
 
     invitation_1.save()
     invitation_2.save()
     invitation_3.save()
-    invitation_4.save()
+
+
+def generate_invalid_invitations():
+    """Generate invalid invitations (unverified email, duplicate invitation, invitation where the user is already a
+     member) for codeWOF tests."""
+    group_north = Group.objects.get(name='Group North')
+    group_team_300 = Group.objects.get(name='Team 300')
+    group_class_1 = Group.objects.get(name='Class 1')
+    group_mystery = Group.objects.get(name='Group Mystery')
+    user1 = User.objects.get(id=1)
+    user2 = User.objects.get(id=2)
+
+    # Duplicate
+    invitation_1 = Invitation.objects.create(
+        email=user1.email,
+        group=group_team_300,
+        inviter=user2,
+        date_sent=datetime.date(2020, 10, 21)
+    )
+    # Unverified email
+    invitation_2 = Invitation.objects.create(
+        email="jack@mail.com",
+        group=group_class_1,
+        inviter=user2,
+        date_sent=datetime.date(2020, 10, 22)
+    )
+    # Already a member
+    invitation_3 = Invitation.objects.create(
+        email=user1.email,
+        group=group_north,
+        inviter=user2,
+        date_sent=datetime.date(2020, 10, 20)
+    )
+
+    invitation_1.save()
+    invitation_2.save()
+    invitation_3.save()
 
 
 def generate_achievements():

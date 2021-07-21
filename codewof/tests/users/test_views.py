@@ -20,7 +20,8 @@ from codewof.tests.codewof_test_data_generator import (
     generate_groups,
     generate_memberships,
     generate_email_accounts,
-    generate_invitations
+    generate_invitations,
+    generate_invalid_invitations
 )
 from codewof.programming.codewof_utils import check_achievement_conditions
 from programming.models import Achievement
@@ -50,15 +51,18 @@ class UserDetailViewTest(TestCase):
         self.group_west = Group.objects.get(name="Group West")
         self.group_south = Group.objects.get(name="Group South")
         self.group_mystery = Group.objects.get(name="Group Mystery")
+        self.group_team_300 = Group.objects.get(name="Team 300")
+        self.group_team_cserg = Group.objects.get(name="Team CSERG")
+        self.group_class_1 = Group.objects.get(name="Class 1")
         self.john = User.objects.get(pk=1)
         self.sally = User.objects.get(pk=2)
         self.membership1 = Membership.objects.get(user=self.john, group=self.group_north)
         self.membership2 = Membership.objects.get(user=self.john, group=self.group_east)
         self.membership3 = Membership.objects.get(user=self.john, group=self.group_west)
         self.membership4 = Membership.objects.get(user=self.john, group=self.group_south)
-        self.invitation1 = Invitation.objects.get(email=self.john.email, group=self.group_north, inviter=self.sally)
+        self.invitation1 = Invitation.objects.get(email=self.john.email, group=self.group_team_300, inviter=self.sally)
         self.invitation2 = Invitation.objects.get(email="john@mail.com", group=self.group_mystery, inviter=self.sally)
-        self.invitation3 = Invitation.objects.get(email=self.john.email, group=self.group_east, inviter=self.sally)
+        self.invitation3 = Invitation.objects.get(email=self.john.email, group=self.group_team_cserg, inviter=self.sally)
 
     def login_user(self):
         login = self.client.login(email='john@uclive.ac.nz', password='onion')
@@ -98,8 +102,6 @@ class UserDetailViewTest(TestCase):
 
     def test_context_object_memberships(self):
         self.login_user()
-        user = User.objects.get(id=1)
-        check_achievement_conditions(user.profile)
         resp = self.client.get('/users/dashboard/')
 
         self.assertEqual(len(resp.context['memberships']), 4)
@@ -108,18 +110,27 @@ class UserDetailViewTest(TestCase):
         self.assertEqual(resp.context['memberships'][2], self.membership4)
         self.assertEqual(resp.context['memberships'][3], self.membership3)
 
-    def test_context_object_invitations_in_correct_order_and_missing_invitation_for_unverified_email(self):
+    def test_context_object_invitations_in_correct_order(self):
         self.login_user()
-        user = User.objects.get(id=1)
-        check_achievement_conditions(user.profile)
         resp = self.client.get('/users/dashboard/')
         john_emails = EmailAddress.objects.filter(user=self.john)
         john_invitations = Invitation.objects.filter(email__in=john_emails.values('email'))
 
-        self.assertEqual(len(resp.context['invitations']), len(john_invitations) - 1)
+        self.assertEqual(len(john_invitations), 3)
+        self.assertEqual(len(resp.context['invitations']), 3)
         self.assertEqual(resp.context['invitations'][0], self.invitation2)
         self.assertEqual(resp.context['invitations'][1], self.invitation1)
         self.assertEqual(resp.context['invitations'][2], self.invitation3)
+
+    def test_context_object_invitations_is_missing_invalid_invitations(self):
+        self.login_user()
+        generate_invalid_invitations()
+        resp = self.client.get('/users/dashboard/')
+        john_emails = EmailAddress.objects.filter(user=self.john)
+        john_invitations = Invitation.objects.filter(email__in=john_emails.values('email'))
+
+        self.assertEqual(len(john_invitations), 6)
+        self.assertEqual(set(resp.context['invitations']), {self.invitation1, self.invitation2, self.invitation3})
 
     def test_view_contains_groups_title(self):
         self.login_user()
@@ -1428,14 +1439,15 @@ class TestAcceptInvitation(TestCase):
         generate_memberships()
         generate_invitations()
         generate_email_accounts()
+        generate_invalid_invitations()
 
     def setUp(self):
         self.john = User.objects.get(pk=1)
         self.sally = User.objects.get(pk=2)
         self.group_mystery = Group.objects.get(name="Group Mystery")
-        self.group_south = Group.objects.get(name="Group South")
+        self.group_class_1 = Group.objects.get(name="Class 1")
         self.invitation = Invitation.objects.get(email="john@mail.com", group=self.group_mystery)
-        self.invitation_unverified_email = Invitation.objects.get(email="jack@mail.com", group=self.group_south)
+        self.invitation_unverified_email = Invitation.objects.get(email="jack@mail.com", group=self.group_class_1)
         self.client = Client()
 
     def login_user(self, user):
@@ -1483,14 +1495,15 @@ class TestRejectInvitation(TestCase):
         generate_memberships()
         generate_invitations()
         generate_email_accounts()
+        generate_invalid_invitations()
 
     def setUp(self):
         self.john = User.objects.get(pk=1)
         self.sally = User.objects.get(pk=2)
         self.group_mystery = Group.objects.get(name="Group Mystery")
-        self.group_south = Group.objects.get(name="Group South")
+        self.group_class_1 = Group.objects.get(name="Class 1")
         self.invitation = Invitation.objects.get(email="john@mail.com", group=self.group_mystery)
-        self.invitation_unverified_email = Invitation.objects.get(email="jack@mail.com", group=self.group_south)
+        self.invitation_unverified_email = Invitation.objects.get(email="jack@mail.com", group=self.group_class_1)
         self.client = Client()
 
     def login_user(self, user):

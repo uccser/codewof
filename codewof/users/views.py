@@ -141,9 +141,12 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             visible=True,
             groups__isnull=False,
         ).distinct()
+
         memberships = user.membership_set.all().order_by('group__name')
+        groups = memberships.values('group').distinct()
         emails = EmailAddress.objects.filter(user=user, verified=True)
-        invitations = Invitation.objects.filter(email__in=emails.values('email')).order_by('-date_sent')
+        invitations = Invitation.objects.filter(email__in=emails.values('email'), ).exclude(group__in=groups)\
+            .order_by('group__pk', '-date_sent').distinct('group__pk')
 
         # TODO: Simplify to one database query
         for study in studies:
