@@ -206,6 +206,11 @@ cmd_raise_backdate_flags() {
 }
 defhelp raise_backdate_flags 'Raise a flag on all user profiles, requiring a backdate be done on them.'
 
+cmd_remove_expired_invitations() {
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py remove_expired_invitations
+}
+defhelp remove_expired_invitations "Remove all Invitation objects where date_expires is before the current datetime."
+
 cmd_backdate() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py backdate_points_and_achievements --ignore_flags
 }
