@@ -328,11 +328,7 @@ def admin_required(f):
 @admin_required
 @transaction.atomic
 def update_memberships(request, pk, group):
-    """
-    View for updating memberships from JSON.
-
-    TODO: Replace Exception with a more descriptive Exception
-    """
+    """View for updating memberships from JSON."""
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     memberships = body['memberships']

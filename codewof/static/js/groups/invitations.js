@@ -4,13 +4,13 @@
 $(document).ready(function () {
      let invitationAcceptLinks = document.getElementsByClassName("invitation-accept-link");
      for (let link of invitationAcceptLinks) {
-         let invitationID = getID(link.parentNode.parentNode.id)
+         let invitationID = getID(link.parentNode.parentNode.id);
          link.onclick = function () { acceptInvitation(invitationID) }
      }
 
      let invitationRejectLinks = document.getElementsByClassName("invitation-reject-link");
      for (let link of invitationRejectLinks) {
-        let invitationID = getID(link.parentNode.parentNode.id)
+         let invitationID = getID(link.parentNode.parentNode.id);
          link.onclick = function () { rejectInvitation(invitationID) }
      }
 })
@@ -42,7 +42,8 @@ function acceptInvitation(invitationID) {
 }
 
 /**
- * Sends an ajax request to reject an Invitation, and removes the card for that invitation.
+ * Sends an ajax request to reject an Invitation. Upon success, removes the card for that invitation and sets the text
+ * if there are no more invitations.
  * @param invitationID The ID of the Invitation to reject.
  */
 function rejectInvitation(invitationID) {
@@ -53,7 +54,14 @@ function rejectInvitation(invitationID) {
         cache: true,
         headers: {"X-CSRFToken": csrftoken},
         success: function(data, textStatus, xhr) {
-            document.getElementById("invitation-" + invitationID).remove()
+            document.getElementById("invitation-" + invitationID).remove();
+            let invitationsDiv = document.querySelector('#invitations-div');
+            let invitationsCards = invitationsDiv.querySelectorAll('.card');
+            if (invitationsCards.length === 0) {
+                let element = document.createElement("p");
+                element.appendChild(document.createTextNode('You have no invitations.'));
+                document.getElementById("invitations-div").appendChild(element);
+            }
         },
     });
 }
