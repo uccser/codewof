@@ -243,19 +243,22 @@ def generate_invitations():
         email=user1.email,
         group=group_team_300,
         inviter=user2,
-        date_sent=datetime.date(2020, 10, 21)
+        date_sent=datetime.date(2020, 10, 21),
+        date_expires=datetime.date(2021, 10, 21)
     )
     invitation_2 = Invitation.objects.create(
         email="john@mail.com",
         group=group_mystery,
         inviter=user2,
-        date_sent=datetime.date(2020, 10, 22)
+        date_sent=datetime.date(2020, 10, 22),
+        date_expires=datetime.date(2021, 10, 22)
     )
     invitation_3 = Invitation.objects.create(
         email=user1.email,
         group=group_team_cserg,
         inviter=user2,
-        date_sent=datetime.date(2020, 10, 20)
+        date_sent=datetime.date(2020, 10, 20),
+        date_expires=datetime.date(2020, 10, 20)
     )
 
     invitation_1.save()
