@@ -98,16 +98,29 @@ def generate_users(user):
     )
     user_alex.save()
 
+    user_jane = User.objects.create_user(
+        id=4,
+        username='jane',
+        first_name='Jane',
+        last_name='Doe',
+        email='jane@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='student'),
+    )
+    user_jane.save()
+
 
 def generate_groups():
     """Generate groups for codeWOF tests. Groups are generated for user 1, covering all the GroupRoles."""
     group_1 = Group.objects.create(
         name='Group North',
-        description='Group North is the best group.'
+        description='Group North is the best group.',
+        feed_enabled=True
     )
     group_2 = Group.objects.create(
         name='Group East',
-        description='Group East is the best group.'
+        description='Group East is the best group.',
+        feed_enabled=False
     )
     group_3 = Group.objects.create(
         name='Group West',
@@ -390,6 +403,96 @@ def generate_attempts():
                            datetime=datetime.date(2019, 9, 9))
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=True,
                            datetime=datetime.date(2019, 9, 10))
+
+
+def generate_feed_attempts():
+    """
+    Generate attempts for codeWOF tests.
+
+    Attempts are generated for users 1 to 3 and all questions, with attempts created to cover various dates but all
+    passing. These attempts cover what should appear in the feed, with the exception of one as the feed only shows 10.
+    """
+    john = User.objects.get(id=1)
+    sally = User.objects.get(id=2)
+    alex = User.objects.get(id=3)
+
+    program_question = Question.objects.get(slug='program-question-1')
+    functions_question = Question.objects.get(slug='function-question-1')
+    parsons_question = Question.objects.get(slug='parsons-question-1')
+    debugging_question = Question.objects.get(slug='debugging-question-1')
+
+    attempt1 = Attempt.objects.create(profile=john.profile, question=program_question, passed_tests=True,
+                                      datetime=datetime.datetime(2020, 10, 1, 12, 21))
+    attempt2 = Attempt.objects.create(profile=sally.profile, question=parsons_question, passed_tests=True,
+                                      datetime=datetime.datetime(2020, 9, 21, 17, 0))
+    attempt3 = Attempt.objects.create(profile=sally.profile, question=program_question, passed_tests=True,
+                                      datetime=datetime.datetime(2020, 12, 23, 4, 44))
+    attempt4 = Attempt.objects.create(profile=john.profile, question=debugging_question, passed_tests=True,
+                                      datetime=datetime.datetime(2020, 4, 8, 1, 54))
+    attempt5 = Attempt.objects.create(profile=alex.profile, question=debugging_question, passed_tests=True,
+                                      datetime=datetime.datetime(2020, 1, 1, 0, 0))
+    attempt6 = Attempt.objects.create(profile=john.profile, question=parsons_question, passed_tests=True,
+                                      datetime=datetime.datetime(2020, 7, 2, 21, 8))
+    attempt7 = Attempt.objects.create(profile=alex.profile, question=parsons_question, passed_tests=True,
+                                      datetime=datetime.datetime(2020, 2, 7, 0, 31))
+    attempt8 = Attempt.objects.create(profile=alex.profile, question=functions_question, passed_tests=True,
+                                      datetime=datetime.datetime(2020, 9, 21, 18, 30))
+    attempt9 = Attempt.objects.create(profile=alex.profile, question=program_question, passed_tests=True,
+                                      datetime=datetime.datetime(2020, 11, 20, 11, 36))
+    attempt10 = Attempt.objects.create(profile=sally.profile, question=debugging_question, passed_tests=True,
+                                       datetime=datetime.datetime(2020, 5, 11, 9, 11))
+    attempt11 = Attempt.objects.create(profile=john.profile, question=functions_question, passed_tests=True,
+                                       datetime=datetime.datetime(2020, 1, 14, 16, 45))
+
+    attempts = [attempt1, attempt2, attempt3, attempt4, attempt5, attempt6, attempt7, attempt8, attempt9, attempt10,
+                attempt11]
+    for attempt in attempts:
+        attempt.save()
+    return attempts
+
+
+def generate_feed_attempts_failed_tests():
+    """
+    Generate attempts for codeWOF tests.
+
+    Attempts are generated for users 1 to 3 and some questions, with attempts created to cover various dates but all
+    failing. Despite being more recent that the attempts in generate_feed_attempts, they should not appear in the feed
+    as they did not pass the tests.
+    """
+    john = User.objects.get(id=1)
+    sally = User.objects.get(id=2)
+    alex = User.objects.get(id=3)
+
+    program_question = Question.objects.get(slug='program-question-1')
+    parsons_question = Question.objects.get(slug='parsons-question-1')
+    debugging_question = Question.objects.get(slug='debugging-question-1')
+
+    Attempt.objects.create(profile=sally.profile, question=parsons_question, passed_tests=False,
+                           datetime=datetime.datetime(2021, 9, 21, 17, 30)).save()
+    Attempt.objects.create(profile=john.profile, question=program_question, passed_tests=False,
+                           datetime=datetime.datetime(2021, 11, 3, 8, 12)).save()
+    Attempt.objects.create(profile=alex.profile, question=debugging_question, passed_tests=False,
+                           datetime=datetime.datetime(2021, 4, 19, 9, 50)).save()
+
+
+def generate_feed_attempts_non_member():
+    """
+    Generate attempts for codeWOF tests.
+
+    Attempts are generated for user 4 and some questions, with attempts created to cover various dates but all under a
+    member unaffiliated with Group 1. Despite being more recent that the attempts in generate_feed_attempts, they should
+    not appear in the feed as the user is not in Group 1.
+    """
+    jane = User.objects.get(id=4)
+
+    program_question = Question.objects.get(slug='program-question-1')
+    parsons_question = Question.objects.get(slug='parsons-question-1')
+
+    Attempt.objects.create(profile=jane.profile, question=parsons_question, passed_tests=True,
+                           datetime=datetime.datetime(2021, 9, 21, 17, 30)).save()
+    Attempt.objects.create(profile=jane.profile, question=program_question, passed_tests=True,
+                           datetime=datetime.datetime(2021, 11, 3, 8, 12)).save()
+
 
 def generate_attempts_no_defaults():
     """

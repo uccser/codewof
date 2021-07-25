@@ -16,7 +16,7 @@ class UserModelTests(TestCase):
 
     def test_default_username(self):
         user = User.objects.create(
-            id=4,
+            id=100,
             first_name='Test',
             last_name='Case',
             email='testcase@email.com',

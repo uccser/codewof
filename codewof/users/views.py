@@ -279,21 +279,27 @@ class GroupDetailView(LoginRequiredMixin, AdminOrMemberRequiredMixin, DetailView
     def get_context_data(self, **kwargs):
         """Get additional context data for template."""
         user = self.request.user
+        group = self.get_object()
         context = super().get_context_data(**kwargs)
         admin_role = GroupRole.objects.get(name="Admin")
 
-        user_membership = Membership.objects.all().get(user=user, group=self.get_object())
+        user_membership = Membership.objects.all().get(user=user, group=group)
         context['is_admin'] = user_membership.role == admin_role
         context['user_membership'] = user_membership
 
-        context['memberships'] = Membership.objects.filter(group=self.get_object()).order_by('role__name',
-                                                                                             'user__first_name',
-                                                                                             'user__last_name')
+        memberships = Membership.objects.filter(group=group).order_by('role__name', 'user__first_name',
+                                                                      'user__last_name')
+        context['memberships'] = memberships
+
         context['only_admin'] = False
         admins = context['memberships'].filter(role=admin_role)
         if len(admins) == 1 and admins[0] == user_membership:
             context['only_admin'] = True
         context['roles'] = GroupRole.objects.all()
+
+        if group.feed_enabled:
+            context['feed'] = Attempt.objects.filter(passed_tests=True, profile__user__in=memberships.values('user')).order_by('-datetime')[:10]
+
         return context
 
 

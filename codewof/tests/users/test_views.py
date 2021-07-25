@@ -1,3 +1,4 @@
+import datetime
 import json
 
 import pytest
@@ -21,10 +22,13 @@ from codewof.tests.codewof_test_data_generator import (
     generate_memberships,
     generate_email_accounts,
     generate_invitations,
-    generate_invalid_invitations
+    generate_invalid_invitations,
+    generate_feed_attempts,
+    generate_feed_attempts_failed_tests,
+    generate_feed_attempts_non_member
 )
 from codewof.programming.codewof_utils import check_achievement_conditions
-from programming.models import Achievement
+from programming.models import Achievement, Attempt
 from users.models import Group, Membership, GroupRole, Invitation
 
 pytestmark = pytest.mark.django_db
@@ -542,6 +546,7 @@ class TestGroupDetailView(TestCase):
         generate_users(user)
         generate_groups()
         generate_memberships()
+        generate_questions()
         management.call_command("load_group_roles")
 
     def setUp(self):
@@ -647,6 +652,43 @@ class TestGroupDetailView(TestCase):
         sally_membership.save()
         resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
         self.assertFalse(resp.context['only_admin'])
+
+    def test_context_has_sorted_feed(self):
+        attempts = generate_feed_attempts()
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        feed = resp.context['feed']
+
+        self.assertEqual(len(Attempt.objects.all()), 11)
+        self.assertEqual(list(feed), sorted(attempts, key=lambda attempt: attempt.datetime, reverse=True)[:10])
+
+    def test_context_feed_does_not_include_failed_attempts(self):
+        attempts = generate_feed_attempts()
+        generate_feed_attempts_failed_tests()
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        feed = resp.context['feed']
+
+        self.assertEqual(len(Attempt.objects.all()), 14)
+        attempts.remove(Attempt.objects.get(datetime=datetime.datetime(2020, 1, 1, 0, 0)))
+        self.assertEqual(set(feed), set(attempts))
+
+    def test_context_feed_does_not_include_non_member_attempts(self):
+        attempts = generate_feed_attempts()
+        generate_feed_attempts_non_member()
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_north.pk]))
+        feed = resp.context['feed']
+
+        self.assertEqual(len(Attempt.objects.all()), 13)
+        attempts.remove(Attempt.objects.get(datetime=datetime.datetime(2020, 1, 1, 0, 0)))
+        self.assertEqual(set(feed), set(attempts))
+
+    def test_context_has_no_feed_if_disabled(self):
+        generate_feed_attempts()
+        self.login_user()
+        resp = self.client.get(reverse('users:groups-detail', args=[self.group_east.pk]))
+        self.assertFalse('feed' in resp.context.keys())
 
     def test_has_edit_button_if_admin(self):
         self.login_user()
