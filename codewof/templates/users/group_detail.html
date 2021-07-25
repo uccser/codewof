@@ -60,6 +60,16 @@
         </div>
       </div>
     </div>
+
+    {% if feed %}
+    <div class="col-12 col-md-4 mb-3">
+      <h2>Feed</h2>
+
+      {% for attempt in feed %}
+        {% include "users/feed-attempt-card.html" %}
+      {% endfor %}
+    </div>
+    {% endif %}
   </div>
 
   <div class="row">
@@ -120,6 +130,11 @@
   </div>
 </div>
 {% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link href="{% static 'css/group_detail.css' %}" rel="stylesheet">
+{% endblock css %}
 
 {% block scripts %}
 {{ block.super }}
