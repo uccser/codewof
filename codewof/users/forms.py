@@ -175,9 +175,14 @@ class GroupCreateUpdateForm(forms.ModelForm):
         required=not Group._meta.get_field('description').blank
     )
 
+    feed_enabled = forms.BooleanField(
+        label='Enable Feed?',
+        required=False
+    )
+
     class Meta:
         model = Group
-        fields = ('name', 'description')
+        fields = ('name', 'description', 'feed_enabled')
 
 
 class GroupInvitationsForm(forms.Form):

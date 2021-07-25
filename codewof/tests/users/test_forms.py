@@ -56,8 +56,8 @@ class UserFormTests(TestCase):
 
 
 class TestGroupCreateUpdateForm(TestCase):
-    def test_name_and_description_works(self):
-        form_data = {"name": "Group", "description": "Group description"}
+    def test_name_and_description_and_feed_enabled_works(self):
+        form_data = {"name": "Group", "description": "Group description", "feed_enabled": True}
         form = GroupCreateUpdateForm(data=form_data)
 
         self.assertTrue(form.is_valid())
@@ -68,8 +68,8 @@ class TestGroupCreateUpdateForm(TestCase):
 
         self.assertTrue(form.is_valid())
 
-    def test_description_only_does_not_work(self):
-        form_data = {"description": "Group description"}
+    def test_missing_name_does_not_work(self):
+        form_data = {"description": "Group description", "feed_enabled": False}
         form = GroupCreateUpdateForm(data=form_data)
 
         self.assertEqual(form.errors["name"], ["This field is required."])

@@ -91,6 +91,7 @@ class Group(models.Model):
     )
     date_created = models.DateTimeField(default=timezone.now)
     users = models.ManyToManyField(User, through='Membership')
+    feed_enabled = models.BooleanField(default=False)
 
     def __str__(self):
         """Label of the user."""

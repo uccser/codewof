@@ -369,10 +369,18 @@ class TestGroupCreateView(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'users/group_form.html')
 
+    def test_group_fields_are_correct(self):
+        self.login_user()
+        self.client.post(self.url, {'name': 'Cool Group', 'description': 'This is a cool group', 'feed_enabled': True})
+        group = Group.objects.get(name='Cool Group')
+        self.assertEqual(group.description, "This is a cool group")
+        self.assertEqual(group.name, "Cool Group")
+        self.assertTrue(group.feed_enabled)
+
     def test_2_groups_and_2_memberships_are_added_for_2_requests(self):
         self.login_user()
-        self.client.post(self.url, {'name': 'Cool Group', 'description': 'This is a cool group'})
-        self.client.post(self.url, {'name': 'Cool Group 2', 'description': 'This is another cool group'})
+        self.client.post(self.url, {'name': 'Cool Group', 'description': 'This is a cool group', 'feed_enabled': True})
+        self.client.post(self.url, {'name': 'Cool Group 2', 'description': 'This is another cool group', 'feed_enabled': False})
         user = User.objects.get(id=1)
         group1 = Group.objects.get(name='Cool Group')
         group2 = Group.objects.get(name='Cool Group 2')
@@ -404,6 +412,12 @@ class TestGroupCreateView(TestCase):
         self.assertEqual(len(user.group_set.all()), 1)
         self.assertTrue(group in user.group_set.all())
         self.assertTrue(membership in user.membership_set.all())
+
+    def test_feed_enabled_is_false_by_default_if_missing(self):
+        self.login_user()
+        self.client.post(self.url, {'name': 'Cool Group', 'description': 'This is a cool group'})
+        group = Group.objects.get(name='Cool Group')
+        self.assertFalse(group.feed_enabled)
 
     def test_redirects(self):
         self.login_user()
