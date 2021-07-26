@@ -130,7 +130,7 @@
         <tbody>
         {% for attempt in feed %}
         <tr>
-          <td class="feed-text">{{ attempt.profile.user.first_name }} {{ attempt.profile.user.last_name }} answered Question '{{ attempt.question.title }}'</td>
+          <td class="feed-text">{{ attempt.profile.user.first_name }} {{ attempt.profile.user.last_name }} answered Question <a href="{% url 'programming:question' attempt.question.pk %}">{{ attempt.question.title }}</a></td>
           <td class="align-middle">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-hand-thumbs-up"
                  viewBox="0 0 16 16">
