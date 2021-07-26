@@ -41,22 +41,83 @@
   {% endif %}
 
   <div class="row">
-    <div class="col-12 col-md-8 mb-3">
+    <div class="col-12 col-md-8">
       <div class="row">
-        <div class="col">
+        <div class="col mb-3">
           <h1>{{ group.name }}</h1>
           <p>{{ group.description }}</p>
         </div>
 
-        <div class="col-sm-auto">
+        <div class="col-sm-auto mb-3">
           {% if is_admin %}
-            <a class="btn btn-primary btn-sm d-block mb-1 mt-2" href="{% url 'users:groups-edit' group.pk %}">
-              Edit Group</a>
-            <a class="btn btn-danger btn-sm d-block mb-1" href="{% url 'users:groups-delete' group.pk %}">Delete Group</a>
+          <a class="btn btn-primary btn-sm d-block mb-1 mt-2" href="{% url 'users:groups-edit' group.pk %}">
+            Edit Group</a>
+          <a class="btn btn-danger btn-sm d-block mb-1" href="{% url 'users:groups-delete' group.pk %}">Delete
+            Group</a>
           {% endif %}
           <a id="leave-button" class="btn btn-warning btn-sm d-block mb-1 {% if not is_admin %} mt-2 {% endif %}"
              {% if only_admin %} style="visibility: hidden" {% endif %}
              href="{% url 'users:groups-memberships-delete' user_membership.pk %}">Leave Group</a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col mb-3">
+          <a id="add-members-button" class="btn btn-primary mb-1 btn-sm float-right"
+             href="{% url 'users:groups-memberships-invite' group.pk %}">Add Members</a>
+          <h2>Members</h2>
+
+          <table id="members-table" class="table">
+            <thead>
+            <tr>
+              <th scope="col">Email</th>
+              <th scope="col">Name</th>
+              <th scope="col">Role</th>
+              {% if is_admin %}
+              <th scope="col">Remove?</th>
+              {% endif %}
+            </tr>
+            </thead>
+
+            <tbody id="members-table-tbody">
+            {% for membership in memberships %}
+            <tr id="membership-{{ membership.pk }}">
+              <td>{{ membership.user.email }}</td>
+              <td>{{ membership.user.first_name }} {{ membership.user.last_name }}</td>
+              {% if is_admin %}
+              <td>
+                <select id="membership-{{ membership.pk }}-select" class="form-select"
+                        aria-label="Default select example" autocomplete=off>
+                  {% for role in roles %}
+                  {% if role == membership.role %}
+                  <option selected>{{ role }}</option>
+                  {% else %}
+                  <option>{{ role }}</option>
+                  {% endif %}}
+                  {% endfor %}
+                </select>
+              </td>
+              <td class="text-center">
+                <input id="membership-{{ membership.pk }}-checkbox" class="form-check-input" type="checkbox" value=""
+                       autocomplete=off {% if user.pk == membership.user.pk %}disabled{% endif %}>
+              </td>
+              {% else %}
+              <td>{{ membership.role }}</td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col mb-3">
+          <a id="email-button" class="btn btn-primary mb-1 btn-sm float-right" href="">Email All</a>
+          {% if is_admin %}
+          <button id="save-button" class="btn btn-success btn-sm mb-1">Save</button>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -66,83 +127,26 @@
       <h2>Feed</h2>
 
       {% for attempt in feed %}
-        {% include "users/feed-attempt-card.html" %}
+      {% include "users/feed-attempt-card.html" %}
       {% endfor %}
     </div>
     {% endif %}
-  </div>
-
-  <div class="row">
-    <div class="col-12 col-md-8 mb-3">
-      <a id="add-members-button" class="btn btn-primary mb-1 btn-sm float-right" href="{% url 'users:groups-memberships-invite' group.pk %}">Add Members</a>
-      <h2>Members</h2>
-
-      <table id="members-table" class="table">
-        <thead>
-        <tr>
-          <th scope="col">Email</th>
-          <th scope="col">Name</th>
-          <th scope="col">Role</th>
-          {% if is_admin %}
-          <th scope="col">Remove?</th>
-          {% endif %}
-        </tr>
-        </thead>
-
-        <tbody id="members-table-tbody">
-        {% for membership in memberships %}
-        <tr id="membership-{{ membership.pk }}">
-          <td>{{ membership.user.email }}</td>
-          <td>{{ membership.user.first_name }} {{ membership.user.last_name }}</td>
-          {% if is_admin %}
-          <td>
-            <select id="membership-{{ membership.pk }}-select" class="form-select" aria-label="Default select example" autocomplete=off>
-              {% for role in roles %}
-              {% if role == membership.role %}
-              <option selected>{{ role }}</option>
-              {% else %}
-              <option>{{ role }}</option>
-              {% endif %}}
-              {% endfor %}
-            </select>
-          </td>
-          <td class="text-center">
-            <input id="membership-{{ membership.pk }}-checkbox" class="form-check-input" type="checkbox" value="" autocomplete=off {% if user.pk == membership.user.pk %}disabled{% endif %}>
-          </td>
-          {% else %}
-          <td>{{ membership.role }}</td>
-          {% endif %}
-        </tr>
-        {% endfor %}
-        </tbody>
-
-      </table>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 col-md-8 mb-3">
-      <a id="email-button" class="btn btn-primary mb-1 btn-sm float-right" href="">Email All</a>
-      {% if is_admin %}
-        <button id="save-button" class="btn btn-success btn-sm mb-1">Save</button>
-      {% endif %}
-    </div>
   </div>
 </div>
 {% endblock %}
 
 {% block css %}
-    {{ block.super }}
-    <link href="{% static 'css/group_detail.css' %}" rel="stylesheet">
+{{ block.super }}
+<link href="{% static 'css/group_detail.css' %}" rel="stylesheet">
 {% endblock css %}
 
 {% block scripts %}
 {{ block.super }}
 {% csrf_token %}
 <script>
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-const membershipsUpdateURL = "{% url 'users:groups-memberships-update' group.pk %}"
-const currentUserMembershipID = "{{ user_membership.pk }}"
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  const membershipsUpdateURL = "{% url 'users:groups-memberships-update' group.pk %}"
+  const currentUserMembershipID = "{{ user_membership.pk }}"
 </script>
 
 <script src="{% static 'js/groups/group_detail_general.js' %}"></script>
