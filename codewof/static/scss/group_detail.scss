@@ -1,5 +1,6 @@
 svg {
   width:auto !important;
+  cursor: pointer;
 }
 
 .feed-text {
@@ -8,4 +9,8 @@ svg {
 
 input[type=checkbox] {
   display: none;
+}
+
+input[type=checkbox]:checked + svg {
+  fill: #1766ff;
 }
