@@ -1,3 +1,5 @@
+import datetime
+
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -10,6 +12,7 @@ from codewof.tests.codewof_test_data_generator import (
     generate_test_cases,
     generate_achievements,
     generate_study_registrations,
+    generate_likes
 )
 from codewof.programming.codewof_utils import check_achievement_conditions
 from codewof.tests.conftest import user
@@ -276,6 +279,42 @@ class TestLikeAttempt(TestCase):
     def test_cannot_like_attempt_twice(self):
         self.login_user(self.sally)
         Like(user=self.sally, attempt=self.attempt).save()
-        self.assertEqual(len(Like.objects.filter(user=self.sally, attempt=self.attempt)), 1)
-        self.client.post(reverse('programming:like_attempt', args=[self.attempt.pk]))
-        self.assertEqual(len(Like.objects.filter(user=self.sally, attempt=self.attempt)), 1)
+        with self.assertRaisesMessage(Exception, "Cannot like an attempt more than once."):
+            self.client.post(reverse('programming:like_attempt', args=[self.attempt.pk]))
+            self.assertEqual(len(Like.objects.filter(user=self.sally, attempt=self.attempt)), 1)
+
+
+class TestUnLikeAttempt(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_questions()
+        generate_attempts()
+        generate_likes()
+
+    def setUp(self):
+        self.john = User.objects.get(pk=1)
+        self.sally = User.objects.get(pk=2)
+        self.attempt = Attempt.objects.first()
+        self.unliked_attempt = Attempt.objects.filter(datetime=datetime.date(2019, 9, 9)).first()
+        self.client = Client()
+
+    def login_user(self, user):
+        login = self.client.login(email=user.email, password='onion')
+        self.assertTrue(login)
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.delete(reverse('programming:unlike_attempt', args=[self.attempt.pk]))
+        self.assertRedirects(resp, '/accounts/login/?next=' + reverse('programming:unlike_attempt',
+                                                                      args=[self.attempt.pk]))
+
+    def test_unlike_attempt(self):
+        self.login_user(self.sally)
+        self.client.delete(reverse('programming:unlike_attempt', args=[self.attempt.pk]))
+        self.assertFalse(Like.objects.filter(user=self.sally, attempt=self.attempt).exists())
+
+    def test_cannot_unlike_attempt_that_is_not_liked(self):
+        self.login_user(self.sally)
+        with self.assertRaisesMessage(Exception, "Can only unlike liked attempts."):
+            self.client.delete(reverse('programming:unlike_attempt', args=[self.unliked_attempt.pk]))

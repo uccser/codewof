@@ -271,8 +271,26 @@ def like_attempt(request, pk):
     """View for liking an attempt."""
     user = request.user
     attempt = Attempt.objects.get(pk=pk)
+
     if user == attempt.profile.user:
         raise Exception("User cannot like their own attempt.")
+    if Like.objects.filter(user=user, attempt=attempt).exists():
+        raise Exception("Cannot like an attempt more than once.")
 
-    Like.objects.get_or_create(user=user, attempt=attempt)
+    Like(user=user, attempt=attempt).save()
+    return HttpResponse()
+
+
+@require_http_methods(["DELETE"])
+@login_required()
+def unlike_attempt(request, pk):
+    """View for unliking an attempt."""
+    user = request.user
+    attempt = Attempt.objects.get(pk=pk)
+
+    like = Like.objects.filter(user=user, attempt=attempt)
+    if not like.exists():
+        raise Exception("Can only unlike liked attempts.")
+
+    like.delete()
     return HttpResponse()

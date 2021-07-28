@@ -14,6 +14,7 @@ from programming.models import (
     QuestionTypeParsons,
     QuestionTypeDebugging,
     QuestionTypeProgramTestCase,
+    Like
 )
 
 from research.models import (
@@ -403,6 +404,13 @@ def generate_attempts():
                            datetime=datetime.date(2019, 9, 9))
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=True,
                            datetime=datetime.date(2019, 9, 10))
+
+
+def generate_likes():
+    """Generate likes for codeWOF tests."""
+    user = User.objects.get(id=2)
+    attempt = Attempt.objects.first()
+    Like.objects.create(attempt=attempt, user=user)
 
 
 def generate_feed_attempts():
