@@ -123,6 +123,10 @@ class Attempt(models.Model):
         """Text representation of an attempt."""
         return "Attempted '" + str(self.question) + "' on " + str(self.datetime)
 
+    def get_like_users_pks(self):
+        """Returns a list of User primary keys that have liked this attempt."""
+        return list(self.like_set.values_list('user', flat=True))
+
 
 class TestCaseAttempt(models.Model):
     """An intermediate model for storing data of attempts on test cases."""
