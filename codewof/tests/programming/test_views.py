@@ -1,6 +1,7 @@
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
-from programming.models import Question, QuestionTypeProgram, QuestionTypeFunction
+from django.urls import reverse
+from programming.models import Question, QuestionTypeProgram, QuestionTypeFunction, Attempt, Like
 
 from codewof.tests.codewof_test_data_generator import (
     generate_users,
@@ -237,3 +238,44 @@ class SaveQuestionAttemptTest(TestCase):
             str(attempt_two_resp.content, encoding='utf8'),
             {'success': False, 'message': 'Attempt not saved, same as previous attempt.'}
         )
+
+
+class TestLikeAttempt(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_questions()
+        generate_attempts()
+
+    def setUp(self):
+        self.john = User.objects.get(pk=1)
+        self.sally = User.objects.get(pk=2)
+        self.attempt = Attempt.objects.first()
+        self.client = Client()
+
+    def login_user(self, user):
+        login = self.client.login(email=user.email, password='onion')
+        self.assertTrue(login)
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.post(reverse('programming:like_attempt', args=[self.attempt.pk]))
+        self.assertRedirects(resp, '/accounts/login/?next=' + reverse('programming:like_attempt',
+                                                                      args=[self.attempt.pk]))
+
+    def test_like_attempt(self):
+        self.login_user(self.sally)
+        self.client.post(reverse('programming:like_attempt', args=[self.attempt.pk]))
+        self.assertTrue(Like.objects.filter(user=self.sally, attempt=self.attempt).exists())
+
+    def test_cannot_like_own_attempt(self):
+        self.login_user(self.john)
+        with self.assertRaisesMessage(Exception, "User cannot like their own attempt."):
+            self.client.post(reverse('programming:like_attempt', args=[self.attempt.pk]))
+
+    def test_cannot_like_attempt_twice(self):
+        self.login_user(self.sally)
+        Like(user=self.sally, attempt=self.attempt).save()
+        self.assertEqual(len(Like.objects.filter(user=self.sally, attempt=self.attempt)), 1)
+        self.client.post(reverse('programming:like_attempt', args=[self.attempt.pk]))
+        self.assertEqual(len(Like.objects.filter(user=self.sally, attempt=self.attempt)), 1)

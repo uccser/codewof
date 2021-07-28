@@ -146,11 +146,3 @@ class Invitation(models.Model):
     date_sent = models.DateTimeField(default=timezone.now)
     date_expires = models.DateTimeField(default=timezone.now()+timezone.timedelta(days=7))
 
-
-class Like(models.Model):
-    """A class representing the relationship between a User and an Attempt that they like."""
-    from programming.models import Attempt
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    attempt = models.ForeignKey(Attempt, on_delete=models.CASCADE)
-    datetime = models.DateTimeField(default=timezone.now)
