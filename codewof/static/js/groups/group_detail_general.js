@@ -29,23 +29,45 @@ $(document).ready(function () {
     for (let row of feed_tbody.rows) {
         let checkbox = row.querySelector('.thumb');
         let path = row.querySelector('.thumb-path');
-        checkbox.onchange = function () { toggleThumpsUp(checkbox.checked, path) }
+        checkbox.onchange = function () { toggleThumpsUp(checkbox.checked, path, getID(row.id)) }
     }
 })
 
 
 /**
- * Handles when the thumb checkbox is toggled.
- *
- * TODO: Add AJAX request to like or unlike the entry.
- *
- * @param isChecked If the checkbox has been checked (i.e. is the entry liked)
- * @param path The SVG path to change
+ * Handles when the thumb checkbox is toggled by sending an appropriate request, then changes the thumb path upon
+ * success.
+ * @param isChecked If the checkbox has been checked (i.e. is the entry liked).
+ * @param path The SVG path to change.
+ * @param id The ID of the attempt to like/dislike.
  */
-function toggleThumpsUp(isChecked, path) {
+function toggleThumpsUp(isChecked, path, id) {
     if (isChecked) {
-        path.setAttribute("d", THUMBS_UP_FILL);
+        $.ajax({
+            type: "POST",
+            url: getLikeURL(id),
+            async: true,
+            cache: true,
+            headers: {"X-CSRFToken": csrftoken},
+            success: function(data, textStatus, xhr) { path.setAttribute("d", THUMBS_UP_FILL); },
+        });
     } else {
-        path.setAttribute("d", THUMBS_UP);
+        $.ajax({
+            type: "DELETE",
+            url: getUnlikeURL(id),
+            async: true,
+            cache: true,
+            headers: {"X-CSRFToken": csrftoken},
+            success: function(data, textStatus, xhr) { path.setAttribute("d", THUMBS_UP); },
+        });
     }
+}
+
+/**
+ * Extracts the number portion of the id.
+ * @param full The original HTML element id, intended to be the form of <text>-<number>.
+ * @returns {number} The number part of the id as an int.
+ */
+function getID(full) {
+    return parseInt(full.substr(full.indexOf("-") + 1, full.length));
 }

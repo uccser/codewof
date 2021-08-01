@@ -7,10 +7,15 @@ svg {
   font-size: 14px !important;;
 }
 
-input[type=checkbox] {
+.thumb {
   display: none;
 }
 
-input[type=checkbox]:checked + svg {
+.thumb:checked + svg {
   fill: #1766ff;
+}
+
+.thumb:disabled + svg {
+  opacity: 50%;
+  cursor: auto !important;
 }

@@ -129,14 +129,13 @@
       <table class="table">
         <tbody id="feed-table-tbody">
         {% for attempt in feed %}
-        <tr>
+        <tr id="attempt-{{ attempt.pk }}">
           <td class="feed-text">{{ attempt.profile.user.first_name }} {{ attempt.profile.user.last_name }} answered
             Question <a href="{% url 'programming:question' attempt.question.pk %}">{{ attempt.question.title }}</a>
           </td>
           <td class="align-middle">
             <label><input class="thumb" autocomplete=off type="checkbox" {% if user.pk in attempt.get_like_users_pks %}
-                          checked
-                          {% endif %}>
+                          checked {% endif %} {% if user.pk == attempt.profile.user.pk %} disabled {% endif %}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                    class="bi bi-hand-thumbs-up"
                    viewBox="0 0 16 16">
@@ -172,6 +171,12 @@
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
   const membershipsUpdateURL = "{% url 'users:groups-memberships-update' group.pk %}"
   const currentUserMembershipID = "{{ user_membership.pk }}"
+  function getLikeURL(attemptID) {
+    return `{% url 'programming:like_attempt' 0 %}`.replace("0", attemptID);
+  }
+  function getUnlikeURL(attemptID) {
+    return `{% url 'programming:unlike_attempt' 0 %}`.replace("0", attemptID);
+  }
 </script>
 
 <script src="{% static 'js/groups/group_detail_general.js' %}"></script>
