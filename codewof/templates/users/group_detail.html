@@ -132,6 +132,7 @@
         <tr id="attempt-{{ attempt.pk }}">
           <td class="feed-text">{{ attempt.profile.user.first_name }} {{ attempt.profile.user.last_name }} answered
             Question <a href="{% url 'programming:question' attempt.question.pk %}">{{ attempt.question.title }}</a>
+            ({{ attempt.datetime }})
           </td>
           <td class="align-middle">
             <label><input class="thumb" autocomplete=off type="checkbox" {% if user.pk in attempt.get_like_users_pks %}
