@@ -408,10 +408,13 @@ def generate_attempts():
 
 def generate_likes():
     """Generate likes for codeWOF tests."""
-    user = User.objects.get(id=2)
+    sally = User.objects.get(id=2)
+    alex = User.objects.get(id=3)
+    jane = User.objects.get(id=4)
     attempt = Attempt.objects.first()
-    Like.objects.create(attempt=attempt, user=user)
-
+    Like.objects.create(attempt=attempt, user=sally)
+    Like.objects.create(attempt=attempt, user=alex)
+    Like.objects.create(attempt=attempt, user=jane)
 
 def generate_feed_attempts():
     """

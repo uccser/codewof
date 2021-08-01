@@ -10,6 +10,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from model_utils.managers import InheritanceManager
 from utils.TranslatableModel import TranslatableModel
+from users.models import Group, Membership
 
 SMALL = 100
 LARGE = 500
@@ -126,6 +127,12 @@ class Attempt(models.Model):
     def get_like_users_pks(self):
         """Returns a list of User primary keys that have liked this attempt."""
         return list(self.like_set.values_list('user', flat=True))
+
+    def get_like_users_for_group(self, group_pk):
+        group = Group.objects.get(pk=group_pk)
+        memberships = Membership.objects.filter(group=group)
+        like_users = self.like_set.values_list('user', flat=True)
+        return list(like_users.filter(user__in=memberships.values_list('user', flat=True)))
 
 
 class TestCaseAttempt(models.Model):
