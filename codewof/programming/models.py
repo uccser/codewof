@@ -117,6 +117,7 @@ class Attempt(models.Model):
     datetime = models.DateTimeField(default=timezone.now)
     user_code = models.TextField()
     passed_tests = models.BooleanField(default=False)
+    like_users = models.ManyToManyField(User, through='Like')
 
     # skills_hinted = models.ManyToManyField('Skill', blank=True)
 
@@ -131,8 +132,8 @@ class Attempt(models.Model):
     def get_like_users_for_group(self, group_pk):
         group = Group.objects.get(pk=group_pk)
         memberships = Membership.objects.filter(group=group)
-        like_users = self.like_set.values_list('user', flat=True)
-        return list(like_users.filter(user__in=memberships.values_list('user', flat=True)))
+        like_users = User.objects.filter(pk__in=self.like_set.values_list('user', flat=True))
+        return list(like_users.filter(pk__in=memberships.values('user')))
 
 
 class TestCaseAttempt(models.Model):

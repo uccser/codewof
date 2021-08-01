@@ -148,8 +148,10 @@
                 {% endif %}
               </svg>
             </label>
+            {{ attempt.like_users.count }}
           </td>
-          {% endfor %}
+        </tr>
+        {% endfor %}
         </tbody>
 
       </table>
