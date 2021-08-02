@@ -134,7 +134,7 @@ class Attempt(models.Model):
         group = Group.objects.get(pk=group_pk)
         memberships = Membership.objects.filter(group=group)
         like_users = User.objects.filter(pk__in=self.like_set.values_list('user', flat=True))
-        return like_users.filter(pk__in=memberships.values('user'))
+        return like_users.filter(pk__in=memberships.values('user')).order_by('first_name', 'last_name')
 
 
 class TestCaseAttempt(models.Model):

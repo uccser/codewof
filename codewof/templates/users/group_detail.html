@@ -153,7 +153,15 @@
           </td>
 
           <td class="align-middle td-like-count">
-            {{ like_users.count }}
+            {% if like_users %}
+            <span class="span-like-count" data-toggle="tooltip" data-placement="right"
+                  title="{% for user in like_users %}{{ user.full_name }}<br>{% endfor %}">{{ like_users.count }}
+            </span>
+            {% else %}
+            <span class="span-like-count" data-toggle="tooltip" data-placement="right"
+                  title="None">{{ like_users.count }}
+            </span>
+            {% endif %}
           </td>
         </tr>
         {% endfor %}
@@ -178,6 +186,7 @@
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
   const membershipsUpdateURL = "{% url 'users:groups-memberships-update' group.pk %}"
   const currentUserMembershipID = "{{ user_membership.pk }}"
+  const userFullName = "{{ user.full_name }}"
   function getLikeURL(attemptID) {
     return `{% url 'programming:like_attempt' 0 %}`.replace("0", attemptID);
   }

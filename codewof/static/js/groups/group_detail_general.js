@@ -32,18 +32,24 @@ $(document).ready(function () {
         let countColumn = row.querySelector('.td-like-count')
         checkbox.onchange = function () { toggleThumpsUp(checkbox, path, countColumn, getID(row.id)) }
     }
+
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip({html: true})
+    })
 })
 
 
 /**
  * Handles when the thumb checkbox is toggled by sending an appropriate request, then changes the thumb path upon
- * success.
+ * success. Also updates the like counter and tooltip name list.
  * @param checkbox The checkbox input for the like button.
  * @param path The SVG path to change.
  * @param countColumn The td column for the like count.
  * @param id The ID of the attempt to like/dislike.
  */
 function toggleThumpsUp(checkbox, path, countColumn, id) {
+    let likeSpan = countColumn.querySelector('.span-like-count');
+    let currentTitle = $(likeSpan).attr('data-original-title');
     if (checkbox.checked) {
         $.ajax({
             type: "POST",
@@ -53,7 +59,12 @@ function toggleThumpsUp(checkbox, path, countColumn, id) {
             headers: {"X-CSRFToken": csrftoken},
             success: function(data, textStatus, xhr) {
                 path.setAttribute("d", THUMBS_UP_FILL);
-                countColumn.innerText = parseInt(countColumn.innerText) + 1;
+                likeSpan.innerText = parseInt(countColumn.innerText) + 1;
+                if (currentTitle !== "None") {
+                    $(likeSpan).attr('data-original-title', currentTitle + userFullName + "<br>");
+                } else {
+                    $(likeSpan).attr('data-original-title', userFullName + "<br>");
+                }
             },
             error: function (data, textStatus, xhr) {
                 checkbox.checked = false;
@@ -68,7 +79,11 @@ function toggleThumpsUp(checkbox, path, countColumn, id) {
             headers: {"X-CSRFToken": csrftoken},
             success: function(data, textStatus, xhr) {
                 path.setAttribute("d", THUMBS_UP);
-                countColumn.innerText = parseInt(countColumn.innerText) - 1;
+                likeSpan.innerText = parseInt(countColumn.innerText) - 1;
+                $(likeSpan).attr('data-original-title', currentTitle.replace(userFullName + "<br>", ''));
+                if ($(likeSpan).attr('data-original-title') === "") {
+                    $(likeSpan).attr('data-original-title', "None");
+                }
             },
             error: function (data, textStatus, xhr) {
                 checkbox.checked = true;
