@@ -125,15 +125,16 @@ class Attempt(models.Model):
         """Text representation of an attempt."""
         return "Attempted '" + str(self.question) + "' on " + str(self.datetime)
 
-    def get_like_users_pks(self):
-        """Returns a list of User primary keys that have liked this attempt."""
-        return list(self.like_set.values_list('user', flat=True))
-
     def get_like_users_for_group(self, group_pk):
+        """
+        Returns the users that have liked the attempt that are also members of a particular group.
+        :param group_pk: The pk of the group
+        :return: A queryset of User objects
+        """
         group = Group.objects.get(pk=group_pk)
         memberships = Membership.objects.filter(group=group)
         like_users = User.objects.filter(pk__in=self.like_set.values_list('user', flat=True))
-        return list(like_users.filter(pk__in=memberships.values('user')))
+        return like_users.filter(pk__in=memberships.values('user'))
 
 
 class TestCaseAttempt(models.Model):
