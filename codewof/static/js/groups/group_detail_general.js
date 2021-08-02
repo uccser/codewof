@@ -29,7 +29,8 @@ $(document).ready(function () {
     for (let row of feed_tbody.rows) {
         let checkbox = row.querySelector('.thumb');
         let path = row.querySelector('.thumb-path');
-        checkbox.onchange = function () { toggleThumpsUp(checkbox.checked, path, getID(row.id)) }
+        let countColumn = row.querySelector('.td-like-count')
+        checkbox.onchange = function () { toggleThumpsUp(checkbox, path, countColumn, getID(row.id)) }
     }
 })
 
@@ -37,19 +38,26 @@ $(document).ready(function () {
 /**
  * Handles when the thumb checkbox is toggled by sending an appropriate request, then changes the thumb path upon
  * success.
- * @param isChecked If the checkbox has been checked (i.e. is the entry liked).
+ * @param checkbox The checkbox input for the like button.
  * @param path The SVG path to change.
+ * @param countColumn The td column for the like count.
  * @param id The ID of the attempt to like/dislike.
  */
-function toggleThumpsUp(isChecked, path, id) {
-    if (isChecked) {
+function toggleThumpsUp(checkbox, path, countColumn, id) {
+    if (checkbox.checked) {
         $.ajax({
             type: "POST",
             url: getLikeURL(id),
             async: true,
             cache: true,
             headers: {"X-CSRFToken": csrftoken},
-            success: function(data, textStatus, xhr) { path.setAttribute("d", THUMBS_UP_FILL); },
+            success: function(data, textStatus, xhr) {
+                path.setAttribute("d", THUMBS_UP_FILL);
+                countColumn.innerText = parseInt(countColumn.innerText) + 1;
+            },
+            error: function (data, textStatus, xhr) {
+                checkbox.checked = false;
+            }
         });
     } else {
         $.ajax({
@@ -58,7 +66,13 @@ function toggleThumpsUp(isChecked, path, id) {
             async: true,
             cache: true,
             headers: {"X-CSRFToken": csrftoken},
-            success: function(data, textStatus, xhr) { path.setAttribute("d", THUMBS_UP); },
+            success: function(data, textStatus, xhr) {
+                path.setAttribute("d", THUMBS_UP);
+                countColumn.innerText = parseInt(countColumn.innerText) - 1;
+            },
+            error: function (data, textStatus, xhr) {
+                checkbox.checked = true;
+            }
         });
     }
 }
