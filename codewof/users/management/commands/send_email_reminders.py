@@ -90,7 +90,7 @@ class Command(BaseCommand):
         for time_zone_string, _ in User.TIMEZONES:
             time_zone = pytz.timezone(time_zone_string)
             date_time = datetime.now(time_zone)
-            weekday_num = Weekday(date_time.today().weekday())
+            weekday_num = Weekday(date_time.weekday())
 
             if weekday_num == Weekday.MONDAY:
                 batch = User.objects.filter(remind_on_monday=True, timezone=time_zone_string)
