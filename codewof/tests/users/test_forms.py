@@ -12,7 +12,8 @@ class UserFormTests(TestCase):
         management.call_command("load_user_types")
 
     def test_required_fields_only(self):
-        form_data = {"first_name": "John", "last_name": "Doe", "user_type": UserType.objects.get(slug='student').pk}
+        form_data = {"first_name": "John", "last_name": "Doe", "user_type": UserType.objects.get(slug='student').pk,
+                     "timezone": "Pacific/Auckland"}
         form = UserChangeForm(data=form_data)
 
         self.assertTrue(form.is_valid())
@@ -21,7 +22,7 @@ class UserFormTests(TestCase):
         form_data = {"first_name": "John", "last_name": "Doe", "user_type": UserType.objects.get(slug='student').pk,
                      "remind_on_monday": True, "remind_on_tuesday": False, "remind_on_wednesday": False,
                      "remind_on_thursday": True, "remind_on_friday": False, "remind_on_saturday": False,
-                     "remind_on_sunday": False}
+                     "remind_on_sunday": False, "timezone": "Pacific/Auckland"}
         form = UserChangeForm(data=form_data)
 
         self.assertTrue(form.is_valid())
@@ -30,7 +31,7 @@ class UserFormTests(TestCase):
         form_data = {"first_name": "John", "last_name": "Doe", "user_type": UserType.objects.get(slug='teacher').pk,
                      "remind_on_monday": True, "remind_on_tuesday": True, "remind_on_wednesday": True,
                      "remind_on_thursday": True, "remind_on_friday": True, "remind_on_saturday": True,
-                     "remind_on_sunday": True}
+                     "remind_on_sunday": True, "timezone": "Pacific/Auckland"}
         form = UserChangeForm(data=form_data)
 
         self.assertTrue(form.is_valid())
@@ -39,7 +40,7 @@ class UserFormTests(TestCase):
         form_data = {"first_name": "John", "last_name": "Doe", "user_type": UserType.objects.get(slug='other').pk,
                      "remind_on_monday": False, "remind_on_tuesday": False, "remind_on_wednesday": False,
                      "remind_on_thursday": False, "remind_on_friday": False, "remind_on_saturday": False,
-                     "remind_on_sunday": False}
+                     "remind_on_sunday": False, "timezone": "Pacific/Auckland"}
         form = UserChangeForm(data=form_data)
 
         self.assertTrue(form.is_valid())
@@ -53,3 +54,9 @@ class UserFormTests(TestCase):
         form = UserChangeForm(data={"last_name": ""})
 
         self.assertEqual(form.errors["last_name"], ["This field is required."])
+
+    def test_invalid_timezone(self):
+        form = UserChangeForm(data={"timezone": "Pacific/Wellington"})
+
+        self.assertEqual(form.errors["timezone"],
+                         ["Select a valid choice. Pacific/Wellington is not one of the available choices."])

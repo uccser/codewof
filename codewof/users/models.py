@@ -29,6 +29,9 @@ class UserType(models.Model):
 class User(AbstractUser):
     """User of website."""
 
+    import pytz
+    TIMEZONES = tuple(zip(pytz.all_timezones, pytz.all_timezones))
+
     username = models.CharField(
         max_length=12,
         default='user',
@@ -55,6 +58,9 @@ class User(AbstractUser):
     remind_on_friday = models.BooleanField(default=False)
     remind_on_saturday = models.BooleanField(default=False)
     remind_on_sunday = models.BooleanField(default=False)
+
+    # Determine when to send the email reminder
+    timezone = models.CharField(max_length=32, choices=TIMEZONES, default='Pacific/Auckland')
 
     REMINDER_DAYS = [remind_on_monday, remind_on_tuesday, remind_on_wednesday, remind_on_thursday, remind_on_friday,
                      remind_on_saturday, remind_on_sunday]
