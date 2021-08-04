@@ -20,49 +20,77 @@ from django.core import mail
 User = get_user_model()
 
 
-def mocked_today_monday():
-    """A Monday"""
-    return datetime.datetime(2021, 5, 24, tzinfo=timezone.get_current_timezone())
+NZT_TIME_ZONE = pytz.timezone("Pacific/Auckland")
+EST_TIME_ZONE = pytz.timezone("EST")
 
 
-def mocked_today_monday_9am():
-    """A Monday at 9am"""
-    return datetime.datetime(2021, 5, 24, 9, 0, 0, tzinfo=timezone.get_current_timezone())
+def mocked_today_monday_9am_side_effect(*args, **kwargs):
+    nzt = datetime.datetime(2021, 5, 24, 9, 0, 0, tzinfo=timezone.get_current_timezone())
+    if args[0] == NZT_TIME_ZONE:
+        return nzt
+    elif args[0] == EST_TIME_ZONE:
+        # NZT is 16 hours ahead of EST
+        return nzt - datetime.timedelta(hours=16)
 
 
-def mocked_today_monday_1am():
-    """A Monday at 1am"""
-    return datetime.datetime(2021, 5, 24, 1, 0, 0, tzinfo=timezone.get_current_timezone())
+def mocked_today_tuesday_9am_side_effect(*args, **kwargs):
+    nzt = datetime.datetime(2021, 5, 25, 9, 0, 0, tzinfo=timezone.get_current_timezone())
+    if args[0] == NZT_TIME_ZONE:
+        return nzt
+    elif args[0] == EST_TIME_ZONE:
+        # NZT is 16 hours ahead of EST
+        return nzt - datetime.timedelta(hours=16)
 
 
-def mocked_today_tuesday():
-    """A Tuesday"""
-    return datetime.datetime(2021, 5, 25, tzinfo=timezone.get_current_timezone())
+def mocked_today_wednesday_9am_side_effect(*args, **kwargs):
+
+    nzt = datetime.datetime(2021, 5, 26, 9, 0, 0, tzinfo=timezone.get_current_timezone())
+    if args[0] == NZT_TIME_ZONE:
+        return nzt
+    elif args[0] == EST_TIME_ZONE:
+        # NZT is 16 hours ahead of EST
+        return nzt - datetime.timedelta(hours=16)
 
 
-def mocked_today_wednesday():
-    """A Wednesday"""
-    return datetime.datetime(2021, 5, 26, tzinfo=timezone.get_current_timezone())
+def mocked_today_thursday_9am_side_effect(*args, **kwargs):
+
+    nzt = datetime.datetime(2021, 5, 27, 9, 0, 0, tzinfo=timezone.get_current_timezone())
+    if args[0] == NZT_TIME_ZONE:
+        return nzt
+    elif args[0] == EST_TIME_ZONE:
+        # NZT is 16 hours ahead of EST
+        return nzt - datetime.timedelta(hours=16)
 
 
-def mocked_today_thursday():
-    """A Thursday"""
-    return datetime.datetime(2021, 5, 27, tzinfo=timezone.get_current_timezone())
+def mocked_today_friday_9am_side_effect(*args, **kwargs):
+
+    nzt = datetime.datetime(2021, 5, 28, 9, 0, 0, tzinfo=timezone.get_current_timezone())
+    if args[0] == NZT_TIME_ZONE:
+        return nzt
+    elif args[0] == EST_TIME_ZONE:
+        # NZT is 16 hours ahead of EST
+        return nzt - datetime.timedelta(hours=16)
 
 
-def mocked_today_friday():
-    """A Friday"""
-    return datetime.datetime(2021, 5, 28, tzinfo=timezone.get_current_timezone())
+def mocked_today_saturday_9am_side_effect(*args, **kwargs):
+
+    nzt = datetime.datetime(2021, 5, 29, 9, 0, 0, tzinfo=timezone.get_current_timezone())
+    if args[0] == NZT_TIME_ZONE:
+        return nzt
+    elif args[0] == EST_TIME_ZONE:
+        # NZT is 16 hours ahead of EST
+        return nzt - datetime.timedelta(hours=16)
 
 
-def mocked_today_saturday():
-    """A Saturday"""
-    return datetime.datetime(2021, 5, 29, tzinfo=timezone.get_current_timezone())
+def mocked_today_sunday_9am_side_effect(*args, **kwargs):
 
+    nzt = datetime.datetime(2021, 5, 30, 9, 0, 0, tzinfo=timezone.get_current_timezone())
+    if args[0] == NZT_TIME_ZONE:
+        return nzt
+    elif args[0] == EST_TIME_ZONE:
+        # NZT is 16 hours ahead of EST
+        return nzt - datetime.timedelta(hours=16)
 
-def mocked_today_sunday():
-    """A Sunday"""
-    return datetime.datetime(2021, 5, 30, tzinfo=timezone.get_current_timezone())
 
 def mocked_timezones():
     return ("Pacific/Auckland", "Pacific/Auckland"), ("EST", "EST")
@@ -80,69 +108,56 @@ class GetUsersToEmailTests(TestCase):
         self.jane = User.objects.get(id=3)
         self.lazy = User.objects.get(id=4)
         self.brown = User.objects.get(id=5)
+        self.yankee = User.objects.get(id=6)
 
     @mock.patch("users.management.commands.send_email_reminders.datetime")
     @mock.patch("users.management.commands.send_email_reminders.User.TIMEZONES", mocked_timezones())
     def test_monday_returns_three_users(self, mocked_datetime):
-        mocked_datetime.now.return_value = mocked_today_monday()
+        mocked_datetime.now.side_effect = mocked_today_monday_9am_side_effect
         result = Command().get_users_to_email()
         self.assertEqual({self.john, self.sally, self.brown}, set(result))
 
     @mock.patch("users.management.commands.send_email_reminders.datetime")
     @mock.patch("users.management.commands.send_email_reminders.User.TIMEZONES", mocked_timezones())
     def test_tuesday_returns_one_user(self, mocked_datetime):
-        mocked_datetime.now.return_value = mocked_today_tuesday()
+        mocked_datetime.now.side_effect = mocked_today_tuesday_9am_side_effect
         result = Command().get_users_to_email()
         self.assertEqual({self.brown}, set(result))
 
     @mock.patch("users.management.commands.send_email_reminders.datetime")
     @mock.patch("users.management.commands.send_email_reminders.User.TIMEZONES", mocked_timezones())
     def test_wednesday_returns_two_users(self, mocked_datetime):
-        mocked_datetime.now.return_value = mocked_today_wednesday()
+        mocked_datetime.now.side_effect = mocked_today_wednesday_9am_side_effect
         result = Command().get_users_to_email()
         self.assertEqual({self.sally, self.brown}, set(result))
 
     @mock.patch("users.management.commands.send_email_reminders.datetime")
     @mock.patch("users.management.commands.send_email_reminders.User.TIMEZONES", mocked_timezones())
     def test_thursday_returns_two_users(self, mocked_datetime):
-        mocked_datetime.now.return_value = mocked_today_thursday()
+        mocked_datetime.now.side_effect = mocked_today_thursday_9am_side_effect
         result = Command().get_users_to_email()
         self.assertEqual({self.john, self.brown}, set(result))
 
     @mock.patch("users.management.commands.send_email_reminders.datetime")
     @mock.patch("users.management.commands.send_email_reminders.User.TIMEZONES", mocked_timezones())
     def test_friday_returns_two_users(self, mocked_datetime):
-        mocked_datetime.now.return_value = mocked_today_friday()
+        mocked_datetime.now.side_effect = mocked_today_friday_9am_side_effect
         result = Command().get_users_to_email()
         self.assertEqual({self.sally, self.brown}, set(result))
 
     @mock.patch("users.management.commands.send_email_reminders.datetime")
     @mock.patch("users.management.commands.send_email_reminders.User.TIMEZONES", mocked_timezones())
     def test_saturday_returns_two_users(self, mocked_datetime):
-        mocked_datetime.now.return_value = mocked_today_saturday()
+        mocked_datetime.now.side_effect = mocked_today_saturday_9am_side_effect
         result = Command().get_users_to_email()
         self.assertEqual({self.jane, self.brown}, set(result))
 
     @mock.patch("users.management.commands.send_email_reminders.datetime")
     @mock.patch("users.management.commands.send_email_reminders.User.TIMEZONES", mocked_timezones())
     def test_sunday_returns_no_users(self, mocked_datetime):
-        mocked_datetime.now.return_value = mocked_today_sunday()
+        mocked_datetime.now.side_effect = mocked_today_sunday_9am_side_effect
         result = Command().get_users_to_email()
         self.assertEqual(set(), set(result))
-
-    @mock.patch("users.management.commands.send_email_reminders.datetime")
-    @mock.patch("users.management.commands.send_email_reminders.User.TIMEZONES", mocked_timezones())
-    def test_only_new_zealanders_at_local_9am(self, mocked_datetime):
-        mocked_datetime.now.return_value = mocked_today_monday_9am()
-        result = Command().get_users_to_email()
-        self.assertEqual({self.john, self.sally, self.brown}, set(result))
-
-    # @mock.patch("users.management.commands.send_email_reminders.datetime")
-    # @mock.patch("users.management.commands.send_email_reminders.User.TIMEZONES", mocked_timezones())
-    # def test_only_est_at_local_1am(self, mocked_datetime):
-    #     mocked_datetime.now.return_value = mocked_today_monday_1am()
-    #     result = Command().get_users_to_email()
-    #     self.assertEqual({self.john, self.sally, self.brown}, set(result))
 
 
 class GetDaysSinceLastAttemptTests(TestCase):

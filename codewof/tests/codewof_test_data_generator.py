@@ -333,21 +333,21 @@ def generate_users_with_notifications(user):
     )
     user_brown.save()
 
-    # user_yankee = User.objects.create_user(
-    #     id=6,
-    #     username='yankee',
-    #     first_name='Yankee',
-    #     last_name='Doodle',
-    #     email='user6@uclive.ac.nz',
-    #     password='onion',
-    #     user_type=UserType.objects.get(slug='student'),
-    #     remind_on_monday=True,
-    #     remind_on_tuesday=True,
-    #     remind_on_wednesday=True,
-    #     remind_on_thursday=True,
-    #     remind_on_friday=True,
-    #     remind_on_saturday=True,
-    #     remind_on_sunday=False,
-    #     timezone="EST"
-    # )
-    # user_yankee.save()
+    user_yankee = User.objects.create_user(
+        id=6,
+        username='yankee',
+        first_name='Yankee',
+        last_name='Doodle',
+        email='user6@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='student'),
+        remind_on_monday=True,
+        remind_on_tuesday=False,
+        remind_on_wednesday=False,
+        remind_on_thursday=False,
+        remind_on_friday=False,
+        remind_on_saturday=False,
+        remind_on_sunday=False,
+        timezone="EST"
+    )
+    user_yankee.save()

@@ -1,4 +1,5 @@
-import datetime
+from datetime import datetime
+from datetime import time
 from enum import Enum
 
 import pytz
@@ -6,7 +7,6 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.core.management import BaseCommand
 from django.utils import timezone
-from datetime import datetime
 from users.models import User
 from programming.models import Attempt
 from utils.Weekday import Weekday
@@ -90,6 +90,9 @@ class Command(BaseCommand):
         for time_zone_string, _ in User.TIMEZONES:
             time_zone = pytz.timezone(time_zone_string)
             date_time = datetime.now(time_zone)
+            if date_time.time() < time(9, 0, 0) or date_time.time() >= time(10, 0, 0):
+                continue
+
             weekday_num = Weekday(date_time.weekday())
 
             if weekday_num == Weekday.MONDAY:
