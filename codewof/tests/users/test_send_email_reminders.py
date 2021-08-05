@@ -300,76 +300,88 @@ class BuildEmailPlainTests(TestCase):
         self.assertTrue(self.message in self.plain)
 
 
-# class HandleTests(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         # never modify this object in tests - read only
-#         generate_users_with_notifications(user)
-#         generate_questions()
-#         generate_attempts_no_defaults()
-#
-#     def setUp(self):
-#         self.john = User.objects.get(id=1)
-#         self.sally = User.objects.get(id=2)
-#         self.jane = User.objects.get(id=3)
-#         self.lazy = User.objects.get(id=4)
-#         self.brown = User.objects.get(id=5)
-#
-#         self.no_attempts_message = Command().create_message(None)
-#         self.long_time_message = Command().create_message(15)
-#         self.recent_message = Command().create_message(1)
-#         self.awhile_message = Command().create_message(8)
-#
-#         self.monday_outbox_sorted = self.get_monday_outbox_sorted()
-#         self.saturday_outbox_sorted = self.get_saturday_outbox_sorted()
-#
-#     def call_command(self, *args, **kwargs):
-#         call_command(
-#             "send_email_reminders",
-#             *args,
-#             stdout=StringIO(),
-#             stderr=StringIO(),
-#             **kwargs,
-#         )
-#
-#     @patch("users.management.commands.send_email_reminders.timezone.now", mocked_today_monday)
-#     def get_monday_outbox_sorted(self):
-#         self.call_command()
-#         result = sorted(mail.outbox, key=lambda x: x.to)
-#         mail.outbox = []
-#         return result
-#
-#     @patch("users.management.commands.send_email_reminders.timezone.now", mocked_today_saturday)
-#     def get_saturday_outbox_sorted(self):
-#         self.call_command()
-#         result = sorted(mail.outbox, key=lambda x: x.to)
-#         mail.outbox = []
-#         return result
-#
-#     # MONDAY TESTS
-#     def test_monday_notifies_three_users(self):
-#         self.assertEqual(len(self.monday_outbox_sorted), 3)
-#
-#     def test_john_notified_on_monday_with_recent_message(self):
-#         self.assertTrue(self.john.first_name in self.monday_outbox_sorted[0].body)
-#         self.assertTrue(self.recent_message in self.monday_outbox_sorted[0].body)
-#
-#     def test_sally_notified_on_monday_with_awhile_message(self):
-#         self.assertTrue(self.sally.first_name in self.monday_outbox_sorted[1].body)
-#         self.assertTrue(self.awhile_message in self.monday_outbox_sorted[1].body)
-#
-#     def test_brown_notified_on_monday_with_no_attempts_message(self):
-#         self.assertTrue(self.brown.first_name in self.monday_outbox_sorted[2].body)
-#         self.assertTrue(self.no_attempts_message in self.monday_outbox_sorted[2].body)
-#
-#     # SATURDAY TESTS
-#     def test_saturday_notifies_two_users(self):
-#         self.assertEqual(len(self.saturday_outbox_sorted), 2)
-#
-#     def test_jane_notified_on_saturday_with_long_time_message(self):
-#         self.assertTrue(self.jane.first_name in self.saturday_outbox_sorted[0].body)
-#         self.assertTrue(self.long_time_message in self.saturday_outbox_sorted[0].body)
-#
-#     def test_brown_notified_on_saturday_with_no_attempts_message(self):
-#         self.assertTrue(self.brown.first_name in self.saturday_outbox_sorted[1].body)
-#         self.assertTrue(self.no_attempts_message in self.saturday_outbox_sorted[1].body)
+class HandleTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests - read only
+        generate_users_with_notifications(user)
+        generate_questions()
+        generate_attempts_no_defaults()
+
+    def setUp(self):
+        self.john = User.objects.get(id=1)
+        self.sally = User.objects.get(id=2)
+        self.jane = User.objects.get(id=3)
+        self.lazy = User.objects.get(id=4)
+        self.brown = User.objects.get(id=5)
+        self.chatham = User.objects.get(id=8)
+
+        self.no_attempts_message = Command().create_message(None)
+        self.long_time_message = Command().create_message(15)
+        self.recent_message = Command().create_message(1)
+        self.awhile_message = Command().create_message(8)
+
+        self.monday_outbox_sorted = self.get_monday_outbox_sorted()
+        self.saturday_outbox_sorted = self.get_saturday_outbox_sorted()
+
+    def call_command(self, *args, **kwargs):
+        call_command(
+            "send_email_reminders",
+            *args,
+            stdout=StringIO(),
+            stderr=StringIO(),
+            **kwargs,
+        )
+
+    @mock.patch("users.management.commands.send_email_reminders.timezone")
+    @mock.patch("users.management.commands.send_email_reminders.datetime")
+    @mock.patch("users.management.commands.send_email_reminders.User.TIMEZONES", mocked_timezones())
+    def get_monday_outbox_sorted(self, mocked_datetime, mocked_timezone):
+        mocked_datetime.now.side_effect = mocked_today_monday_9am_side_effect
+        mocked_timezone.now.return_value = datetime.datetime(2021, 5, 24, 9, 0, 0,
+                                                             tzinfo=timezone.get_current_timezone())
+        self.call_command()
+        result = sorted(mail.outbox, key=lambda x: x.to)
+        mail.outbox = []
+        return result
+
+    @mock.patch("users.management.commands.send_email_reminders.datetime")
+    @mock.patch("users.management.commands.send_email_reminders.User.TIMEZONES", mocked_timezones_nz_only())
+    def get_saturday_outbox_sorted(self, mocked_datetime):
+        mocked_datetime.now.side_effect = mocked_today_saturday_9am_side_effect
+        self.call_command()
+        result = sorted(mail.outbox, key=lambda x: x.to)
+        mail.outbox = []
+        return result
+
+    # MONDAY TESTS
+    def test_monday_notifies_four_users(self):
+        self.assertEqual(len(self.monday_outbox_sorted), 4)
+
+    def test_john_notified_on_monday_with_recent_message(self):
+        self.assertTrue(self.john.first_name in self.monday_outbox_sorted[0].body)
+        self.assertTrue(self.recent_message in self.monday_outbox_sorted[0].body)
+
+    def test_sally_notified_on_monday_with_awhile_message(self):
+        self.assertTrue(self.sally.first_name in self.monday_outbox_sorted[1].body)
+        self.assertTrue(self.awhile_message in self.monday_outbox_sorted[1].body)
+
+    def test_brown_notified_on_monday_with_no_attempts_message(self):
+        self.assertTrue(self.brown.first_name in self.monday_outbox_sorted[2].body)
+        self.assertTrue(self.no_attempts_message in self.monday_outbox_sorted[2].body)
+
+    def test_chatham_notified_on_monday_with_no_attempts_message(self):
+        self.assertTrue(self.chatham.first_name in self.monday_outbox_sorted[3].body)
+        self.assertTrue(self.no_attempts_message in self.monday_outbox_sorted[3].body)
+
+    # SATURDAY TESTS
+    def test_saturday_notifies_two_users(self):
+        self.assertEqual(len(self.saturday_outbox_sorted), 2)
+
+    def test_jane_notified_on_saturday_with_long_time_message(self):
+        self.assertTrue(self.jane.first_name in self.saturday_outbox_sorted[0].body)
+        self.assertTrue(self.long_time_message in self.saturday_outbox_sorted[0].body)
+
+    def test_brown_notified_on_saturday_with_no_attempts_message(self):
+        self.assertTrue(self.brown.first_name in self.saturday_outbox_sorted[1].body)
+        self.assertTrue(self.no_attempts_message in self.saturday_outbox_sorted[1].body)
