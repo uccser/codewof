@@ -15,7 +15,7 @@ const THUMBS_UP = "M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.0
  * Iterates through each membership row, building a list of emails. Then sets the href attribute of the Email All button
  * to send an email to all the emails.
  *
- * Also iterates through each feed row and adds an onchange listener.
+ * Also iterates through each feed row and adds an onchange listener and set the initial title of the thumb span.
  */
 $(document).ready(function () {
     let emails = [];
@@ -30,13 +30,56 @@ $(document).ready(function () {
         let checkbox = row.querySelector('.thumb');
         let path = row.querySelector('.thumb-path');
         let countColumn = row.querySelector('.td-like-count')
-        checkbox.onchange = function () { toggleThumpsUp(checkbox, path, countColumn, getID(row.id)) }
+        let id = getID(row.id)
+        checkbox.onchange = function () { toggleThumpsUp(checkbox, path, countColumn, id) }
+        let likeSpan = countColumn.querySelector('.span-like-count');
+        if (attemptLikeNames[id].length > 0) {
+            $(likeSpan).attr('data-original-title', attemptLikeNames[id].join("<br>"));
+        } else {
+            $(likeSpan).attr('data-original-title', "None");
+        }
     }
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip({html: true})
     })
 })
+
+
+/**
+ * Updates a key value in the attemptLikeNames object, which is for tracking the list of names of users that have liked
+ * an attempt (<attempt id> : <array of strings>). Used to build the title of the thumb span.
+ * @param id The ID of the attempt the likes are for.
+ * @param likeSpan The thumbs up span to update.
+ * @param adding A boolean, true if the user is liking the attempt, false otherwise.
+ */
+function updateAttemptLikeNames(id, likeSpan, adding) {
+    if (adding) {
+        attemptLikeNames[id].splice(sortedIndex(attemptLikeNames[id], userFullName), 0, userFullName);
+    } else {
+        attemptLikeNames[id].splice(attemptLikeNames[id].indexOf(userFullName), 1);
+    }
+}
+
+
+/**
+ * Returns the index to insert an object in an array while maintaining sorted order. Taken from
+ * https://stackoverflow.com/a/21822316.
+ * @param array The array to insert into.
+ * @param value The value to insert.
+ * @returns {number} The index to insert at.
+ */
+function sortedIndex(array, value) {
+    var low = 0,
+        high = array.length;
+
+    while (low < high) {
+        var mid = (low + high) >>> 1;
+        if (array[mid] < value) low = mid + 1;
+        else high = mid;
+    }
+    return low;
+}
 
 
 /**
@@ -49,7 +92,6 @@ $(document).ready(function () {
  */
 function toggleThumpsUp(checkbox, path, countColumn, id) {
     let likeSpan = countColumn.querySelector('.span-like-count');
-    let currentTitle = $(likeSpan).attr('data-original-title');
     if (checkbox.checked) {
         $.ajax({
             type: "POST",
@@ -60,11 +102,8 @@ function toggleThumpsUp(checkbox, path, countColumn, id) {
             success: function(data, textStatus, xhr) {
                 path.setAttribute("d", THUMBS_UP_FILL);
                 likeSpan.innerText = parseInt(countColumn.innerText) + 1;
-                if (currentTitle !== "None") {
-                    $(likeSpan).attr('data-original-title', currentTitle + userFullName + "<br>");
-                } else {
-                    $(likeSpan).attr('data-original-title', userFullName + "<br>");
-                }
+                updateAttemptLikeNames(id, likeSpan, true)
+                $(likeSpan).attr('data-original-title', attemptLikeNames[id].join("<br>"));
             },
             error: function (data, textStatus, xhr) {
                 checkbox.checked = false;
@@ -80,8 +119,10 @@ function toggleThumpsUp(checkbox, path, countColumn, id) {
             success: function(data, textStatus, xhr) {
                 path.setAttribute("d", THUMBS_UP);
                 likeSpan.innerText = parseInt(countColumn.innerText) - 1;
-                $(likeSpan).attr('data-original-title', currentTitle.replace(userFullName + "<br>", ''));
-                if ($(likeSpan).attr('data-original-title') === "") {
+                updateAttemptLikeNames(id, likeSpan, false)
+                if (attemptLikeNames[id].length > 0) {
+                    $(likeSpan).attr('data-original-title', attemptLikeNames[id].join("<br>"));
+                } else {
                     $(likeSpan).attr('data-original-title', "None");
                 }
             },

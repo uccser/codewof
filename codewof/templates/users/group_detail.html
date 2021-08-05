@@ -4,6 +4,7 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 {% load user_extras %}
+{% load tz %}
 
 {% block title %}{% trans "New Group" %}{% endblock %}
 
@@ -128,12 +129,14 @@
 
       <table class="table">
         <tbody id="feed-table-tbody">
+        <script>let attemptLikeNames = {}</script>
+        <script>let likeNames = []</script>
         {% for attempt in feed %}
         {% get_attempt_like_users_for_group attempt group.pk as like_users %}
         <tr id="attempt-{{ attempt.pk }}">
           <td class="feed-text">{{ attempt.profile.user.first_name }} {{ attempt.profile.user.last_name }} answered
             Question <a href="{% url 'programming:question' attempt.question.pk %}">{{ attempt.question.title }}</a>
-            ({{ attempt.datetime }})
+            ({{ attempt.datetime|localtime }})
           </td>
           <td class="align-middle td-thumb">
             <label><input class="thumb" autocomplete=off type="checkbox" {% if user in like_users %}
@@ -153,15 +156,13 @@
           </td>
 
           <td class="align-middle td-like-count">
-            {% if like_users %}
-            <span class="span-like-count" data-toggle="tooltip" data-placement="right"
-                  title="{% for user in like_users %}{{ user.full_name }}<br>{% endfor %}">{{ like_users.count }}
+            <script>likeNames = []</script>
+            {% for user in like_users %}
+              <script>likeNames.push("{{ user.full_name }}")</script>
+            {% endfor %}
+            <script>attemptLikeNames["{{ attempt.pk }}"] = likeNames</script>
+            <span class="span-like-count" data-toggle="tooltip" data-placement="right">{{ like_users.count }}
             </span>
-            {% else %}
-            <span class="span-like-count" data-toggle="tooltip" data-placement="right"
-                  title="None">{{ like_users.count }}
-            </span>
-            {% endif %}
           </td>
         </tr>
         {% endfor %}
