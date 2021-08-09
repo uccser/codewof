@@ -5,6 +5,7 @@ import os.path
 import environ
 from utils.get_upload_filepath import get_upload_path_for_date
 
+
 # codewof/codewof/config/settings/base.py - 3 = codewof/codewof/
 ROOT_DIR = environ.Path(__file__) - 3
 
@@ -14,7 +15,6 @@ env = environ.Env()
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = env.bool('DJANGO_DEBUG', False)
-DJANGO_PRODUCTION = env.bool('DJANGO_PRODUCTION')
 
 LANGUAGES = (
     ("en", "English"),
@@ -71,18 +71,7 @@ DECIMAL_SEPARATOR = '.'
 THOUSAND_SEPARATOR = ','
 NUMBER_GROUPING = 3
 
-
-# DATABASES
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#databases
-
-DATABASES = {
-    'default': env.db('DATABASE_URL', default='postgres:///codewof'),
-}
-DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
-DATABASES['default']['ATOMIC_REQUESTS'] = True
-
-# URLS
+## URLS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
 ROOT_URLCONF = 'config.urls'
@@ -102,7 +91,6 @@ DJANGO_APPS = [
     # Handy template tags
     'django.contrib.humanize',
     'django.contrib.admin',
-    'django.contrib.gis',
 ]
 THIRD_PARTY_APPS = [
     'anymail',
@@ -115,7 +103,6 @@ THIRD_PARTY_APPS = [
     'django_activeurl',
     'svg',
     'ckeditor',
-    'ckeditor_uploader',
     'captcha',
     'django_bootstrap_breadcrumbs',
 ]
@@ -182,6 +169,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -196,7 +184,7 @@ MIDDLEWARE = [
 STATIC_ROOT = os.path.join(str(ROOT_DIR.path('staticfiles')), '')
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = '/staticfiles/'
+STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 BUILD_ROOT = os.path.join(str(ROOT_DIR.path('build')), '')
 STATICFILES_DIRS = [
@@ -207,13 +195,6 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
-
-# MEDIA
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = os.path.join(str(ROOT_DIR.path('media')), '')
-# https://docs.djangoproject.com/en/dev/ref/settings/#media-url
-MEDIA_URL = '/media/'
 
 # TEMPLATES
 # ------------------------------------------------------------------------------
@@ -250,7 +231,6 @@ TEMPLATES = [
                 'config.context_processors.version_number.version_number',
             ],
             'libraries': {
-                'query_replace': 'config.templatetags.query_replace',
                 'simplify_error_template': 'config.templatetags.simplify_error_template',
             },
         },
@@ -341,7 +321,7 @@ LOGGING = {
     },
     'handlers': {
         'console': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
             'stream': sys.stdout,
@@ -368,7 +348,6 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': ','.join([
             # 'devtools',  # Used for development
             'a11yhelp',
-            'uploadimage',
             'image2',
             'div',
             'autolink',
@@ -385,15 +364,16 @@ CKEDITOR_CONFIGS = {
 
 # Other
 # ------------------------------------------------------------------------------
-BREADCRUMBS_TEMPLATE = "django_bootstrap_breadcrumbs/bootstrap4.html"
-DEPLOYMENT_TYPE = env("DEPLOYMENT", default='local')
-QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path("programming")), "content")
-CUSTOM_VERTO_TEMPLATES = os.path.join(str(ROOT_DIR.path("utils")), "custom_converter_templates", "")
+DEPLOYED = env.bool('DEPLOYED')
+GIT_SHA = env('GIT_SHA', default='local development')
+PRODUCTION_ENVIRONMENT = False
+STAGING_ENVIRONMENT = False
+BREADCRUMBS_TEMPLATE = 'django_bootstrap_breadcrumbs/bootstrap4.html'
+QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path('programming')), 'content')
+CUSTOM_VERTO_TEMPLATES = os.path.join(str(ROOT_DIR.path('utils')), 'custom_converter_templates', '')
 SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
 SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
-SVG_DIRS = [
-    os.path.join(str(STATIC_ROOT), 'svg')
-]
+SVG_DIRS = [os.path.join(str(ROOT_DIR.path('staticfiles')), 'svg')]
 # Key 'example_code' uses underscore to be accessible in templates
 STYLE_CHECKER_LANGUAGES = {
     'python3': {
@@ -428,11 +408,11 @@ STYLE_CHECKER_MAX_CHARACTER_COUNT = 10000
 
 # reCAPTCHA
 # ------------------------------------------------------------------------------
-if DEPLOYMENT_TYPE == 'local':
+if DEPLOYED:
+    RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
+    RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
+else:
     # Use test keys
     RECAPTCHA_PUBLIC_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
     RECAPTCHA_PRIVATE_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
     SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
-else:
-    RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
-    RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')

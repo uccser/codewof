@@ -1,3 +1,14 @@
+# Generated and collected static files directories
+codewof/build/**
+!codewof/build/.keep
+codewof/staticfiles/**
+!codewof/staticfiles/.keep
+codewof/media/
+codewof/temp/
+
+# VS Code
+settings.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -8,7 +19,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -60,7 +70,6 @@ target/
 
 # pyenv
 .python-version
-
 
 
 # Environments
@@ -270,9 +279,3 @@ pip-selfcheck.json
 .env
 
 .pytest_cache/
-
-### Project template
-codewof/media/
-
-### Tem files
-codewof/temp/

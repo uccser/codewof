@@ -1,0 +1,47 @@
+name: Test and deploy
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  test-content:
+    name: Tests - Content
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create Docker network
+        run: docker network create uccser-development-proxy
+      - name: Start systems
+        run: docker-compose -f docker-compose.local.yml up -d
+      - name: Create static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run dev
+      - name: Migrate database
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
+      - name: Load questions
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_questions
+      - name: Load style errors
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_style_errors
+      - name: Load achievements
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_achievements
+      - name: Collect static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+
+  test-general:
+    name: Tests - General
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run general tests
+        run: ./dev ci test_general
+
+  test-style:
+    name: Tests - Style
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run style tests
+        run: ./dev ci style

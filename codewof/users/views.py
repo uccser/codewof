@@ -141,7 +141,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context['all_achievements'] = Achievement.objects.all()
         questions_answered = get_questions_answered_in_past_month(user.profile)
         context['num_questions_answered'] = questions_answered
-        logger.debug(questions_answered)
         return context
 
 
