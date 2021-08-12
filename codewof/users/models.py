@@ -3,7 +3,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
-from django.utils import timezone
+from django.utils import timezone as django_timezone
 
 
 class UserType(models.Model):
@@ -29,6 +29,9 @@ class UserType(models.Model):
 
 class User(AbstractUser):
     """User of website."""
+
+    import pytz
+    TIMEZONES = tuple((timezone, timezone.replace("_", " ")) for timezone in pytz.all_timezones)
 
     username = models.CharField(
         max_length=12,
@@ -56,6 +59,9 @@ class User(AbstractUser):
     remind_on_friday = models.BooleanField(default=False)
     remind_on_saturday = models.BooleanField(default=False)
     remind_on_sunday = models.BooleanField(default=False)
+
+    # Determine when to send the email reminder
+    timezone = models.CharField(max_length=32, choices=TIMEZONES, default='Pacific/Auckland')
 
     REMINDER_DAYS = [remind_on_monday, remind_on_tuesday, remind_on_wednesday, remind_on_thursday, remind_on_friday,
                      remind_on_saturday, remind_on_sunday]
@@ -89,7 +95,7 @@ class Group(models.Model):
         max_length=200,
         blank=True
     )
-    date_created = models.DateTimeField(default=timezone.now)
+    date_created = models.DateTimeField(default=django_timezone.now)
     users = models.ManyToManyField(User, through='Membership')
     feed_enabled = models.BooleanField(default=False)
 
@@ -134,7 +140,7 @@ class Membership(models.Model):
         related_name='memberships',
         on_delete=models.CASCADE,
     )
-    date_joined = models.DateTimeField(default=timezone.now)
+    date_joined = models.DateTimeField(default=django_timezone.now)
 
 
 class Invitation(models.Model):
@@ -143,6 +149,6 @@ class Invitation(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     inviter = models.ForeignKey(User, on_delete=models.CASCADE)
     email = models.EmailField()
-    date_sent = models.DateTimeField(default=timezone.now)
-    date_expires = models.DateTimeField(default=timezone.now()+timezone.timedelta(days=7))
+    date_sent = models.DateTimeField(default=django_timezone.now)
+    date_expires = models.DateTimeField(default=django_timezone.now()+django_timezone.timedelta(days=7))
 

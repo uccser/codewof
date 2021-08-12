@@ -1,6 +1,8 @@
-import datetime
+from datetime import datetime
+from datetime import time
 from enum import Enum
 
+import pytz
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.management import BaseCommand
@@ -15,24 +17,21 @@ from django.contrib.sites.models import Site
 
 
 class Command(BaseCommand):
-    """Required command class for the custom Django send_email_reminders command."""
+    """Required command class for the custom Django load_user_types command."""
 
     def handle(self, *args, **options):
         """
-        Gets the current day of the week, then obtains the list of Users who should get a reminder today. Sends an
-        email to each user with a customised message based on recent usage.
+        First obtains the list of Users who should get a reminder today. Sends an email to each user with a customised
+        message based on recent usage.
         :param args:
         :param options:
         :return:
         """
 
-        today = timezone.now()
-        weekday = Weekday(today.date().weekday())
-
-        users_to_email = self.get_users_to_email(weekday)
+        users_to_email = self.get_users_to_email()
 
         for user in users_to_email:
-            days_since_last_attempt = self.get_days_since_last_attempt(today, user)
+            days_since_last_attempt = self.get_days_since_last_attempt(timezone.now(), user)
 
             message = self.create_message(days_since_last_attempt)
             html = self.build_email_html(user.first_name, message)
@@ -81,26 +80,47 @@ class Command(BaseCommand):
             .format(username, message, Site.objects.get_current().domain + reverse('users:dashboard'),
                     Site.objects.get_current().domain + reverse('users:update'))
 
-    def get_users_to_email(self, weekday_num):
+    def get_users_to_email(self):
         """
-        Gets a list of users that have opted to receive a reminder for the inputted day of the week
-        :param weekday_num: The day of the week as an int.
+        Obtains the collection of users to email. Iterates through each timezone, getting the day of the week for that
+        timezone, then adding users that have opted to get a reminder in that timezone on that day.
         :return: A QuerySet of Users.
         """
-        if weekday_num == Weekday.MONDAY:
-            users_to_email = User.objects.filter(remind_on_monday=True)
-        elif weekday_num == Weekday.TUESDAY:
-            users_to_email = User.objects.filter(remind_on_tuesday=True)
-        elif weekday_num == Weekday.WEDNESDAY:
-            users_to_email = User.objects.filter(remind_on_wednesday=True)
-        elif weekday_num == Weekday.THURSDAY:
-            users_to_email = User.objects.filter(remind_on_thursday=True)
-        elif weekday_num == Weekday.FRIDAY:
-            users_to_email = User.objects.filter(remind_on_friday=True)
-        elif weekday_num == Weekday.SATURDAY:
-            users_to_email = User.objects.filter(remind_on_saturday=True)
-        else:
-            users_to_email = User.objects.filter(remind_on_sunday=True)
+        users_to_email = User.objects.none()
+        for time_zone_string, _ in User.TIMEZONES:
+            time_zone = pytz.timezone(time_zone_string)
+            date_time = datetime.now(time_zone)
+            if date_time.time() < time(9, 0, 0) or date_time.time() >= time(10, 0, 0):
+                continue
+
+            weekday_num = Weekday(date_time.weekday())
+
+            if weekday_num == Weekday.MONDAY:
+                batch = User.objects.filter(remind_on_monday=True, timezone=time_zone_string)
+
+            elif weekday_num == Weekday.TUESDAY:
+                batch = User.objects.filter(remind_on_tuesday=True, timezone=time_zone_string)
+
+            elif weekday_num == Weekday.WEDNESDAY:
+                batch = User.objects.filter(remind_on_wednesday=True, timezone=time_zone_string)
+
+            elif weekday_num == Weekday.THURSDAY:
+                batch = User.objects.filter(remind_on_thursday=True, timezone=time_zone_string)
+
+            elif weekday_num == Weekday.FRIDAY:
+                batch = User.objects.filter(remind_on_friday=True, timezone=time_zone_string)
+
+            elif weekday_num == Weekday.SATURDAY:
+                batch = User.objects.filter(remind_on_saturday=True, timezone=time_zone_string)
+
+            else:
+                batch = User.objects.filter(remind_on_sunday=True, timezone=time_zone_string)
+
+            if len(users_to_email) == 0:
+                users_to_email = batch
+            else:
+                users_to_email = users_to_email.union(batch)
+
         return users_to_email
 
     def create_message(self, days_since_last_attempt):
@@ -125,4 +145,3 @@ class Command(BaseCommand):
             message = "It's been awhile since your last attempt. " \
                       "Remember to use CodeWOF regularly to keep your coding skills sharp."
         return message
-

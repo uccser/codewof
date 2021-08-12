@@ -572,7 +572,7 @@ def generate_study_registrations():
 def generate_users_with_notifications(user):
     """Generate users for codeWOF tests with notification days set. Creates two basic users for unit tests."""
     management.call_command("load_user_types")
-    user_john = User.objects.create_user(
+    User.objects.create_user(
         id=1,
         username='john',
         first_name='John',
@@ -588,9 +588,8 @@ def generate_users_with_notifications(user):
         remind_on_saturday=False,
         remind_on_sunday=False
     )
-    user_john.save()
 
-    user_sally = User.objects.create_user(
+    User.objects.create_user(
         id=2,
         username='sally',
         first_name='Sally',
@@ -606,9 +605,8 @@ def generate_users_with_notifications(user):
         remind_on_saturday=False,
         remind_on_sunday=False
     )
-    user_sally.save()
 
-    user_jane = User.objects.create_user(
+    User.objects.create_user(
         id=3,
         username='jane',
         first_name='Jane',
@@ -624,9 +622,8 @@ def generate_users_with_notifications(user):
         remind_on_saturday=True,
         remind_on_sunday=False
     )
-    user_jane.save()
 
-    user_lazy = User.objects.create_user(
+    User.objects.create_user(
         id=4,
         username='lazy',
         first_name='Lazy',
@@ -642,9 +639,8 @@ def generate_users_with_notifications(user):
         remind_on_saturday=False,
         remind_on_sunday=False
     )
-    user_lazy.save()
 
-    user_brown = User.objects.create_user(
+    User.objects.create_user(
         id=5,
         username='brown',
         first_name='Brown',
@@ -660,4 +656,57 @@ def generate_users_with_notifications(user):
         remind_on_saturday=True,
         remind_on_sunday=False
     )
-    user_brown.save()
+
+    User.objects.create_user(
+        id=6,
+        username='yankee',
+        first_name='Yankee',
+        last_name='Doodle',
+        email='user6@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='student'),
+        remind_on_monday=True,
+        remind_on_tuesday=False,
+        remind_on_wednesday=False,
+        remind_on_thursday=False,
+        remind_on_friday=False,
+        remind_on_saturday=False,
+        remind_on_sunday=False,
+        timezone="EST"
+    )
+
+    User.objects.create_user(
+        id=7,
+        username='odd',
+        first_name='Odd',
+        last_name='Ball',
+        email='user7@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='student'),
+        remind_on_monday=True,
+        remind_on_tuesday=False,
+        remind_on_wednesday=False,
+        remind_on_thursday=False,
+        remind_on_friday=False,
+        remind_on_saturday=False,
+        remind_on_sunday=False,
+        timezone="Asia/Kolkata"
+    )
+
+    User.objects.create_user(
+        id=8,
+        username='chatham',
+        first_name='Chatham',
+        last_name='Islands',
+        email='user8@uclive.ac.nz',
+        password='onion',
+        user_type=UserType.objects.get(slug='student'),
+        remind_on_monday=True,
+        remind_on_tuesday=False,
+        remind_on_wednesday=False,
+        remind_on_thursday=False,
+        remind_on_friday=False,
+        remind_on_saturday=False,
+        remind_on_sunday=False,
+        timezone="Pacific/Chatham"
+    )

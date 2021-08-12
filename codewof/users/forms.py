@@ -88,6 +88,11 @@ class UserChangeForm(forms.ModelForm):
     remind_on_saturday = forms.BooleanField(required=False, label='Saturday')
     remind_on_sunday = forms.BooleanField(required=False, label='Sunday')
 
+    timezone = forms.ChoiceField(
+        choices=User.TIMEZONES,
+        label='What is your timezone? (Used to schedule email reminders)',
+    )
+
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
         super().__init__(*args, **kwargs)
@@ -114,6 +119,10 @@ class UserChangeForm(forms.ModelForm):
                 'remind_on_saturday',
                 'remind_on_sunday'
             ),
+            Fieldset(
+                None,
+                'timezone',
+            ),
             ButtonHolder(
                 Submit('submit', 'Update', css_class='btn btn-primary')
             ),
@@ -125,7 +134,7 @@ class UserChangeForm(forms.ModelForm):
         model = User
         fields = ('first_name', 'last_name', 'user_type', 'remind_on_monday', 'remind_on_tuesday',
                   'remind_on_wednesday', 'remind_on_thursday', 'remind_on_friday', 'remind_on_saturday',
-                  'remind_on_sunday')
+                  'remind_on_sunday', 'timezone')
 
 
 class UserAdminChangeForm(auth.forms.UserChangeForm):
