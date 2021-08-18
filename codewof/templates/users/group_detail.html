@@ -64,8 +64,10 @@
 
       <div class="row">
         <div class="col mb-3">
+          {% if is_admin %}
           <a id="add-members-button" class="btn btn-primary mb-1 btn-sm float-right"
              href="{% url 'users:groups-memberships-invite' group.pk %}">Add Members</a>
+          {% endif %}
           <h2>Members</h2>
 
           <table id="members-table" class="table">
