@@ -43,6 +43,7 @@ class Command(management.base.BaseCommand):
         print('Database wiped.')
 
         management.call_command('load_user_types')
+        management.call_command('load_group_roles')
         print(LOG_HEADER.format('Create sample users'))
         User = get_user_model()  # noqa N806
         # Create admin account

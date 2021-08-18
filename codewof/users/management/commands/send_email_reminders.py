@@ -17,7 +17,7 @@ from django.contrib.sites.models import Site
 
 
 class Command(BaseCommand):
-    """Required command class for the custom Django load_user_types command."""
+    """Required command class for the custom Django send_email_reminders command."""
 
     def handle(self, *args, **options):
         """
