@@ -1,4 +1,5 @@
 -r ./base.txt
+-r ./test.txt
 
 psycopg2-binary==2.8.6  # https://github.com/psycopg/psycopg2
 
