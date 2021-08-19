@@ -47,7 +47,7 @@ services:
             - "3001:3001"
 
     postgres:
-        image: postgis/postgis:13-3.1
+        image: postgres:13.4
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U postgres"]
             start_period: 10s

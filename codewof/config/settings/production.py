@@ -105,3 +105,19 @@ DEFAULT_FROM_EMAIL = env(  # noqa: F405
 SERVER_EMAIL = env('DJANGO_SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)  # noqa: F405
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
 EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[CodeWOF] ')  # noqa: F405
+
+# reCAPTCHA
+# ------------------------------------------------------------------------------
+with open(env("RECAPTCHA_PUBLIC_KEY_FILE")) as file:  # noqa: F405
+    RECAPTCHA_PUBLIC_KEY = file.read().strip()
+
+with open(env("RECAPTCHA_PRIVATE_KEY_FILE")) as file:  # noqa: F405
+    RECAPTCHA_PRIVATE_KEY_FILE = file.read().strip()
+
+# Sample Data
+# ------------------------------------------------------------------------------
+with open(env("SAMPLE_DATA_ADMIN_PASSWORD_FILE")) as file:  # noqa: F405
+    SAMPLE_DATA_ADMIN_PASSWORD = file.read().strip()
+
+with open(env("SAMPLE_DATA_USER_PASSWORD_FILE")) as file:  # noqa: F405
+    SAMPLE_DATA_USER_PASSWORD = file.read().strip()

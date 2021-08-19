@@ -371,8 +371,7 @@ STAGING_ENVIRONMENT = False
 BREADCRUMBS_TEMPLATE = 'django_bootstrap_breadcrumbs/bootstrap4.html'
 QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path('programming')), 'content')
 CUSTOM_VERTO_TEMPLATES = os.path.join(str(ROOT_DIR.path('utils')), 'custom_converter_templates', '')
-SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
-SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
+
 SVG_DIRS = [os.path.join(str(ROOT_DIR.path('staticfiles')), 'svg')]
 # Key 'example_code' uses underscore to be accessible in templates
 STYLE_CHECKER_LANGUAGES = {
@@ -405,16 +404,5 @@ for slug, data in STYLE_CHECKER_LANGUAGES.items():
     data['slug'] = slug
 STYLE_CHECKER_TEMP_FILES_ROOT = os.path.join(str(ROOT_DIR), 'temp', 'style')
 STYLE_CHECKER_MAX_CHARACTER_COUNT = 10000
-
-# reCAPTCHA
-# ------------------------------------------------------------------------------
-if DEPLOYED:
-    RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
-    RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
-else:
-    # Use test keys
-    RECAPTCHA_PUBLIC_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
-    RECAPTCHA_PRIVATE_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
-    SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
