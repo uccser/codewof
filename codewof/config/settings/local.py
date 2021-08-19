@@ -46,8 +46,6 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG  # noqa F405
 
 # EMAIL
 # ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-host
 EMAIL_HOST = 'mailhog'
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-port
@@ -91,15 +89,3 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS += ['django_extensions']  # noqa F405
 
 SVG_DIRS.append(os.path.join(str(ROOT_DIR.path("build")), "svg"))  # noqa: F405
-
-# reCAPTCHA
-# ------------------------------------------------------------------------------
-# Use test keys
-RECAPTCHA_PUBLIC_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
-RECAPTCHA_PRIVATE_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
-SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
-
-# Sample Data
-# ------------------------------------------------------------------------------
-SAMPLE_DATA_ADMIN_PASSWORD = 'password'
-SAMPLE_DATA_USER_PASSWORD = 'password'
