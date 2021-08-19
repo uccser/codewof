@@ -9,7 +9,7 @@ django-allauth==0.41.0
 django-crispy-forms==1.9.0
 django-activeurl==0.2.0
 django-autoslug==1.9.8
-git+git://github.com/uccser/django-rest-framework.git@cecd0818119c34a71fd02a1c32d8e5a7629b2876
+djangorestframework==3.12.4
 coreapi==2.3.3
 django-filter==2.2.0
 django-inline-svg==0.1.1
