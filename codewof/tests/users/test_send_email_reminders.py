@@ -6,9 +6,9 @@ from django.core.management import call_command
 from django.test import TestCase
 from django.utils.timezone import make_aware
 from users.management.commands.send_email_reminders import Command
-from codewof.tests.codewof_test_data_generator import generate_users_with_notifications, generate_users, \
+from tests.codewof_test_data_generator import generate_users_with_notifications, generate_users, \
     generate_questions, generate_attempts_no_defaults
-from codewof.tests.conftest import user
+from tests.conftest import user
 from django.contrib.auth import get_user_model
 from utils.Weekday import Weekday
 from programming.models import Attempt, Question

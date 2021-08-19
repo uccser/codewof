@@ -7,8 +7,8 @@ from django.core.management import call_command
 from django.utils import timezone
 
 from django.test import TestCase
-from codewof.tests.codewof_test_data_generator import generate_users, generate_groups, generate_invitations
-from codewof.tests.conftest import user
+from tests.codewof_test_data_generator import generate_users, generate_groups, generate_invitations
+from tests.conftest import user
 from users.models import Invitation, Group
 
 User = get_user_model()
