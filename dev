@@ -20,7 +20,7 @@ defhelp() {
   local command="${1?}"
   local text="${2?}"
   local help_str
-  help_str="$(printf '   %-24s %s' "$command" "$text")"
+  help_str="$(printf '   %-28s %s' "$command" "$text")"
   cmd_helps+=("$help_str")
 }
 
@@ -189,7 +189,7 @@ cmd_logs() {
   echo "Building Docker images..."
   docker-compose -f docker-compose.local.yml logs --timestamps "$@"
 }
-defhelp build 'View logs.'
+defhelp logs 'View logs.'
 
 # Run style checks
 cmd_style() {

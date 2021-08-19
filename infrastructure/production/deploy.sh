@@ -1,6 +1,29 @@
 #!/bin/bash
 
-docker service create \
+set -e
+
+# Check for environment variables
+checkEnvVariableExists() {
+    if [ -z ${!1} ]
+    then
+        echo "ERROR: Define $1 environment variable."
+        exit 1
+    else
+        echo "INFO: $1 environment variable found."
+    fi
+}
+checkEnvVariableExists CODEWOF_IMAGE_TAG
+checkEnvVariableExists CODEWOF_DOMAIN
+
+# Update Django service
+docker service update --image ghcr.io/uccser/codewof:${CODEWOF_IMAGE_TAG} codewof_django
+
+# Run updata_data command
+if docker service ps codewof_update-data | grep codewof_update-data
+then
+    docker service update --image ghcr.io/uccser/codewof:${CODEWOF_IMAGE_TAG} codewof_update-data
+else
+    docker service create \
     --name codewof_update-data \
     --detach \
     --mode replicated-job \
@@ -21,4 +44,7 @@ docker service create \
     --secret codewof_postgres_user \
     --secret codewof_postgres_password \
     --restart-condition none \
-    ghcr.io/uccser/codewof:develop python ./manage.py update_data
+    ghcr.io/uccser/codewof:${CODEWOF_IMAGE_TAG} python ./manage.py sampledata
+fi
+
+# TODO: Setup cron job for backdate task (tasks/backdate/)
