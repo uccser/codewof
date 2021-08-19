@@ -54,7 +54,7 @@ else
     --secret codewof_recaptcha_public_key \
     --secret codewof_recaptcha_private_key \
     --restart-condition none \
-    ghcr.io/uccser/codewof:${CODEWOF_IMAGE_TAG} python ./manage.py sampledata
+    ghcr.io/uccser/codewof:${CODEWOF_IMAGE_TAG} python ./manage.py sample_data
 fi
 
 # TODO: Setup cron job for backdate task (tasks/backdate/)
