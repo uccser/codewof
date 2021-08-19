@@ -285,7 +285,7 @@ def backdate_points_and_achievements(n=-1, ignore_flags=True):
         average = duration / num_profiles
         logger.info(f"Backdate duration {duration:0.4f} seconds, average per user {average:0.4f} seconds")
     else:
-        logger.info(f"No users were backdated")
+        logger.info("No users were backdated")
         logger.info(f"Backdate duration {duration:0.4f} seconds")
 
 

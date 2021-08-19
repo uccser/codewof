@@ -9,7 +9,7 @@ import os.path
 from os import listdir
 from verto import Verto
 from verto.errors.Error import Error as VertoError
-from django.conf import Settings, settings
+from django.conf import settings
 from django.utils.translation import to_locale
 from utils.errors.CouldNotFindMarkdownFileError import CouldNotFindMarkdownFileError
 from utils.errors.VertoConversionError import VertoConversionError
