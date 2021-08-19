@@ -10,10 +10,10 @@ from django.core import management
 from django.core import mail
 from django.urls import reverse
 from users.views import UserRedirectView, UserUpdateView, send_invitation_email, create_invitation_plaintext, create_invitation_html
-from codewof.tests.conftest import user
+from tests.conftest import user
 from allauth.account.admin import EmailAddress
 
-from codewof.tests.codewof_test_data_generator import (
+from tests.codewof_test_data_generator import (
     generate_users,
     generate_achievements,
     generate_attempts,
@@ -27,7 +27,7 @@ from codewof.tests.codewof_test_data_generator import (
     generate_feed_attempts_failed_tests,
     generate_feed_attempts_non_member
 )
-from codewof.programming.codewof_utils import check_achievement_conditions
+from programming.codewof_utils import check_achievement_conditions
 from programming.models import Achievement, Attempt
 from users.models import Group, Membership, GroupRole, Invitation
 
@@ -220,7 +220,7 @@ class TestUserUpdateView:
         request.user = user
         view.request = request
 
-        assert view.get_success_url() == f"/users/dashboard/"
+        assert view.get_success_url() == "/users/dashboard/"
 
     def test_get_object(self, user, request_factory):
         view = UserUpdateView()
@@ -297,7 +297,7 @@ class TestUserRedirectView:
         request.user = user
         view.request = request
 
-        assert view.get_redirect_url() == f"/users/dashboard/"
+        assert view.get_redirect_url() == "/users/dashboard/"
 
 
 class TestUserAchievementView(TestCase):

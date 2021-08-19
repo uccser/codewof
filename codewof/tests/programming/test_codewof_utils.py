@@ -7,7 +7,7 @@ from programming.models import (
     Achievement,
     Earned,
 )
-from codewof.tests.codewof_test_data_generator import (
+from tests.codewof_test_data_generator import (
     generate_users,
     generate_achievements,
     generate_questions,
@@ -24,7 +24,7 @@ from programming.codewof_utils import (
     POINTS_ACHIEVEMENT,
     POINTS_SOLUTION,
 )
-from codewof.tests.conftest import user
+from tests.conftest import user
 
 User = get_user_model()
 

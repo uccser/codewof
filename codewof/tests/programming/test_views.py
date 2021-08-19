@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from programming.models import Question, QuestionTypeProgram, QuestionTypeFunction, Attempt, Like
 
-from codewof.tests.codewof_test_data_generator import (
+from tests.codewof_test_data_generator import (
     generate_users,
     generate_questions,
     generate_attempts,
@@ -14,8 +14,8 @@ from codewof.tests.codewof_test_data_generator import (
     generate_study_registrations,
     generate_likes
 )
-from codewof.programming.codewof_utils import check_achievement_conditions
-from codewof.tests.conftest import user
+from programming.codewof_utils import check_achievement_conditions
+from tests.conftest import user
 import json
 
 User = get_user_model()

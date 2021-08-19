@@ -16,7 +16,7 @@ from programming.models import (
     QuestionTypeDebugging,
 )
 
-from codewof.tests.codewof_test_data_generator import (
+from tests.codewof_test_data_generator import (
     generate_users,
     generate_achievements,
     generate_questions,
@@ -25,7 +25,7 @@ from codewof.tests.codewof_test_data_generator import (
     generate_memberships,
     generate_likes
 )
-from codewof.tests.conftest import user
+from tests.conftest import user
 
 User = get_user_model()
 

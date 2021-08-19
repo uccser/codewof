@@ -201,7 +201,7 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         )
         messages.success(
             self.request,
-            'You are successfully enrolled into this study. You have been emailed a copy of your signed consent form.'.format(study.title)  # noqa: E501
+            'You are successfully enrolled into the {} study. You have been emailed a copy of your signed consent form.'.format(study.title)  # noqa: E501
         )
         return redirect(study)
 

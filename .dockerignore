@@ -1,6 +1,6 @@
 codewof/build/*
-codewof/temp/*
 codewof/node_modules/*
+artifacts/
 **/__pycache__/**
 **/.mypy_cache__/**
 **/.pytest_cache__/**

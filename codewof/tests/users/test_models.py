@@ -2,8 +2,8 @@ import pytest
 from django.test import TestCase
 from users.models import UserType, User
 
-from codewof.tests.codewof_test_data_generator import generate_users
-from codewof.tests.conftest import user
+from tests.codewof_test_data_generator import generate_users
+from tests.conftest import user
 
 pytestmark = pytest.mark.django_db
 
