@@ -1,0 +1,136 @@
+name: Test and deploy
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  test-django-system-check:
+    name: Tests - Django system check
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create Docker network
+        run: docker network create uccser-development-proxy
+      - name: Start systems
+        run: docker-compose -f docker-compose.local.yml up -d
+      - name: Run Django system check
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py check --fail-level WARNING
+
+  test-content:
+    name: Tests - Content
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create Docker network
+        run: docker network create uccser-development-proxy
+      - name: Start systems
+        run: docker-compose -f docker-compose.local.yml up -d
+      - name: Create static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run dev
+      - name: Migrate database
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
+      - name: Load questions
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_questions
+      - name: Load style errors
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_style_errors
+      - name: Load achievements
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_achievements
+      - name: Collect static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+
+  test-general:
+    name: Tests - General
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run general tests
+        run: ./dev ci test_general
+
+  test-style:
+    name: Tests - Style
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run style tests
+        run: ./dev ci style
+
+  create-static-files:
+    name: Create static files
+    if: (github.ref == 'refs/heads/develop')
+    runs-on: ubuntu-20.04
+    needs: [
+      test-django-system-check,
+      test-content,
+      test-general,
+      test-style,
+    ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create Docker network
+        run: docker network create uccser-development-proxy
+
+      - name: Start system
+        run: docker-compose -f docker-compose.local.yml up -d
+
+      - name: Create production static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run build
+
+      - name: Collect staticfiles
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python manage.py collectstatic --no-input
+
+      - name: Archive static files
+        run: tar czf static-files.tar.gz --directory codewof/staticfiles/ .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: static-files
+          path: static-files.tar.gz
+          retention-days: 3
+
+  publish-dev-docker-image:
+    name: Create and publish dev image
+    if: (github.ref == 'refs/heads/develop')
+    runs-on: ubuntu-20.04
+    needs: [
+      create-static-files,
+    ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts/
+
+      - name: Show file tree of artifacts directory
+        run: ls -R -l artifacts/
+
+      - name: Unpack all artifacts
+        run: |
+          mkdir -p codewof/staticfiles
+          tar -xz --file artifacts/static-files/static-files.tar.gz --directory codewof/staticfiles
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1.10.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2.6.1
+        with:
+          file: ./infrastructure/production/django/Dockerfile
+          context: .
+          push: true
+          tags: ghcr.io/uccser/cs-field-guide:develop
+          build-args: GIT_SHA=${{ github.sha }}

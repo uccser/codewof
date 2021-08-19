@@ -1,7 +1,4 @@
-$ = jQuery = require('jquery');
 require('skulpt');
-require('bootstrap');
-require('details-element-polyfill');
 
 function ajax_request(url_name, data, success_function) {
     $.ajax({

@@ -65,7 +65,6 @@
 {% endblock css %}
 
 {% block scripts %}
-    {{ block.super }}
     {% csrf_token %}
     <script type="text/javascript">
         var MAX_CHARACTER_COUNT = "{{ MAX_CHARACTER_COUNT }}";

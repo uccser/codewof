@@ -5,7 +5,7 @@ from django.db.models import Count
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from autoslug import AutoSlugField
-from ckeditor_uploader.fields import RichTextUploadingField
+from ckeditor.fields import RichTextField
 from programming.models import Question
 from users.models import UserType
 
@@ -17,7 +17,7 @@ class Study(models.Model):
 
     slug = AutoSlugField(populate_from='title', always_update=True, null=True)
     title = models.CharField(max_length=200)
-    description = RichTextUploadingField(blank=True)
+    description = RichTextField(blank=True)
     start_date = models.DateField()
     end_date = models.DateField()
     visible = models.BooleanField(

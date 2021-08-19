@@ -48,7 +48,7 @@
           {% svg 'logo' %}
         </a>
 
-        {% if DEPLOYMENT_TYPE == 'dev' %}
+        {% if STAGING_ENVIRONMENT %}
         <span class="badge badge-warning">Test server</span>
         {% endif %}
 
@@ -235,7 +235,7 @@
         <p class="mb-0">
           <small>
             <a href="https://github.com/uccser/codewof/releases">
-              {{ VERSION_NUMBER }}
+              {{ VERSION_NUMBER }}{% if not PRODUCTION_ENVIRONMENT %} - {{ GIT_SHA }}{% endif %}
             </a>
           </small>
         </p>
@@ -244,9 +244,8 @@
 
     {% block modal %}{% endblock modal %}
 
+    <script src="{% static 'js/vendors.js' %}"></script>
     {% block scripts %}
-      <script src="{% static 'js/website.js' %}"></script>
-      <script src="{% static 'js/third-party/intro.js' %}"></script>
     {% endblock scripts %}
   </body>
 </html>

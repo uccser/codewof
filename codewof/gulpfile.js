@@ -1,162 +1,225 @@
-// gulp build : for a one off development build
-// gulp build --production : for a minified production build
+////////////////////////////////
+// Setup
+////////////////////////////////
 
-'use strict';
+// Gulp and package
+const { src, dest, parallel, series, watch } = require('gulp')
+const pjson = require('./package.json')
 
-const js_files_skip_optimisation = [
-  // Optimise all files
-  '**',
-  // But skip the following files
-  '!static/js/codewof/vendor/**/*.js',
-  '!static/js/codewof/base.js',
-];
-
-// general
-const gulp = require('gulp');
-const gutil = require('gulp-util');
-const del = require('del');
-const gulpif = require('gulp-if');
-const filter = require('gulp-filter');
-const exec = require('child_process').exec;
-const runSequence = require('run-sequence')
-const notify = require('gulp-notify');
-const log = require('gulplog');
+// Plugins
+const autoprefixer = require('autoprefixer')
+const browserify = require('browserify')
+const browserSync = require('browser-sync').create()
 const buffer = require('vinyl-buffer');
-const argv = require('yargs').argv;
-const rename = require("gulp-rename");
-const sourcemaps = require('gulp-sourcemaps');
-const errorHandler = require('gulp-error-handle');
+const c = require('ansi-colors')
+const concat = require('gulp-concat')
+const cssnano = require('cssnano')
+const errorHandler = require('gulp-error-handle')
+const filter = require('gulp-filter')
+const gulpif = require('gulp-if');
+const { hideBin } = require('yargs/helpers')
+const imagemin = require('gulp-imagemin')
+const log = require('fancy-log')
+const pixrem = require('pixrem')
+const postcss = require('gulp-postcss')
+const postcssFlexbugFixes = require('postcss-flexbugs-fixes')
+const reload = browserSync.reload
+const sass = require('gulp-sass')(require('sass'));
+const sourcemaps = require('gulp-sourcemaps')
+const tap = require('gulp-tap')
+const terser = require('gulp-terser')
+const yargs = require('yargs/yargs')
 
-// sass
-const sass = require('gulp-sass');
-const postcss = require('gulp-postcss');
-const postcssFlexbugFixes = require('postcss-flexbugs-fixes');
-const autoprefixer = require('autoprefixer');
+// Arguments
+const argv = yargs(hideBin(process.argv)).argv
+const PRODUCTION = !!argv.production;
 
-// js
-const tap = require('gulp-tap');
-const babel = require('gulp-babel');
-const terser = require('gulp-terser');
-const browserify = require('browserify');
-const jshint = require('gulp-jshint');
-const stylish = require('jshint-stylish');
+// Relative paths function
+function pathsConfig(appName) {
+    this.app = `./${pjson.name}`
+    const vendorsRoot = 'node_modules'
+    const staticSourceRoot = 'static'
+    const staticOutputRoot = 'build'
 
-// gulp build --production
-const production = !!argv.production;
+    return {
+        app: this.app,
+        // Source files
+        bootstrap_source: `${vendorsRoot}/bootstrap/scss`,
+        css_source: `${staticSourceRoot}/css`,
+        scss_source: `${staticSourceRoot}/scss`,
+        images_source: `${staticSourceRoot}/img`,
+        svg_source: `${staticSourceRoot}/svg`,
+        js_source: `${staticSourceRoot}/js`,
+        vendor_js_source: [
+            `${vendorsRoot}/jquery/dist/jquery.js`,
+            `${vendorsRoot}/popper.js/dist/umd/popper.js`,
+            `${vendorsRoot}/bootstrap/dist/js/bootstrap.js`,
+            `${vendorsRoot}/details-element-polyfill/dist/details-element-polyfill.js`,
+        ],
+        // Output files
+        css_output: `${staticOutputRoot}/css`,
+        fonts_output: `${staticOutputRoot}/fonts`,
+        images_output: `${staticOutputRoot}/img`,
+        svg_output: `${staticOutputRoot}/svg`,
+        js_output: `${staticOutputRoot}/js`,
+    }
+}
 
-// ----------------------------
-// Error notification methods
-// ----------------------------
-var handleError = function handle_error_func(task) {
-  return function(err) {
-      notify.onError({
-        message: task + ' failed, check the logs..',
-        sound: false
-      })(err);
-
-    gutil.log(gutil.colors.bgRed(task + ' error:'), gutil.colors.red(err));
-  };
-};
+var paths = pathsConfig()
 
 function catchError(error) {
-    gutil.log(
-      gutil.colors.bgRed('Error:'),
-      gutil.colors.red(error)
+    log.error(
+        c.bgRed('Error:'),
+        c.red(error)
     );
     this.emit('end');
 }
 
-// --------------------------
-// Delete build folder
-// --------------------------
-function clean() {
-  return del(['build/']);
-}
-// --------------------------
-// Copy static images
-// --------------------------
-function images() {
-  return gulp.src('static/img/**/*')
-    .pipe(gulp.dest('build/img'));
-}
-// --------------------------
-// Copy SVG files
-// --------------------------
-function svg() {
-  return gulp.src('static/svg/**/*')
-    .pipe(gulp.dest('build/svg'));
-}
-// --------------------------
-// CSS
-// --------------------------
+////////////////////////////////
+// Config
+////////////////////////////////
+
+// CSS/SCSS
+const processCss = [
+    autoprefixer(),         // adds vendor prefixes
+    pixrem(),               // add fallbacks for rem units
+    postcssFlexbugFixes(),  // adds flexbox fixes
+]
+const minifyCss = [
+    cssnano({ preset: 'default' })   // minify result
+]
+
+// JS
+
+const js_files_skip_optimisation = [
+    // Optimise all files
+    '**',
+    // But skip the following files
+    // For example: '!static/js/vendor/**/*.js'
+];
+
+////////////////////////////////
+// Tasks
+////////////////////////////////
+
+// Styles autoprefixing and minification
 function css() {
-  return gulp.src('static/css/**/*.css')
-    .pipe(gulp.dest('build/css'));
+    return src(`${paths.css_source}/**/*.css`)
+        .pipe(errorHandler(catchError))
+        .pipe(sourcemaps.init())
+        .pipe(postcss(processCss))
+        .pipe(sourcemaps.write())
+        .pipe(gulpif(PRODUCTION, postcss(minifyCss))) // Minifies the result
+        .pipe(dest(paths.css_output))
 }
-// --------------------------
-// scss (libsass)
-// --------------------------
+
 function scss() {
-  return gulp.src('static/scss/*.scss')
-    .pipe(errorHandler(catchError))
-    // sourcemaps + scss + error handling
-    .pipe(gulpif(!production, sourcemaps.init()))
-    .pipe(sass({
-      sourceComments: !production,
-      outputStyle: production ? 'compressed' : 'nested'
-    }))
-    .on('error', handleError('SASS'))
-    // generate .maps
-    .pipe(gulpif(!production, sourcemaps.write({
-      'includeContent': false,
-      'sourceRoot': '.'
-    })))
-    // autoprefixer
-    .pipe(gulpif(!production, sourcemaps.init({
-      'loadMaps': true
-    })))
-    .pipe(postcss([autoprefixer({browsers: ['last 2 versions']}), postcssFlexbugFixes]))
-    // we don't serve the source files
-    // so include scss content inside the sourcemaps
-    .pipe(sourcemaps.write({
-      'includeContent': true
-    }))
-    .pipe(rename(function (path) {
-      path.dirname = path.dirname.replace("scss", "css");
-    }))
-    .pipe(gulp.dest('build/css'));
+    return src(`${paths.scss_source}/**/*.scss`)
+        .pipe(errorHandler(catchError))
+        .pipe(sourcemaps.init())
+        .pipe(sass({
+            includePaths: [
+                paths.bootstrap_source,
+                paths.scss_source
+            ],
+            sourceComments: !PRODUCTION,
+        }).on('error', sass.logError))
+        .pipe(postcss(processCss))
+        .pipe(sourcemaps.write())
+        .pipe(gulpif(PRODUCTION, postcss(minifyCss))) // Minifies the result
+        .pipe(dest(paths.css_output))
 }
-// --------------------------
-// JavaScript
-// --------------------------
+
+// Javascript
 function js() {
-  const f = filter(js_files_skip_optimisation, {restore: true});
-  return gulp.src(['static/**/*.js', '!static/js/modules/**/*.js'])
-    .pipe(f)
-    .pipe(errorHandler(catchError))
-    .pipe(tap(function (file) {
-      file.contents = browserify(file.path, {debug: true}).bundle().on('error', catchError);
-    }))
-    .pipe(buffer())
-    .pipe(errorHandler(catchError))
-    .pipe(gulpif(production, sourcemaps.init({loadMaps: true})))
-    .pipe(gulpif(production, terser({keep_fnames: true})))
-    .pipe(gulpif(production, sourcemaps.write('./')))
-    .pipe(f.restore)
-    .pipe(gulp.dest('build'));
+    const js_filter = filter(js_files_skip_optimisation, { restore: true })
+    return src([
+        `${paths.js_source}/**/*.js`,
+        `!${paths.js_source}/modules/**/*.js`
+    ])
+        .pipe(errorHandler(catchError))
+        .pipe(sourcemaps.init())
+        .pipe(js_filter)
+        .pipe(tap(function (file) {
+            file.contents = browserify(file.path, { debug: true }).bundle().on('error', catchError);
+        }))
+        .pipe(buffer())
+        .pipe(gulpif(PRODUCTION, terser({ keep_fnames: true })))
+        .pipe(js_filter.restore)
+        .pipe(sourcemaps.write())
+        .pipe(dest(paths.js_output))
 }
 
+// Vendor Javascript (always minified)
+function vendorJs() {
+    return src(paths.vendor_js_source)
+        .pipe(errorHandler(catchError))
+        .pipe(concat('vendors.js'))
+        .pipe(dest(paths.js_output))
+        .pipe(terser())
+        .pipe(dest(paths.js_output))
+}
 
-// define complex tasks
-const build = gulp.series(clean, gulp.parallel(images, css, scss, svg, js));
+// Image compression
+function img() {
+    return src(`${paths.images_source}/**/*`)
+        .pipe(gulpif(PRODUCTION, imagemin())) // Compresses PNG, JPEG, GIF and SVG images
+        .pipe(dest(paths.images_output))
+}
 
-// export tasks
-exports.clean = clean;
-exports.images = images;
-exports.css = css;
-exports.scss = scss;
-exports.svg = svg;
-exports.js = js;
+// SVGs
+function svg() {
+    return src(`${paths.svg_source}/**/*`)
+        .pipe(dest(paths.svg_output))
+}
 
-exports.build = build;
-exports.default = build;
+// Browser sync server for live reload
+function initBrowserSync() {
+    browserSync.init(
+        [
+            // `${paths.css}/*.css`,
+            `${paths.js}/*.js`
+        ], {
+        // https://www.browsersync.io/docs/options/#option-proxy
+        proxy: {
+            target: 'codewof.localhost/:80',
+            proxyReq: [
+                function (proxyReq, req) {
+                    // Assign proxy "host" header same as current request at Browsersync server
+                    proxyReq.setHeader('Host', req.headers.host)
+                }
+            ]
+        },
+        // https://www.browsersync.io/docs/options/#option-open
+        // Disable as it doesn't work from inside a container
+        open: false
+    }
+    )
+}
+
+// Watch
+function watchPaths() {
+    // watch(`${paths.sass}/*.scss`, scss)
+    watch([`${paths.js_source}/*.js`, `!${paths.js_source}/*.min.js`], js).on("change", reload)
+}
+
+// Generate all assets
+const generateAssets = parallel(
+    css,
+    scss,
+    js,
+    vendorJs,
+    img,
+    svg
+)
+
+// Set up dev environment
+const dev = parallel(
+    initBrowserSync,
+    watchPaths
+)
+exports["generate-assets"] = generateAssets
+exports["dev"] = dev
+// TODO: Look at cleaning build folder
+exports.default = generateAssets
+// exports.default = series(generateAssets, dev)
