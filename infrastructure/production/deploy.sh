@@ -38,11 +38,11 @@ else
     --env=POSTGRES_DB_FILE="/run/secrets/codewof_postgres_db" \
     --env=POSTGRES_USER_FILE="/run/secrets/codewof_postgres_user" \
     --env=POSTGRES_PASSWORD_FILE="/run/secrets/codewof_postgres_password" \
-    --env=MAILGUN_API_KEY_FILE="/run/secrets/codewof_mailgun_api_key"
-    --env=SAMPLE_DATA_ADMIN_PASSWORD_FILE="/run/secrets/codewof_sample_data_admin_password"
-    --env=SAMPLE_DATA_USER_PASSWORD_FILE="/run/secrets/codewof_sample_data_user_password"
-    --env=RECAPTCHA_PUBLIC_KEY_FILE="/run/secrets/codewof_recaptcha_public_key"
-    --env=RECAPTCHA_PRIVATE_KEY_FILE="/run/secrets/codewof_recaptcha_private_key"
+    --env=MAILGUN_API_KEY_FILE="/run/secrets/codewof_mailgun_api_key" \
+    --env=SAMPLE_DATA_ADMIN_PASSWORD_FILE="/run/secrets/codewof_sample_data_admin_password" \
+    --env=SAMPLE_DATA_USER_PASSWORD_FILE="/run/secrets/codewof_sample_data_user_password" \
+    --env=RECAPTCHA_PUBLIC_KEY_FILE="/run/secrets/codewof_recaptcha_public_key" \
+    --env=RECAPTCHA_PRIVATE_KEY_FILE="/run/secrets/codewof_recaptcha_private_key" \
     --config codewof_deployment_environment \
     --secret codewof_django_secret_key \
     --secret codewof_postgres_db \
