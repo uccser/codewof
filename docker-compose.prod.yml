@@ -116,6 +116,16 @@ secrets:
         external: true
     codewof_postgres_password:
         external: true
+    codewof_mailgun_api_key:
+        external: true
+    codewof_sample_data_admin_password:
+        external: true
+    codewof_sample_data_user_password:
+        external: true
+    codewof_recaptcha_public_key:
+        external: true
+    codewof_recaptcha_private_key:
+        external: true
 
 networks:
     uccser-dev-public:
