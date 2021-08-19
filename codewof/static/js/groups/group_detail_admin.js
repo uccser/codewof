@@ -128,7 +128,7 @@ function updateMemberships(demoteSelf) {
         headers: {"X-CSRFToken": csrftoken},
         success: function(data, textStatus, xhr) { updateSuccess(demoteSelf) },
         error: function(data, textStatus, xhr) { updateFailure("An error occurred while updating the " +
-            "Memberships. Please try again later.") },
+            "Memberships. Try refreshing the page.") },
     });
 }
 
