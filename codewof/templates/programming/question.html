@@ -94,7 +94,6 @@
 {% endblock %}
 
 {% block scripts %}
-    {{ block.super }}
     {% csrf_token %}
     <script>
         var csrf_token = jQuery("[name=csrfmiddlewaretoken]").val();

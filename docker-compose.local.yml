@@ -62,11 +62,6 @@ services:
             - local-postgres-data:/var/lib/postgresql/data:Z
             - local-postgres-data-backups:/backups:z
 
-    jobe:
-        image: trampgeek/jobeinabox:latest
-        networks:
-            - backend
-
     mailhog:
         image: mailhog/mailhog:v1.0.1
         ports:

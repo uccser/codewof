@@ -68,10 +68,7 @@ cmd_update() {
   cmd_migrate
 
   echo ""
-  load_user_types
-  cmd_load_questions
-  cmd_load_style_errors
-  cmd_load_achievements
+  cmd_update_data
 
   echo ""
   cmd_collect_static
@@ -102,6 +99,12 @@ cmd_update_data() {
   docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py update_data
 }
 defhelp load_questions "Update all required data."
+
+# Run load_user_types command
+cmd_load_user_types() {
+  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py load_user_types
+}
+defhelp load_user_types "Load user types."
 
 # Run load_questions command
 cmd_load_questions() {

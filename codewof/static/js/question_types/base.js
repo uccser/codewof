@@ -1,3 +1,5 @@
+require('skulpt');
+
 function ajax_request(url_name, data, success_function) {
     $.ajax({
         url: '/ajax/' + url_name + '/',
