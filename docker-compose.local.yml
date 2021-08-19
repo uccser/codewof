@@ -66,6 +66,8 @@ services:
         image: mailhog/mailhog:v1.0.1
         ports:
             - "8025:8025"
+        networks:
+            - backend
 
 networks:
     backend:
