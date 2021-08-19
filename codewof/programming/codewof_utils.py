@@ -277,16 +277,16 @@ def backdate_points_and_achievements(n=-1, ignore_flags=True):
 
     if len(backdate_achievements_times) > 0 and len(backdate_points_times) > 0:
         achievements_ave = statistics.mean(backdate_achievements_times)
-        logger.debug(f"Average time per user to backdate achievements: {achievements_ave:0.4f} seconds")
+        logger.info(f"Average time per user to backdate achievements: {achievements_ave:0.4f} seconds")
 
         points_ave = statistics.mean(backdate_points_times)
-        logger.debug(f"Average time per user to backdate points: {points_ave:0.4f} seconds")
+        logger.info(f"Average time per user to backdate points: {points_ave:0.4f} seconds")
 
         average = duration / num_profiles
-        logger.debug(f"Backdate duration {duration:0.4f} seconds, average per user {average:0.4f} seconds")
+        logger.info(f"Backdate duration {duration:0.4f} seconds, average per user {average:0.4f} seconds")
     else:
-        logger.debug(f"No users were backdated")
-        logger.debug(f"Backdate duration {duration:0.4f} seconds")
+        logger.info("No users were backdated")
+        logger.info(f"Backdate duration {duration:0.4f} seconds")
 
 
 def backdate_points(profile, user_attempts=None):

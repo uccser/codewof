@@ -7,9 +7,9 @@ pytestmark = pytest.mark.django_db
 def test_detail():
     assert (
         reverse("users:dashboard")
-        == f"/users/dashboard/"
+        == "/users/dashboard/"
     )
-    assert resolve(f"/users/dashboard/").view_name == "users:dashboard"
+    assert resolve("/users/dashboard/").view_name == "users:dashboard"
 
 
 def test_update():

@@ -2,15 +2,15 @@ import pytest
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
 from users.views import UserRedirectView, UserUpdateView
-from codewof.tests.conftest import user
+from tests.conftest import user
 
-from codewof.tests.codewof_test_data_generator import (
+from tests.codewof_test_data_generator import (
     generate_users,
     generate_achievements,
     generate_attempts,
     generate_questions
 )
-from codewof.programming.codewof_utils import check_achievement_conditions
+from programming.codewof_utils import check_achievement_conditions
 from programming.models import Achievement
 pytestmark = pytest.mark.django_db
 User = get_user_model()
@@ -79,7 +79,7 @@ class TestUserUpdateView:
         request.user = user
         view.request = request
 
-        assert view.get_success_url() == f"/users/dashboard/"
+        assert view.get_success_url() == "/users/dashboard/"
 
     def test_get_object(self, user, request_factory):
         view = UserUpdateView()
@@ -97,7 +97,7 @@ class TestUserRedirectView:
         request.user = user
         view.request = request
 
-        assert view.get_redirect_url() == f"/users/dashboard/"
+        assert view.get_redirect_url() == "/users/dashboard/"
 
 
 class TestUserAchievementView(TestCase):
