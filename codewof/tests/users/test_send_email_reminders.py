@@ -4,13 +4,11 @@ from io import StringIO
 import pytz
 from django.core.management import call_command
 from django.test import TestCase
-from django.utils.timezone import make_aware
 from users.management.commands.send_email_reminders import Command
 from tests.codewof_test_data_generator import generate_users_with_notifications, generate_users, \
     generate_questions, generate_attempts_no_defaults
 from tests.conftest import user
 from django.contrib.auth import get_user_model
-from utils.Weekday import Weekday
 from programming.models import Attempt, Question
 from django.utils import timezone
 from django.http import HttpResponse
@@ -114,6 +112,7 @@ def mocked_timezones():
 
 def mocked_timezones_nz_only():
     return ("Pacific/Auckland", "Pacific/Auckland"),
+
 
 class GetUsersToEmailTests(TestCase):
     @classmethod

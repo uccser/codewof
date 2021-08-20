@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 from users.models import UserType, Group
 from captcha.fields import ReCaptchaField
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, HTML, Fieldset, ButtonHolder, Button, Field, Div
+from crispy_forms.layout import Layout, Submit, HTML, Fieldset, ButtonHolder, Button, Div
 
 User = auth.get_user_model()
 POLICY_STATEMENT = '<p>By clicking Sign Up, you agree to our <a href="{0}#terms-of-service">Terms</a>, <a href="{0}#privacy-policy">Privacy Policy</a> and <a href="{0}#cookie-policy">Cookie Policy</a>.</p>'  # noqa E501
@@ -190,6 +190,8 @@ class GroupCreateUpdateForm(forms.ModelForm):
     )
 
     class Meta:
+        """Metadata for GroupCreateUpdateForm class."""
+
         model = Group
         fields = ('name', 'description', 'feed_enabled')
 

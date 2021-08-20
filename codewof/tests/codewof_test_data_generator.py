@@ -159,8 +159,7 @@ def generate_groups():
 
 
 def generate_memberships():
-    """Generate memberships for codeWOF tests. Memberships are generated for users 1, 2, and 3, and every group created
-    in generate_groups, covering all the GroupRoles."""
+    """Generate memberships for codeWOF tests, covering all the GroupRoles."""
     group_north = Group.objects.get(name='Group North')
     group_east = Group.objects.get(name='Group East')
     group_west = Group.objects.get(name='Group West')
@@ -212,7 +211,7 @@ def generate_memberships():
 
 
 def generate_email_accounts():
-    """Generates email accounts for user 1 and 2 for codeWOF tests."""
+    """Generate email accounts for user 1 and 2 for codeWOF tests."""
     user1 = User.objects.get(id=1)
     user2 = User.objects.get(id=2)
     email1 = EmailAddress(
@@ -281,8 +280,7 @@ def generate_invitations():
 
 
 def generate_invalid_invitations():
-    """Generate invalid invitations (unverified email, duplicate invitation, invitation where the user is already a
-     member) for codeWOF tests."""
+    """Generate invalid invitations for codeWOF tests."""
     group_north = Group.objects.get(name='Group North')
     group_mystery = Group.objects.get(name='Group Mystery')
     group_class_1 = Group.objects.get(name='Class 1')
@@ -416,6 +414,7 @@ def generate_likes():
     Like.objects.create(attempt=attempt, user=alex)
     Like.objects.create(attempt=attempt, user=jane)
 
+
 def generate_feed_attempts():
     """
     Generate attempts for codeWOF tests.
@@ -491,8 +490,8 @@ def generate_feed_attempts_non_member():
     Generate attempts for codeWOF tests.
 
     Attempts are generated for user 4 and some questions, with attempts created to cover various dates but all under a
-    member unaffiliated with Group 1. Despite being more recent that the attempts in generate_feed_attempts, they should
-    not appear in the feed as the user is not in Group 1.
+    member unaffiliated with Group 1. Despite being more recent that the attempts in generate_feed_attempts, they
+    should not appear in the feed as the user is not in Group 1.
     """
     jane = User.objects.get(id=4)
 
@@ -507,8 +506,9 @@ def generate_feed_attempts_non_member():
 
 def generate_attempts_no_defaults():
     """
-    Generate attempts for codeWOF tests. Always supplies the datetime to ensure consistent testing for
-    test_send_email_reminders.py
+    Generate attempts for codeWOF tests.
+
+    Always supplies the datetime to ensure consistent testing for test_send_email_reminders.py
     """
     user1 = User.objects.get(id=1)
     user2 = User.objects.get(id=2)

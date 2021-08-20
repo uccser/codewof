@@ -1,5 +1,3 @@
-from io import StringIO
-
 from django.test import TestCase
 from users.models import GroupRole
 from django.core import management

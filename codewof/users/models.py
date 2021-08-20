@@ -88,6 +88,7 @@ class User(AbstractUser):
 
 class Group(models.Model):
     """A collection of users who know each other."""
+
     name = models.CharField(
         max_length=50,
     )
@@ -150,5 +151,4 @@ class Invitation(models.Model):
     inviter = models.ForeignKey(User, on_delete=models.CASCADE)
     email = models.EmailField()
     date_sent = models.DateTimeField(default=django_timezone.now)
-    date_expires = models.DateTimeField(default=django_timezone.now()+django_timezone.timedelta(days=7))
-
+    date_expires = models.DateTimeField(default=django_timezone.now() + django_timezone.timedelta(days=7))

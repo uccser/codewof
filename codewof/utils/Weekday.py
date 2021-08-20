@@ -1,10 +1,11 @@
+"""A module for the Weekday Enum class."""
+
 from enum import Enum
 
 
 class Weekday(Enum):
-    """
-    An enum class mapping days of the week to numbers
-    """
+    """An enum class mapping days of the week to numbers."""
+
     MONDAY = 0
     TUESDAY = 1
     WEDNESDAY = 2

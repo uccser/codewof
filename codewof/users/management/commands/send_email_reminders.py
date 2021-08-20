@@ -1,6 +1,7 @@
+"""Module for the custom Django send_email_reminders command."""
+
 from datetime import datetime
 from datetime import time
-from enum import Enum
 
 import pytz
 from django.conf import settings
@@ -11,7 +12,6 @@ from users.models import User
 from programming.models import Attempt
 from utils.Weekday import Weekday
 from django.template.loader import get_template
-from django.template import Context
 from django.urls import reverse
 from django.contrib.sites.models import Site
 
@@ -21,13 +21,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """
-        First obtains the list of Users who should get a reminder today. Sends an email to each user with a customised
-        message based on recent usage.
+        Send an email to each user that should get a reminder with a customised message based on recent usage.
+
         :param args:
         :param options:
         :return:
         """
-
         users_to_email = self.get_users_to_email()
 
         for user in users_to_email:
@@ -48,8 +47,10 @@ class Command(BaseCommand):
 
     def get_days_since_last_attempt(self, today, user):
         """
-        Obtains the number of days between a specified date and the user's last attempt. The date should be the same or
-        ahead of the last attempt date.
+        Obtain the number of days between a specified date and the user's last attempt.
+
+        The date should be the same or ahead of the last attempt date.
+
         :param today: Today's date.
         :param user: The User.
         :return: The number of days since their last attempt or None if the user has no attempts.
@@ -65,7 +66,8 @@ class Command(BaseCommand):
 
     def build_email_html(self, username, message):
         """
-        Constructs HTML for the email body using the email_reminder.html template.
+        Construct HTML for the email body using the email_reminder.html template.
+
         :param username: The string username to insert in the template.
         :param message: The string message to insert in the template.
         :return: The rendered HTML.
@@ -74,6 +76,13 @@ class Command(BaseCommand):
         return email_template.render({"username": username, "message": message})
 
     def build_email_plain(self, username, message):
+        """
+        Construct a message for the plain text email.
+
+        :param username: The string username to insert in the template.
+        :param message: The string message to insert in the template.
+        :return: The string message.
+        """
         return "Hi {},\n\n{}\nLet's practice!: {}\n\nThanks,\nThe Computer Science Education Research " \
                "Group\n\nYou received this email because you opted into reminders. You can change " \
                "your reminder settings here: {}."\
@@ -82,8 +91,11 @@ class Command(BaseCommand):
 
     def get_users_to_email(self):
         """
-        Obtains the collection of users to email. Iterates through each timezone, getting the day of the week for that
-        timezone, then adding users that have opted to get a reminder in that timezone on that day.
+        Obtain the collection of users to email.
+
+        Iterates through each timezone, getting the day of the week for that timezone, then adding users that have
+        opted to get a reminder in that timezone on that day.
+
         :return: A QuerySet of Users.
         """
         users_to_email = User.objects.none()
@@ -125,7 +137,8 @@ class Command(BaseCommand):
 
     def create_message(self, days_since_last_attempt):
         """
-        Returns a unique message based on recent usage.
+        Create a unique message based on recent usage.
+
         :param days_since_last_attempt: The int days since their last attempt.
         :return: a string message.
         """

@@ -9,7 +9,8 @@ from django.contrib.auth import get_user_model
 from django.core import management
 from django.core import mail
 from django.urls import reverse
-from users.views import UserRedirectView, UserUpdateView, send_invitation_email, create_invitation_plaintext, create_invitation_html
+from users.views import UserRedirectView, UserUpdateView, send_invitation_email, create_invitation_plaintext,\
+    create_invitation_html
 from tests.conftest import user
 from allauth.account.admin import EmailAddress
 
@@ -66,7 +67,8 @@ class UserDetailViewTest(TestCase):
         self.membership4 = Membership.objects.get(user=self.john, group=self.group_south)
         self.invitation1 = Invitation.objects.get(email=self.john.email, group=self.group_team_300, inviter=self.sally)
         self.invitation2 = Invitation.objects.get(email="john@mail.com", group=self.group_mystery, inviter=self.sally)
-        self.invitation3 = Invitation.objects.get(email=self.john.email, group=self.group_team_cserg, inviter=self.sally)
+        self.invitation3 = Invitation.objects.get(email=self.john.email, group=self.group_team_cserg,
+                                                  inviter=self.sally)
 
     def login_user(self):
         login = self.client.login(email='john@uclive.ac.nz', password='onion')
@@ -202,7 +204,8 @@ class UserDetailViewTest(TestCase):
     def test_view_contains_group_east_link(self):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
-        link = "<a class=\"card-link  stretched-link\" href=\"/users/groups/" + str(self.group_east.pk) + "/\">View</a>"
+        link = "<a class=\"card-link  stretched-link\" href=\"/users/groups/" + str(self.group_east.pk) + \
+               "/\">View</a>"
         self.assertContains(resp, link, html=True)
 
 
@@ -384,7 +387,8 @@ class TestGroupCreateView(TestCase):
     def test_2_groups_and_2_memberships_are_added_for_2_requests(self):
         self.login_user()
         self.client.post(self.url, {'name': 'Cool Group', 'description': 'This is a cool group', 'feed_enabled': True})
-        self.client.post(self.url, {'name': 'Cool Group 2', 'description': 'This is another cool group', 'feed_enabled': False})
+        self.client.post(self.url, {'name': 'Cool Group 2', 'description': 'This is another cool group',
+                                    'feed_enabled': False})
         user = User.objects.get(id=1)
         group1 = Group.objects.get(name='Cool Group')
         group2 = Group.objects.get(name='Cool Group 2')
@@ -436,7 +440,8 @@ class TestGroupCreateView(TestCase):
     def test_view_uses_correct_button(self):
         self.login_user()
         resp = self.client.get(self.url)
-        self.assertContains(resp, "<input class=\"btn btn-success\" type=\"submit\" value=\"Create Group\">", html=True)
+        self.assertContains(resp, "<input class=\"btn btn-success\" type=\"submit\" value=\"Create Group\">",
+                            html=True)
 
 
 class TestGroupUpdateView(TestCase):
@@ -856,8 +861,8 @@ class TestAdminRequired(TestCase):
                 ]
             }
         )
-        with self.assertRaisesMessage(Exception, "One of the membership objects has delete value that is not a boolean "
-                                                 "(id=1)."):
+        with self.assertRaisesMessage(Exception, "One of the membership objects has delete value that is not a boolean"
+                                                 " (id=1)."):
             resp = self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
                                    content_type="application/json")
             self.assertEqual(resp.status_code, 500)
@@ -966,7 +971,7 @@ class TestAdminRequired(TestCase):
             }
         )
         self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
-                               content_type="application/json")
+                        content_type="application/json")
         membership_to_update = Membership.objects.get(group=self.group_north, user=sally)
         self.assertEqual(membership_to_update.role, GroupRole.objects.get(name='Admin'))
 
@@ -1070,7 +1075,7 @@ class TestAdminRequired(TestCase):
             }
         )
         resp = self.client.put(reverse('users:groups-memberships-update', args=[self.group_north.pk]), body,
-                        content_type="application/json")
+                               content_type="application/json")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(set(Membership.objects.filter(group=self.group_north)), initial_memberships)
 
@@ -1369,24 +1374,24 @@ class TestCreateInvitationPlaintext(TestCase):
         self.group_north = Group.objects.get(name="Group North")
 
     def test_user_exists(self):
-        expected = "Hi Sally,\n\nJohn Doe has invited you to join the Group 'Group North'. Click the link below to " \
-                   "sign in. You will see your invitation in the dashboard, where you can join the group.\n\n{}" \
+        expected = "Hi Sally,\n\nJohn Doe has invited you to join the Group 'Group North'. Click the link below to "\
+                   "sign in. You will see your invitation in the dashboard, where you can join the group.\n\n{}"\
                    "\n\nThanks,\nThe Computer Science Education Research Group".format(reverse('account_login'))
-        self.assertEqual(create_invitation_plaintext(True, self.sally.first_name, self.john.first_name + " " +
-                                                     self.john.last_name, self.group_north.name, self.sally.email),
+        self.assertEqual(create_invitation_plaintext(True, self.sally.first_name,
+                                                     self.john.first_name + " " + self.john.last_name,
+                                                     self.group_north.name, self.sally.email),
                          expected)
 
     def test_user_does_not_exist(self):
-        expected = "Hi,\n\nJohn Doe has invited you to join the Group 'Group North'. CodeWOF helps you maintain your " \
-                   "programming fitness with short daily programming exercises. With a free account you can save your" \
-                   " progress and track your programming fitness over time. Click the link below to make an account," \
-                   " using the email unknown@mail.com. You will see your invitation in the dashboard, where you can " \
-                   "join the group. If you already have a CodeWOF account, then add unknown@mail.com to your profile " \
+        expected = "Hi,\n\nJohn Doe has invited you to join the Group 'Group North'. CodeWOF helps you maintain your "\
+                   "programming fitness with short daily programming exercises. With a free account you can save your"\
+                   " progress and track your programming fitness over time. Click the link below to make an account,"\
+                   " using the email unknown@mail.com. You will see your invitation in the dashboard, where you can "\
+                   "join the group. If you already have a CodeWOF account, then add unknown@mail.com to your profile "\
                    "to make the invitation appear.\n\n{}\n\nThanks,\nThe Computer Science Education Research Group"\
             .format(reverse('account_signup'))
-        self.assertEqual(create_invitation_plaintext(False, None, self.john.first_name + " " +
-                                                     self.john.last_name, self.group_north.name, "unknown@mail.com"),
-                         expected)
+        self.assertEqual(create_invitation_plaintext(False, None, self.john.first_name + " " + self.john.last_name,
+                                                     self.group_north.name, "unknown@mail.com"), expected)
 
 
 class TestCreateInvitationHTML(TestCase):
@@ -1403,44 +1408,47 @@ class TestCreateInvitationHTML(TestCase):
 
     def test_user_exists_html_contains_name(self):
         expected = "<p>Hi Sally,</p>"
-        response = HttpResponse(create_invitation_html(True, self.sally.first_name, self.john.first_name + " " +
-                                                       self.john.last_name, self.group_north.name, self.sally.email))
+        response = HttpResponse(create_invitation_html(True, self.sally.first_name,
+                                                       self.john.first_name + " " + self.john.last_name,
+                                                       self.group_north.name, self.sally.email))
         self.assertContains(response, expected, html=True)
 
     def test_user_exists_html_contains_correct_message(self):
         expected = "<p>John Doe has invited you to join the Group &#39;Group North&#39;. Click the link below to " \
                    "sign in. You will see your invitation in the dashboard, where you can join the group.</p>"
-        response = HttpResponse(create_invitation_html(True, self.sally.first_name, self.john.first_name + " " +
-                                                       self.john.last_name, self.group_north.name, self.sally.email))
+        response = HttpResponse(create_invitation_html(True, self.sally.first_name,
+                                                       self.john.first_name + " " + self.john.last_name,
+                                                       self.group_north.name, self.sally.email))
         self.assertContains(response, expected, html=True)
 
     def test_user_exists_html_contains_correct_link(self):
         expected = "<a href=\"/accounts/login/\" style=\"color: #007bff; text-decoration: underline;\">Sign In</a>"
-        response = HttpResponse(create_invitation_html(True, self.sally.first_name, self.john.first_name + " " +
-                                                       self.john.last_name, self.group_north.name, self.sally.email))
+        response = HttpResponse(create_invitation_html(True, self.sally.first_name,
+                                                       self.john.first_name + " " + self.john.last_name,
+                                                       self.group_north.name, self.sally.email))
         self.assertContains(response, expected, html=True)
 
     def test_user_does_not_exist_html_contains_no_name(self):
         expected = "<p>Hi,</p>"
-        response = HttpResponse(create_invitation_html(False, None, self.john.first_name + " " +
-                                                       self.john.last_name, self.group_north.name, "unknown@mail.com"))
+        response = HttpResponse(create_invitation_html(False, None, self.john.first_name + " " + self.john.last_name,
+                                                       self.group_north.name, "unknown@mail.com"))
         self.assertContains(response, expected, html=True)
 
     def test_user_does_not_exist_html_contains_correct_message(self):
-        expected = "<p>John Doe has invited you to join the Group &#39;Group North&#39;. CodeWOF helps you maintain " \
-                   "your programming fitness with short daily programming exercises. With a free account you can " \
-                   "save your progress and track your programming fitness over time. Click the link below to make an " \
-                   "account, using the email unknown@mail.com. You will see your invitation in the dashboard, where " \
-                   "you can join the group. If you already have a CodeWOF account, then add unknown@mail.com to your " \
+        expected = "<p>John Doe has invited you to join the Group &#39;Group North&#39;. CodeWOF helps you maintain "\
+                   "your programming fitness with short daily programming exercises. With a free account you can "\
+                   "save your progress and track your programming fitness over time. Click the link below to make an "\
+                   "account, using the email unknown@mail.com. You will see your invitation in the dashboard, where "\
+                   "you can join the group. If you already have a CodeWOF account, then add unknown@mail.com to your "\
                    "profile to make the invitation appear.</p>"
-        response = HttpResponse(create_invitation_html(False, None, self.john.first_name + " " +
-                                                       self.john.last_name, self.group_north.name, "unknown@mail.com"))
+        response = HttpResponse(create_invitation_html(False, None, self.john.first_name + " " + self.john.last_name,
+                                                       self.group_north.name, "unknown@mail.com"))
         self.assertContains(response, expected, html=True)
 
     def test_user_does_not_exist_html_contains_correct_link(self):
         expected = "<a href=\"/accounts/signup/\" style=\"color: #007bff; text-decoration: underline;\">Sign Up</a>"
-        response = HttpResponse(create_invitation_html(False, None, self.john.first_name + " " +
-                                                       self.john.last_name, self.group_north.name, "unknown@mail.com"))
+        response = HttpResponse(create_invitation_html(False, None, self.john.first_name + " " + self.john.last_name,
+                                                       self.group_north.name, "unknown@mail.com"))
         self.assertContains(response, expected, html=True)
 
 
@@ -1465,8 +1473,8 @@ class TestSendInvitationEmail(TestCase):
     def test_email_sent_user_exists(self):
         send_invitation_email(self.sally, self.john, self.group_north.name, self.sally.email)
         outbox = get_outbox_sorted()
-        expected = "Hi Sally,\n\nJohn Doe has invited you to join the Group 'Group North'. Click the link below to " \
-                   "sign in. You will see your invitation in the dashboard, where you can join the group.\n\n{}" \
+        expected = "Hi Sally,\n\nJohn Doe has invited you to join the Group 'Group North'. Click the link below to "\
+                   "sign in. You will see your invitation in the dashboard, where you can join the group.\n\n{}"\
                    "\n\nThanks,\nThe Computer Science Education Research Group".format(reverse('account_login'))
         self.assertEqual(len(outbox), 1)
         self.assertTrue(self.sally.first_name in outbox[0].body)
@@ -1475,11 +1483,11 @@ class TestSendInvitationEmail(TestCase):
     def test_email_sent_user_does_not_exist(self):
         send_invitation_email(None, self.john, self.group_north.name, "unknown@mail.com")
         outbox = get_outbox_sorted()
-        expected = "Hi,\n\nJohn Doe has invited you to join the Group 'Group North'. CodeWOF helps you maintain your " \
-                   "programming fitness with short daily programming exercises. With a free account you can save your" \
-                   " progress and track your programming fitness over time. Click the link below to make an account," \
-                   " using the email unknown@mail.com. You will see your invitation in the dashboard, where you can " \
-                   "join the group. If you already have a CodeWOF account, then add unknown@mail.com to your profile " \
+        expected = "Hi,\n\nJohn Doe has invited you to join the Group 'Group North'. CodeWOF helps you maintain your "\
+                   "programming fitness with short daily programming exercises. With a free account you can save your"\
+                   " progress and track your programming fitness over time. Click the link below to make an account,"\
+                   " using the email unknown@mail.com. You will see your invitation in the dashboard, where you can "\
+                   "join the group. If you already have a CodeWOF account, then add unknown@mail.com to your profile "\
                    "to make the invitation appear.\n\n{}\n\nThanks,\nThe Computer Science Education Research Group"\
             .format(reverse('account_signup'))
         self.assertEqual(len(outbox), 1)
@@ -1593,7 +1601,8 @@ class TestRejectInvitation(TestCase):
 
     def test_cannot_reject_if_email_unverified(self):
         self.login_user(self.john)
-        resp = self.client.delete(reverse('users:groups-invitations-reject', args=[self.invitation_unverified_email.pk]))
+        resp = self.client.delete(reverse('users:groups-invitations-reject',
+                                          args=[self.invitation_unverified_email.pk]))
         self.assertEqual(resp.status_code, 403)
 
     def test_can_reject_if_invitee(self):

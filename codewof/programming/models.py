@@ -127,7 +127,8 @@ class Attempt(models.Model):
 
     def get_like_users_for_group(self, group_pk):
         """
-        Returns the users that have liked the attempt that are also members of a particular group.
+        Get the users that have liked the attempt that are also members of a particular group.
+
         :param group_pk: The pk of the group
         :return: A queryset of User objects
         """
