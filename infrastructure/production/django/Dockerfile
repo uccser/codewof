@@ -3,7 +3,7 @@ FROM python:3.9.5-slim-buster as python
 # Python build stage ----------------------------------------------------------
 FROM python as python-build-stage
 
-ARG BUILD_ENVIRONMENT=production
+ARG BUILD_ENVIRONMENT
 
 # Install apt packages
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -23,7 +23,7 @@ RUN pip wheel --wheel-dir /usr/src/app/wheels -r ${BUILD_ENVIRONMENT}.txt
 FROM python as python-run-stage
 
 ARG GIT_SHA
-ARG BUILD_ENVIRONMENT=production
+ARG BUILD_ENVIRONMENT
 ARG APP_HOME=/app
 
 # Set environment variables
@@ -33,7 +33,6 @@ ENV DJANGO_SETTINGS_MODULE='config.settings.production'
 ENV GIT_SHA ${GIT_SHA}
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
-ENV BUILD_ENV ${BUILD_ENVIRONMENT}
 
 WORKDIR ${APP_HOME}
 
