@@ -64,7 +64,7 @@ def generate_questions():
 
 
 def generate_users(user):
-    """Generate users for codeWOF tests. Creates three basic users for unit tests."""
+    """Generate users for codeWOF tests. Creates multiple basic users for unit tests."""
     management.call_command("load_user_types")
     user_john = User.objects.create_user(
         id=1,

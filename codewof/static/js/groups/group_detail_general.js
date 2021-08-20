@@ -92,6 +92,7 @@ function sortedIndex(array, value) {
  */
 function toggleThumpsUp(checkbox, path, countColumn, id) {
     let likeSpan = countColumn.querySelector('.span-like-count');
+    checkbox.disabled = true;
     if (checkbox.checked) {
         $.ajax({
             type: "POST",
@@ -104,9 +105,11 @@ function toggleThumpsUp(checkbox, path, countColumn, id) {
                 likeSpan.innerText = parseInt(countColumn.innerText) + 1;
                 updateAttemptLikeNames(id, likeSpan, true)
                 $(likeSpan).attr('data-original-title', attemptLikeNames[id].join("<br>"));
+                checkbox.disabled = false;
             },
             error: function (data, textStatus, xhr) {
                 checkbox.checked = false;
+                checkbox.disabled = false;
             }
         });
     } else {
@@ -125,9 +128,11 @@ function toggleThumpsUp(checkbox, path, countColumn, id) {
                 } else {
                     $(likeSpan).attr('data-original-title', "None");
                 }
+                checkbox.disabled = false;
             },
             error: function (data, textStatus, xhr) {
                 checkbox.checked = true;
+                checkbox.disabled = false;
             }
         });
     }

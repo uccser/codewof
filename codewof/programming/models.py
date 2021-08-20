@@ -129,6 +129,8 @@ class Attempt(models.Model):
         """
         Get the users that have liked the attempt that are also members of a particular group.
 
+        TODO: Look into a way of combining the database queries for efficiency.
+
         :param group_pk: The pk of the group
         :return: A queryset of User objects
         """

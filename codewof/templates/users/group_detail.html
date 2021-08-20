@@ -117,9 +117,9 @@
 
       <div class="row">
         <div class="col mb-3">
-          <a id="email-button" class="btn btn-primary mb-1 btn-sm float-right" href="">Email All</a>
+          <a id="email-button" class="btn btn-primary btn-sm" href="">Email All</a>
           {% if is_admin %}
-          <button id="save-button" class="btn btn-success btn-sm mb-1">Save</button>
+          <button id="save-button" class="btn btn-success btn-sm float-right">Save</button>
           {% endif %}
         </div>
       </div>
@@ -137,9 +137,10 @@
         {% get_attempt_like_users_for_group attempt group.pk as like_users %}
         <tr id="attempt-{{ attempt.pk }}">
           <td class="feed-text">{{ attempt.profile.user.first_name }} {{ attempt.profile.user.last_name }} answered
-            Question <a href="{% url 'programming:question' attempt.question.pk %}">{{ attempt.question.title }}</a>
-            ({{ attempt.datetime|localtime }})
+            <a href="{% url 'programming:question' attempt.question.pk %}">{{ attempt.question.title }}</a>
+            <br><small class="text-muted">{{ attempt.datetime|localtime }}</small>
           </td>
+
           <td class="align-middle td-thumb">
             <label><input class="thumb" autocomplete=off type="checkbox" {% if user in like_users %}
                           checked {% endif %} {% if user.pk == attempt.profile.user.pk %} disabled {% endif %}>
@@ -183,7 +184,6 @@
 {% endblock css %}
 
 {% block scripts %}
-{{ block.super }}
 {% csrf_token %}
 <script>
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
