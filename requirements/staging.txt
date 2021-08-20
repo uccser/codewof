@@ -1,0 +1,5 @@
+# Install testing dependencies for creating sample data in staging environment.
+
+-r base.txt
+-r production.txt
+-r test.txt

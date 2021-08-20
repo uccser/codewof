@@ -25,7 +25,6 @@ then
 else
     docker service create \
     --name codewof_update-data \
-    --detach \
     --mode replicated-job \
     --label traefik.enable=false \
     --network codewof_backend \

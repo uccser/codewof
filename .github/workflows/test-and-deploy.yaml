@@ -133,4 +133,6 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/uccser/codewof:develop
-          build-args: GIT_SHA=${{ github.sha }}
+          build-args: |
+            GIT_SHA=${{ github.sha }}
+            BUILD_ENVIRONMENT=staging

@@ -42,6 +42,3 @@ argon2-cffi==19.2.0
 
 # I18n
 django-modeltranslation==0.17.3
-
-# Sample data (used in local development and staging website)
-factory-boy==2.12.0
