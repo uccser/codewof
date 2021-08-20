@@ -151,7 +151,7 @@ class UserDetailViewTest(TestCase):
     def test_view_contains_group_east_subtitle(self):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
-        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group East is the best group.</h6>",
+        self.assertContains(resp, "<h6 class=\"card-subtitle\">Group East is the best group.</h6>",
                             html=True)
 
     def test_view_contains_group_north_title(self):
@@ -162,7 +162,7 @@ class UserDetailViewTest(TestCase):
     def test_view_contains_group_north_subtitle(self):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
-        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group North is the best group.</h6>",
+        self.assertContains(resp, "<h6 class=\"card-subtitle\">Group North is the best group.</h6>",
                             html=True)
 
     def test_view_contains_group_south_title(self):
@@ -173,7 +173,7 @@ class UserDetailViewTest(TestCase):
     def test_view_contains_group_south_subtitle(self):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
-        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group South is the best group.</h6>",
+        self.assertContains(resp, "<h6 class=\"card-subtitle\">Group South is the best group.</h6>",
                             html=True)
 
     def test_view_contains_group_west_title(self):
@@ -184,7 +184,7 @@ class UserDetailViewTest(TestCase):
     def test_view_contains_group_west_subtitle(self):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
-        self.assertContains(resp, "<h6 class=\"card-subtitle mb-2 text-muted\">Group West is the best group.</h6>",
+        self.assertContains(resp, "<h6 class=\"card-subtitle\">Group West is the best group.</h6>",
                             html=True)
 
     def test_message_displayed_if_no_groups(self):
