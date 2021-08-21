@@ -135,7 +135,7 @@ cmd_sample_data() {
 defhelp sample_data "Add sample data to website."
 
 cmd_send_email_reminders() {
-  docker-compose exec django /docker_venv/bin/python3 ./manage.py send_email_reminders
+  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py send_email_reminders
 }
 defhelp send_email_reminders "Send an email reminder to all users who opted to receive one today."
 
@@ -145,7 +145,7 @@ cmd_raise_backdate_flags() {
 defhelp raise_backdate_flags 'Raise a flag on all user profiles, requiring a backdate be done on them.'
 
 cmd_remove_expired_invitations() {
-  docker-compose exec django /docker_venv/bin/python3 ./manage.py remove_expired_invitations
+  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py remove_expired_invitations
 }
 defhelp remove_expired_invitations "Remove all Invitation objects where date_expires is before the current datetime."
 

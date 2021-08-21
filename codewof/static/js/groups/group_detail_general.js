@@ -25,18 +25,22 @@ $(document).ready(function () {
     }
     document.getElementById("email-button").href = "mailto:" + emails.join();
 
-    let feed_tbody = document.getElementById("feed-table-tbody");
-    for (let row of feed_tbody.rows) {
-        let checkbox = row.querySelector('.thumb');
-        let path = row.querySelector('.thumb-path');
-        let countColumn = row.querySelector('.td-like-count')
-        let id = getID(row.id)
-        checkbox.onchange = function () { toggleThumpsUp(checkbox, path, countColumn, id) }
-        let likeSpan = countColumn.querySelector('.span-like-count');
-        if (attemptLikeNames[id].length > 0) {
-            $(likeSpan).attr('data-original-title', attemptLikeNames[id].join("<br>"));
-        } else {
-            $(likeSpan).attr('data-original-title', "None");
+    if (feedEnabled) {
+        let feed_tbody = document.getElementById("feed-table-tbody");
+        for (let row of feed_tbody.rows) {
+            let checkbox = row.querySelector('.thumb');
+            let path = row.querySelector('.thumb-path');
+            let countColumn = row.querySelector('.td-like-count')
+            let id = getID(row.id)
+            checkbox.onchange = function () {
+                toggleThumpsUp(checkbox, path, countColumn, id)
+            }
+            let likeSpan = countColumn.querySelector('.span-like-count');
+            if (attemptLikeNames[id].length > 0) {
+                $(likeSpan).attr('data-original-title', attemptLikeNames[id].join("<br>"));
+            } else {
+                $(likeSpan).attr('data-original-title', "None");
+            }
         }
     }
 

@@ -187,9 +187,10 @@
 {% csrf_token %}
 <script>
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-  const membershipsUpdateURL = "{% url 'users:groups-memberships-update' group.pk %}"
-  const currentUserMembershipID = "{{ user_membership.pk }}"
-  const userFullName = "{{ user.full_name }}"
+  const membershipsUpdateURL = "{% url 'users:groups-memberships-update' group.pk %}";
+  const currentUserMembershipID = "{{ user_membership.pk }}";
+  const userFullName = "{{ user.full_name }}";
+  const feedEnabled = "{% if feed %}true{% else %}false{% endif %}" === 'true';
   function getLikeURL(attemptID) {
     return `{% url 'programming:like_attempt' 0 %}`.replace("0", attemptID);
   }

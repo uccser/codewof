@@ -31,7 +31,7 @@ class User(AbstractUser):
     """User of website."""
 
     import pytz
-    TIMEZONES = tuple((timezone, timezone.replace("_", " ")) for timezone in pytz.all_timezones)
+    TIMEZONES = tuple((timezone, timezone.replace("_", " ")) for timezone in pytz.common_timezones)
 
     username = models.CharField(
         max_length=12,
