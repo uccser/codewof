@@ -11,8 +11,7 @@
 {% block link %}
   <!-- This link uses descriptive text to inform the user what will happen with the link is tapped. -->
   <!-- It also uses inline styles since some email clients won't render embedded styles from the head. -->
-  <!-- TODO replace hardcoded url after Jack's infrastructure changes. -->
-  <a href="https://www.codewof.co.nz/users/dashboard/" style="color: #007bff; text-decoration: underline;">
+  <a href="{{ dashboard_url }}" style="color: #007bff; text-decoration: underline;">
     Let's practice!
   </a>
 {% endblock %}
@@ -22,10 +21,9 @@
     <div style="border-top: 2px solid #eaeaea;">
       <!-- This link uses descriptive text to inform the user what will happen with the link is tapped. -->
       <!-- It also uses inline styles since some email clients won't render embedded styles from the head. -->
-      <!-- TODO replace hardcoded url after Jack's infrastructure changes. -->
       <p style="font-size: 16px; font-weight: 400; line-height: 24px;">
         You received this email because you opted into reminders. You can <a
-        href="https://www.codewof.co.nz/users/update/" style="color: #007bff; text-decoration: underline;">change
+        href="{{ settings_url }}" style="color: #007bff; text-decoration: underline;">change
         your reminder settings here</a>.
       </p>
     </div>

@@ -71,3 +71,6 @@ EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 EMAIL_HOST = "localhost"
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-port
 EMAIL_PORT = 1025
+
+# Base domain for the website
+DOMAIN = env("DJANGO_DOMAIN", default="https://codewof.localhost")  # noqa: F405
