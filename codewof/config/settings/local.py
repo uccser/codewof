@@ -89,6 +89,3 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS += ['django_extensions']  # noqa F405
 
 SVG_DIRS.append(os.path.join(str(ROOT_DIR.path("build")), "svg"))  # noqa: F405
-
-# Base domain for the website
-DOMAIN = env("DJANGO_DOMAIN", default="https://codewof.localhost")  # noqa: F405

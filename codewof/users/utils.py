@@ -48,12 +48,12 @@ def create_invitation_plaintext(user_exists, invitee_name, inviter_name, group_n
     :return:
     """
     if user_exists:
-        url = settings.DOMAIN + reverse('users:dashboard')
+        url = settings.CODEWOF_DOMAIN + reverse('users:dashboard')
         plaintext = "Hi {},\n\n{} has invited you to join the Group '{}'. Click the link below to sign in. You will "\
                     "see your invitation in the dashboard, where you can join the group.\n\n{}\n\nThanks,\nThe "\
                     "Computer Science Education Research Group".format(invitee_name, inviter_name, group_name, url)
     else:
-        url = settings.DOMAIN + reverse('account_signup')
+        url = settings.CODEWOF_DOMAIN + reverse('account_signup')
         plaintext = "Hi,\n\n{} has invited you to join the Group '{}'. CodeWOF helps you maintain your programming "\
                     "fitness with short daily programming exercises. With a free account you can save your progress "\
                     "and track your programming fitness over time. Click the link below to make an account, using "\
@@ -80,7 +80,7 @@ def create_invitation_html(user_exists, invitee_name, inviter_name, group_name, 
         message = "{} has invited you to join the Group '{}'. Click the link below to sign in. You will "\
                   "see your invitation in the dashboard, where you can join the group."\
             .format(inviter_name, group_name)
-        url = settings.DOMAIN + reverse('users:dashboard')
+        url = settings.CODEWOF_DOMAIN + reverse('users:dashboard')
         html = email_template.render({"user_exists": user_exists, "invitee_name": invitee_name, "message": message,
                                       "url": url, "button_text": "Sign In"})
     else:
@@ -90,7 +90,7 @@ def create_invitation_html(user_exists, invitee_name, inviter_name, group_name, 
                   " using the email {}. You will see your invitation in the dashboard, where you can join the group. "\
                   "If you already have a CodeWOF account, then add {} to your profile to make the invitation appear."\
             .format(inviter_name, group_name, email, email)
-        url = settings.DOMAIN + reverse('account_signup')
+        url = settings.CODEWOF_DOMAIN + reverse('account_signup')
         html = email_template.render({"user_exists": user_exists, "invitee_name": invitee_name, "message": message,
                                       "url": url, "button_text": "Sign Up"})
     return html

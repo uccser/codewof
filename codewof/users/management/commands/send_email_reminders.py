@@ -73,8 +73,9 @@ class Command(BaseCommand):
         """
         email_template = get_template("users/email_reminder.html")
         return email_template.render(
-            {"username": username, "message": message, "dashboard_url": settings.DOMAIN + reverse('users:dashboard'),
-             "settings_url": settings.DOMAIN + reverse('users:update')})
+            {"username": username, "message": message,
+             "dashboard_url": settings.CODEWOF_DOMAIN + reverse('users:dashboard'),
+             "settings_url": settings.CODEWOF_DOMAIN + reverse('users:update')})
 
     def build_email_plain(self, username, message):
         """
@@ -87,8 +88,8 @@ class Command(BaseCommand):
         return "Hi {},\n\n{}\nLet's practice!: {}\n\nThanks,\nThe Computer Science Education Research " \
                "Group\n\nYou received this email because you opted into reminders. You can change " \
                "your reminder settings here: {}."\
-            .format(username, message, settings.DOMAIN + reverse('users:dashboard'),
-                    settings.DOMAIN + reverse('users:update'))
+            .format(username, message, settings.CODEWOF_DOMAIN + reverse('users:dashboard'),
+                    settings.CODEWOF_DOMAIN + reverse('users:update'))
 
     def get_users_to_email(self):
         """

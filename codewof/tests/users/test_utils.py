@@ -30,7 +30,7 @@ class TestCreateInvitationPlaintext(TestCase):
         self.group_north = Group.objects.get(name="Group North")
 
     def test_user_exists(self):
-        expected_url = settings.DOMAIN + reverse('users:dashboard')
+        expected_url = settings.CODEWOF_DOMAIN + reverse('users:dashboard')
         expected = "Hi Sally,\n\nJohn Doe has invited you to join the Group 'Group North'. Click the link below to "\
                    "sign in. You will see your invitation in the dashboard, where you can join the group.\n\n{}"\
                    "\n\nThanks,\nThe Computer Science Education Research Group".format(expected_url)
@@ -40,7 +40,7 @@ class TestCreateInvitationPlaintext(TestCase):
                          expected)
 
     def test_user_does_not_exist(self):
-        expected_url = settings.DOMAIN + reverse('account_signup')
+        expected_url = settings.CODEWOF_DOMAIN + reverse('account_signup')
         expected = "Hi,\n\nJohn Doe has invited you to join the Group 'Group North'. CodeWOF helps you maintain your "\
                    "programming fitness with short daily programming exercises. With a free account you can save your"\
                    " progress and track your programming fitness over time. Click the link below to make an account,"\
@@ -80,7 +80,7 @@ class TestCreateInvitationHTML(TestCase):
         self.assertContains(response, expected, html=True)
 
     def test_user_exists_html_contains_correct_link(self):
-        expected_url = settings.DOMAIN + reverse('users:dashboard')
+        expected_url = settings.CODEWOF_DOMAIN + reverse('users:dashboard')
         expected = f"<a href=\"{expected_url}\" style=\"color: #007bff; text-decoration: underline;\">Sign In</a>"
         response = HttpResponse(create_invitation_html(True, self.sally.first_name,
                                                        self.john.first_name + " " + self.john.last_name,
@@ -105,7 +105,7 @@ class TestCreateInvitationHTML(TestCase):
         self.assertContains(response, expected, html=True)
 
     def test_user_does_not_exist_html_contains_correct_link(self):
-        expected_url = settings.DOMAIN + reverse('account_signup')
+        expected_url = settings.CODEWOF_DOMAIN + reverse('account_signup')
         expected = f"<a href=\"{expected_url}\" style=\"color: #007bff; text-decoration: underline;\">Sign Up</a>"
         response = HttpResponse(create_invitation_html(False, None, self.john.first_name + " " + self.john.last_name,
                                                        self.group_north.name, "unknown@mail.com"))
@@ -127,7 +127,7 @@ class TestSendInvitationEmail(TestCase):
     def test_email_sent_user_exists(self):
         send_invitation_email(self.sally, self.john, self.group_north.name, self.sally.email)
         outbox = get_outbox_sorted()
-        expected_url = settings.DOMAIN + reverse('users:dashboard')
+        expected_url = settings.CODEWOF_DOMAIN + reverse('users:dashboard')
         expected = "Hi Sally,\n\nJohn Doe has invited you to join the Group 'Group North'. Click the link below to "\
                    "sign in. You will see your invitation in the dashboard, where you can join the group.\n\n{}"\
                    "\n\nThanks,\nThe Computer Science Education Research Group".format(expected_url)
@@ -138,7 +138,7 @@ class TestSendInvitationEmail(TestCase):
     def test_email_sent_user_does_not_exist(self):
         send_invitation_email(None, self.john, self.group_north.name, "unknown@mail.com")
         outbox = get_outbox_sorted()
-        expected_url = settings.DOMAIN + reverse('account_signup')
+        expected_url = settings.CODEWOF_DOMAIN + reverse('account_signup')
         expected = "Hi,\n\nJohn Doe has invited you to join the Group 'Group North'. CodeWOF helps you maintain your "\
                    "programming fitness with short daily programming exercises. With a free account you can save your"\
                    " progress and track your programming fitness over time. Click the link below to make an account,"\

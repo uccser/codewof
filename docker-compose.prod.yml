@@ -26,6 +26,7 @@ services:
                 - "traefik.http.routers.codewof-django.rule=Host(`${CODEWOF_DOMAIN}`)"
                 - "traefik.http.routers.codewof-django.entryPoints=web"
         environment:
+            CODEWOF_DOMAIN: ${CODEWOF_DOMAIN}
             POSTGRES_HOST: postgres
             POSTGRES_PORT: "5432"
             DEPLOYMENT_ENVIRONMENT_FILE: /codewof_deployment_environment
