@@ -3,7 +3,13 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block title %}{% trans "New Group" %}{% endblock %}
+{% block title %}
+  {% if object %}
+    {% trans "Update Group" %}
+  {% else %}
+    {% trans "New Group" %}
+  {% endif %}
+{% endblock %}
 
 {% block content %}
   <div class="col-md-6 offset-md-3">

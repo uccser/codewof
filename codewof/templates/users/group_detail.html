@@ -6,7 +6,7 @@
 {% load user_extras %}
 {% load tz %}
 
-{% block title %}{% trans "New Group" %}{% endblock %}
+{% block title %}{{ group.name }}{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -117,7 +117,7 @@
 
       <div class="row">
         <div class="col mb-3">
-          <a id="email-button" class="btn btn-primary btn-sm" href="">Email All</a>
+          <button id="email-button" class="btn btn-primary btn-sm">Email All</button>
           {% if is_admin %}
           <button id="save-button" class="btn btn-success btn-sm float-right">Save</button>
           {% endif %}
@@ -188,6 +188,7 @@
 <script>
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
   const membershipsUpdateURL = "{% url 'users:groups-memberships-update' group.pk %}";
+  const emailURL = "{% url 'users:groups-emails' group.pk %}";
   const currentUserMembershipID = "{{ user_membership.pk }}";
   const userFullName = "{{ user.full_name }}";
   const feedEnabled = "{% if feed %}true{% else %}false{% endif %}" === 'true';

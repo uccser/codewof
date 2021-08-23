@@ -16,6 +16,7 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.views.generic import DetailView, RedirectView, UpdateView, CreateView, DeleteView
 from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 from users.serializers import UserSerializer
@@ -311,6 +312,21 @@ def admin_required(f):
     return g
 
 
+def member_or_admin_required(f):
+    """Check the user is a Member or Admin of the Group decorator."""
+
+    @wraps(f)
+    def g(request, *args, **kwargs):
+        group = Group.objects.get(pk=kwargs['pk'])
+        if Membership.objects.all().filter(user=request.user, group=group):
+            kwargs['group'] = group
+            return f(request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
+
+    return g
+
+
 @require_http_methods(["PUT"])
 @login_required()
 @admin_required
@@ -467,3 +483,12 @@ def reject_invitation(request, pk):
     Invitation.objects.filter(email__in=emails.values('email'), group=invitation.group).delete()
 
     return HttpResponse()
+
+
+@require_http_methods(["GET"])
+@login_required()
+@member_or_admin_required
+def get_group_emails(request, pk, group):
+    """View for obtaining the email addresses of the members of the group."""
+    emails_list = list(group.users.values_list('email', flat=True))
+    return JsonResponse({"emails": emails_list})

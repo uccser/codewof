@@ -18,12 +18,7 @@ const THUMBS_UP = "M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.0
  * Also iterates through each feed row and adds an onchange listener and set the initial title of the thumb span.
  */
 $(document).ready(function () {
-    let emails = [];
-    let table_tbody = document.getElementById("members-table-tbody");
-    for (let row of table_tbody.rows) {
-        emails.push(row.cells[0].innerText);
-    }
-    document.getElementById("email-button").href = "mailto:" + emails.join();
+    $("#email-button").click(emailGroup);
 
     if (feedEnabled) {
         let feed_tbody = document.getElementById("feed-table-tbody");
@@ -48,6 +43,26 @@ $(document).ready(function () {
       $('[data-toggle="tooltip"]').tooltip({html: true})
     })
 })
+
+
+/**
+ * Makes a request to obtain the email addresses of the members of the group, then opens the user's email client.
+ */
+function emailGroup() {
+    $.ajax({
+        type: "GET",
+        url: emailURL,
+        async: true,
+        cache: true,
+        headers: {"X-CSRFToken": csrftoken},
+        success: function(data, textStatus, xhr) {
+            location.href = "mailto:" + data.emails.join();
+        },
+        error: function (data, textStatus, xhr) {
+
+        }
+    });
+}
 
 
 /**

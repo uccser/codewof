@@ -1491,3 +1491,44 @@ class TestRejectInvitation(TestCase):
         self.assertTrue(Invitation.objects.filter(email=self.john.email, group=self.group_mystery).exists())
         self.client.delete(reverse('users:groups-invitations-reject', args=[self.invitation.pk]))
         self.assertFalse(Invitation.objects.filter(email=self.john.email, group=self.group_mystery).exists())
+
+
+class TestGetGroupEmails(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests
+        generate_users(user)
+        generate_groups()
+        generate_memberships()
+
+    def setUp(self):
+        self.john = User.objects.get(pk=1)
+        self.sally = User.objects.get(pk=2)
+        self.alex = User.objects.get(pk=3)
+        self.jane = User.objects.get(pk=4)
+        self.group_north = Group.objects.get(name="Group North")
+        self.client = Client()
+
+    def login_user(self, user):
+        login = self.client.login(email=user.email, password='onion')
+        self.assertTrue(login)
+
+    def test_redirect_if_not_logged_in(self):
+        resp = self.client.get(reverse('users:groups-emails', args=[self.group_north.pk]))
+        self.assertRedirects(resp, '/accounts/login/?next=' + reverse('users:groups-emails',
+                                                                      args=[self.group_north.pk]))
+
+    def test_cannot_get_emails_if_not_member_or_admin(self):
+        self.login_user(self.jane)
+        resp = self.client.get(reverse('users:groups-emails', args=[self.group_north.pk]))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_admin_can_get_emails(self):
+        self.login_user(self.john)
+        resp = self.client.get(reverse('users:groups-emails', args=[self.group_north.pk]))
+        self.assertEqual(set(json.loads(resp.content)['emails']), {self.john.email, self.sally.email, self.alex.email})
+
+    def test_member_can_get_emails(self):
+        self.login_user(self.sally)
+        resp = self.client.get(reverse('users:groups-emails', args=[self.group_north.pk]))
+        self.assertEqual(set(json.loads(resp.content)['emails']), {self.john.email, self.sally.email, self.alex.email})
