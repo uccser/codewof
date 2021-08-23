@@ -2,14 +2,16 @@
 
 import json
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.core import management
 from django.views import generic
 from django.utils import timezone
 from django.db.models import Count, Max
 from django.db.models.functions import Coalesce
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 from programming.serializers import (
@@ -23,6 +25,7 @@ from programming.models import (
     TestCase,
     Attempt,
     TestCaseAttempt,
+    Like
 )
 from research.models import StudyRegistration
 
@@ -260,3 +263,34 @@ class AttemptAPIViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = Attempt.objects.all().prefetch_related('profile')
     serializer_class = AttemptSerializer
+
+
+@require_http_methods(["POST"])
+@login_required()
+def like_attempt(request, pk):
+    """View for liking an attempt."""
+    user = request.user
+    attempt = Attempt.objects.get(pk=pk)
+
+    if user == attempt.profile.user:
+        raise Exception("User cannot like their own attempt.")
+    if Like.objects.filter(user=user, attempt=attempt).exists():
+        raise Exception("Cannot like an attempt more than once.")
+
+    Like(user=user, attempt=attempt).save()
+    return HttpResponse()
+
+
+@require_http_methods(["DELETE"])
+@login_required()
+def unlike_attempt(request, pk):
+    """View for unliking an attempt."""
+    user = request.user
+    attempt = Attempt.objects.get(pk=pk)
+
+    like = Like.objects.filter(user=user, attempt=attempt)
+    if not like.exists():
+        raise Exception("Can only unlike liked attempts.")
+
+    like.delete()
+    return HttpResponse()

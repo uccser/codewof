@@ -1,0 +1,11 @@
+{% load tz %}
+
+<div id="invitation-{{ invitation.pk }}" class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">{{ invitation.group.name }}</h5>
+    <h6 class="card-subtitle">Invited by {{ invitation.inviter.full_name }}</h6>
+    <small class="text-muted">Expires on {{ invitation.date_expires|localtime|date }}</small><br class="mb-2">
+    <button type="button" class="btn btn-link btn-anchor invitation-accept-link">Accept</button>
+    <button type="button" class="btn btn-link btn-anchor text-danger float-right invitation-reject-link">Ignore</button>
+  </div>
+</div>

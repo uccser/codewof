@@ -366,6 +366,7 @@ CKEDITOR_CONFIGS = {
 # ------------------------------------------------------------------------------
 DEPLOYED = env.bool('DEPLOYED')
 GIT_SHA = env('GIT_SHA', default='local development')
+CODEWOF_DOMAIN = env('CODEWOF_DOMAIN', default='https://codewof.localhost')
 PRODUCTION_ENVIRONMENT = False
 STAGING_ENVIRONMENT = False
 BREADCRUMBS_TEMPLATE = 'django_bootstrap_breadcrumbs/bootstrap4.html'

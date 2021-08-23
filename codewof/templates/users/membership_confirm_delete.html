@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Leave Group" %}{% endblock %}
+
+{% block content %}
+  <div class="col-md-6 offset-md-3">
+    <h1>{% trans "Leave Group" %}</h1>
+    <p>Are you sure you want to leave the Group '{{ membership.group.name }}'?</p>
+
+    <p>You will have to be re-invited to view and participate in the Group again.</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+        <a class="btn btn-primary" href="{% url 'users:groups-detail' membership.group.pk %}">Cancel</a>
+        <input class="btn btn-danger float-right" type="submit" value="Leave Group">
+    </form>
+  </div>
+{% endblock %}

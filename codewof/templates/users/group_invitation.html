@@ -1,0 +1,17 @@
+{% extends "users/email_template.html" %}
+
+{% block title %}CodeWOF Group Invitation Email{% endblock %}
+
+{% block header %}Group invitation{% endblock %}
+
+{% block greeting %}Hi{% if user_exists %} {{ invitee_name }}{% endif %},{% endblock %}
+
+{% block main_message %}{{ message }}{% endblock %}
+
+{% block link %}
+  <!-- This link uses descriptive text to inform the user what will happen with the link is tapped. -->
+  <!-- It also uses inline styles since some email clients won't render embedded styles from the head. -->
+  <a href="{{ url }}" style="color: #007bff; text-decoration: underline;">
+      {{ button_text }}
+  </a>
+{% endblock %}

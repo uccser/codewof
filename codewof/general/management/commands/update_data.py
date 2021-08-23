@@ -32,6 +32,9 @@ class Command(management.base.BaseCommand):
         management.call_command('load_style_errors')
         print('Style errors loaded.\n')
 
+        management.call_command('load_group_roles')
+        print('Group roles loaded.\n')
+
         # Award points and achievements
         if not skip:
             management.call_command('backdate_points_and_achievements')
