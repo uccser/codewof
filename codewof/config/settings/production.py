@@ -112,7 +112,7 @@ with open(env("RECAPTCHA_PUBLIC_KEY_FILE")) as file:  # noqa: F405
     RECAPTCHA_PUBLIC_KEY = file.read().strip()
 
 with open(env("RECAPTCHA_PRIVATE_KEY_FILE")) as file:  # noqa: F405
-    RECAPTCHA_PRIVATE_KEY_FILE = file.read().strip()
+    RECAPTCHA_PRIVATE_KEY = file.read().strip()
 
 # Sample Data
 # ------------------------------------------------------------------------------
