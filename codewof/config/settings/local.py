@@ -89,3 +89,9 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS += ['django_extensions']  # noqa F405
 
 SVG_DIRS.append(os.path.join(str(ROOT_DIR.path("build")), "svg"))  # noqa: F405
+
+# reCAPTCHA
+# ------------------------------------------------------------------------------
+# Use test keys
+RECAPTCHA_PUBLIC_KEY = '6LeG0TIcAAAAACAMZ92F_Yvd6TQ62YdOkpqZAVh4'
+RECAPTCHA_PRIVATE_KEY = '6LeG0TIcAAAAAH52RGgEPsHHHfh_uzMur6Ml2j7t'

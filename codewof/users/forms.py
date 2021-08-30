@@ -4,13 +4,14 @@ from django import forms
 from django.contrib import auth
 from django.urls import reverse
 from django.utils.translation import gettext as _
+from django.template.loader import render_to_string
 from users.models import UserType, Group
 from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML, Fieldset, ButtonHolder, Button, Div
 
 User = auth.get_user_model()
-POLICY_STATEMENT = '<p>By clicking Sign Up, you agree to our <a href="{0}#terms-of-service">Terms</a>, <a href="{0}#privacy-policy">Privacy Policy</a> and <a href="{0}#cookie-policy">Cookie Policy</a>.</p>'  # noqa E501
 
 
 class SignupForm(forms.Form):
@@ -41,7 +42,7 @@ class SignupForm(forms.Form):
         label='Are you a student or teacher?',
         empty_label=None,
     )
-    captcha = ReCaptchaField()
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
@@ -55,10 +56,12 @@ class SignupForm(forms.Form):
             'user_type',
             'password1',
             'password2',
+            HTML(render_to_string('account/signup-declarations.html')),
             'captcha',
-            HTML(POLICY_STATEMENT.format(reverse('general:policies'))),
+            HTML(render_to_string('account/recaptcha-declaration.html')),
             Submit('submit', 'Sign Up', css_class="btn-success"),
         )
+        self.fields['captcha'].label = False
 
     def signup(self, request, user):
         """Extra logic when a user signs up.
