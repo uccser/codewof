@@ -71,3 +71,8 @@ EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 EMAIL_HOST = "localhost"
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-port
 EMAIL_PORT = 1025
+
+# reCAPTCHA
+# ------------------------------------------------------------------------------
+# Use default test keys
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
