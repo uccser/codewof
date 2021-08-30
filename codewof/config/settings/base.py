@@ -412,13 +412,6 @@ STYLE_CHECKER_MAX_CHARACTER_COUNT = 10000
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# reCAPTCHA
-# ------------------------------------------------------------------------------
-# Use test keys
-RECAPTCHA_PUBLIC_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
-RECAPTCHA_PRIVATE_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
-SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
-
 # Sample Data
 # ------------------------------------------------------------------------------
 SAMPLE_DATA_ADMIN_PASSWORD = 'password'
