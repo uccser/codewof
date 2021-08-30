@@ -1,4 +1,4 @@
-# CodeWOF
+# codeWOF
 
 CodeWOF is a website for maintaining your basic programming skills, developed at the University of Canterbury in New Zealand.
 
