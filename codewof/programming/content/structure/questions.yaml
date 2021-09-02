@@ -985,3 +985,21 @@ horizontal-line:
   test-cases:
     1: normal
     2: normal
+
+acceleration-calculator:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+
+can-afford:
+  type: debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 2
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal

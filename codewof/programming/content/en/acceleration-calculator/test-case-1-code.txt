@@ -1,0 +1,1 @@
+print(acceleration(0, 50, 5))
