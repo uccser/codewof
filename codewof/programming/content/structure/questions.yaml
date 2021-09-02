@@ -953,3 +953,35 @@ square-area:
     3: normal
     4: normal
     5: normal
+
+quadratic-formula:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+simple-calculator:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+vertical-line:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+
+horizontal-line:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal

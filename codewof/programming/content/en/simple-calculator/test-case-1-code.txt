@@ -1,0 +1,1 @@
+print(calculate(5, 4, '+'))
