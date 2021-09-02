@@ -48,21 +48,7 @@ class QuestionListView(LoginRequiredMixin, generic.ListView):
             Question queryset.
         """
         now = timezone.now()
-        if self.request.user.is_authenticated:
-            # Look for active study registration
-            try:
-                study_registration = StudyRegistration.objects.get(
-                    user=self.request.user,
-                    study_group__study__start_date__lte=now,
-                    study_group__study__end_date__gte=now,
-                )
-            except ObjectDoesNotExist:
-                study_registration = None
-
-        if study_registration:
-            questions = study_registration.study_group.questions.select_subclasses()
-        else:
-            questions = Question.objects.all().select_subclasses()
+        questions = Question.objects.all().select_subclasses()
 
         if self.request.user.is_authenticated:
             # TODO: Check if passed in last 90 days
@@ -93,19 +79,6 @@ class QuestionView(LoginRequiredMixin, generic.DetailView):
         except Question.DoesNotExist:
             raise Http404("No question matches the given ID.")
 
-        if self.request.user.is_authenticated:
-            # Look for active study registration
-            now = timezone.now()
-            try:
-                study_registration = StudyRegistration.objects.get(
-                    user=self.request.user,
-                    study_group__study__start_date__lte=now,
-                    study_group__study__end_date__gte=now,
-                )
-            except StudyRegistration.DoesNotExist:
-                study_registration = None
-            if study_registration and question not in study_registration.study_group.questions.select_subclasses():
-                raise PermissionDenied
         return question
 
     def get_context_data(self, **kwargs):

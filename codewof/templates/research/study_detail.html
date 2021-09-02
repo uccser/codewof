@@ -1,26 +1,13 @@
-{% extends "base.html" %}
+{% extends "research/base.html" %}
 
-{% load static %}
+{% load static i18n %}
 
 {% block title %}{{ study.title }}{% endblock %}
 
-{% block page_heading %}
-    <h1>
-        <span class="text-muted">Research Study:</span><br>
-        {{ study.title }}
-    </h1>
-{% endblock page_heading %}
-
-{% block content %}
-    {% if researcher %}
-        <a href="{% url 'research:study_admin' study.pk %}" class="btn btn-outline-primary mb-3">Open admin page</a>
-    {% endif %}
-
-    {{ study.description|safe }}
-
-    {% if study.consent_form %}
+{% block content_container %}
+    <div class="col-12">
         {% if registration %}
-            <div class="alert alert-info my-3" role="alert">
+            <div class="alert alert-info mb-3" role="alert">
                 <p class="mb-0">
                     You registered for this study at {{ registration.datetime|time:"g:i A" }} on {{ registration.datetime|date:"l j F Y" }}.
                     A copy of your signed consent form was emailed to you at this time.
@@ -40,16 +27,29 @@
                     </ul>
                 {% endif %}
             </div>
-        {% else %}
-            <div class="text-center my-3">
-                <a href="{{ study.get_absolute_consent_url }}" class="btn btn-success">
+        {% endif %}
+
+        <p class="mb-2">
+            <strong>Starts:</strong> {{ study.start|date:"DATETIME_FORMAT" }}
+        </p>
+        <p>
+            <strong>Ends:</strong> {{ study.end|date:"DATETIME_FORMAT" }}
+        </p>
+
+        {% include "research/study_description.html" %}
+
+        {% if not registration %}
+            <div class="my-3">
+                <a href="{% url 'research:consent_form' %}" class="btn btn-success btn-lg">
                     Register for study
                 </a>
             </div>
         {% endif %}
-    {% else %}
-        <div class="alert alert-info my-3" role="alert">
-            This study is not currently taking registrations.
+
+        <div class="mt-5">
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'general:home' %}">
+                {% trans "Return to the homepage" %}
+            </a>
         </div>
-    {% endif %}
-{% endblock content %}
+    </div>
+{% endblock content_container %}

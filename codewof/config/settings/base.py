@@ -37,7 +37,7 @@ USE_TZ = True
 
 DATE_FORMAT = 'j M Y'                   # '25 Oct 2006'
 TIME_FORMAT = 'P'                       # '2:30 p.m.'
-DATETIME_FORMAT = 'j M Y, P'            # '25 Oct 2006, 2:30 p.m.'
+DATETIME_FORMAT = 'j F Y g:i a'         # '25 Oct 2006 2:30 p.m.'
 YEAR_MONTH_FORMAT = 'F Y'               # 'October 2006'
 MONTH_DAY_FORMAT = 'j F'                # '25 October'
 SHORT_DATE_FORMAT = 'd/m/Y'             # '25/10/2006'
@@ -175,6 +175,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'config.middleware.ResearchMiddleware.ResearchMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -229,6 +230,7 @@ TEMPLATES = [
                 'config.context_processors.deployed.deployed',
                 'config.context_processors.programming.question_types',
                 'config.context_processors.version_number.version_number',
+                'config.context_processors.research.research',
             ],
             'libraries': {
                 'simplify_error_template': 'config.templatetags.simplify_error_template',
@@ -288,6 +290,10 @@ ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
 ACCOUNT_ADAPTER = 'users.adapters.AccountAdapter'
 ACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
+MIGRATION_MODULES = {
+    "account": "allauth.account.migrations",
+    "socialaccount": "allauth.socialaccount.migrations",
+}
 
 # django-activeurl
 # ------------------------------------------------------------------------------

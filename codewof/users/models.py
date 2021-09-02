@@ -144,6 +144,10 @@ class Membership(models.Model):
     date_joined = models.DateTimeField(default=django_timezone.now)
 
 
+def get_default_invitation_expiry(self):
+    return django_timezone.now() + django_timezone.timedelta(days=7)
+
+
 class Invitation(models.Model):
     """A class representing an invitation to join a Group."""
 
@@ -151,4 +155,4 @@ class Invitation(models.Model):
     inviter = models.ForeignKey(User, on_delete=models.CASCADE)
     email = models.EmailField()
     date_sent = models.DateTimeField(default=django_timezone.now)
-    date_expires = models.DateTimeField(default=django_timezone.now() + django_timezone.timedelta(days=7))
+    date_expires = models.DateTimeField(default=get_default_invitation_expiry)
