@@ -1003,3 +1003,27 @@ can-afford:
     2: normal
     3: normal
     4: normal
+
+icy-mountain:
+  types:
+    - parsons
+  parsons-extra-lines:
+    - 'if up_amount < down_amount and height != 0:'
+    - 'current_height = current_height + up_amount - down_amount'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+palindrome:
+  types:
+    - parsons
+  parsons-extra-lines:
+    - 'halfway_index = len(word) / 2'
+    - 'j = -i'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
