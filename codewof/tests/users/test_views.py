@@ -97,7 +97,6 @@ class UserDetailViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
 
         self.assertEqual(len(resp.context['questions_to_do']), 2)
-        self.assertEqual(len(resp.context['studies']), 0)
         self.assertEqual(len(resp.context['all_achievements']), len(Achievement.objects.all()))
         self.assertEqual(resp.context['all_complete'], False)
         self.assertEqual(resp.context['codewof_profile'], user.profile)

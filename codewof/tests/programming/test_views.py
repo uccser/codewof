@@ -113,13 +113,6 @@ class QuestionViewTest(TestCase):
         resp = self.client.get('/questions/{}/'.format('fake-primary-key'))
         self.assertEqual(resp.status_code, 404)
 
-    def test_get_object_question_not_in_study(self):
-        self.login_user()
-        generate_study_registrations()
-        question = QuestionTypeFunction.objects.get(slug='function-question-1')
-        resp = self.client.get('/questions/{}/'.format(question.pk))
-        self.assertEqual(resp.status_code, 403)
-
     def test_context_data(self):
         self.login_user()
         question = QuestionTypeProgram.objects.get(slug='program-question-1')
