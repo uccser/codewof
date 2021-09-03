@@ -1,53 +1,19 @@
 """Serializers for research models."""
 
 from rest_framework import serializers
+from research.models import StudyRegistration
 
 
-# class StudySerializer(serializers.ModelSerializer):
-#     """Serializer for codeWOF studies."""
+class StudyRegistrationSerializer(serializers.ModelSerializer):
+    """Serializer for research study registrations."""
 
-#     class Meta:
-#         """Meta settings for serializer."""
+    class Meta:
+        """Meta settings for serializer."""
 
-#         model = Study
-#         fields = (
-#             'pk',
-#             'title',
-#             'user_types',
-#             'researchers'
-#         )
-
-
-# class StudyGroupSerializer(serializers.ModelSerializer):
-#     """Serializer for codeWOF studies."""
-
-#     questions = QuestionWithAttemptSerializer(many=True, read_only=True)
-
-#     class Meta:
-#         """Meta settings for serializer."""
-
-#         model = StudyGroup
-#         fields = (
-#             'pk',
-#             'title',
-#             'questions',
-#         )
-
-
-# class SingularStudySerializer(serializers.ModelSerializer):
-#     """Serializer for codeWOF studies."""
-
-#     # gets related StudyGroups
-#     groups = StudyGroupSerializer(many=True, read_only=True)
-
-#     class Meta:
-#         """Meta settings for serializer."""
-
-#         model = Study
-#         fields = (
-#             'pk',
-#             'title',
-#             'user_types',
-#             'researchers',
-#             'groups',
-#         )
+        model = StudyRegistration
+        fields = (
+            'pk',
+            'datetime',
+            'send_study_results',
+            'user',
+        )

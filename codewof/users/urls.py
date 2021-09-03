@@ -1,10 +1,16 @@
 """URL routing for users application."""
 
 from django.urls import path
+from rest_framework import routers
 from . import views
 
-
 app_name = "users"
+
+router = routers.SimpleRouter()
+router.register(r'users/users', views.UserAPIViewSet)
+router.register(r'users/user-types', views.UserTypeAPIViewSet)
+
+
 urlpatterns = [
     path("dashboard/", view=views.UserDetailView.as_view(), name="dashboard"),
     path("redirect/", view=views.UserRedirectView.as_view(), name="redirect"),

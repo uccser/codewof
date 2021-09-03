@@ -144,7 +144,8 @@ class Membership(models.Model):
     date_joined = models.DateTimeField(default=django_timezone.now)
 
 
-def get_default_invitation_expiry(self):
+def get_default_invitation_expiry():
+    """Calculate expiry date of invitation."""
     return django_timezone.now() + django_timezone.timedelta(days=7)
 
 

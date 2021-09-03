@@ -1,4 +1,5 @@
-import re
+"""Middleware for research application."""
+
 from django.utils.timezone import now
 from django.conf import settings
 from django.urls import reverse, resolve
@@ -30,6 +31,7 @@ ALLOWED_URL_PATHS = [
     '/faq/',
     '/policies/',
 ]
+
 
 class ResearchMiddleware:
     """Middleware used with research application."""
@@ -79,7 +81,7 @@ class ResearchMiddleware:
         return response
 
     def process_request(self, request):
-        """Checks request and either permits, redirects, or rejects request."""
+        """Check request and either permits, redirects, or rejects request."""
         # Staff can always access all pages
         if request.user.is_staff:
             return request
@@ -120,19 +122,23 @@ class ResearchMiddleware:
 
 class LoginRequired(PermissionDenied):
     """Exception if user is not logged in."""
+
     pass
 
 
 class NoStudyRegistration(PermissionDenied):
     """Exception if user is not registered for study."""
+
     pass
 
 
 class UserTypeNotAllowed(PermissionDenied):
     """Exception if user's type is not elgible for study."""
+
     pass
 
 
 class StudyClosed(PermissionDenied):
     """Exception if study is not currently open."""
+
     pass

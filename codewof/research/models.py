@@ -23,6 +23,7 @@ class ResearchPermissions(models.Model):
 
     class Meta:
         """Meta options for model."""
+
         managed = False  # No database table
         default_permissions = ()  # Disable CRUD permissions
         permissions = (

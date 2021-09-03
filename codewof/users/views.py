@@ -13,18 +13,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
 from django.db.models import Q
-from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.views.generic import DetailView, RedirectView, UpdateView, CreateView, DeleteView
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
-from users.serializers import UserSerializer
+from users.serializers import (
+    UserSerializer,
+    UserTypeSerializer,
+)
 from programming import settings as programming_settings
 from users.forms import UserChangeForm, GroupCreateUpdateForm, GroupInvitationsForm
-from research.models import StudyRegistration
-from research import settings as research_settings
 from functools import wraps
 from allauth.account.admin import EmailAddress
 
@@ -33,13 +33,16 @@ from programming.models import (
     Attempt,
     Achievement
 )
-from users.models import Group, Membership, GroupRole, Invitation
-
+from users.models import (
+    Group,
+    Membership,
+    GroupRole,
+    Invitation,
+    UserType,
+)
 from programming.codewof_utils import get_questions_answered_in_past_month, backdate_user
-
 from users.mixins import AdminRequiredMixin, AdminOrMemberRequiredMixin, SufficientAdminsMixin, \
     RequestUserIsMembershipUserMixin
-
 from users.utils import send_invitation_email
 
 User = get_user_model()
@@ -181,6 +184,14 @@ class UserAPIViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class UserTypeAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows user types to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = UserType.objects.all()
+    serializer_class = UserTypeSerializer
 
 
 class GroupCreateView(LoginRequiredMixin, CreateView):

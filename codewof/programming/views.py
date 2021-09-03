@@ -5,7 +5,6 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core import management
 from django.views import generic
-from django.utils import timezone
 from django.db.models import Count, Max
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse, Http404, HttpResponse
@@ -27,8 +26,6 @@ from programming.models import (
     TestCaseAttempt,
     Like
 )
-from research.models import StudyRegistration
-
 from programming.codewof_utils import add_points, check_achievement_conditions
 
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
@@ -47,7 +44,6 @@ class QuestionListView(LoginRequiredMixin, generic.ListView):
         Returns:
             Question queryset.
         """
-        now = timezone.now()
         questions = Question.objects.all().select_subclasses()
 
         if self.request.user.is_authenticated:
@@ -214,7 +210,7 @@ class CreateView(generic.base.TemplateView):
 class QuestionAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows questions to be viewed."""
 
-    queryset = Question.objects.all().prefetch_related('attempt_set', 'groups')
+    queryset = Question.objects.all().prefetch_related('attempt_set')
     serializer_class = QuestionSerializer
 
 

@@ -1,20 +1,19 @@
 """Views for research application."""
 
 from django.views import generic
-from django.http import HttpResponse
 from django.contrib import messages
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect
 from mail_templated import send_mail
-from programming.models import Attempt
 from rest_framework import viewsets, permissions
 from rest_framework.permissions import IsAdminUser
 from research.forms import ResearchConsentForm
 from research.models import StudyRegistration
 from research.utils import get_study_for_context
+from research.serializers import StudyRegistrationSerializer
 
 
 class StudyDetailView(LoginRequiredMixin, generic.TemplateView):
@@ -35,7 +34,6 @@ class StudyDetailView(LoginRequiredMixin, generic.TemplateView):
                 registration = None
         context['registration'] = registration
         return context
-
 
 
 class StudyConsentFormView(LoginRequiredMixin, FormView):
@@ -89,18 +87,6 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         return redirect('research:home')
 
 
-# class StudyAdminView(LoginRequiredMixin, generic.DetailView):
-#     """Admin page for a research study."""
-
-#     model = Study
-#     context_object_name = 'study'
-#     template_name = 'research/study_admin.html'
-
-#     def get_queryset(self):
-#         """Return queryset for selecting study from."""
-#         return self.request.user.studies_researching.all()
-
-
 class ResearcherPermission(permissions.BasePermission):
     """Global permission check if the user is a researcher of the study."""
 
@@ -113,31 +99,9 @@ class ResearcherPermission(permissions.BasePermission):
             return False
 
 
-# class StudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
-#     """API endpoint that allows studies to be viewed."""
+class StudyRegistrationAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows studies to be viewed."""
 
-#     permission_classes = [IsAdminUser]
-#     serializer_class = StudySerializer
-#     queryset = Study.objects.all()
-
-
-# class StudyGroupAPIViewSet(viewsets.ReadOnlyModelViewSet):
-#     """API endpoint that allows study groups to be viewed."""
-
-#     permission_classes = [IsAdminUser]
-#     queryset = StudyGroup.objects.all()
-#     serializer_class = StudyGroupSerializer
-
-
-# class SingularStudyAPIViewSet(viewsets.ReadOnlyModelViewSet):
-#     """API endpoint that allows studies to be viewed."""
-
-#     permission_classes = [ResearcherPermission]
-#     queryset = Study.objects.all().prefetch_related('groups')
-#     serializer_class = SingularStudySerializer
-
-#     def get_queryset(self):
-#         """Get study object that has been requested."""
-#         study_id = self.request.query_params.get('study_id')
-#         queryset = Study.objects.all().filter(pk=study_id)
-#         return queryset
+    permission_classes = [IsAdminUser]
+    serializer_class = StudyRegistrationSerializer
+    queryset = StudyRegistration.objects.all()
