@@ -41,7 +41,7 @@ class ResearchMiddleware:
 
         Only load research middleware if running in a staging enviroment.
         """
-        if settings.STAGING_ENVIRONMENT:
+        if not settings.PRODUCTION_ENVIRONMENT:
             self.get_response = get_response
         else:
             raise MiddlewareNotUsed()

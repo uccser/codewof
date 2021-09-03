@@ -175,7 +175,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'config.middleware.ResearchMiddleware.ResearchMiddleware',
+    'research.middleware.ResearchMiddleware.ResearchMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -386,7 +386,7 @@ else:
     GIT_SHA = "local development"
 CODEWOF_DOMAIN = env('CODEWOF_DOMAIN', default='https://codewof.localhost')
 PRODUCTION_ENVIRONMENT = False
-STAGING_ENVIRONMENT = False
+STAGING_ENVIRONMENT = True
 BREADCRUMBS_TEMPLATE = 'django_bootstrap_breadcrumbs/bootstrap4.html'
 QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path('programming')), 'content')
 CUSTOM_VERTO_TEMPLATES = os.path.join(str(ROOT_DIR.path('utils')), 'custom_converter_templates', '')

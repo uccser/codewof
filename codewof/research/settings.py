@@ -12,7 +12,7 @@ import datetime
 from django.utils.timezone import make_aware
 
 # Master switch for research features
-RESEARCH_ACTIVE = True
+RESEARCH_ACTIVE = False
 
 # Dates (stored in NZ timezone as specified in settings)
 START_DATETIME = make_aware(datetime.datetime(
@@ -43,6 +43,3 @@ USER_TYPES_ALLOWED = [
 SLUG = '2021-study'
 TITLE = '2021 Study'
 # Description is stored in research/study_description.html
-
-# TODO: Map researcher to user, or add group for permissions
-# RESEARCHER= 'Jane Doe'
