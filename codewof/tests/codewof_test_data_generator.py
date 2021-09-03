@@ -545,7 +545,6 @@ def generate_study_registrations():
     """
     user = User.objects.get(id=1)
     StudyRegistration.objects.create(
-        study_group=study_group,
         user=user,
     )
 

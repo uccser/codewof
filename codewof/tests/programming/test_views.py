@@ -3,15 +3,13 @@ import datetime
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from programming.models import Question, QuestionTypeProgram, QuestionTypeFunction, Attempt, Like
-
+from programming.models import Question, QuestionTypeProgram, Attempt, Like
 from tests.codewof_test_data_generator import (
     generate_users,
     generate_questions,
     generate_attempts,
     generate_test_cases,
     generate_achievements,
-    generate_study_registrations,
     generate_likes
 )
 from programming.codewof_utils import check_achievement_conditions
