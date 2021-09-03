@@ -6,6 +6,6 @@ def calculate(x, y, operator):
     if operator == 'x':
         return x * y
     if operator == '/':
-        return x / y
+        return x // y
 
     return False

@@ -954,7 +954,7 @@ square-area:
     4: normal
     5: normal
 
-quadratic-formula:
+quadratic-roots:
   types:
     - function
   test-cases:
@@ -1023,6 +1023,22 @@ palindrome:
   parsons-extra-lines:
     - 'halfway_index = len(word) / 2'
     - 'j = -i'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+is-a-divisor:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+largest-number:
+  types:
+    - program
   test-cases:
     1: normal
     2: normal
