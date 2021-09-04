@@ -1004,25 +1004,23 @@ can-afford:
     3: normal
     4: normal
 
-icy-mountain:
+mountain-climbing:
   types:
     - parsons
   parsons-extra-lines:
-    - 'if up_amount < down_amount and height != 0:'
-    - 'current_height = current_height + up_amount - down_amount'
+    - 'while current_height <= height:'
+    - 'current_height += height'
   test-cases:
     1: normal
     2: normal
     3: normal
-    4: normal
-    5: normal
 
-palindrome:
+first-letters:
   types:
     - parsons
   parsons-extra-lines:
-    - 'halfway_index = len(word) / 2'
-    - 'j = -i'
+    - 'result += words[0]'
+    - 'result += word[-1]'
   test-cases:
     1: normal
     2: normal

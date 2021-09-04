@@ -1,2 +1,0 @@
-print(is_palindrome("noon"))
-

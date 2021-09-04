@@ -1,1 +1,0 @@
-print(number_of_steps(3, 4, 10))
