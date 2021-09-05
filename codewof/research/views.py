@@ -17,7 +17,7 @@ from research.serializers import StudyRegistrationSerializer
 
 
 class StudyDetailView(LoginRequiredMixin, generic.TemplateView):
-    """Page for a research study."""
+    """Page for the research study."""
 
     template_name = 'research/study_detail.html'
 
@@ -100,7 +100,7 @@ class ResearcherPermission(permissions.BasePermission):
 
 
 class StudyRegistrationAPIViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint that allows studies to be viewed."""
+    """API endpoint that allows study registrations to be viewed."""
 
     permission_classes = [IsAdminUser]
     serializer_class = StudyRegistrationSerializer
