@@ -56,14 +56,21 @@
           {% if request %}
             {% activeurl %}
             <ul id="codewof-navbar-dashboard" class="navbar-nav w-100 d-lg-flex justify-content-end align-items-stretch">
-              <a class="nav-item nav-link" href="{% url 'programming:question_list' %}">Questions</a>
-              <a class="nav-item nav-link mr-auto" href="{% url 'style:home' %}">Style Checkers</a>
+              <a class="nav-item nav-link" href="{% url 'programming:question_list' %}">
+                Questions
+              </a>
+              <a class="nav-item nav-link{% if not RESEARCH %} mr-auto{% endif %}" href="{% url 'style:home' %}">
+                Style Checkers
+              </a>
+              {% if RESEARCH %}
+                <a class="nav-item nav-link mr-auto" href="{% url 'research:home' %}">
+                    Research
+                </a>
+              {% endif %}
               {% if request and request.user.is_authenticated %}
-                {# URL provided by django-allauth/account/urls.py #}
                 <a class="nav-item nav-link" href="{% url 'users:dashboard'  %}">
                   {% svg 'icons8-points' %}
                   <span id="user_points_navbar">{{ request.user.profile.points }}</span>
-                  {# URL provided by django-allauth/account/urls.py #}
                   {% svg 'icons8-user' %}
                   {{ request.user.get_short_name }}'s Dashboard</a>
                 {# URL provided by django-allauth/account/urls.py #}
@@ -164,11 +171,6 @@
               <li>
                 <a href="{% url 'programming:question_list' %}">
                   {% trans "Questions" %}
-                </a>
-              </li>
-              <li>
-                <a href="{% url 'research:home' %}">
-                  {% trans "Research" %}
                 </a>
               </li>
             </ul>

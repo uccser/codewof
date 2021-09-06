@@ -4,15 +4,12 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, HTML, Submit, Div
 
-DECLINE_BUTTON = (
-    '<a class="btn btn-secondary" href={% url "research:home" %}>'
-    'I do not agree'
-    '</a>'
-)
 
+class ResearchConsentForm(forms.Form):
+    """Consent form for current reseach.
 
-class MaintainingProgrammingSkills2019Form(forms.Form):
-    """Consent form for Maintaining Programming Skills study."""
+    If not in use, in empty with 'pass'.
+    """
 
     condition_1 = forms.BooleanField(
         required=True,
@@ -67,7 +64,11 @@ class MaintainingProgrammingSkills2019Form(forms.Form):
             'send_study_results',
             'condition_8',
             Div(
-                HTML(DECLINE_BUTTON),
+                HTML(
+                    '<a class="btn btn-secondary" href={% url "research:home" %}>'
+                    'I do not agree'
+                    '</a>'
+                ),
                 Submit('submit', 'I agree', css_class='btn-success'),
                 css_class='d-flex justify-content-around my-5',
             ),

@@ -19,10 +19,12 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
-from users.serializers import UserSerializer
-from programming import settings
+from users.serializers import (
+    UserSerializer,
+    UserTypeSerializer,
+)
+from programming import settings as programming_settings
 from users.forms import UserChangeForm, GroupCreateUpdateForm, GroupInvitationsForm
-from research.models import StudyRegistration
 from functools import wraps
 from allauth.account.admin import EmailAddress
 
@@ -31,13 +33,16 @@ from programming.models import (
     Attempt,
     Achievement
 )
-from users.models import Group, Membership, GroupRole, Invitation
-
+from users.models import (
+    Group,
+    Membership,
+    GroupRole,
+    Invitation,
+    UserType,
+)
 from programming.codewof_utils import get_questions_answered_in_past_month, backdate_user
-
 from users.mixins import AdminRequiredMixin, AdminOrMemberRequiredMixin, SufficientAdminsMixin, \
     RequestUserIsMembershipUserMixin
-
 from users.utils import send_invitation_email
 
 User = get_user_model()
@@ -78,27 +83,8 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         now = timezone.now()
         today = now.date()
 
-        if user.is_authenticated:
-            # Look for active study registration
-            try:
-                study_registration = StudyRegistration.objects.get(
-                    user=user,
-                    study_group__study__start_date__lte=now,
-                    study_group__study__end_date__gte=now,
-                )
-            except ObjectDoesNotExist:
-                study_registration = None
-
         # Get questions not attempted before today
-        if study_registration:
-            questions = study_registration.study_group.questions.all()
-        else:
-            questions = Question.objects.all()
-
-        log_message = 'Questions for user {} on {} ({}):\n'.format(user, now, today)
-        for i, question in enumerate(questions):
-            log_message += '{}: {}\n'.format(i, question)
-        logger.info(log_message)
+        questions = Question.objects.all()
 
         # TODO: Also filter by questions added before today
         questions = questions.filter(
@@ -108,15 +94,10 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         ).order_by('pk').distinct('pk').select_subclasses()
         questions = list(questions)
 
-        log_message = 'Filtered questions for user {}:\n'.format(user)
-        for i, question in enumerate(questions):
-            log_message += '{}: {}\n'.format(i, question)
-        logger.info(log_message)
-
         # Randomly pick 3 based off seed of todays date
         if len(questions) > 0:
             random_seeded = Random('{}{}'.format(user.pk, today))
-            number_to_do = min(len(questions), settings.QUESTIONS_PER_DAY)
+            number_to_do = min(len(questions), programming_settings.QUESTIONS_PER_DAY)
             todays_questions = random_seeded.sample(questions, number_to_do)
             all_complete = True
             for question in todays_questions:
@@ -131,33 +112,14 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             todays_questions = list()
             all_complete = False
 
-        log_message = 'Chosen questions for user {}:\n'.format(user)
-        for i, question in enumerate(todays_questions):
-            log_message += '{}: {}\n'.format(i, question)
-        logger.info(log_message)
-
         context['questions_to_do'] = todays_questions
         context['all_complete'] = all_complete
-
-        # Show studies
-        studies = user.user_type.studies.filter(
-            visible=True,
-            groups__isnull=False,
-        ).distinct()
-
         memberships = user.membership_set.all().order_by('group__name')
         groups = memberships.values('group').distinct()
         emails = EmailAddress.objects.filter(user=user, verified=True)
         invitations = Invitation.objects.filter(email__in=emails.values('email')).exclude(group__in=groups)\
             .order_by('group__pk', '-date_sent').distinct('group__pk')
 
-        # TODO: Simplify to one database query
-        for study in studies:
-            study.registered = StudyRegistration.objects.filter(
-                user=user,
-                study_group__in=study.groups.all(),
-            ).exists()
-        context['studies'] = studies
         context['memberships'] = memberships
         context['invitations'] = invitations
         context['codewof_profile'] = self.object.profile
@@ -222,6 +184,14 @@ class UserAPIViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class UserTypeAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows user types to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = UserType.objects.all()
+    serializer_class = UserTypeSerializer
 
 
 class GroupCreateView(LoginRequiredMixin, CreateView):
