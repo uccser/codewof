@@ -953,3 +953,82 @@ square-area:
     3: normal
     4: normal
     5: normal
+
+simple-calculator:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+vertical-line:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+
+horizontal-line:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+
+acceleration-calculator:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+
+can-afford:
+  type: debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 2
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+mountain-climbing:
+  types:
+    - parsons
+  parsons-extra-lines:
+    - 'while current_height <= height:'
+    - 'current_height += height'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+first-letters:
+  types:
+    - parsons
+  parsons-extra-lines:
+    - 'result += words[0]'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+is-a-divisor:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+# TODO: Make it require a for loop
+largest-number:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
