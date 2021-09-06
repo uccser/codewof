@@ -132,7 +132,7 @@ jobs:
           file: ./infrastructure/production/django/Dockerfile
           context: .
           push: true
-          tags: ghcr.io/uccser/codewof:develop
+          tags: ghcr.io/${{ github.repository }}:develop
           build-args: |
             GIT_SHA=${{ github.sha }}
             BUILD_ENVIRONMENT=staging
