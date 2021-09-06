@@ -3,4 +3,3 @@ def print_burger(bun, ingredients):
     for ingredient in ingredients:
         print(ingredient)
     print(bun)
-
