@@ -7,5 +7,3 @@ def calculate(x, y, operator):
         return x * y
     if operator == '/':
         return x // y
-
-    return False

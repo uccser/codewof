@@ -1,1 +1,0 @@
-print(number_of_roots(1, 2, 3))

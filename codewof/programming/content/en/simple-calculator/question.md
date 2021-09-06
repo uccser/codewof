@@ -1,4 +1,4 @@
-#Simple Calculator
+# Simple Calculator
 
 Write a function `calculate(number1, number2, operator)` that takes two numbers and an operator that is either '+', '-', 'x', or '/'.
 

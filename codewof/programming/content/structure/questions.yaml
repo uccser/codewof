@@ -954,15 +954,6 @@ square-area:
     4: normal
     5: normal
 
-quadratic-roots:
-  types:
-    - function
-  test-cases:
-    1: normal
-    2: normal
-    3: normal
-    4: normal
-
 simple-calculator:
   types:
     - function
@@ -1020,7 +1011,6 @@ first-letters:
     - parsons
   parsons-extra-lines:
     - 'result += words[0]'
-    - 'result += word[-1]'
   test-cases:
     1: normal
     2: normal
@@ -1034,6 +1024,7 @@ is-a-divisor:
     2: normal
     3: normal
 
+# TODO: Make it require a for loop
 largest-number:
   types:
     - program
