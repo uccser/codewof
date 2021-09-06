@@ -3,15 +3,13 @@ import datetime
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from programming.models import Question, QuestionTypeProgram, QuestionTypeFunction, Attempt, Like
-
+from programming.models import Question, QuestionTypeProgram, Attempt, Like
 from tests.codewof_test_data_generator import (
     generate_users,
     generate_questions,
     generate_attempts,
     generate_test_cases,
     generate_achievements,
-    generate_study_registrations,
     generate_likes
 )
 from programming.codewof_utils import check_achievement_conditions
@@ -112,13 +110,6 @@ class QuestionViewTest(TestCase):
         self.login_user()
         resp = self.client.get('/questions/{}/'.format('fake-primary-key'))
         self.assertEqual(resp.status_code, 404)
-
-    def test_get_object_question_not_in_study(self):
-        self.login_user()
-        generate_study_registrations()
-        question = QuestionTypeFunction.objects.get(slug='function-question-1')
-        resp = self.client.get('/questions/{}/'.format(question.pk))
-        self.assertEqual(resp.status_code, 403)
 
     def test_context_data(self):
         self.login_user()

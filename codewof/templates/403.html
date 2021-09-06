@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}Forbidden (403){% endblock %}
+
+{% block content %}
+    <h1>Forbidden (403)</h1>
+
+    <p>{{ exception }}</p>
+
+    {% if request.user.is_authenticated %}
+        <a class="btn btn-primary" href="{% url 'users:dashboard' %}">
+            {% trans "Go to my dashboard" %}
+        </a>
+    {% else %}
+        <a class="btn btn-primary" href="{% url 'general:home' %}">
+            {% trans "Return to the homepage" %}
+        </a>
+    {% endif %}
+{% endblock content %}

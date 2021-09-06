@@ -1,25 +1,10 @@
-{% extends "base.html" %}
+{% extends "research/base.html" %}
 
 {% load static crispy_forms_tags %}
 
 {% block title %}{{ study.title }}{% endblock %}
 
-{% block page_heading %}
-    <h1>
-        <span class="text-muted">Research Study:</span><br>
-        {{ study.title }}
-    </h1>
-{% endblock page_heading %}
-
 {% block content %}
-    <div class="mb-3">
-        {% if study.consent_form %}
-            <h2>Consent Form</h2>
-            {% crispy form %}
-        {% else %}
-            <div class="alert alert-info" role="alert">
-                This study is not currently taking registrations.
-            </div>
-        {% endif %}
-    </div>
+    <h2>Consent Form</h2>
+    {% crispy form %}
 {% endblock content %}

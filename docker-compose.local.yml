@@ -58,9 +58,6 @@ services:
             - ./infrastructure/local/postgres/.envs
         networks:
             - backend
-        volumes:
-            - local-postgres-data:/var/lib/postgresql/data:Z
-            - local-postgres-data-backups:/backups:z
 
     mailhog:
         image: mailhog/mailhog:v1.0.1
@@ -74,7 +71,3 @@ networks:
         driver: bridge
     uccser-development-proxy:
         external: true
-
-volumes:
-    local-postgres-data: {}
-    local-postgres-data-backups: {}
