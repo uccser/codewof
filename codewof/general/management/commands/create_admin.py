@@ -16,7 +16,6 @@ class Command(management.base.BaseCommand):
 
     def handle(self, *args, **options):
         """Automatically called when the create_admin command is given."""
-
         User = get_user_model()  # noqa N806
 
         admin = User.objects.create_superuser(
@@ -34,5 +33,5 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        
+
         print('Admin account created.\n')
