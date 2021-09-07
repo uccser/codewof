@@ -953,3 +953,66 @@ square-area:
     3: normal
     4: normal
     5: normal
+
+print-burger:
+  types:
+    -function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+shout-it:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+fancy-divider-one:
+  types:
+    -function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+fancy-divider-two:
+  types:
+    -function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+driving-danger-level:
+  types:
+    -function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+driving-danger-level-debug:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 6
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+plural-words:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
