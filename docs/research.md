@@ -1,4 +1,4 @@
-# Research
+# Research!
 
 This document contains notes regarding deploying the website in research mode.
 
