@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   push:
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   test-django-system-check:
     name: Tests - Django system check
@@ -61,7 +65,9 @@ jobs:
 
   create-static-files:
     name: Create static files
-    if: (github.ref == 'refs/heads/develop')
+    if: |
+      (github.ref == 'refs/heads/develop')
+      || startsWith(github.ref, 'refs/heads/research-study-')
     runs-on: ubuntu-20.04
     needs: [
       test-django-system-check,
@@ -95,9 +101,11 @@ jobs:
           path: static-files.tar.gz
           retention-days: 3
 
-  publish-dev-docker-image:
+  publish-docker-image:
     name: Create and publish dev image
-    if: (github.ref == 'refs/heads/develop')
+    if: |
+      (github.ref == 'refs/heads/develop')
+      || startsWith(github.ref, 'refs/heads/research-study-')
     runs-on: ubuntu-20.04
     needs: [
       create-static-files,
@@ -126,13 +134,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup Docker metadata
+        if: |
+          (github.ref == 'refs/heads/develop')
+          || startsWith(github.ref, 'refs/heads/research-study-')
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch,enable=true
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v2.6.1
         with:
           file: ./infrastructure/production/django/Dockerfile
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:develop
+          tags: ${{ steps.meta.outputs.tags }}
           build-args: |
             GIT_SHA=${{ github.sha }}
             BUILD_ENVIRONMENT=staging
