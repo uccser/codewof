@@ -3,6 +3,7 @@
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import get_template
+from django.templatetags.static import static
 from django.urls import reverse
 
 
@@ -81,8 +82,7 @@ def create_invitation_html(user_exists, invitee_name, inviter_name, group_name, 
                   "see your invitation in the dashboard, where you can join the group."\
             .format(inviter_name, group_name)
         url = settings.CODEWOF_DOMAIN + reverse('users:dashboard')
-        html = email_template.render({"user_exists": user_exists, "invitee_name": invitee_name, "message": message,
-                                      "url": url, "button_text": "Sign In"})
+        button_text = "Sign In"
     else:
         message = "{} has invited you to join the Group '{}'. CodeWOF helps you maintain your "\
                   "programming fitness with short daily programming exercises. With a free account you can save your "\
@@ -91,6 +91,10 @@ def create_invitation_html(user_exists, invitee_name, inviter_name, group_name, 
                   "If you already have a CodeWOF account, then add {} to your profile to make the invitation appear."\
             .format(inviter_name, group_name, email, email)
         url = settings.CODEWOF_DOMAIN + reverse('account_signup')
-        html = email_template.render({"user_exists": user_exists, "invitee_name": invitee_name, "message": message,
-                                      "url": url, "button_text": "Sign Up"})
+        button_text = "Sign Up"
+
+    # Retrieve logo source here instead of template to avoid the domain being set to the one for MailHog
+    html = email_template.render({"user_exists": user_exists, "invitee_name": invitee_name, "message": message,
+                                  "url": url, "button_text": button_text, "domain": settings.CODEWOF_DOMAIN,
+                                  "logo_src": settings.CODEWOF_DOMAIN + static('img/logos/logo.png')})
     return html
