@@ -1016,3 +1016,14 @@ plural-words:
     2: normal
     3: normal
     4: normal
+
+are-we-there-yet:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
+    5: exceptional
+    6: normal
