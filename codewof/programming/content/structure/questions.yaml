@@ -1038,3 +1038,12 @@ how-many-names:
     2: normal
     3: normal
     4: normal
+
+triangle-perimeter:
+  types:
+    -function
+    test-cases:
+      1: normal
+      2: normal
+      3: normal
+      4: exceptional
