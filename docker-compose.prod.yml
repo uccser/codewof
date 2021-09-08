@@ -3,15 +3,16 @@ version: '3.8'
 # --- Base config -------------------------------------------------------------
 
 x-default-opts:
-  &default-opts
-  logging:
-    options:
-      max-size: '1m'
-      max-file: '3'
+    &default-opts
+    logging:
+        options:
+            max-size: '1m'
+            max-file: '3'
 
 # --- Base Django config ------------------------------------------------------
 
 x-django-config:
+    &django-config
     image: ghcr.io/uccser/codewof:${CODEWOF_IMAGE_TAG}
     environment:
         CODEWOF_DOMAIN: ${CODEWOF_DOMAIN}
