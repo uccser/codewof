@@ -1027,3 +1027,14 @@ are-we-there-yet:
     4: normal
     5: exceptional
     6: normal
+
+how-many-names:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
