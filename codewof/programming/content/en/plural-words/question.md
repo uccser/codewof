@@ -1,4 +1,4 @@
-#Plural Words
+# Plural Words
 
 Write a program that repeatedly asks the user for words that end with s (capital or lowercase). Each time it gets a word that ends with S, it should **print** 
 `Yes, {given word} ends with with s.` and prompt the user for another H word. 

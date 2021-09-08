@@ -1,4 +1,4 @@
-#Print Burger
+# Print Burger
 
 Write a function `print_burger(bun, ingredients)` that takes a string `bun` and a list `ingredients`.
 
