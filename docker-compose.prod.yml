@@ -126,7 +126,7 @@ services:
     task-update-data:
         <<: *default-opts
         <<: *django-config
-        command: python ./manage.py update_data
+        command: python ./manage.py update_data --skip_backdate
         deploy:
             replicas: 0
             placement:
