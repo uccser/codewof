@@ -997,7 +997,7 @@ divisible-by-six:
     4: normal
     5: normal
 
-teemagers:
+teenagers:
   types:
     - program
   test-cases:
