@@ -1007,3 +1007,15 @@ teenagers:
     4: normal
     5: normal
     6: normal
+
+storage-full:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
+    6: exceptional
+    7: normal
