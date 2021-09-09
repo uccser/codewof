@@ -1,0 +1,1 @@
+print(total_seats(['car', 'truck', 'bus']))
