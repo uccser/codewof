@@ -1,0 +1,1 @@
+print_burger('White Bun', ['Tomato Sauce', 'Pickles', 'Cheese', 'Beef'])
