@@ -104,6 +104,55 @@ services:
         networks:
             - backend
 
+    cron-backdate:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py backdate_points_and_achievements
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+            labels:
+                - "swarm.cronjob.enable=true"
+                - "swarm.cronjob.schedule=0 0/15 * * * *" # Every 15 minutes
+                - "swarm.cronjob.skip-running=false"
+        networks:
+            - backend
+
+    task-update-data:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py update_data
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+        networks:
+            - backend
+
+    task-raise-backdate-flags:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py raise_backdate_flags
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+        networks:
+            - backend
+
     postgres:
         <<: *default-opts
         image: postgres:13.4
