@@ -18,7 +18,7 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             '--profiles',
-            default=-1,
+            default=250,
             help='number of profiles to backdate',
         )
 

@@ -1,15 +1,13 @@
 """Views for programming application."""
 
 import json
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.core import management
 from django.views import generic
 from django.db.models import Count, Max
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
@@ -29,7 +27,6 @@ from programming.models import (
 from programming.codewof_utils import add_points, check_achievement_conditions
 
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
-BATCH_SIZE = 15
 
 
 class QuestionListView(LoginRequiredMixin, generic.ListView):
@@ -161,23 +158,6 @@ def save_question_attempt(request):
                 result['message'] = 'Attempt not saved, same as previous attempt.'
 
     return JsonResponse(result)
-
-
-def partial_backdate(request):
-    """Backdate a set number of user profiles.
-
-    Returns a 403 Forbidden response if the request was made to a live website and did not come from GCP.
-    """
-    # https://cloud.google.com/appengine/docs/standard/python3/scheduling-jobs-with-cron-yaml?hl=en_US
-    # #validating_cron_requests
-    if settings.DEBUG or 'X-Appengine-Cron' in request.headers:
-        management.call_command("backdate_points_and_achievements", profiles=BATCH_SIZE)
-        response = {
-            'success': True,
-        }
-        return JsonResponse(response)
-    else:
-        raise PermissionDenied()
 
 
 class CreateView(generic.base.TemplateView):

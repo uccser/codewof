@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from datetime import time
-
+from time import perf_counter
 import pytz
 from django.conf import settings
 from django.core.mail import send_mail
@@ -27,6 +27,8 @@ class Command(BaseCommand):
         :param options:
         :return:
         """
+        start_time = perf_counter()
+        print('Starting task for sending reminder emails.')
         users_to_email = self.get_users_to_email()
 
         for user in users_to_email:
@@ -44,6 +46,11 @@ class Command(BaseCommand):
                 fail_silently=False,
                 html_message=html
             )
+            print(f' - Reminder email sent to {user}.')
+        duration = perf_counter() - start_time
+        print('Completed task for sending reminder emails.')
+        print(f' - Emails sent: {len(users_to_email)}')
+        print(f' - Task duration: {duration:0.4f}')
 
     def get_days_since_last_attempt(self, today, user):
         """

@@ -1,15 +1,52 @@
 version: '3.8'
 
+# --- Base config -------------------------------------------------------------
+
 x-default-opts:
-  &default-opts
-  logging:
-    options:
-      max-size: '1m'
-      max-file: '3'
+    &default-opts
+    logging:
+        options:
+            max-size: '1m'
+            max-file: '3'
+
+# --- Base Django config ------------------------------------------------------
+
+x-django-config:
+    &django-config
+    image: ghcr.io/uccser/codewof:${CODEWOF_IMAGE_TAG}
+    environment:
+        CODEWOF_DOMAIN: ${CODEWOF_DOMAIN}
+        POSTGRES_HOST: postgres
+        POSTGRES_PORT: "5432"
+        DEPLOYMENT_ENVIRONMENT_FILE: /codewof_deployment_environment
+        DJANGO_SECRET_KEY_FILE: /run/secrets/codewof_django_secret_key
+        POSTGRES_DB_FILE: /run/secrets/codewof_postgres_db
+        POSTGRES_USER_FILE: /run/secrets/codewof_postgres_user
+        POSTGRES_PASSWORD_FILE: /run/secrets/codewof_postgres_password
+        MAILGUN_API_KEY_FILE: /run/secrets/codewof_mailgun_api_key
+        SAMPLE_DATA_ADMIN_PASSWORD_FILE: /run/secrets/codewof_sample_data_admin_password
+        SAMPLE_DATA_USER_PASSWORD_FILE: /run/secrets/codewof_sample_data_user_password
+        RECAPTCHA_PUBLIC_KEY_FILE: /run/secrets/codewof_recaptcha_public_key
+        RECAPTCHA_PRIVATE_KEY_FILE: /run/secrets/codewof_recaptcha_private_key
+    configs:
+        - codewof_deployment_environment
+    secrets:
+        - codewof_django_secret_key
+        - codewof_postgres_db
+        - codewof_postgres_user
+        - codewof_postgres_password
+        - codewof_mailgun_api_key
+        - codewof_sample_data_admin_password
+        - codewof_sample_data_user_password
+        - codewof_recaptcha_public_key
+        - codewof_recaptcha_private_key
+
+# -----------------------------------------------------------------------------
 
 services:
     django:
-        image: ghcr.io/uccser/codewof:${CODEWOF_IMAGE_TAG}
+        <<: *default-opts
+        <<: *django-config
         deploy:
             replicas: 2
             placement:
@@ -25,34 +62,95 @@ services:
                 - "traefik.http.routers.codewof-django.service=codewof-django"
                 - "traefik.http.routers.codewof-django.rule=Host(`${CODEWOF_DOMAIN}`)"
                 - "traefik.http.routers.codewof-django.entryPoints=web"
-        environment:
-            CODEWOF_DOMAIN: ${CODEWOF_DOMAIN}
-            POSTGRES_HOST: postgres
-            POSTGRES_PORT: "5432"
-            DEPLOYMENT_ENVIRONMENT_FILE: /codewof_deployment_environment
-            DJANGO_SECRET_KEY_FILE: /run/secrets/codewof_django_secret_key
-            POSTGRES_DB_FILE: /run/secrets/codewof_postgres_db
-            POSTGRES_USER_FILE: /run/secrets/codewof_postgres_user
-            POSTGRES_PASSWORD_FILE: /run/secrets/codewof_postgres_password
-            MAILGUN_API_KEY_FILE: /run/secrets/codewof_mailgun_api_key
-            SAMPLE_DATA_ADMIN_PASSWORD_FILE: /run/secrets/codewof_sample_data_admin_password
-            SAMPLE_DATA_USER_PASSWORD_FILE: /run/secrets/codewof_sample_data_user_password
-            RECAPTCHA_PUBLIC_KEY_FILE: /run/secrets/codewof_recaptcha_public_key
-            RECAPTCHA_PRIVATE_KEY_FILE: /run/secrets/codewof_recaptcha_private_key
-        configs:
-            - codewof_deployment_environment
-        secrets:
-            - codewof_django_secret_key
-            - codewof_postgres_db
-            - codewof_postgres_user
-            - codewof_postgres_password
-            - codewof_mailgun_api_key
-            - codewof_sample_data_admin_password
-            - codewof_sample_data_user_password
-            - codewof_recaptcha_public_key
-            - codewof_recaptcha_private_key
         networks:
             - uccser-public
+            - backend
+
+    cron-send-email-reminders:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py send_email_reminders
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+            labels:
+                - "swarm.cronjob.enable=true"
+                - "swarm.cronjob.schedule=0 1 * * * *" # Every hour, at 1 minute past
+                - "swarm.cronjob.skip-running=false"
+        networks:
+            - backend
+
+    cron-remove-expired-inivitations:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py remove_expired_inivitations
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+            labels:
+                - "swarm.cronjob.enable=true"
+                - "swarm.cronjob.schedule=0 0 0 * * *" # Daily
+                - "swarm.cronjob.skip-running=false"
+        networks:
+            - backend
+
+    cron-backdate:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py backdate_points_and_achievements
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+            labels:
+                - "swarm.cronjob.enable=true"
+                - "swarm.cronjob.schedule=0 0/15 * * * *" # Every 15 minutes
+                - "swarm.cronjob.skip-running=false"
+        networks:
+            - backend
+
+    task-update-data:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py update_data --skip_backdate
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+        networks:
+            - backend
+
+    task-raise-backdate-flags:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py raise_backdate_flags
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+        networks:
             - backend
 
     postgres:
