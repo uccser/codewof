@@ -1052,3 +1052,16 @@ estimate-legs:
     2: normal
     3: normal
     4: exceptional
+
+does-it-ascend:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for i in range(0, len(items)):'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
