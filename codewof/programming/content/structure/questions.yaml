@@ -1033,3 +1033,14 @@ how-many-seats:
     3: normal
     4: normal
     5: normal
+
+valid-pin:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
