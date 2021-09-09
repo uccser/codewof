@@ -986,3 +986,13 @@ clean-room-debug:
     3: normal
     4: normal
     5: normal
+
+divisible-by-six:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
