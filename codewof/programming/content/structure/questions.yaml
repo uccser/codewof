@@ -971,3 +971,13 @@ farewell:
     2: normal
     3: normal
     4: normal
+
+pen-picker:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 2
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
