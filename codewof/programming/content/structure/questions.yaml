@@ -981,3 +981,12 @@ pen-picker:
     1: normal
     2: normal
     3: normal
+
+lost-cat:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+

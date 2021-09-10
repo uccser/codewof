@@ -1,0 +1,4 @@
+kitchen
+shower
+sunroom
+food bowl
