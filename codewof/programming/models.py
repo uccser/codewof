@@ -343,6 +343,7 @@ class DifficultyLevel(models.Model):
     """Model for question difficulty level."""
 
     level = models.PositiveSmallIntegerField()
+    hint = models.TextField()
 
     def __str__(self):
         """Text representation of difficulty level.
@@ -364,6 +365,7 @@ class QuestionContext(models.Model):
     name = models.CharField(max_length=LARGE)
     css_class = models.CharField(max_length=30)
     number = models.PositiveSmallIntegerField()
+    hint = models.TextField()
     parent = models.ForeignKey(
         "self",
         null=True,
@@ -384,6 +386,35 @@ class QuestionContext(models.Model):
         """Set consistent ordering of question contexts."""
 
         ordering = ["number", "name"]
+
+
+class ProgrammingConcepts(models.Model):
+    """Model for a programming concept."""
+
+    concept = models.CharField(max_length=LARGE)
+    css_class = models.CharField(max_length=30)
+    number = models.PositiveSmallIntegerField()
+    hint = models.TextField()
+    parent = models.ForeignKey(
+        "self",
+        null=True,
+        related_name="children"
+    )
+
+    def __str__(self):
+        """Text representation of a programming concept.
+        Returns:
+            Name of programming concept (str).
+        """
+        if self.parent:
+            return "{}: {} ({})".format(self.parent.concept, self.concept, self.hint)
+        else:
+            return self.concept
+
+    class Meta:
+        """Set consistent ordering of programming concepts."""
+
+        ordering = ["number", "concept"]
 
 
 # class Skill(models.Model):
