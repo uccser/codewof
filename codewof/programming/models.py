@@ -345,6 +345,7 @@ class DifficultyLevel(models.Model):
     """Model for question difficulty level."""
 
     level = models.PositiveSmallIntegerField()
+    name = models.TextField()
     hint = models.TextField()
 
     def __str__(self):
@@ -352,8 +353,7 @@ class DifficultyLevel(models.Model):
         Returns:
             Difficulty level string
         """
-        #TODO: This does not actually return the string but instead the difficulty number - get string from language files?
-        return self.level
+        return self.name
 
     class Meta:
         """Meta options for class. Sort so that easiest questions appear first."""
