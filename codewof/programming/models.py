@@ -340,15 +340,50 @@ class QuestionTypeDebuggingTestCase(TestCase):
 
 
 class DifficultyLevel(models.Model):
-    """Model for question difficulty level"""
+    """Model for question difficulty level."""
 
     level = models.PositiveSmallIntegerField()
 
+    def __str__(self):
+        """Text representation of difficulty level.
+        Returns:
+            Difficulty level string
+        """
+        #TODO: This does not actually return the string but instead the difficulty number - get string from language files?
+        return self.level
+
     class Meta:
-        """Meta options for class. Sort so that easiest questions appear first"""
+        """Meta options for class. Sort so that easiest questions appear first."""
 
         ordering = ['level']
 
+
+class QuestionContext(models.Model):
+    """Model for question context."""
+
+    name = models.CharField(max_length=LARGE)
+    css_class = models.CharField(max_length=30)
+    number = models.PositiveSmallIntegerField()
+    parent = models.ForeignKey(
+        "self",
+        null=True,
+        related_name="children"
+    )
+
+    def __str__(self):
+        """Text representation of question context.
+        Returns:
+            Name of question context (str).
+        """
+        if self.parent:
+            return "{}: {}".format(self.parent.name, self.name)
+        else:
+            return self.name
+
+    class Meta:
+        """Set consistent ordering of question contexts."""
+
+        ordering = ["number", "name"]
 
 
 # class Skill(models.Model):
