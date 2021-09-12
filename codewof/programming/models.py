@@ -339,6 +339,18 @@ class QuestionTypeDebuggingTestCase(TestCase):
         verbose_name = 'Debugging Problem Question Test Case'
 
 
+class DifficultyLevel(models.Model):
+    """Model for question difficulty level"""
+
+    level = models.PositiveSmallIntegerField()
+
+    class Meta:
+        """Meta options for class. Sort so that easiest questions appear first"""
+
+        ordering = ['level']
+
+
+
 # class Skill(models.Model):
 #     name = models.CharField(max_length=SMALL)
 #     hint = models.CharField(max_length=LARGE)
