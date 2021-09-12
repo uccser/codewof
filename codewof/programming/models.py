@@ -339,6 +339,8 @@ class QuestionTypeDebuggingTestCase(TestCase):
         verbose_name = 'Debugging Problem Question Test Case'
 
 
+# ----- Question classification -----------------------------------------------------
+
 class DifficultyLevel(models.Model):
     """Model for question difficulty level."""
 
