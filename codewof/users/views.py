@@ -480,7 +480,7 @@ class MembershipAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows group memberships to be viewed."""
 
     permission_classes = [IsAdminUser]
-    queryset = Membership.objects.all()
+    queryset = Membership.objects.all().select_related('user', 'group', 'role')
     serializer_class = MembershipSerializer
 
 
@@ -496,5 +496,5 @@ class InvitationAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows group invitations to be viewed."""
 
     permission_classes = [IsAdminUser]
-    queryset = Invitation.objects.all()
+    queryset = Invitation.objects.all().select_related('group', 'inviter')
     serializer_class = InvitationSerializer

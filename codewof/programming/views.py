@@ -250,5 +250,5 @@ class LikeAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows attempt likes to be viewed."""
 
     permission_classes = [IsAdminUser]
-    queryset = Like.objects.all()
+    queryset = Like.objects.all().select_related('user', 'attempt')
     serializer_class = LikeSerializer
