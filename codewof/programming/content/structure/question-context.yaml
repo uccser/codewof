@@ -1,0 +1,16 @@
+mathematics:
+  colour: #TODO
+  number: 1
+  children:
+    geometry:
+      colour: #TODO
+      number: 2 #unsure
+      children:
+        - basic-geometry
+        - advanced-geometry
+    - simple-mathematics
+    - advanced-mathematics
+
+real-world-applications:
+  colour: #TODO
+  number: 3 #unsure

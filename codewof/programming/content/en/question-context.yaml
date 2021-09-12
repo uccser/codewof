@@ -1,0 +1,15 @@
+mathematics:
+  name: Mathematics
+geometry:
+  name: Geometry
+basic-geometry:
+  name: Basic Geometry
+advanced-geometry:
+  name: Advanced Geometry
+simple-mathematics:
+  name: Simple Mathematics
+advanced-mathematics:
+  name: Advanced Mathematics
+
+real-world-applications:
+  name: Real World Applications
