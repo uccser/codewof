@@ -147,7 +147,19 @@ class UserAdminChangeForm(auth.forms.UserChangeForm):
         """Metadata for UserAdminChangeForm class."""
 
         model = User
-        fields = ('email', 'last_name', 'user_type')
+        fields = (
+            'email',
+            'last_name',
+            'user_type',
+            'remind_on_monday',
+            'remind_on_tuesday',
+            'remind_on_wednesday',
+            'remind_on_thursday',
+            'remind_on_friday',
+            'remind_on_saturday',
+            'remind_on_sunday',
+            'timezone',
+        )
 
 
 class UserAdminCreationForm(auth.forms.UserCreationForm):
@@ -157,7 +169,20 @@ class UserAdminCreationForm(auth.forms.UserCreationForm):
         """Metadata for UserAdminCreationForm class."""
 
         model = User
-        fields = ('email', 'first_name', 'last_name', 'user_type')
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'user_type',
+            'remind_on_monday',
+            'remind_on_tuesday',
+            'remind_on_wednesday',
+            'remind_on_thursday',
+            'remind_on_friday',
+            'remind_on_saturday',
+            'remind_on_sunday',
+            'timezone',
+        )
 
 
 class GroupCreateUpdateForm(forms.ModelForm):
