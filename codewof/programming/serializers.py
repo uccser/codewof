@@ -1,7 +1,7 @@
 """Serializers for programming models."""
 
 from rest_framework import serializers
-from programming.models import Question, Attempt, Profile
+from programming.models import Question, Attempt, Profile, Like
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -84,4 +84,21 @@ class QuestionWithAttemptSerializer(serializers.ModelSerializer):
             'title',
             'question_type',
             'attempt_set',
+        )
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    """Serializer for codeWOF attempt likes."""
+    user = serializers.StringRelatedField()
+    attempt = serializers.StringRelatedField()
+
+    class Meta:
+        """Meta settings for serializer."""
+
+        model = Like
+        fields = (
+            'pk',
+            'user',
+            'attempt',
+            'datetime',
         )
