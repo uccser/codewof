@@ -364,7 +364,7 @@ class DifficultyLevel(models.Model):
 class QuestionContext(models.Model):
     """Model for question context."""
 
-    name = models.CharField(max_length=LARGE)
+    context = models.CharField(max_length=LARGE)
     css_class = models.CharField(max_length=30)
     number = models.PositiveSmallIntegerField()
     hint = models.TextField()
@@ -380,9 +380,9 @@ class QuestionContext(models.Model):
             Name of question context (str).
         """
         if self.parent:
-            return "{}: {}".format(self.parent.name, self.name)
+            return "{}: {}".format(self.parent.context, self.context)
         else:
-            return self.name
+            return self.context
 
     class Meta:
         """Set consistent ordering of question contexts."""
