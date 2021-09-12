@@ -89,6 +89,7 @@ class QuestionWithAttemptSerializer(serializers.ModelSerializer):
 
 class LikeSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF attempt likes."""
+
     user = serializers.StringRelatedField()
     attempt = serializers.StringRelatedField()
 

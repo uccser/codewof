@@ -72,6 +72,7 @@ class GroupRoleSerializer(serializers.ModelSerializer):
 
 class MembershipSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF group memberships."""
+
     user = serializers.StringRelatedField()
     group = serializers.StringRelatedField()
     role = serializers.StringRelatedField()
@@ -91,6 +92,7 @@ class MembershipSerializer(serializers.ModelSerializer):
 
 class InvitationSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF group invitations."""
+
     group = serializers.StringRelatedField()
     inviter = serializers.StringRelatedField()
 
