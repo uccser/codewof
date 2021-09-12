@@ -96,5 +96,16 @@ def create_invitation_html(user_exists, invitee_name, inviter_name, group_name, 
     # Retrieve logo source here instead of template to avoid the domain being set to the one for MailHog
     html = email_template.render({"user_exists": user_exists, "invitee_name": invitee_name, "message": message,
                                   "url": url, "button_text": button_text, "domain": settings.CODEWOF_DOMAIN,
-                                  "logo_src": settings.CODEWOF_DOMAIN + static('img/logos/logo.png')})
+                                  "logo_src": get_logo_src()})
     return html
+
+
+def get_logo_src():
+    """
+    Build the source for the logo image. Add the protocol at the start if it is not already present.
+    :return:
+    """
+    logo_src = settings.CODEWOF_DOMAIN + static('img/logos/logo.png')
+    if not logo_src.startswith("https://"):
+        logo_src = "https://" + logo_src
+    return logo_src
