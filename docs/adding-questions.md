@@ -47,10 +47,11 @@ A question can only be one type, expect for questions that can be both function 
 
 ## Adding a question
 
-There are two stages to adding a question:
+There are three stages to adding a question:
 
 1. Add question metadata (language independent)
 2. Add question content (language dependent)
+3. Add question tags
 
 ### Adding question metadata
 
@@ -95,3 +96,14 @@ Each question directory should have the following files:
   - `test-case-N-output.txt` - Expected output for test case.
 
 - `initial.py` (debugging type only) - Python file for initial code to display.
+
+## Adding question tags
+
+Each question can be tagged by difficulty, programming concepts and programming contexts. This allows users to easily search
+for questions of a specific type.
+
+Question difficulty is determined by []: # (TODO).
+
+Programming concepts include []: # (TODO). 
+
+Programming contexts are []: # (TODO).
