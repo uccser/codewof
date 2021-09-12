@@ -103,6 +103,7 @@ def create_invitation_html(user_exists, invitee_name, inviter_name, group_name, 
 def get_logo_src():
     """
     Build the source for the logo image. Add the protocol at the start if it is not already present.
+
     :return:
     """
     logo_src = settings.CODEWOF_DOMAIN + static('img/logos/logo.png')
