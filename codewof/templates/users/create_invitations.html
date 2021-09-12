@@ -10,6 +10,9 @@
     <h1>{% trans "Send Invitations" %}</h1>
     <form method="post">
       {% csrf_token %}
+      <p>An invitation will be sent to each email address below inviting them to join this group. If there is no
+        codeWOF account with an email you provide, then we will also invite them to join codeWOF.</p>
+
       {{ form|crispy }}
 
       <input class="btn btn-success" type="submit" value="Send">
