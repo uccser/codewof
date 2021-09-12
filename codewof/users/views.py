@@ -22,6 +22,10 @@ from rest_framework.permissions import IsAdminUser
 from users.serializers import (
     UserSerializer,
     UserTypeSerializer,
+    GroupSerializer,
+    MembershipSerializer,
+    GroupRoleSerializer,
+    InvitationSerializer,
 )
 from programming import settings as programming_settings
 from users.forms import UserChangeForm, GroupCreateUpdateForm, GroupInvitationsForm
@@ -462,3 +466,35 @@ def get_group_emails(request, pk, group):
     """View for obtaining the email addresses of the members of the group."""
     emails_list = list(group.users.values_list('email', flat=True))
     return JsonResponse({"emails": emails_list})
+
+
+class GroupAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows groups to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+
+class MembershipAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows group memberships to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = Membership.objects.all()
+    serializer_class = MembershipSerializer
+
+
+class GroupRoleAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows group roles to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = GroupRole.objects.all()
+    serializer_class = GroupRoleSerializer
+
+
+class InvitationAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows group invitations to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = Invitation.objects.all()
+    serializer_class = InvitationSerializer
