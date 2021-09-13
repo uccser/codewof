@@ -12,11 +12,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Automatically called when the load_questions command is given."""
-        base_path = settings.QUESTIONS_BASE_PATH
-        questions_structure_file = 'questions.yaml'
         factory = LoaderFactory()
+        base_path = settings.QUESTIONS_BASE_PATH
+
+        factory.difficulty_levels_loader(
+            structure_filename='difficulty-levels.yaml',
+            base_path=base_path
+        ).load()
 
         factory.create_questions_loader(
-            structure_filename=questions_structure_file,
+            structure_filename='questions.yaml',
             base_path=base_path
         ).load()

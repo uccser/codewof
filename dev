@@ -114,6 +114,12 @@ cmd_load_questions() {
 }
 defhelp load_questions "Load questions."
 
+# Run update_data command
+cmd_update_data() {
+  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py update_data
+}
+defhelp update_data "Update data."
+
 # Run load_style_errors command
 cmd_load_style_errors() {
   docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py load_style_errors

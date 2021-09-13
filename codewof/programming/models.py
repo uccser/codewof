@@ -344,6 +344,7 @@ class QuestionTypeDebuggingTestCase(TestCase):
 class DifficultyLevel(models.Model):
     """Model for question difficulty level."""
 
+    slug = models.SlugField()
     level = models.PositiveSmallIntegerField()
     name = models.TextField()
     hint = models.TextField()
