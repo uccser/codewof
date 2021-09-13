@@ -1015,3 +1015,11 @@ change-dogs:
     2: normal
     3: normal
     4: normal
+
+form-circle:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
