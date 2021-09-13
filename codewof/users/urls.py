@@ -13,6 +13,7 @@ router.register(r'users/groups', views.GroupAPIViewSet)
 router.register(r'users/memberships', views.MembershipAPIViewSet)
 router.register(r'users/group-roles', views.GroupRoleAPIViewSet)
 router.register(r'users/invitations', views.InvitationAPIViewSet)
+router.register(r'users/email-reminders', views.EmailReminderAPIViewSet)
 
 
 urlpatterns = [
