@@ -1023,3 +1023,15 @@ form-circle:
     1: normal
     2: normal
     3: normal
+
+days-of-coffee:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 2
+  number_of_read_only_lines_bottom: 3
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
