@@ -42,7 +42,7 @@ class DifficultiesLoader(TranslatableModelLoader):
             difficulty_translations = self.get_blank_translation_dictionary()
 
             defaults = dict()
-            defaults[difficulty_slug] = difficulty_level
+            defaults["level"] = difficulty_level
 
             difficulty, created = DifficultyLevel.objects.update_or_create(
                 slug=difficulty_slug,

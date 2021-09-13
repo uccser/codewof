@@ -14,7 +14,7 @@ class Command(BaseCommand):
         """Automatically called when the load_questions command is given."""
         factory = LoaderFactory()
         base_path = settings.QUESTIONS_BASE_PATH
-
+        
         factory.difficulty_levels_loader(
             structure_filename='difficulty-levels.yaml',
             base_path=base_path

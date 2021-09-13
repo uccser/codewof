@@ -372,7 +372,8 @@ class QuestionContext(models.Model):
     parent = models.ForeignKey(
         "self",
         null=True,
-        related_name="children"
+        related_name="children",
+        on_delete=models.CASCADE
     )
 
     def __str__(self):
@@ -388,7 +389,7 @@ class QuestionContext(models.Model):
     class Meta:
         """Set consistent ordering of question contexts."""
 
-        ordering = ["number", "name"]
+        ordering = ["number", "context"]
 
 
 class ProgrammingConcepts(models.Model):
@@ -401,7 +402,8 @@ class ProgrammingConcepts(models.Model):
     parent = models.ForeignKey(
         "self",
         null=True,
-        related_name="children"
+        related_name="children",
+        on_delete=models.CASCADE
     )
 
     def __str__(self):
