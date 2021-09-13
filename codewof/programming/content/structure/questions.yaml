@@ -2,6 +2,7 @@ say-hello:
   type: program
   test-cases:
     1: normal
+  difficulty: difficulty-1
 
 # ride-share:
 #   type: function

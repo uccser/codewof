@@ -16,6 +16,88 @@ SMALL = 100
 LARGE = 500
 User = get_user_model()
 
+# ----- Question classification -----------------------------------------------------
+
+class DifficultyLevel(models.Model):
+    """Model for question difficulty level."""
+
+    slug = models.SlugField()
+    level = models.PositiveSmallIntegerField()
+    name = models.TextField()
+    hint = models.TextField()
+
+    def __str__(self):
+        """Text representation of difficulty level.
+        Returns:
+            Difficulty level string
+        """
+        return self.name
+
+    class Meta:
+        """Meta options for class. Sort so that easiest questions appear first."""
+
+        ordering = ['level']
+
+
+class QuestionContext(models.Model):
+    """Model for question context."""
+
+    context = models.CharField(max_length=LARGE)
+    css_class = models.CharField(max_length=30)
+    number = models.PositiveSmallIntegerField()
+    hint = models.TextField()
+    parent = models.ForeignKey(
+        "self",
+        null=True,
+        related_name="children",
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        """Text representation of question context.
+        Returns:
+            Name of question context (str).
+        """
+        if self.parent:
+            return "{}: {}".format(self.parent.context, self.context)
+        else:
+            return self.context
+
+    class Meta:
+        """Set consistent ordering of question contexts."""
+
+        ordering = ["number", "context"]
+
+
+class ProgrammingConcepts(models.Model):
+    """Model for a programming concept."""
+
+    concept = models.CharField(max_length=LARGE)
+    css_class = models.CharField(max_length=30)
+    number = models.PositiveSmallIntegerField()
+    hint = models.TextField()
+    parent = models.ForeignKey(
+        "self",
+        null=True,
+        related_name="children",
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        """Text representation of a programming concept.
+        Returns:
+            Name of programming concept (str).
+        """
+        if self.parent:
+            return "{}: {} ({})".format(self.parent.concept, self.concept, self.hint)
+        else:
+            return self.concept
+
+    class Meta:
+        """Set consistent ordering of programming concepts."""
+
+        ordering = ["number", "concept"]
+
 
 class Profile(models.Model):
     """Profile of a user."""
@@ -171,6 +253,14 @@ class Question(TranslatableModel):
     title = models.CharField(max_length=SMALL)
     question_text = models.TextField()
     solution = models.TextField()
+    difficulty_level = models.ForeignKey(
+        DifficultyLevel,
+        related_name='questions',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
     # skill_areas = models.ManyToManyField('SkillArea', related_name='questions')
     # skills = models.ManyToManyField('Skill', blank=True)
     objects = InheritanceManager()
@@ -339,87 +429,6 @@ class QuestionTypeDebuggingTestCase(TestCase):
         verbose_name = 'Debugging Problem Question Test Case'
 
 
-# ----- Question classification -----------------------------------------------------
-
-class DifficultyLevel(models.Model):
-    """Model for question difficulty level."""
-
-    slug = models.SlugField()
-    level = models.PositiveSmallIntegerField()
-    name = models.TextField()
-    hint = models.TextField()
-
-    def __str__(self):
-        """Text representation of difficulty level.
-        Returns:
-            Difficulty level string
-        """
-        return self.name
-
-    class Meta:
-        """Meta options for class. Sort so that easiest questions appear first."""
-
-        ordering = ['level']
-
-
-class QuestionContext(models.Model):
-    """Model for question context."""
-
-    context = models.CharField(max_length=LARGE)
-    css_class = models.CharField(max_length=30)
-    number = models.PositiveSmallIntegerField()
-    hint = models.TextField()
-    parent = models.ForeignKey(
-        "self",
-        null=True,
-        related_name="children",
-        on_delete=models.CASCADE
-    )
-
-    def __str__(self):
-        """Text representation of question context.
-        Returns:
-            Name of question context (str).
-        """
-        if self.parent:
-            return "{}: {}".format(self.parent.context, self.context)
-        else:
-            return self.context
-
-    class Meta:
-        """Set consistent ordering of question contexts."""
-
-        ordering = ["number", "context"]
-
-
-class ProgrammingConcepts(models.Model):
-    """Model for a programming concept."""
-
-    concept = models.CharField(max_length=LARGE)
-    css_class = models.CharField(max_length=30)
-    number = models.PositiveSmallIntegerField()
-    hint = models.TextField()
-    parent = models.ForeignKey(
-        "self",
-        null=True,
-        related_name="children",
-        on_delete=models.CASCADE
-    )
-
-    def __str__(self):
-        """Text representation of a programming concept.
-        Returns:
-            Name of programming concept (str).
-        """
-        if self.parent:
-            return "{}: {} ({})".format(self.parent.concept, self.concept, self.hint)
-        else:
-            return self.concept
-
-    class Meta:
-        """Set consistent ordering of programming concepts."""
-
-        ordering = ["number", "concept"]
 
 
 # class Skill(models.Model):

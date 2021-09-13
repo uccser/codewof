@@ -26,6 +26,14 @@ class DifficultiesLoader(TranslatableModelLoader):
         """
         difficulties_structure = self.load_yaml_file(self.structure_file_path)
 
+        difficulty_translations = self.get_blank_translation_dictionary()
+        required_translation_fields = ["name"]
+        difficulties_translations = self.get_yaml_translations(
+            self.structure_filename,
+            required_fields=required_translation_fields,
+            required_slugs=difficulties_structure.keys()
+        )
+
         for (difficulty_slug, difficulty_data) in difficulties_structure.items():
             # Check test cases exist
             try:
@@ -38,8 +46,7 @@ class DifficultiesLoader(TranslatableModelLoader):
                     ],
                     'Difficulty'
                 )
-
-            difficulty_translations = self.get_blank_translation_dictionary()
+            difficulty_translations = difficulties_translations.get(difficulty_slug, dict())
 
             defaults = dict()
             defaults["level"] = difficulty_level
@@ -49,10 +56,8 @@ class DifficultiesLoader(TranslatableModelLoader):
                 defaults=defaults,
             )
 
-            required_fields = ["name", "hint"]
-
             self.populate_translations(difficulty, difficulty_translations)
-            self.mark_translation_availability(difficulty, required_fields=required_fields)
+            self.mark_translation_availability(difficulty, required_fields=required_translation_fields)
             difficulty.save()
 
             if created:

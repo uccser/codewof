@@ -2,10 +2,12 @@
 
 from os.path import join
 from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
 from utils.TranslatableModelLoader import TranslatableModelLoader
 from utils.errors import (
     MissingRequiredFieldError,
     InvalidYAMLValueError,
+    KeyNotFoundError
 )
 from utils.language_utils import get_available_languages
 from programming.models import (
@@ -17,6 +19,7 @@ from programming.models import (
     QuestionTypeParsonsTestCase,
     QuestionTypeDebugging,
     QuestionTypeDebuggingTestCase,
+    DifficultyLevel
 )
 
 VALID_QUESTION_TYPES = {
@@ -128,6 +131,21 @@ class QuestionsLoader(TranslatableModelLoader):
                     initial_code = open(self.get_localised_file(
                         language, initial_code_filename), encoding='UTF-8').read()
                     question_translations[language]['initial_code'] = initial_code
+            
+            if "difficulty" in question_data:
+                difficulty_slug = question_data['difficulty']
+                try:
+                    difficulty_level = DifficultyLevel.objects.get(
+                        slug=difficulty_slug
+                    )
+                except ObjectDoesNotExist:
+                    raise KeyNotFoundError(
+                        self.structure_file_path,
+                        difficulty_slug,
+                        "Difficulty Level"
+                    )
+
+
 
             for question_type in question_types:
                 slug = '{}-{}'.format(question_slug, question_type)
@@ -141,6 +159,10 @@ class QuestionsLoader(TranslatableModelLoader):
                     required_fields += ['initial_code']
                     defaults['read_only_lines_top'] = int(question_data.get('number_of_read_only_lines_top', 0))
                     defaults['read_only_lines_bottom'] = int(question_data.get('number_of_read_only_lines_bottom', 0))
+                
+                #TODO remove conditional once all difficulty levels assigned
+                if difficulty_level:
+                    defaults['difficulty_level'] = difficulty_level
 
                 question, created = question_class.objects.update_or_create(
                     slug=slug,

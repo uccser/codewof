@@ -82,7 +82,7 @@ defhelp update 'Update system ready for use.'
 # Run in exising container to use existing volumes
 cmd_makemigrations() {
   echo "Creating database migrations..."
-  docker-compose -f docker-compose.local.yml exec django python ./manage.py makemigrations --no-input
+  docker-compose -f docker-compose.local.yml exec django python ./manage.py makemigrations
 }
 defhelp makemigrations 'Run Django makemigrations command.'
 
