@@ -1,0 +1,4 @@
+my_sentence = 'The quick brown fox jumps over the lazy dog!'
+change_dogs(my_sentence)
+print(my_sentence)
+print(change_dogs(my_sentence))
