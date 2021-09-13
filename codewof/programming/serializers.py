@@ -2,6 +2,7 @@
 
 from rest_framework import serializers
 from programming.models import Question, Attempt, Profile, Like
+from users.serializers import UserSerializer
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -30,6 +31,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF profiles."""
 
     user_email = serializers.ReadOnlyField(source='user.email')
+    # TODO: Remove line at the end of Jackie's study
+    user = UserSerializer()
 
     class Meta:
         """Meta settings for serializer."""

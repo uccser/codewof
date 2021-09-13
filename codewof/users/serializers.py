@@ -53,7 +53,8 @@ class GroupSerializer(serializers.ModelSerializer):
             'name',
             'description',
             'date_created',
-            'feed_enabled'
+            'feed_enabled',
+            'users'
         )
 
 
