@@ -1006,3 +1006,12 @@ print-footprints:
     1: normal
     2: normal
     3: normal
+
+change-dogs:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
