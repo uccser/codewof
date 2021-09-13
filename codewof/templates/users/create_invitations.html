@@ -6,16 +6,49 @@
 {% block title %}{% trans "Send Invitations" %}{% endblock %}
 
 {% block content %}
-  <div class="col-md-6 offset-md-3">
-    <h1>{% trans "Send Invitations" %}</h1>
-    <form method="post">
-      {% csrf_token %}
-      <p>An invitation will be sent to each email address below inviting them to join this group. If there is no
-        codeWOF account with an email you provide, then we will also invite them to join codeWOF.</p>
+<div class="col-md-6 offset-md-3">
+  <h1>{% trans "Send Invitations" %}</h1>
+  <form method="post">
+    {% csrf_token %}
+    <p>An invitation will be sent to each email address below inviting them to join this group. If there is no
+      codeWOF account with an email you provide, then we will also invite them to join codeWOF.</p>
 
-      {{ form|crispy }}
+    <div class="mb-2">
+      <a style="margin-bottom: 20px" data-toggle="collapse" href="#email-template" role="button" aria-expanded="true" aria-controls="email-template">
+        Email Contents (hide/show)
+      </a>
 
-      <input class="btn btn-success" type="submit" value="Send">
-    </form>
-  </div>
+      <div class="collapse" id="email-template">
+        <strong>If the user exists:</strong><br>
+        <b class="text-muted"><i>Group invitation</i></b>
+        <p class="text-muted"><i>Hi John,</i></p>
+        <p class="text-muted"><i>
+          Jane Doe has invited you to join the Group 'Sample Group'. Click the link below to sign in. You will see your
+          invitation in the dashboard, where you can join the group.
+        </i></p>
+        <p class="text-muted"><i>Sign In</i></p>
+        <p class="text-muted"><i>Thanks,</i></p>
+        <p class="text-muted"><i>The Computer Science Education Research Group</i></p>
+
+        <strong>If the user does not exist:</strong><br>
+        <b class="text-muted"><i>Group invitation</i></b>
+        <p class="text-muted"><i>Hi,</i></p>
+        <p class="text-muted"><i>
+          Jane Doe has invited you to join the Group 'Sample Group'. CodeWOF helps you maintain your programming fitness
+          with short daily programming exercises. With a free account you can save your progress and track your
+          programming fitness over time. Click the link below to make an account, using the email sample@email.com. You
+          will see your invitation in the dashboard, where you can join the group. If you already have a CodeWOF account,
+          then add sample@email.com to your profile to make the invitation appear.
+        </i></p>
+        <p class="text-muted"><i>Sign In</i></p>
+        <p class="text-muted"><i>Thanks,</i></p>
+        <p class="text-muted"><i>The Computer Science Education Research Group</i></p>
+      </div>
+    </div>
+
+    {{ form|crispy }}
+
+    <input class="btn btn-success" type="submit" value="Send">
+  </form>
+</div>
 {% endblock %}
