@@ -157,3 +157,14 @@ class Invitation(models.Model):
     email = models.EmailField()
     date_sent = models.DateTimeField(default=django_timezone.now)
     date_expires = models.DateTimeField(default=get_default_invitation_expiry)
+
+
+class EmailReminder(models.Model):
+    """
+    A temporary class for logging email reminders.
+
+    TODO: Remove this class at end of study
+    """
+
+    datetime = models.DateTimeField(default=django_timezone.now)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

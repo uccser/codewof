@@ -9,7 +9,7 @@ from django.core.mail import send_mail
 from django.core.management import BaseCommand
 from django.templatetags.static import static
 from django.utils import timezone
-from users.models import User
+from users.models import User, EmailReminder
 from programming.models import Attempt
 from utils.Weekday import Weekday
 from django.template.loader import get_template
@@ -37,6 +37,9 @@ class Command(BaseCommand):
             message = self.create_message(days_since_last_attempt)
             html = self.build_email_html(user.first_name, message)
             body = self.build_email_plain(user.first_name, message)
+
+            # TODO: Remove this line at the end of the study
+            EmailReminder(user=user).save()
 
             send_mail(
                 'CodeWOF Reminder',
