@@ -990,3 +990,19 @@ lost-cat:
     2: normal
     3: exceptional
 
+storeys-climbed:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+print-footprints:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
