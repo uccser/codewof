@@ -1,0 +1,7 @@
+name = input("Name: ").title()
+address = input("Street Address: ").title()
+city = input("City: ").upper()
+postcode = input("Postcode: ")
+print(name)
+print(address)
+print(city + " " + postcode)
