@@ -41,7 +41,7 @@ class QuestionListView(LoginRequiredMixin, generic.ListView):
         Returns:
             Question queryset.
         """
-        questions = Question.objects.all().select_subclasses()
+        questions = Question.objects.all().select_subclasses().select_related('difficulty_level')
 
         if self.request.user.is_authenticated:
             # TODO: Check if passed in last 90 days
