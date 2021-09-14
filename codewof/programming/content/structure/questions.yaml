@@ -1061,3 +1061,17 @@ remove-seal:
     1: normal
     2: normal
     3: normal
+
+speeders:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'if speed < speed_limit + 4:'
+    - 'total + 1'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
