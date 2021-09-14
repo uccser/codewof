@@ -14,6 +14,24 @@ class UserAdmin(auth_admin.UserAdmin):
 
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    'remind_on_monday',
+                    'remind_on_tuesday',
+                    'remind_on_wednesday',
+                    'remind_on_thursday',
+                    'remind_on_friday',
+                    'remind_on_saturday',
+                    'remind_on_sunday',
+                    'timezone',
+                )
+            }
+        )
+    )
     list_display = [
         'email',
         'first_name',

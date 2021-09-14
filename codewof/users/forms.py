@@ -151,14 +151,6 @@ class UserAdminChangeForm(auth.forms.UserChangeForm):
             'email',
             'last_name',
             'user_type',
-            'remind_on_monday',
-            'remind_on_tuesday',
-            'remind_on_wednesday',
-            'remind_on_thursday',
-            'remind_on_friday',
-            'remind_on_saturday',
-            'remind_on_sunday',
-            'timezone',
         )
 
 
@@ -174,14 +166,6 @@ class UserAdminCreationForm(auth.forms.UserCreationForm):
             'first_name',
             'last_name',
             'user_type',
-            'remind_on_monday',
-            'remind_on_tuesday',
-            'remind_on_wednesday',
-            'remind_on_thursday',
-            'remind_on_friday',
-            'remind_on_saturday',
-            'remind_on_sunday',
-            'timezone',
         )
 
 
