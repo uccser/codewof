@@ -1053,3 +1053,11 @@ address:
     2: normal
     3: normal
     4: exceptional
+
+remove-seal:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal

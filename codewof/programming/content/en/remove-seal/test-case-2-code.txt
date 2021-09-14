@@ -1,0 +1,3 @@
+test_tube = ['sediment', 'gold', 'murky water', 'air']
+remove_seal(test_tube)
+print(test_tube)
