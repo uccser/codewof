@@ -16,7 +16,13 @@
         </div>
         <div class="qc-title">
             {{ question.title }} ({{question.difficulty_level}})
-            {{ question.concepts }}
+            <ul>
+                {% for concept in question.concepts.all %}
+                <li>
+                  {{ concept }}<br>
+                </li>
+                {% endfor %}
+            </ul>   
         </div>
     </a>
 </div>

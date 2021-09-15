@@ -67,4 +67,29 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
                 verb_text = 'Updated'
 
             self.log(f'{verb_text} concept: {concept.name}')
+
+             # Create children concepts with reference to parent
+            if "children" in concept_data:
+                children_concepts = concept_data["children"]
+                if children_concepts is None:
+                    raise MissingRequiredFieldError(
+                        self.structure_file_path,
+                        ["slug"],
+                        "Child Programming Concept"
+                    )
+                for child_slug in children_concepts:
+                    translations = concepts_translations.get(child_slug, dict())
+
+                    new_child = ProgrammingConcepts(
+                        slug=child_slug,
+                        number=concept_number,
+                        parent=concept,
+                    )
+                    self.populate_translations(new_child, translations)
+                    self.mark_translation_availability(new_child, required_fields=["name"])
+
+                    new_child.save()
+
+                    self.log("Added child programming concept: {}".format(new_child.__str__()), 1)
+
         self.log("All concepts loaded!\n")
