@@ -1,0 +1,1 @@
+print(is_forest(["Tree", "tree"]))
