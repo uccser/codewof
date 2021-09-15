@@ -72,7 +72,8 @@ class QuestionContext(models.Model):
 class ProgrammingConcepts(models.Model):
     """Model for a programming concept."""
 
-    concept = models.CharField(max_length=LARGE)
+    name = models.CharField(max_length=LARGE)
+    slug = models.SlugField(unique=True, null=True)
     css_class = models.CharField(max_length=30)
     number = models.PositiveSmallIntegerField()
     hint = models.TextField()
@@ -89,14 +90,14 @@ class ProgrammingConcepts(models.Model):
             Name of programming concept (str).
         """
         if self.parent:
-            return "{}: {} ({})".format(self.parent.concept, self.concept, self.hint)
+            return "{}: {}".format(self.parent.name, self.name)
         else:
-            return self.concept
+            return self.name
 
     class Meta:
         """Set consistent ordering of programming concepts."""
 
-        ordering = ["number", "concept"]
+        ordering = ["number", "name"]
 
 
 class Profile(models.Model):
@@ -259,6 +260,10 @@ class Question(TranslatableModel):
         on_delete=models.CASCADE,
         blank=True,
         null=True
+    )
+    concepts = models.ManyToManyField(
+        ProgrammingConcepts,
+        related_name='concepts'
     )
 
     # skill_areas = models.ManyToManyField('SkillArea', related_name='questions')

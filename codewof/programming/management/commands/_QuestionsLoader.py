@@ -19,7 +19,8 @@ from programming.models import (
     QuestionTypeParsonsTestCase,
     QuestionTypeDebugging,
     QuestionTypeDebuggingTestCase,
-    DifficultyLevel
+    DifficultyLevel,
+    ProgrammingConcepts
 )
 
 VALID_QUESTION_TYPES = {
@@ -147,8 +148,6 @@ class QuestionsLoader(TranslatableModelLoader):
             else:
                 difficulty_level = None
 
-
-
             for question_type in question_types:
                 slug = '{}-{}'.format(question_slug, question_type)
                 question_class = VALID_QUESTION_TYPES[question_type]['question_class']
@@ -174,6 +173,28 @@ class QuestionsLoader(TranslatableModelLoader):
                 self.populate_translations(question, question_translations)
                 self.mark_translation_availability(question, required_fields=required_fields)
                 question.save()
+
+                # Add programming concepts
+                concept_slugs = question_data.get("concepts", [])
+                for concept_slug in concept_slugs:
+                    try:
+                        concept = ProgrammingConcepts.objects.get(
+                            slug=concept_slug
+                        )
+                        if concept.children.exists():
+                            raise InvalidYAMLValueError(
+                                self.structure_file_path,
+                                "concepts - value '{}' is invalid".format(concept_slug),
+                                "Programming Concept with no children (parent concepts are not allowed)"
+                            )
+                        else:
+                            question.concepts.add(concept)
+                    except ObjectDoesNotExist:
+                        raise KeyNotFoundError(
+                            self.structure_file_path,
+                            concept_slug,
+                            "Concepts"
+                        )
 
                 test_case_class = VALID_QUESTION_TYPES[question_type]['test_case_class']
                 for (test_case_id, test_case_type) in question_test_cases.items():

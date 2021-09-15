@@ -20,6 +20,11 @@ class Command(BaseCommand):
             base_path=base_path
         ).load()
 
+        factory.programming_concepts_loader(
+            structure_filename='programming-concepts.yaml',
+            base_path=base_path
+        ).load()
+
         factory.create_questions_loader(
             structure_filename='questions.yaml',
             base_path=base_path

@@ -30,6 +30,8 @@ add-10:
     1: normal
     2: normal
   difficulty: difficulty-1
+  concepts: 
+    - display-text
 
 doubler:
   type: function
