@@ -144,6 +144,8 @@ class QuestionsLoader(TranslatableModelLoader):
                         difficulty_slug,
                         "Difficulty Level"
                     )
+            else:
+                difficulty_level = None
 
 
 

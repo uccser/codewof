@@ -2,7 +2,7 @@ say-hello:
   type: program
   test-cases:
     1: normal
-  difficulty: difficulty-1
+  difficulty: difficulty-0
 
 # ride-share:
 #   type: function
@@ -29,6 +29,7 @@ add-10:
   test-cases:
     1: normal
     2: normal
+  difficulty: difficulty-1
 
 doubler:
   type: function
