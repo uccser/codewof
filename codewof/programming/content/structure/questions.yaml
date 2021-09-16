@@ -1088,3 +1088,17 @@ forest:
     4: normal
     5: normal
     6: normal
+
+space-cargo:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(cargo)'
+    - 'ejected_item = cargo.remove()'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal

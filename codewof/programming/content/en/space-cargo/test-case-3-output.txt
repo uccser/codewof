@@ -1,0 +1,5 @@
+Ejected Fuel Cell
+Ejected Bottled Water
+Ejected Space Plant
+Ejected First Aid Kit
+[]
