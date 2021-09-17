@@ -4,4 +4,3 @@ def clean_room(room_contents, dirty_items):
         if item not in dirty_items:
             result.append(item)
     return result
-

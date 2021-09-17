@@ -5,4 +5,3 @@ def divisible_by_six(n):
         print(":|")
     else:
         print(":(")
-

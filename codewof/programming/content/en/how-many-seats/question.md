@@ -7,4 +7,3 @@ In this scenario a `car` has 5 seats, a `truck` has 3 seats and a `bus` has 20 s
 We are only interested in counting these vehicles, any other vehicle is not included in the total.
 
 The strings in `vehicles` will always be lower case.
-
