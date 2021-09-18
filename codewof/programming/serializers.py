@@ -31,8 +31,6 @@ class ProfileSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF profiles."""
 
     user_email = serializers.ReadOnlyField(source='user.email')
-    # TODO: Remove line at the end of Jackie's study
-    user = UserSerializer()
 
     class Meta:
         """Meta settings for serializer."""
@@ -93,8 +91,8 @@ class QuestionWithAttemptSerializer(serializers.ModelSerializer):
 class LikeSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF attempt likes."""
 
-    user = serializers.StringRelatedField()
-    attempt = serializers.StringRelatedField()
+    user = serializers.ReadOnlyField(source='user.pk')
+    attempt = serializers.ReadOnlyField(source='attempt.pk')
 
     class Meta:
         """Meta settings for serializer."""

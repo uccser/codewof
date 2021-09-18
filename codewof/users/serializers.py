@@ -74,8 +74,8 @@ class GroupRoleSerializer(serializers.ModelSerializer):
 class MembershipSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF group memberships."""
 
-    user = serializers.StringRelatedField()
-    group = serializers.StringRelatedField()
+    user = serializers.ReadOnlyField(source='user.pk')
+    group = serializers.ReadOnlyField(source='group.pk')
     role = serializers.StringRelatedField()
 
     class Meta:
@@ -94,8 +94,8 @@ class MembershipSerializer(serializers.ModelSerializer):
 class InvitationSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF group invitations."""
 
-    group = serializers.StringRelatedField()
-    inviter = serializers.StringRelatedField()
+    group = serializers.ReadOnlyField(source='user.pk')
+    inviter = serializers.ReadOnlyField(source='inviter.pk')
 
     class Meta:
         """Meta settings for serializer."""
@@ -114,7 +114,7 @@ class InvitationSerializer(serializers.ModelSerializer):
 class EmailReminderSerializer(serializers.ModelSerializer):
     """Serializer for codeWOF email reminders."""
 
-    user = serializers.StringRelatedField()
+    user = serializers.ReadOnlyField(source='user.pk')
 
     class Meta:
         """Meta settings for serializer."""
