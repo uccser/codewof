@@ -2,7 +2,6 @@
 
 from rest_framework import serializers
 from programming.models import Question, Attempt, Profile, Like
-from users.serializers import UserSerializer
 
 
 class QuestionSerializer(serializers.ModelSerializer):
