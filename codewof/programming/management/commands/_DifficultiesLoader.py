@@ -1,13 +1,8 @@
 """Custom loader for loading difficulty levels."""
 
-from os.path import join
 from django.db import transaction
 from utils.TranslatableModelLoader import TranslatableModelLoader
-from utils.errors import (
-    MissingRequiredFieldError,
-    InvalidYAMLValueError,
-)
-from utils.language_utils import get_available_languages
+from utils.errors import MissingRequiredFieldError
 from programming.models import DifficultyLevel
 
 TEST_CASE_FILE_TEMPLATE = 'test-case-{id}-{type}.txt'

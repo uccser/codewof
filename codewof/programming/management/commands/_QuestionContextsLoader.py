@@ -1,13 +1,10 @@
 """Custom loader for loading question contexts."""
 
-from os.path import join
 from django.db import transaction
 from utils.TranslatableModelLoader import TranslatableModelLoader
 from utils.errors import (
     MissingRequiredFieldError,
-    InvalidYAMLValueError,
 )
-from utils.language_utils import get_available_languages
 from programming.models import QuestionContexts
 
 TEST_CASE_FILE_TEMPLATE = 'test-case-{id}-{type}.txt'
@@ -15,7 +12,6 @@ TEST_CASE_FILE_TEMPLATE = 'test-case-{id}-{type}.txt'
 
 class QuestionContextsLoader(TranslatableModelLoader):
     """Custom loader for loading question contexts."""
-
 
     def __init__(self, base_path="", structure_dir="structure", content_path="",
         structure_filename="", lite_loader=False):
@@ -32,7 +28,6 @@ class QuestionContextsLoader(TranslatableModelLoader):
         super().__init__(base_path, structure_dir, content_path, structure_filename, lite_loader)
         self.contexts_translations = dict()
         self.required_translation_fields = ["name"]
-
 
     @transaction.atomic
     def load(self):
@@ -53,8 +48,8 @@ class QuestionContextsLoader(TranslatableModelLoader):
             self.load_single_context(context_slug, context_data, None, 1)
         self.log("All contexts loaded!\n")
 
-
     def load_single_context(self, context_slug, context_data, parent, indent_level):
+        """Load a single context."""
         context_number = None
         if indent_level == 1:
             try:
@@ -69,7 +64,7 @@ class QuestionContextsLoader(TranslatableModelLoader):
                 )
 
         defaults = dict()
-        if context_number:  
+        if context_number:
             defaults["number"] = context_number
         elif parent:
             defaults["number"] = parent.number
@@ -81,9 +76,9 @@ class QuestionContextsLoader(TranslatableModelLoader):
             slug=context_slug,
             defaults=defaults,
         )
-        
+
         context_translations = self.contexts_translations.get(context_slug, dict())
-        
+
         self.populate_translations(context, context_translations)
         self.mark_translation_availability(context, required_fields=self.required_translation_fields)
         context.save()

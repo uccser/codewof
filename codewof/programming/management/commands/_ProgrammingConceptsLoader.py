@@ -1,13 +1,8 @@
 """Custom loader for loading programming concepts."""
 
-from os.path import join
 from django.db import transaction
 from utils.TranslatableModelLoader import TranslatableModelLoader
-from utils.errors import (
-    MissingRequiredFieldError,
-    InvalidYAMLValueError,
-)
-from utils.language_utils import get_available_languages
+from utils.errors import MissingRequiredFieldError
 from programming.models import ProgrammingConcepts
 
 TEST_CASE_FILE_TEMPLATE = 'test-case-{id}-{type}.txt'
@@ -15,7 +10,6 @@ TEST_CASE_FILE_TEMPLATE = 'test-case-{id}-{type}.txt'
 
 class ProgrammingConceptsLoader(TranslatableModelLoader):
     """Custom loader for loading programming concepts."""
-
 
     def __init__(self, base_path="", structure_dir="structure", content_path="",
         structure_filename="", lite_loader=False):
@@ -32,7 +26,6 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
         super().__init__(base_path, structure_dir, content_path, structure_filename, lite_loader)
         self.concepts_translations = dict()
         self.required_translation_fields = ["name"]
-
 
     @transaction.atomic
     def load(self):
@@ -53,8 +46,8 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
             self.load_single_concept(concept_slug, concept_data, None, 1)
         self.log("All concepts loaded!\n")
 
-
     def load_single_concept(self, concept_slug, concept_data, parent, indent_level):
+        """Load single concept."""
         concept_number = None
         if indent_level == 1:
             try:
@@ -69,11 +62,11 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
                 )
 
         defaults = dict()
-        if concept_number:  
+        if concept_number:
             defaults["number"] = concept_number
         elif parent:
             defaults["number"] = parent.number
-            
+
         if parent:
             defaults["parent"] = parent
 
@@ -81,9 +74,9 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
             slug=concept_slug,
             defaults=defaults,
         )
-        
+
         concept_translations = self.concepts_translations.get(concept_slug, dict())
-        
+
         self.populate_translations(concept, concept_translations)
         self.mark_translation_availability(concept, required_fields=self.required_translation_fields)
         concept.save()

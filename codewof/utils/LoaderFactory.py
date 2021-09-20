@@ -10,15 +10,15 @@ class LoaderFactory:
     """Factory for creating loader objects."""
 
     def difficulty_levels_loader(self, **kwargs):
-        """Difficulty levels loader"""
+        """Difficulty levels loader."""
         return DifficultiesLoader(**kwargs)
 
     def programming_concepts_loader(self, **kwargs):
-        """Programming concepts loader"""
+        """Programming concepts loader."""
         return ProgrammingConceptsLoader(**kwargs)
 
     def question_contexts_loader(self, **kwargs):
-        """Question contexts loader"""
+        """Question contexts loader."""
         return QuestionContextsLoader(**kwargs)
 
     def create_questions_loader(self, **kwargs):

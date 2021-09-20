@@ -28,6 +28,7 @@ class DifficultyLevel(models.Model):
 
     def __str__(self):
         """Text representation of difficulty level.
+
         Returns:
             Difficulty level string
         """
@@ -56,6 +57,7 @@ class QuestionContexts(models.Model):
 
     def __str__(self):
         """Text representation of question context.
+        
         Returns:
             Name of question context (str).
         """
@@ -87,6 +89,7 @@ class ProgrammingConcepts(models.Model):
 
     def __str__(self):
         """Text representation of a programming concept.
+        
         Returns:
             Name of programming concept (str).
         """
@@ -435,20 +438,3 @@ class QuestionTypeDebuggingTestCase(TestCase):
         """Meta information for class."""
 
         verbose_name = 'Debugging Problem Question Test Case'
-
-
-
-
-# class Skill(models.Model):
-#     name = models.CharField(max_length=SMALL)
-#     hint = models.CharField(max_length=LARGE)
-#     subskills = models.ManyToManyField('self', symmetrical=False, blank=True)
-
-#     def __str__(self):
-#         return self.name
-
-# class SkillArea(models.Model):
-#     name = models.CharField(max_length=SMALL)
-
-#     def __str__(self):
-#         return self.name
