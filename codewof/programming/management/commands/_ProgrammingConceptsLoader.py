@@ -12,7 +12,7 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
     """Custom loader for loading programming concepts."""
 
     def __init__(self, base_path="", structure_dir="structure", content_path="",
-        structure_filename="", lite_loader=False):
+                structure_filename="", lite_loader=False):
         """Create a BaseLoader object.
 
         Args:

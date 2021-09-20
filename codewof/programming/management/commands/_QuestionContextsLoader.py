@@ -14,7 +14,7 @@ class QuestionContextsLoader(TranslatableModelLoader):
     """Custom loader for loading question contexts."""
 
     def __init__(self, base_path="", structure_dir="structure", content_path="",
-        structure_filename="", lite_loader=False):
+                structure_filename="", lite_loader=False):
         """Create a QuestionContextLoader object.
 
         Args:
@@ -68,7 +68,7 @@ class QuestionContextsLoader(TranslatableModelLoader):
             defaults["number"] = context_number
         elif parent:
             defaults["number"] = parent.number
-            
+
         if parent:
             defaults["parent"] = parent
 

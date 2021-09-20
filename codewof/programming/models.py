@@ -57,7 +57,7 @@ class QuestionContexts(models.Model):
 
     def __str__(self):
         """Text representation of question context.
-        
+
         Returns:
             Name of question context (str).
         """
@@ -89,7 +89,7 @@ class ProgrammingConcepts(models.Model):
 
     def __str__(self):
         """Text representation of a programming concept.
-        
+
         Returns:
             Name of programming concept (str).
         """
