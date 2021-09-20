@@ -51,62 +51,6 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
 
         for (concept_slug, concept_data) in concept_structure.items():
             self.load_single_concept(concept_slug, concept_data, None, 1)
-            # Check test cases exist
-#             try:
-#                 concept_number = concept_data['number']
-#             except KeyError:
-#                 raise MissingRequiredFieldError(
-#                     self.structure_file_path,
-#                     [
-#                         'number',
-#                     ],
-#                     'Concepts'
-#                 )
-#             concept_translations = concepts_translations.get(concept_slug, dict())
-
-#             defaults = dict()
-#             defaults["number"] = concept_number
-
-#             concept, created = ProgrammingConcepts.objects.update_or_create(
-#                 slug=concept_slug,
-#                 defaults=defaults,
-#             )
-
-#             self.populate_translations(concept, concept_translations)
-#             self.mark_translation_availability(concept, required_fields=required_translation_fields)
-#             concept.save()
-
-#             if created:
-#                 verb_text = 'Added'
-#             else:
-#                 verb_text = 'Updated'
-
-#             self.log(f'{verb_text} concept: {concept.name}')
-
-#              # Create children concepts with reference to parent
-#             if "children" in concept_data:
-#                 children_concepts = concept_data["children"]
-#                 if children_concepts is None:
-#                     raise MissingRequiredFieldError(
-#                         self.structure_file_path,
-#                         ["slug"],
-#                         "Child Programming Concept"
-#                     )
-#                 for child_slug in children_concepts:
-#                     translations = concepts_translations.get(child_slug, dict())
-# #Save number and parent as default
-#                     new_child, created = ProgrammingConcepts.objects.update_or_create(
-#                         slug=child_slug,
-#                         number=concept_number,
-#                         parent=concept,
-#                     )
-#                     self.populate_translations(new_child, translations)
-#                     self.mark_translation_availability(new_child, required_fields=["name"])
-
-#                     new_child.save()
-
-#                     self.log("Added child programming concept: {}".format(new_child.__str__()), 1)
-
         self.log("All concepts loaded!\n")
 
 
@@ -127,6 +71,9 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
         defaults = dict()
         if concept_number:  
             defaults["number"] = concept_number
+        elif parent:
+            defaults["number"] = parent.number
+            
         if parent:
             defaults["parent"] = parent
 
@@ -135,7 +82,6 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
             defaults=defaults,
         )
         
-        #concept_translations = self.get_blank_translation_dictionary()
         concept_translations = self.concepts_translations.get(concept_slug, dict())
         
         self.populate_translations(concept, concept_translations)
@@ -157,5 +103,15 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
                     ["slug"],
                     "Child Programming Concept"
                 )
-            for child_slug in children_concepts:
-                self.load_single_concept(child_slug, [], concept, indent_level + 1)
+            for child in children_concepts:
+                if type(child) is dict:
+                    child_data = dict()
+                    for key in child.keys():
+                        if key == "children":
+                            child_data["children"] = child["children"]
+                        else:
+                            child_slug = key
+                else:
+                    child_slug = child
+                    child_data = []
+                self.load_single_concept(child_slug, child_data, concept, indent_level + 1)
