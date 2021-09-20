@@ -113,8 +113,8 @@ class UserChangeForm(forms.ModelForm):
                    onclick="window.location.href = '{}';".format(reverse('account_email'))),
 
             Div(
-                HTML("<p class=\"email-reminder-warning-p text-warning\">Warning! Email reminders may end up in your spam. "
-                     "Unmark the email as spam to prevent this.</p>"),
+                HTML("<p class=\"email-reminder-warning-p text-warning\">Warning! Email reminders may end up in your "
+                     "spam. Unmark the email as spam to prevent this.</p>"),
                 HTML("<p>Send me reminders on:</p>"),
                 'remind_on_monday',
                 'remind_on_tuesday',
