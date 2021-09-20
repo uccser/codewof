@@ -25,6 +25,11 @@ class Command(BaseCommand):
             base_path=base_path
         ).load()
 
+        factory.question_contexts_loader(
+            structure_filename='question-contexts.yaml',
+            base_path=base_path
+        ).load()
+
         factory.create_questions_loader(
             structure_filename='questions.yaml',
             base_path=base_path

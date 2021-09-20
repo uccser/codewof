@@ -2,9 +2,8 @@ mathematics:
   colour: #TODO
   number: 1
   children:
-    geometry:
+    - geometry:
       colour: #TODO
-      number: 2 #unsure
       children:
         - basic-geometry
         - advanced-geometry
@@ -13,4 +12,4 @@ mathematics:
 
 real-world-applications:
   colour: #TODO
-  number: 3 #unsure
+  number: 2

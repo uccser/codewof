@@ -39,10 +39,11 @@ class DifficultyLevel(models.Model):
         ordering = ['level']
 
 
-class QuestionContext(models.Model):
+class QuestionContexts(models.Model):
     """Model for question context."""
 
-    context = models.CharField(max_length=LARGE)
+    slug = models.SlugField(unique=True, null=True)
+    name = models.CharField(max_length=LARGE)
     css_class = models.CharField(max_length=30)
     number = models.PositiveSmallIntegerField()
     hint = models.TextField()
@@ -59,14 +60,14 @@ class QuestionContext(models.Model):
             Name of question context (str).
         """
         if self.parent:
-            return "{}: {}".format(self.parent.context, self.context)
+            return "{}: {}".format(self.parent.name, self.name)
         else:
-            return self.context
+            return self.name
 
     class Meta:
         """Set consistent ordering of question contexts."""
 
-        ordering = ["number", "context"]
+        ordering = ["number", "name"]
 
 
 class ProgrammingConcepts(models.Model):
@@ -265,9 +266,11 @@ class Question(TranslatableModel):
         ProgrammingConcepts,
         related_name='concepts'
     )
+    contexts = models.ManyToManyField(
+        QuestionContexts,
+        related_name='contexts'
+    )
 
-    # skill_areas = models.ManyToManyField('SkillArea', related_name='questions')
-    # skills = models.ManyToManyField('Skill', blank=True)
     objects = InheritanceManager()
 
     def get_absolute_url(self):

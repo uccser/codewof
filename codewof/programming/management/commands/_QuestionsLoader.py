@@ -20,7 +20,8 @@ from programming.models import (
     QuestionTypeDebugging,
     QuestionTypeDebuggingTestCase,
     DifficultyLevel,
-    ProgrammingConcepts
+    ProgrammingConcepts,
+    QuestionContexts
 )
 
 VALID_QUESTION_TYPES = {
@@ -194,6 +195,28 @@ class QuestionsLoader(TranslatableModelLoader):
                             self.structure_file_path,
                             concept_slug,
                             "Concepts"
+                        )
+
+                # Add question contexts
+                context_slugs = question_data.get("contexts", [])
+                for context_slug in context_slugs:
+                    try:
+                        context = QuestionContexts.objects.get(
+                            slug=context_slug
+                        )
+                        if context.children.exists():
+                            raise InvalidYAMLValueError(
+                                self.structure_file_path,
+                                "contexts - value '{}' is invalid".format(context_slug),
+                                "Question Context with no children (parent contexts are not allowed)"
+                            )
+                        else:
+                            question.contexts.add(context)
+                    except ObjectDoesNotExist:
+                        raise KeyNotFoundError(
+                            self.structure_file_path,
+                            context_slug,
+                            "Contexts"
                         )
 
                 test_case_class = VALID_QUESTION_TYPES[question_type]['test_case_class']

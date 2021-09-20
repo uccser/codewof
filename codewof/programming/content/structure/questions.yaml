@@ -35,7 +35,9 @@ add-10:
     2: normal
   difficulty: difficulty-1
   concepts:
-    - display-text
+    - display-text  
+  contexts:
+    - simple-mathematics
 
 doubler:
   type: function

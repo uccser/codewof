@@ -22,6 +22,11 @@
                   {{ concept }}<br>
                 </li>
                 {% endfor %}
+                {% for context in question.contexts.all %}
+                <li>
+                  {{ context }}<br>
+                </li>
+                {% endfor %}
             </ul>   
         </div>
     </a>
