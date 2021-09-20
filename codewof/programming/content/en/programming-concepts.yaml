@@ -13,7 +13,7 @@ conditionals:
 single-condition:
   name: Single Condition
 
-multiple-condition:
+multiple-conditions:
   name: Multiple Conditions
 
 advanced-conditionals:
