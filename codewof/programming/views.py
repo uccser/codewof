@@ -9,6 +9,7 @@ from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_http_methods
+from django_filters.views import FilterView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 from programming.serializers import (
@@ -52,7 +53,6 @@ class QuestionListView(LoginRequiredMixin, generic.ListView):
                     passed_tests=True,
                 ).exists()
         return questions
-
 
 class QuestionView(LoginRequiredMixin, generic.DetailView):
     """Displays a question.
