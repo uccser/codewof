@@ -30,29 +30,30 @@ from programming.codewof_utils import add_points, check_achievement_conditions
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 
 
-class QuestionListView(LoginRequiredMixin, generic.ListView):
-    """View for listing questions."""
+# TODO not currently being used?
+# class QuestionListView(LoginRequiredMixin, generic.ListView):
+#     """View for listing questions."""
 
-    model = Question
-    context_object_name = 'questions'
+#     model = Question
+#     context_object_name = 'questions'
 
-    def get_queryset(self):
-        """Return questions objects for page.
+#     def get_queryset(self):
+#         """Return questions objects for page.
 
-        Returns:
-            Question queryset.
-        """
-        questions = Question.objects.all().select_subclasses().select_related('difficulty_level')
+#         Returns:
+#             Question queryset.
+#         """
+#         questions = Question.objects.all().select_subclasses().select_related('difficulty_level')
 
-        if self.request.user.is_authenticated:
-            # TODO: Check if passed in last 90 days
-            for question in questions:
-                question.completed = Attempt.objects.filter(
-                    profile=self.request.user.profile,
-                    question=question,
-                    passed_tests=True,
-                ).exists()
-        return questions
+#         if self.request.user.is_authenticated:
+#             # TODO: Check if passed in last 90 days
+#             for question in questions:
+#                 question.completed = Attempt.objects.filter(
+#                     profile=self.request.user.profile,
+#                     question=question,
+#                     passed_tests=True,
+#                 ).exists()
+#         return questions
 
 class QuestionView(LoginRequiredMixin, generic.DetailView):
     """Displays a question.

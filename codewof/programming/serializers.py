@@ -23,6 +23,7 @@ class QuestionSerializer(serializers.ModelSerializer):
             'pk',
             'title',
             'question_type',
+            'concepts'
         )
 
 
