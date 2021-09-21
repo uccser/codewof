@@ -2,8 +2,8 @@ import django_filters
 from programming.models import Question
 
 class QuestionFilter(django_filters.FilterSet):
-    title = django_filters.CharFilter(lookup_expr='icontains')
+    difficulty_level = django_filters.CharFilter(field_name="difficulty_level__name", lookup_expr='iexact')
 
     class Meta:
         model = Question
-        fields = {'title'}
+        fields = {'difficulty_level'}
