@@ -3,7 +3,6 @@ mathematics:
   number: 1
   children:
     - geometry:
-      colour: #TODO
       children:
         - basic-geometry
         - advanced-geometry
