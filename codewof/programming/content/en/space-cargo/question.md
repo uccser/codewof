@@ -8,4 +8,3 @@ Make a function `eject_cargo(cargo, hull_capacity)` that takes two arguments:
 It should pop items from the end of `cargo` and then **print** `'Ejected {item}'`. 
 It should do this until the spaceship is no longer too full.
 Then it should **return** the remaining items.
-
