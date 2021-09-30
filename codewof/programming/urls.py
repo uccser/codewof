@@ -15,7 +15,7 @@ router.register(r'programming/attempts', views.AttemptAPIViewSet)
 router.register(r'programming/profiles', views.ProfileAPIViewSet)
 
 urlpatterns = [
-    path('questions/', FilterView.as_view(filterset_class=QuestionFilter, template_name='programming/question_list.html'), name='question_list'),
+    path('questions/', views.QuestionListView.as_view(), name='question_list'),
     path('questions/create/', views.CreateView.as_view(), name='create'),
     path('questions/<int:pk>/', views.QuestionView.as_view(), name='question'),
     path('ajax/save_question_attempt/', views.save_question_attempt, name='save_question_attempt'),

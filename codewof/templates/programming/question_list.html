@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}Questions{% endblock %}
 
 {% block page_heading %}
@@ -8,22 +10,13 @@
 
 {% block content %}
     <p>Currently all questions are based in Python 3.</p>
-
-    <!-- {% if questions %}
-        <div class="row">
-            {% for question in questions %}
-                <div class="col-12 col-md-6 col-lg-4">
-                    {% include "programming/question_components/question-card.html" %}
-                </div>
-            {% endfor %}
+    <div class="card filter-card mb-3">
+        <div class="card-body">
+            {% crispy filter.form filter_formatter %}
         </div>
-    {% endif %} -->
-    <div class="row">
-        <form method="get">
-            {{ filter.form.as_p }}
-            <input type="submit">
-        </form>
     </div>
+
+    {% if filter.qs %}
     <div class="row">
         {% for question in filter.qs %}
             <div class="col-12 col-md-6 col-lg-4">
@@ -31,4 +24,10 @@
             </div>
         {% endfor %}
     </div>
-{% endblock %}
+    {% else %}
+        <p class="text-center">
+            <strong>Sorry!</strong> No questions found matching the selected filters.
+        </p>
+    {% endif %}
+    
+{% endblock content %}

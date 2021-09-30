@@ -47,6 +47,8 @@ doubler:
     3: normal
     4: normal
     5: exceptional
+  contexts:
+    - advanced-geometry
 
 double-evens:
   types:

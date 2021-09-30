@@ -56,13 +56,12 @@ class QuestionContexts(models.Model):
     )
 
     def __str__(self):
-        """Text representation of question context.
-
+        """
         Returns:
             Name of question context (str).
         """
         if self.parent:
-            return "{}: {}".format(self.parent.name, self.name)
+            return "{}: {}".format(self.parent.__str__(), self.name)
         else:
             return self.name
 
