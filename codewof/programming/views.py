@@ -3,7 +3,7 @@
 import json
 from django.contrib.auth.decorators import login_required
 from django.views import generic
-from django.db.models import Count, Max
+from django.db.models import Count, Max, Exists, OuterRef
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -45,16 +45,21 @@ class QuestionListView(LoginRequiredMixin, FilterView):
         Returns:
             Question queryset.
         """
-        questions = Question.objects.all().select_subclasses().select_related('difficulty_level')
-
-        if self.request.user.is_authenticated:
-            # TODO: Check if passed in last 90 days
-            for question in questions:
-                question.completed = Attempt.objects.filter(
-                    profile=self.request.user.profile,
-                    question=question,
-                    passed_tests=True,
-                ).exists()
+        user_successful_attempt_subquery = Attempt.objects.filter(
+            profile=self.request.user.profile,
+            question=OuterRef('pk'),
+            passed_tests=True,
+        )
+        questions = (
+            Question.objects.all()
+            .select_subclasses()
+            .select_related('difficulty_level')
+            .prefetch_related(
+                'concepts',
+                'contexts',
+            )
+            .annotate(completed=Exists(user_successful_attempt_subquery))
+        )
         return questions
 
     def get_context_data(self, **kwargs):
