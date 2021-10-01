@@ -24,21 +24,21 @@ def create_filter_helper(reset_url_pattern):
         Row(
             Column(
                 Field(
-                    'locations__region',
+                    'difficulty_level',
                     css_class='form-control form-control-sm',
                 ),
                 css_class='col-sm-12 col-md-4 mb-0',
             ),
             Column(
                 Field(
-                    'accessible_online',
+                    'concepts',
                     css_class='form-control form-control-sm',
                 ),
                 css_class='form-group col-sm-12 col-md-4 mb-0',
             ),
             Column(
                 Field(
-                    'organisers',
+                    'contexts',
                     css_class='form-control form-control-sm',
                 ),
                 css_class='form-group col-sm-12 col-md-4 mb-0',
@@ -46,7 +46,7 @@ def create_filter_helper(reset_url_pattern):
         ),
         Div(
             HTML(FILTER_HELPER_RESET_HTML_TEMPLATE.format(reset_url_pattern)),
-            Submit('submit', 'Filter events', css_class='btn-success'),
+            Submit('submit', 'Filter questions', css_class='btn-success'),
             css_class='d-flex justify-content-between',
         )
     )
