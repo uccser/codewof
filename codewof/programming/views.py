@@ -56,7 +56,9 @@ class QuestionListView(LoginRequiredMixin, FilterView):
             .select_related('difficulty_level')
             .prefetch_related(
                 'concepts',
+                'concepts__parent',
                 'contexts',
+                'contexts__parent',
             )
             .annotate(completed=Exists(user_successful_attempt_subquery))
         )
