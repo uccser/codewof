@@ -1,9 +1,12 @@
-import django_filters
-from programming.models import Question, DifficultyLevel
-from django.db.models import Q
+from django_filters import FilterSet, ModelChoiceFilter, ModelMultipleChoiceFilter
+from programming.models import Question, DifficultyLevel, QuestionContexts, ProgrammingConcepts
+from django.db import models
 
-class QuestionFilter(django_filters.FilterSet):
+class QuestionFilter(FilterSet):
     # contexts=django_filters.filters.CharFilter(method="contexts_filter")
+    difficulty_level = ModelChoiceFilter(queryset=DifficultyLevel.objects.all())
+    contexts = ModelMultipleChoiceFilter(queryset=QuestionContexts.objects.all())
+    concepts = ModelMultipleChoiceFilter(queryset=ProgrammingConcepts.objects.all())
     
     class Meta:
         model = Question
