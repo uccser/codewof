@@ -1,13 +1,22 @@
-from django_filters import FilterSet, ModelChoiceFilter, ModelMultipleChoiceFilter
-from programming.models import Question, DifficultyLevel, QuestionContexts, ProgrammingConcepts
-from django.db import models
+import django_filters
+from programming.models import (
+    Question,
+    DifficultyLevel,
+    ProgrammingConcepts,
+    QuestionContexts,
+)
+from django.db.models import Q
 
-class QuestionFilter(FilterSet):
+class QuestionFilter(django_filters.FilterSet):
     # contexts=django_filters.filters.CharFilter(method="contexts_filter")
-    difficulty_level = ModelChoiceFilter(queryset=DifficultyLevel.objects.all())
-    contexts = ModelMultipleChoiceFilter(queryset=QuestionContexts.objects.all())
-    concepts = ModelMultipleChoiceFilter(queryset=ProgrammingConcepts.objects.all())
-    
+
+    concepts = django_filters.filters.ModelMultipleChoiceFilter(
+        queryset=ProgrammingConcepts.objects.prefetch_related('parent')
+    )
+    contexts = django_filters.filters.ModelMultipleChoiceFilter(
+        queryset=QuestionContexts.objects.prefetch_related('parent')
+    )
+
     class Meta:
         model = Question
         fields = {'difficulty_level', 'concepts', 'contexts'}
