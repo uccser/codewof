@@ -15,19 +15,29 @@
             </em>
         </div>
         <div class="qc-title">
-            {{ question.title }} ({{question.difficulty_level}})
+            {{ question.title }} {%if question.difficulty_level%} ({{question.difficulty_level}}) {%endif%}
+        </div>
+        <!-- <div class="qc-details">
+            {% if question.concepts.all %}
+                Programming Concepts:
+            {% endif %}
             <ul>
                 {% for concept in question.concepts.all %}
                 <li>
                   {{ concept }}<br>
                 </li>
                 {% endfor %}
+            </ul>
+            {% if question.contexts.all %}
+                Question Contexts:
+            {% endif %}
+            <ul>
                 {% for context in question.contexts.all %}
                 <li>
                   {{ context }}<br>
                 </li>
                 {% endfor %}
-            </ul>   
-        </div>
+            </ul>
+        </div> -->
     </a>
 </div>

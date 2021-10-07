@@ -25,21 +25,19 @@ def create_filter_helper(reset_url_pattern):
             Column(
                 Field(
                     'difficulty_level',
-                    css_class='form-control form-control-sm',
                 ),
                 css_class='col-sm-12 col-md-4 mb-0',
             ),
             Column(
                 Field(
                     'concepts',
-                    css_class='form-control form-control-sm',
+                    css_class='qf-indent2',
                 ),
                 css_class='form-group col-sm-12 col-md-4 mb-0',
             ),
             Column(
                 Field(
                     'contexts',
-                    css_class='form-control form-control-sm',
                 ),
                 css_class='form-group col-sm-12 col-md-4 mb-0',
             ),
