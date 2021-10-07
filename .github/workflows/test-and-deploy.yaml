@@ -3,6 +3,8 @@ name: Test and deploy
 on:
   workflow_dispatch:
   push:
+  release:
+    types: [published]
 
 env:
   REGISTRY: ghcr.io
@@ -68,6 +70,7 @@ jobs:
     if: |
       (github.ref == 'refs/heads/develop')
       || startsWith(github.ref, 'refs/heads/research-study-')
+      || github.event_name == 'release'
     runs-on: ubuntu-20.04
     needs: [
       test-django-system-check,
@@ -106,6 +109,7 @@ jobs:
     if: |
       (github.ref == 'refs/heads/develop')
       || startsWith(github.ref, 'refs/heads/research-study-')
+      || github.event_name == 'release'
     runs-on: ubuntu-20.04
     needs: [
       create-static-files,
@@ -135,15 +139,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Docker metadata
-        if: |
-          (github.ref == 'refs/heads/develop')
-          || startsWith(github.ref, 'refs/heads/research-study-')
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch,enable=true
+            type=ref,event=tag,priority=1
+            type=ref,event=branch,priority=2
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2.6.1
@@ -154,4 +156,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           build-args: |
             GIT_SHA=${{ github.sha }}
-            BUILD_ENVIRONMENT=staging
+            BUILD_ENVIRONMENT=${{ github.event_name == 'release' && 'production' || 'staging' }}$
