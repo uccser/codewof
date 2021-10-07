@@ -42,25 +42,12 @@ class Command(management.base.BaseCommand):
         management.call_command('update_data')
 
         print(LOG_HEADER.format('Create sample users'))
-        User = get_user_model()  # noqa N806
+
         # Create admin account
-        admin = User.objects.create_superuser(
-            'admin',
-            'admin@codewof.co.nz',
-            password=settings.SAMPLE_DATA_ADMIN_PASSWORD,
-            first_name='Admin',
-            last_name='Account',
-            user_type=UserType.objects.get(slug='teacher')
-        )
-        EmailAddress.objects.create(
-            user=admin,
-            email=admin.email,
-            primary=True,
-            verified=True
-        )
-        print('Admin created.\n')
+        management.call_command('create_admin')
 
         # Create user account
+        User = get_user_model()  # noqa N806
         user = User.objects.create_user(
             'user',
             'user@codewof.co.nz',

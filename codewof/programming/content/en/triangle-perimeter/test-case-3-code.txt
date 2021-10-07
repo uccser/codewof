@@ -1,0 +1,1 @@
+print(triangle_perimeter(0, 0, 0))

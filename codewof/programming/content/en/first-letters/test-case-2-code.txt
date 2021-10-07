@@ -1,0 +1,2 @@
+print(first_letters("codeWOF"))
+
