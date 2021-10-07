@@ -70,6 +70,8 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
         if parent:
             defaults["parent"] = parent
 
+        defaults["indent_level"] = indent_level
+
         concept, created = ProgrammingConcepts.objects.update_or_create(
             slug=concept_slug,
             defaults=defaults,
