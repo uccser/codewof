@@ -60,8 +60,12 @@ services:
                 - "traefik.docker.network=uccser-public"
                 - "traefik.http.services.codewof-django.loadbalancer.server.port=8000"
                 - "traefik.http.routers.codewof-django.service=codewof-django"
-                - "traefik.http.routers.codewof-django.rule=Host(`${CODEWOF_DOMAIN}`)"
+                - "traefik.http.routers.codewof-django.rule=${CODEWOF_ROUTER_RULE}"
                 - "traefik.http.routers.codewof-django.entryPoints=web"
+                # Redirect non-www to www, only triggers in production swarm.
+                - "traefik.http.middlewares.redirect-non-www.redirectregex.regex=^https://codewof(.*)"
+                - "traefik.http.middlewares.redirect-non-www.redirectregex.replacement=https://www.codewof$${1}"
+                - "traefik.http.middlewares.redirect-non-www.redirectregex.permanent=true"
         networks:
             - uccser-public
             - backend
