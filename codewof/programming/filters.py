@@ -12,6 +12,7 @@ class QuestionFilter(django_filters.FilterSet):
     difficulty_level=django_filters.filters.ModelMultipleChoiceFilter(
         queryset=DifficultyLevel.objects.all().order_by('level'),
         widget=forms.CheckboxSelectMultiple,
+        conjoined=True
     )
 
     concepts = django_filters.filters.ModelMultipleChoiceFilter(
