@@ -71,6 +71,8 @@ class QuestionContextsLoader(TranslatableModelLoader):
 
         if parent:
             defaults["parent"] = parent
+        
+        defaults["indent_level"] = indent_level
 
         context, created = QuestionContexts.objects.update_or_create(
             slug=context_slug,

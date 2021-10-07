@@ -48,6 +48,7 @@ class QuestionContexts(models.Model):
     css_class = models.CharField(max_length=30)
     number = models.PositiveSmallIntegerField()
     hint = models.TextField()
+    indent_level = models.PositiveSmallIntegerField(default=0)
     parent = models.ForeignKey(
         "self",
         null=True,
