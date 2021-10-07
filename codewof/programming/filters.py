@@ -11,16 +11,18 @@ from django import forms
 class QuestionFilter(django_filters.FilterSet):
     difficulty_level=django_filters.filters.ModelMultipleChoiceFilter(
         queryset=DifficultyLevel.objects.all().order_by('level'),
-        widget=forms.CheckboxSelectMultiple
+        widget=forms.CheckboxSelectMultiple,
     )
 
     concepts = django_filters.filters.ModelMultipleChoiceFilter(
         queryset=ProgrammingConcepts.objects.prefetch_related('parent').order_by('number'),
         widget=forms.CheckboxSelectMultiple,
+        conjoined=True
     )
     contexts = django_filters.filters.ModelMultipleChoiceFilter(
         queryset=QuestionContexts.objects.prefetch_related('parent').order_by('number'),
         widget=forms.CheckboxSelectMultiple,
+        conjoined=True
     )
 
     class Meta:
