@@ -6,15 +6,18 @@ from programming.models import (
     QuestionContexts,
 )
 from django.db.models import Q
+from django import forms
 
 class QuestionFilter(django_filters.FilterSet):
     # contexts=django_filters.filters.CharFilter(method="contexts_filter")
 
     concepts = django_filters.filters.ModelMultipleChoiceFilter(
-        queryset=ProgrammingConcepts.objects.prefetch_related('parent')
+        queryset=ProgrammingConcepts.objects.prefetch_related('parent'),
+        widget=forms.CheckboxSelectMultiple,
     )
     contexts = django_filters.filters.ModelMultipleChoiceFilter(
-        queryset=QuestionContexts.objects.prefetch_related('parent')
+        queryset=QuestionContexts.objects.prefetch_related('parent'),
+        widget=forms.CheckboxSelectMultiple,
     )
 
     class Meta:
