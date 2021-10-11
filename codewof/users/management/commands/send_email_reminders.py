@@ -17,7 +17,11 @@ from django.urls import reverse
 
 
 class Command(BaseCommand):
-    """Required command class for the custom Django send_email_reminders command."""
+    """
+    Required command class for the custom Django send_email_reminders command.
+
+    The script should run once every hour, preferably near the beginning of the hour.
+    """
 
     def handle(self, *args, **options):
         """
