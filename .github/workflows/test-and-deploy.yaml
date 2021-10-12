@@ -38,12 +38,8 @@ jobs:
         run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run dev
       - name: Migrate database
         run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
-      - name: Load questions
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_questions
-      - name: Load style errors
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_style_errors
-      - name: Load achievements
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_achievements
+      - name: Run update_data command
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py update_data
       - name: Collect static files
         run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
 
