@@ -1,0 +1,1 @@
+print(type(is_valid_pin('1234')))
