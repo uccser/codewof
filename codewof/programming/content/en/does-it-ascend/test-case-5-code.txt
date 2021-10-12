@@ -1,0 +1,1 @@
+print(type(is_ascending([1.0, 1.2])))
