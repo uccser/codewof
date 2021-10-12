@@ -105,7 +105,7 @@ jobs:
           retention-days: 3
 
   publish-docker-image:
-    name: Create and publish dev image
+    name: Create and publish Docker image
     if: |
       (github.ref == 'refs/heads/develop')
       || startsWith(github.ref, 'refs/heads/research-study-')
@@ -156,4 +156,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           build-args: |
             GIT_SHA=${{ github.sha }}
-            BUILD_ENVIRONMENT=${{ github.event_name == 'release' && 'production' || 'staging' }}$
+            BUILD_ENVIRONMENT=${{ github.event_name == 'release' && 'production' || 'staging' }}
