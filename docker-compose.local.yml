@@ -1,0 +1,73 @@
+version: "3.8"
+
+services:
+    django:
+        build:
+            context: .
+            dockerfile: ./infrastructure/local/django/Dockerfile
+        image: codewof_local_django
+        volumes:
+            - ./codewof/:/app/:z
+        env_file:
+            - ./infrastructure/local/django/.envs
+            - ./infrastructure/local/postgres/.envs
+        command: /start
+        networks:
+            - uccser-development-proxy
+            - backend
+        labels:
+            # General labels
+            - "traefik.enable=true"
+            - "traefik.docker.network=uccser-development-proxy"
+            - "traefik.http.services.codewof-django.loadbalancer.server.port=8000"
+            # HTTPS
+            - "traefik.http.routers.codewof-django.entryPoints=web-secure"
+            - "traefik.http.routers.codewof-django.service=codewof-django"
+            - "traefik.http.routers.codewof-django.rule=Host(`codewof.localhost`)"
+            - "traefik.http.routers.codewof-django.tls=true"
+
+    # Node server for creating static files
+    node:
+        build:
+            context: .
+            dockerfile: ./infrastructure/local/node/Dockerfile
+        image: codewof_local_node
+        volumes:
+            # https://burnedikt.com/dockerized-node-development-and-mounting-node-volumes/#exclude-node_modules-from-the-mount
+            - ./codewof/package.json:/app/package.json:z
+            - ./codewof/gulpfile.js:/app/gulpfile.js:z
+            - ./codewof/static:/app/static:z
+            - ./codewof/build:/app/build:z
+        command: npm run dev
+        profiles:
+            - static-files
+        ports:
+            - "3000:3000"
+            # Expose browsersync UI: https://www.browsersync.io/docs/options/#option-ui
+            - "3001:3001"
+
+    postgres:
+        image: postgres:13.3
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            start_period: 10s
+            interval: 10s
+            timeout: 5s
+            retries: 3
+        env_file:
+            - ./infrastructure/local/postgres/.envs
+        networks:
+            - backend
+
+    mailhog:
+        image: mailhog/mailhog:v1.0.1
+        ports:
+            - "8025:8025"
+        networks:
+            - backend
+
+networks:
+    backend:
+        driver: bridge
+    uccser-development-proxy:
+        external: true

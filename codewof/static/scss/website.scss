@@ -190,7 +190,6 @@ strong {
 
 .achievement-icon {
   padding: 0.3125rem;
-  float: left;
 }
 
 .achievement-icon-unachieved {
@@ -337,4 +336,13 @@ $red: #b94a48;
   font-size: 0.8rem;
   margin-bottom: 0;
   white-space: normal;
+}
+
+#notifications-p {
+  margin-top: 20px;
+}
+
+#signup-declarations,
+#recaptcha-declaration {
+    font-size: small;
 }

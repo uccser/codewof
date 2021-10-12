@@ -3,81 +3,114 @@
 
 {% block title %}Dashboard{% endblock %}
 
-{% block content %}
-  <div class="container">
-    <h1 class="display-3 orange-underline text-center">Kia ora {{ user.first_name }}!</h1>
+{% block page_heading %}
+    <h1 class="display-3 orange-underline text-center">
+        Kia ora {{ user.first_name }}!
+    </h1>
+{% endblock page_heading %}
 
-    <div class="row">
-      <div class="col-12 col-md-8 mb-3">
+{% block content_container %}
+    {% comment %} Left column {% endcomment %}
+    <div class="col-12 col-md-8 mb-3">
+        {% comment %} Conditional here to check if allowed to use website {% endcomment %}
         <h2>Your questions for today</h2>
         <p>We recommend doing one or two questions per day, to maintain your programming skills over a long period of time.</p>
 
         {% if questions_to_do %}
-          <div class="row">
-            {% for question in questions_to_do %}
-              <div class="col-12 col-md-6">
-                {% include "programming/question_components/question-card.html" %}
-              </div>
-            {% endfor %}
-          </div>
-          {% if all_complete %}
-            <div class="alert alert-success" role="alert">
-              Great work completing today's questions! Come back tomorrow for a new set.
+            <div class="row">
+                {% for question in questions_to_do %}
+                    <div class="col-12 col-md-6">
+                        {% include "programming/question_components/question-card.html" %}
+                    </div>
+                {% endfor %}
             </div>
-          {% endif %}
-        {% else %}
-          <div class="alert alert-secondary" role="alert">
-            <strong>Sorry!</strong> We currently don't have questions for you to do today.
-          </div>
-        {% endif %}
-        <p>You've solved {{ num_questions_answered }} question{{ num_questions_answered|pluralize }} in the last month!</p>
-      </div>
-
-      <div class="col-12 col-md-4 mb-3">
-        <h2>Points earned: {{ user.profile.points }}</h2>
-        <h2>Achievements</a></h2>
-        <br>
-        {% for achievement in all_achievements %}
-            {% if achievement in user.profile.earned_achievements.all and achievement.parent not in user.profile.earned_achievements.all %}
-              <div class="achievement-container">
-                <a class="achievements-link" href="{% url 'users:achievements' %}">
-                  <img class="achievement-icon" src="{% static achievement.icon_name %}">
-                  <b>{{ achievement.display_name }}</b>
-                </a>
-              </div>
+            {% if all_complete %}
+                <div class="alert alert-success" role="alert">
+                    Great work completing today's questions! Come back tomorrow for a new set.
+                </div>
             {% endif %}
-        {% endfor %}
-      </div>
-
-      <div class="col-12 col-md-8 mb-3">
-        <h2>Research</h2>
-
-        {% if studies %}
-          <p>The following studies are open for you to register for, to help improve programming education.</p>
-          {% for study in studies %}
-            {% include "research/components/research-card.html" %}
-          {% endfor %}
         {% else %}
-          <p>Currently no studies are listed.</p>
+            <div class="alert alert-secondary" role="alert">
+                <strong>Sorry!</strong> We currently don't have questions for you to do today.
+            </div>
         {% endif %}
-      </div>
 
-      <div class="col-12 col-md-4 mb-3">
-        <h2>Settings</h2>
-        <div class="list-group">
-          <a href="{% url 'users:update' %}" class="list-group-item list-group-item-action">
-            Manage your profile
-          </a>
-          <a href="{% url 'account_email' %}" class="list-group-item list-group-item-action">
-            Manage your emails
-          </a>
-          {% if user.is_staff %}
-            <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
-              Open admin website
-            </a>
-          {% endif %}
-        </div>
-      </div>
+        <p>You've solved {{ num_questions_answered }} question{{ num_questions_answered|pluralize }} in the last month!</p>
+
+        <h2>Groups</h2>
+        {% if memberships %}
+            {% for membership in memberships %}
+                {% include "users/group-card.html" %}
+            {% endfor %}
+        {% else %}
+            <p>You are not in any groups.</p>
+        {% endif %}
+
+        <a class="btn btn-primary btn-sm" href="{% url 'users:groups-add' %}">Create Group</a>
     </div>
-  </div>
-{% endblock content %}
+
+    {% comment %} Right column {% endcomment %}
+    <div class="col-12 col-md-4 mb-3">
+        <h2>Points earned: {{ user.profile.points }}</h2>
+
+        <h2>Achievements</h2>
+        <div class="mb-3">
+            {% for achievement in all_achievements %}
+                {% if achievement in user.profile.earned_achievements.all and achievement.parent not in user.profile.earned_achievements.all %}
+                    <div class="achievement-container">
+                        <a class="achievements-link" href="{% url 'users:achievements' %}">
+                            <img class="achievement-icon" src="{% static achievement.icon_name %}">
+                            <b>{{ achievement.display_name }}</b>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div id="invitations-div" class=" mb-3">
+            <h2>Invitations</h2>
+                {% if invitations %}
+                    {% for invitation in invitations %}
+                        {% include "users/invitation-card.html" %}
+                {% endfor %}
+            {% else %}
+                <p>You have no invitations.</p>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <h2>Settings</h2>
+            <div class="list-group">
+                <a href="{% url 'users:update' %}" class="list-group-item list-group-item-action">
+                    Manage your profile
+                </a>
+            {% if user.is_staff %}
+                <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
+                    Open admin website
+                </a>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content_container %}
+
+{% block css %}
+    {{ block.super }}
+    <link href="{% static 'css/invitations.css' %}" rel="stylesheet">
+{% endblock css %}
+
+{% block scripts %}
+{{ block.super }}
+{% csrf_token %}
+<script>
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+function getAcceptURL(invitationID) {
+  return `{% url 'users:groups-invitations-accept' 0 %}`.replace("0", invitationID);
+}
+function getRejectURL(invitationID) {
+  return `{% url 'users:groups-invitations-reject' 0 %}`.replace("0", invitationID);
+}
+</script>
+
+<script src="{% static 'js/groups/invitations.js' %}"></script>
+{% endblock scripts %}

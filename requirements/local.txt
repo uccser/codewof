@@ -1,24 +1,20 @@
 -r ./base.txt
-
-Sphinx==3.2.1  # https://github.com/sphinx-doc/sphinx
-psycopg2-binary==2.8.6  # https://github.com/psycopg/psycopg2
+-r ./test.txt
 
 # Testing
 # ------------------------------------------------------------------------------
 mypy==0.782  # https://github.com/python/mypy
-pytest==6.0.1  # https://github.com/pytest-dev/pytest
+pytest==6.2.5  # https://github.com/pytest-dev/pytest
 pytest-sugar==0.9.4  # https://github.com/Frozenball/pytest-sugar
 
 # Code quality
 # ------------------------------------------------------------------------------
 # flake8 is installed as dependency in base.txt
-coverage==5.2.1  # https://github.com/nedbat/coveragepy
-pydocstyle==5.1.1
+coverage==6.0.2  # https://github.com/nedbat/coveragepy
+pydocstyle==6.1.1
 
 # Django
 # ------------------------------------------------------------------------------
-factory-boy==2.12.0  # https://github.com/FactoryBoy/factory_boy
-
-django-debug-toolbar==2.2  # https://github.com/jazzband/django-debug-toolbar
+django-debug-toolbar==3.2.2  # https://github.com/jazzband/django-debug-toolbar
 django-extensions==3.0.8  # https://github.com/django-extensions/django-extensions
 pytest-django==3.9.0  # https://github.com/pytest-dev/pytest-django

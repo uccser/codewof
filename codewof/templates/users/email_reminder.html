@@ -1,0 +1,31 @@
+{% extends "users/email_template.html" %}
+
+{% block title %}CodeWOF Reminder Email{% endblock %}
+
+{% block header %}Your friendly reminder{% endblock %}
+
+{% block greeting %}Hi {{ username }},{% endblock %}
+
+{% block main_message %}{{ message }}{% endblock %}
+
+{% block link %}
+  <!-- This link uses descriptive text to inform the user what will happen with the link is tapped. -->
+  <!-- It also uses inline styles since some email clients won't render embedded styles from the head. -->
+  <a href="{{ dashboard_url }}" style="color: #007bff; text-decoration: underline;">
+    Let's practice!
+  </a>
+{% endblock %}
+
+{% block footer %}
+  <footer>
+    <div style="border-top: 2px solid #eaeaea;">
+      <!-- This link uses descriptive text to inform the user what will happen with the link is tapped. -->
+      <!-- It also uses inline styles since some email clients won't render embedded styles from the head. -->
+      <p style="font-size: 16px; font-weight: 400; line-height: 24px;">
+        You received this email because you opted into reminders. You can <a
+        href="{{ settings_url }}" style="color: #007bff; text-decoration: underline;">change
+        your reminder settings here</a>.
+      </p>
+    </div>
+  </footer>
+{% endblock %}

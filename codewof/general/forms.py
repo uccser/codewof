@@ -3,9 +3,11 @@
 from django import forms
 from django.conf import settings
 from django.core.mail import send_mail, mail_managers
+from django.template.loader import render_to_string
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Layout, Submit, HTML
 from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 
 MESSAGE_TEMPLATE = "{}\n\n-----\nMessage sent from {} <{}>\n"
 
@@ -18,7 +20,7 @@ class ContactForm(forms.Form):
     subject = forms.CharField(required=True)
     message = forms.CharField(widget=forms.Textarea, required=True)
     cc_sender = forms.BooleanField(required=False, label='Send a copy to yourself')
-    captcha = ReCaptchaField()
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
     def send_email(self):
         """Send email if form is valid."""
@@ -44,4 +46,14 @@ class ContactForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', 'Send email'))
+        self.helper.layout = Layout(
+            'name',
+            'from_email',
+            'subject',
+            'message',
+            'cc_sender',
+            'captcha',
+            HTML(render_to_string('account/recaptcha-declaration.html')),
+            Submit('submit', 'Send email'),
+        )
+        self.fields['captcha'].label = False

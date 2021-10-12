@@ -5,14 +5,16 @@ from factory import (
     DjangoModelFactory,
     Faker,
     Iterator,
+    LazyAttribute,
     post_generation,
 )
 from programming.models import Question, Profile, Attempt
 from django.utils import timezone
 
-# shuffle the quesitons so it doesn't appear as 1, 2, 3, 4...
-question_list = list(Question.objects.all())
-random.shuffle(question_list)
+
+def get_random_question(obj):
+    """Return a random question."""
+    return random.choice(list(Question.objects.all()))
 
 
 class AttemptFactory(DjangoModelFactory):
@@ -20,7 +22,7 @@ class AttemptFactory(DjangoModelFactory):
 
     profile = Iterator(Profile.objects.all())
     datetime = Faker('date_time', tzinfo=timezone.get_current_timezone())
-    question = Iterator(question_list)
+    question = LazyAttribute(get_random_question)
     user_code = Faker('paragraph', nb_sentences=5)
 
     class Meta:

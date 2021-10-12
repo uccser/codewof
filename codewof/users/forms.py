@@ -4,13 +4,14 @@ from django import forms
 from django.contrib import auth
 from django.urls import reverse
 from django.utils.translation import gettext as _
-from users.models import UserType
+from django.template.loader import render_to_string
+from users.models import UserType, Group
 from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, HTML
+from crispy_forms.layout import Layout, Submit, HTML, Fieldset, ButtonHolder, Button, Div
 
 User = auth.get_user_model()
-POLICY_STATEMENT = '<p>By clicking Sign Up, you agree to our <a href="{0}#terms-of-service">Terms</a>, <a href="{0}#privacy-policy">Privacy Policy</a> and <a href="{0}#cookie-policy">Cookie Policy</a>.</p>'  # noqa E501
 
 
 class SignupForm(forms.Form):
@@ -41,7 +42,7 @@ class SignupForm(forms.Form):
         label='Are you a student or teacher?',
         empty_label=None,
     )
-    captcha = ReCaptchaField()
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
@@ -55,10 +56,12 @@ class SignupForm(forms.Form):
             'user_type',
             'password1',
             'password2',
+            HTML(render_to_string('account/signup-declarations.html')),
             'captcha',
-            HTML(POLICY_STATEMENT.format(reverse('general:policies'))),
+            HTML(render_to_string('account/recaptcha-declaration.html')),
             Submit('submit', 'Sign Up', css_class="btn-success"),
         )
+        self.fields['captcha'].label = False
 
     def signup(self, request, user):
         """Extra logic when a user signs up.
@@ -80,11 +83,61 @@ class UserChangeForm(forms.ModelForm):
         empty_label=None,
     )
 
+    remind_on_monday = forms.BooleanField(required=False, label='Monday')
+    remind_on_tuesday = forms.BooleanField(required=False, label='Tuesday')
+    remind_on_wednesday = forms.BooleanField(required=False, label='Wednesday')
+    remind_on_thursday = forms.BooleanField(required=False, label='Thursday')
+    remind_on_friday = forms.BooleanField(required=False, label='Friday')
+    remind_on_saturday = forms.BooleanField(required=False, label='Saturday')
+    remind_on_sunday = forms.BooleanField(required=False, label='Sunday')
+
+    timezone = forms.ChoiceField(
+        choices=User.TIMEZONES,
+        label='What is your timezone? (Used to schedule email reminders)',
+    )
+
+    def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            HTML("<h2>Details</h2>"),
+            Fieldset(
+                None,
+                'first_name',
+                'last_name',
+                'user_type',
+            ),
+            HTML("<h2>Emails</h2>"),
+            Button('emails', 'Manage your email addresses', css_class='btn btn-outline-primary',
+                   onclick="window.location.href = '{}';".format(reverse('account_email'))),
+
+            Div(
+                HTML("<p id=\"notifications-p\">Send me notifications on:</p>"),
+                'remind_on_monday',
+                'remind_on_tuesday',
+                'remind_on_wednesday',
+                'remind_on_thursday',
+                'remind_on_friday',
+                'remind_on_saturday',
+                'remind_on_sunday'
+            ),
+            Fieldset(
+                None,
+                'timezone',
+            ),
+            ButtonHolder(
+                Submit('submit', 'Update', css_class='btn btn-primary')
+            ),
+        )
+
     class Meta:
         """Metadata for UserChangeForm class."""
 
         model = User
-        fields = ('first_name', 'last_name', 'user_type')
+        fields = ('first_name', 'last_name', 'user_type', 'remind_on_monday', 'remind_on_tuesday',
+                  'remind_on_wednesday', 'remind_on_thursday', 'remind_on_friday', 'remind_on_saturday',
+                  'remind_on_sunday', 'timezone')
 
 
 class UserAdminChangeForm(auth.forms.UserChangeForm):
@@ -105,3 +158,55 @@ class UserAdminCreationForm(auth.forms.UserCreationForm):
 
         model = User
         fields = ('email', 'first_name', 'last_name', 'user_type')
+
+
+class GroupCreateUpdateForm(forms.ModelForm):
+    """Form class for creating or updating a group."""
+
+    name = forms.CharField(
+        max_length=Group._meta.get_field('name').max_length,
+        label='Name',
+        widget=forms.TextInput(
+            attrs={
+                'type': 'text',
+                'placeholder': _('Name'),
+            },
+        ),
+        required=not Group._meta.get_field('name').blank
+    )
+
+    description = forms.CharField(
+        max_length=Group._meta.get_field('description').max_length,
+        label='Description',
+        widget=forms.Textarea(
+            attrs={
+                'type': 'text',
+                'placeholder': _('Description'),
+            },
+        ),
+        required=not Group._meta.get_field('description').blank
+    )
+
+    feed_enabled = forms.BooleanField(
+        label='Enable Feed?',
+        required=False
+    )
+
+    class Meta:
+        """Metadata for GroupCreateUpdateForm class."""
+
+        model = Group
+        fields = ('name', 'description', 'feed_enabled')
+
+
+class GroupInvitationsForm(forms.Form):
+    """Form class for sending out invitations to join a group."""
+
+    emails = forms.CharField(
+        label='Emails one per line',
+        widget=forms.Textarea(
+            attrs={
+                'type': 'text',
+            },
+        ),
+    )

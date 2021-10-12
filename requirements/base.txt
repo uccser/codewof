@@ -1,40 +1,43 @@
-pytz==2019.3
-python-slugify==4.0.0
-python-dateutil==2.8.1
-Pillow==7.2.0
-argon2-cffi==19.2.0
-redis>=2.10.6, < 3  # pyup: < 3
-filetype==1.0.4
-
 # Django
-django-model-utils==4.0.0
+django==3.2.6
+django-environ==0.4.5
+django-model-utils==4.1.1
 django-anymail[mailgun]==7.0.0
 django-mail-templated==2.6.5
-django-allauth==0.41.0
+django-allauth==0.45.0
 django-crispy-forms==1.9.0
-django-redis==4.11.0
 django-activeurl==0.2.0
-django-autoslug-iplweb==1.9.5
-git+git://github.com/uccser/django-rest-framework.git@cecd0818119c34a71fd02a1c32d8e5a7629b2876
+django-autoslug==1.9.8
+djangorestframework==3.12.4
 coreapi==2.3.3
-django-filter==2.2.0
-django-modeltranslation==0.14.4
+django-filter==21.1
 django-inline-svg==0.1.1
-django-ckeditor==5.9.0
+django-ckeditor==6.1.0
 django-recaptcha==2.0.6
 django-bootstrap-breadcrumbs==0.9.2
 
-# Google Cloud Platform
-google-api-python-client==1.7.12
+# Web serving
+gunicorn==20.1.0
+whitenoise==5.3.0
+
+# Database APIs
+psycopg2==2.9.1
 
 # Content loading
-verto==0.10.0
+verto==1.0.1
 python-markdown-math==0.6
-PyYAML==5.3.1
+PyYAML==5.4.1
 
 # Style checker
-# Replace flake8 dependency once new release is created
-git+git://github.com/PyCQA/flake8.git@20906d43046096c31dfcd9b8bc536dbd21f043ef
+flake8==4.0.1
 flake8-docstrings==1.5.0
 flake8-quotes==2.1.1
-pep8-naming==0.9.1
+pep8-naming==0.12.1
+
+# Other
+pytz==2019.3
+python-dateutil==2.8.2
+argon2-cffi==19.2.0
+
+# I18n
+django-modeltranslation==0.17.3

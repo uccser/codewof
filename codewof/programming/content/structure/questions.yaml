@@ -43,8 +43,8 @@ double-evens:
     - function
     - parsons
   parsons-extra-lines:
-    - 'if number // 2 == 0:'
-    - 'return number x 2'
+    - "if number // 2 == 0:"
+    - "return number x 2"
   test-cases:
     1: normal
     2: normal
@@ -57,8 +57,8 @@ countdown:
     - function
     - parsons
   parsons-extra-lines:
-    - 'for i in range(num):'
-    - 'while num > 1:'
+    - "for i in range(num):"
+    - "while num > 1:"
   test-cases:
     1: normal
     2: normal
@@ -179,7 +179,7 @@ over-the-limit:
   parsons-extra-lines:
     - 'return "True"'
     - 'return "False"'
-    - 'if mcg_per_litre >= 250:'
+    - "if mcg_per_litre >= 250:"
   test-cases:
     1: normal
     2: normal
@@ -194,7 +194,7 @@ low-battery:
     - function
     - parsons
   parsons-extra-lines:
-    - 'if percent <= 20:'
+    - "if percent <= 20:"
     - 'is_low = "True"'
     - 'is_low = "False"'
   test-cases:
@@ -264,7 +264,6 @@ string-too-long:
     6: normal
     7: normal
 
-
 price-in-budget:
   type: debugging
   number_of_read_only_lines_top: 1
@@ -303,7 +302,7 @@ triangle-pattern:
     - function
     - parsons
   parsons-extra-lines:
-    - 'for i in range(1, x):'
+    - "for i in range(1, x):"
     - 'print(" ")'
     - 'print("*")'
     - 'print(i * " ")'
@@ -326,9 +325,9 @@ reverse-string:
     - function
     - parsons
   parsons-extra-lines:
-    - 'for char in range(len(string), -1, -1):'
-    - 'for char in range(len(string) - 1, 1, 1):'
-    - 'print(string[char])'
+    - "for char in range(len(string), -1, -1):"
+    - "for char in range(len(string) - 1, 1, 1):"
+    - "print(string[char])"
   test-cases:
     1: normal
     2: normal
@@ -376,12 +375,12 @@ find-smallest-number:
 
 book-titles:
   types:
-   - function
-   - parsons
+    - function
+    - parsons
   parsons-extra-lines:
-    - 'print(name.upper())'
-    - 'print(name.lower())'
-    - 'print(name)'
+    - "print(name.upper())"
+    - "print(name.lower())"
+    - "print(name)"
   test-cases:
     1: normal
     2: normal
@@ -389,11 +388,11 @@ book-titles:
 
 total-under-10:
   types:
-   - function
-   - parsons
+    - function
+    - parsons
   parsons-extra-lines:
-    - 'if number > 10:'
-    - 'total = number'
+    - "if number > 10:"
+    - "total = number"
   test-cases:
     1: normal
     2: normal
@@ -424,12 +423,12 @@ make-even:
 
 print-score:
   types:
-   - function
-   - parsons
+    - function
+    - parsons
   parsons-extra-lines:
-    - 'score = points / total_possible'
-    - 'score = points * total_possible / 100'
-    - 'print(score)'
+    - "score = points / total_possible"
+    - "score = points * total_possible / 100"
+    - "print(score)"
   test-cases:
     1: normal
     2: normal
@@ -463,8 +462,8 @@ print-squares:
     - function
     - parsons
   parsons-extra-lines:
-    - 'print(num ^ 2)'
-    - 'print(num x num)'
+    - "print(num ^ 2)"
+    - "print(num x num)"
   test-cases:
     1: normal
     2: normal
@@ -477,9 +476,9 @@ drawn-out-string:
     - function
     - parsons
   parsons-extra-lines:
-    - 'print(letter + letter)'
-    - 'print(length)'
-    - 'print(letter)'
+    - "print(letter + letter)"
+    - "print(length)"
+    - "print(letter)"
   test-cases:
     1: normal
     2: normal
@@ -559,9 +558,9 @@ days-to-target:
     - function
     - parsons
   parsons-extra-lines:
-    - 'population * 2'
-    - 'population = population ** 2'
-    - 'print(days)'
+    - "population * 2"
+    - "population = population ** 2"
+    - "print(days)"
   test-cases:
     1: normal
     2: normal
@@ -574,9 +573,9 @@ roll-call:
     - function
     - parsons
   parsons-extra-lines:
-    - 'print(name.title())'
-    - 'print(name.capitalize())'
-    - 'print(name.swapcase())'
+    - "print(name.title())"
+    - "print(name.capitalize())"
+    - "print(name.swapcase())"
   test-cases:
     1: normal
     2: normal
@@ -617,10 +616,10 @@ rectangle-pattern:
     - function
     - parsons
   parsons-extra-lines:
-    - 'for i in range(width):'
+    - "for i in range(width):"
     - 'print("height * "#")'
     - 'print("#")'
-    - 'print(width * height)'
+    - "print(width * height)"
   test-cases:
     1: normal
     2: normal
@@ -735,7 +734,7 @@ eight-is-great:
     - function
     - parsons
   parsons-extra-lines:
-    - 'if a or b == 8:'
+    - "if a or b == 8:"
   test-cases:
     1: normal
     2: normal
@@ -822,7 +821,7 @@ end-of-file:
     - function
     - parsons
   parsons-extra-lines:
-    - 'return(file)'
+    - "return(file)"
     - 'file += "EOF"'
   test-cases:
     1: normal
@@ -834,9 +833,9 @@ is-this-the-end:
     - function
     - parsons
   parsons-extra-lines:
-    - 'print(x == y)'
-    - 'y -= 1'
-    - 'y = items[index]'
+    - "print(x == y)"
+    - "y -= 1"
+    - "y = items[index]"
   test-cases:
     1: normal
     2: normal
@@ -847,8 +846,8 @@ long-count:
   types:
     - parsons
   parsons-extra-lines:
-    - 'length = 1'
-    - 'return items'
+    - "length = 1"
+    - "return items"
   test-cases:
     1: normal
     2: normal
@@ -953,3 +952,307 @@ square-area:
     3: normal
     4: normal
     5: normal
+
+simple-calculator:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+vertical-line:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+
+horizontal-line:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+
+acceleration-calculator:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+
+can-afford:
+  type: debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 2
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+mountain-climbing:
+  types:
+    - parsons
+  parsons-extra-lines:
+    - "while current_height <= height:"
+    - "current_height += height"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+first-letters:
+  types:
+    - parsons
+  parsons-extra-lines:
+    - "result += words[0]"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+is-a-divisor:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+# TODO: Make it require a for loop
+largest-number:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+print-burger:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+shout-it:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+fancy-divider-one:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+fancy-divider-two:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+driving-danger-level:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+driving-danger-level-debug:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 6
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+plural-words:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+are-we-there-yet:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
+    5: exceptional
+    6: normal
+
+how-many-names:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+triangle-perimeter:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+add-gst:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+bookends:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+clean-room:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'if item in dirty_items:'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+clean-room-debug:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+divisible-by-six:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+teenagers:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+    6: normal
+
+storage-full:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
+    6: exceptional
+    7: normal
+
+how-many-seats:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'elif vehicle == "truck":'
+    - 'else:'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+valid-pin:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+estimate-legs:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+
+does-it-ascend:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for i in range(0, len(items)):'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+does-it-descend:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal

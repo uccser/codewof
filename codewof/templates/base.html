@@ -48,22 +48,29 @@
           {% svg 'logo' %}
         </a>
 
-        {% if DEPLOYMENT_TYPE == 'dev' %}
-        <span class="badge badge-warning">Test server</span>
+        {% if STAGING_ENVIRONMENT %}
+        <span class="badge badge-warning">Test website</span>
         {% endif %}
 
         <div class="collapse navbar-collapse" id="navbarContent">
           {% if request %}
             {% activeurl %}
             <ul id="codewof-navbar-dashboard" class="navbar-nav w-100 d-lg-flex justify-content-end align-items-stretch">
-              <a class="nav-item nav-link" href="{% url 'programming:question_list' %}">Questions</a>
-              <a class="nav-item nav-link mr-auto" href="{% url 'style:home' %}">Style Checkers</a>
+              <a class="nav-item nav-link" href="{% url 'programming:question_list' %}">
+                Questions
+              </a>
+              <a class="nav-item nav-link{% if not RESEARCH %} mr-auto{% endif %}" href="{% url 'style:home' %}">
+                Style Checkers
+              </a>
+              {% if RESEARCH %}
+                <a class="nav-item nav-link mr-auto" href="{% url 'research:home' %}">
+                    Research
+                </a>
+              {% endif %}
               {% if request and request.user.is_authenticated %}
-                {# URL provided by django-allauth/account/urls.py #}
                 <a class="nav-item nav-link" href="{% url 'users:dashboard'  %}">
                   {% svg 'icons8-points' %}
                   <span id="user_points_navbar">{{ request.user.profile.points }}</span>
-                  {# URL provided by django-allauth/account/urls.py #}
                   {% svg 'icons8-user' %}
                   {{ request.user.get_short_name }}'s Dashboard</a>
                 {# URL provided by django-allauth/account/urls.py #}
@@ -166,11 +173,6 @@
                   {% trans "Questions" %}
                 </a>
               </li>
-              <li>
-                <a href="{% url 'research:home' %}">
-                  {% trans "Research" %}
-                </a>
-              </li>
             </ul>
           </div>
           <div class="col-6 col-md-2">
@@ -235,7 +237,7 @@
         <p class="mb-0">
           <small>
             <a href="https://github.com/uccser/codewof/releases">
-              {{ VERSION_NUMBER }}
+              {{ VERSION_NUMBER }}{% if not PRODUCTION_ENVIRONMENT %} - {{ GIT_SHA }}{% endif %}
             </a>
           </small>
         </p>
@@ -244,9 +246,8 @@
 
     {% block modal %}{% endblock modal %}
 
+    <script src="{% static 'js/vendors.js' %}"></script>
     {% block scripts %}
-      <script src="{% static 'js/website.js' %}"></script>
-      <script src="{% static 'js/third-party/intro.js' %}"></script>
     {% endblock scripts %}
   </body>
 </html>

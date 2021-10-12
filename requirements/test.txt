@@ -1,0 +1,5 @@
+# Test dependencies
+
+# Skip migration files for local testing
+django-test-without-migrations==0.6
+factory-boy==2.12.0

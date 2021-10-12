@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.contrib.auth import get_user_model
 from programming.codewof_utils import check_achievement_conditions
+from users.models import Group
 from programming.models import (
     Token,
     Achievement,
@@ -15,13 +16,16 @@ from programming.models import (
     QuestionTypeDebugging,
 )
 
-from codewof.tests.codewof_test_data_generator import (
+from tests.codewof_test_data_generator import (
     generate_users,
     generate_achievements,
     generate_questions,
     generate_attempts,
+    generate_groups,
+    generate_memberships,
+    generate_likes
 )
-from codewof.tests.conftest import user
+from tests.conftest import user
 
 User = get_user_model()
 
@@ -381,3 +385,20 @@ class QuestionTypeDebuggingModelTests(TestCase):
     def test_read_only_lines_bottom_default(self):
         debugging_question = Question.objects.get_subclass(slug="debugging-question-1")
         self.assertEqual(debugging_question.read_only_lines_bottom, 0)
+
+
+class AttemptModelTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # never modify this object in tests - read only
+        generate_users(user)
+        generate_questions()
+        generate_attempts()
+        generate_groups()
+        generate_memberships()
+        generate_likes()
+
+    def test_get_like_users_for_group(self):
+        attempt = Attempt.objects.first()
+        group_north = Group.objects.get(name="Group North")
+        self.assertEqual(len(attempt.get_like_users_for_group(group_north.pk)), 2)

@@ -5,6 +5,7 @@ import os.path
 import environ
 from utils.get_upload_filepath import get_upload_path_for_date
 
+
 # codewof/codewof/config/settings/base.py - 3 = codewof/codewof/
 ROOT_DIR = environ.Path(__file__) - 3
 
@@ -14,7 +15,6 @@ env = environ.Env()
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = env.bool('DJANGO_DEBUG', False)
-DJANGO_PRODUCTION = env.bool('DJANGO_PRODUCTION')
 
 LANGUAGES = (
     ("en", "English"),
@@ -37,7 +37,7 @@ USE_TZ = True
 
 DATE_FORMAT = 'j M Y'                   # '25 Oct 2006'
 TIME_FORMAT = 'P'                       # '2:30 p.m.'
-DATETIME_FORMAT = 'j M Y, P'            # '25 Oct 2006, 2:30 p.m.'
+DATETIME_FORMAT = 'j F Y g:i a'         # '25 Oct 2006 2:30 p.m.'
 YEAR_MONTH_FORMAT = 'F Y'               # 'October 2006'
 MONTH_DAY_FORMAT = 'j F'                # '25 October'
 SHORT_DATE_FORMAT = 'd/m/Y'             # '25/10/2006'
@@ -71,17 +71,6 @@ DECIMAL_SEPARATOR = '.'
 THOUSAND_SEPARATOR = ','
 NUMBER_GROUPING = 3
 
-
-# DATABASES
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#databases
-
-DATABASES = {
-    'default': env.db('DATABASE_URL', default='postgres:///codewof'),
-}
-DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
-DATABASES['default']['ATOMIC_REQUESTS'] = True
-
 # URLS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
@@ -102,7 +91,6 @@ DJANGO_APPS = [
     # Handy template tags
     'django.contrib.humanize',
     'django.contrib.admin',
-    'django.contrib.gis',
 ]
 THIRD_PARTY_APPS = [
     'anymail',
@@ -115,7 +103,6 @@ THIRD_PARTY_APPS = [
     'django_activeurl',
     'svg',
     'ckeditor',
-    'ckeditor_uploader',
     'captcha',
     'django_bootstrap_breadcrumbs',
 ]
@@ -182,11 +169,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'research.middleware.ResearchMiddleware.ResearchMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -196,7 +185,7 @@ MIDDLEWARE = [
 STATIC_ROOT = os.path.join(str(ROOT_DIR.path('staticfiles')), '')
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = '/staticfiles/'
+STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 BUILD_ROOT = os.path.join(str(ROOT_DIR.path('build')), '')
 STATICFILES_DIRS = [
@@ -207,13 +196,6 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
-
-# MEDIA
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = os.path.join(str(ROOT_DIR.path('media')), '')
-# https://docs.djangoproject.com/en/dev/ref/settings/#media-url
-MEDIA_URL = '/media/'
 
 # TEMPLATES
 # ------------------------------------------------------------------------------
@@ -248,9 +230,9 @@ TEMPLATES = [
                 'config.context_processors.deployed.deployed',
                 'config.context_processors.programming.question_types',
                 'config.context_processors.version_number.version_number',
+                'config.context_processors.research.research',
             ],
             'libraries': {
-                'query_replace': 'config.templatetags.query_replace',
                 'simplify_error_template': 'config.templatetags.simplify_error_template',
             },
         },
@@ -308,6 +290,10 @@ ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
 ACCOUNT_ADAPTER = 'users.adapters.AccountAdapter'
 ACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
+MIGRATION_MODULES = {
+    "account": "allauth.account.migrations",
+    "socialaccount": "allauth.socialaccount.migrations",
+}
 
 # django-activeurl
 # ------------------------------------------------------------------------------
@@ -328,9 +314,17 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.BrowsableAPIRenderer',
         'rest_framework.renderers.JSONRenderer',
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
 }
 
+# Logging
+# ------------------------------------------------------------------------------
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -341,7 +335,7 @@ LOGGING = {
     },
     'handlers': {
         'console': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
             'stream': sys.stdout,
@@ -368,7 +362,6 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': ','.join([
             # 'devtools',  # Used for development
             'a11yhelp',
-            'uploadimage',
             'image2',
             'div',
             'autolink',
@@ -385,15 +378,20 @@ CKEDITOR_CONFIGS = {
 
 # Other
 # ------------------------------------------------------------------------------
-BREADCRUMBS_TEMPLATE = "django_bootstrap_breadcrumbs/bootstrap4.html"
-DEPLOYMENT_TYPE = env("DEPLOYMENT", default='local')
-QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path("programming")), "content")
-CUSTOM_VERTO_TEMPLATES = os.path.join(str(ROOT_DIR.path("utils")), "custom_converter_templates", "")
-SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
-SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
-SVG_DIRS = [
-    os.path.join(str(STATIC_ROOT), 'svg')
-]
+DEPLOYED = env.bool('DEPLOYED')
+GIT_SHA = env('GIT_SHA', default=None)
+if GIT_SHA:
+    GIT_SHA = GIT_SHA[:8]
+else:
+    GIT_SHA = "local development"
+CODEWOF_DOMAIN = env('CODEWOF_DOMAIN', default='https://codewof.localhost')
+PRODUCTION_ENVIRONMENT = False
+STAGING_ENVIRONMENT = True
+BREADCRUMBS_TEMPLATE = 'django_bootstrap_breadcrumbs/bootstrap4.html'
+QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path('programming')), 'content')
+CUSTOM_VERTO_TEMPLATES = os.path.join(str(ROOT_DIR.path('utils')), 'custom_converter_templates', '')
+
+SVG_DIRS = [os.path.join(str(ROOT_DIR.path('staticfiles')), 'svg')]
 # Key 'example_code' uses underscore to be accessible in templates
 STYLE_CHECKER_LANGUAGES = {
     'python3': {
@@ -426,13 +424,9 @@ for slug, data in STYLE_CHECKER_LANGUAGES.items():
 STYLE_CHECKER_TEMP_FILES_ROOT = os.path.join(str(ROOT_DIR), 'temp', 'style')
 STYLE_CHECKER_MAX_CHARACTER_COUNT = 10000
 
-# reCAPTCHA
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Sample Data
 # ------------------------------------------------------------------------------
-if DEPLOYMENT_TYPE == 'local':
-    # Use test keys
-    RECAPTCHA_PUBLIC_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
-    RECAPTCHA_PRIVATE_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
-    SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
-else:
-    RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
-    RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
+SAMPLE_DATA_ADMIN_PASSWORD = 'password'
+SAMPLE_DATA_USER_PASSWORD = 'password'

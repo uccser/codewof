@@ -1,0 +1,3 @@
+5 is a divisor
+8 is not a divisor
+2 is a divisor

@@ -43,7 +43,7 @@ def python3_style_check(code):
     # Read file with flake8
     checker_result = subprocess.run(
         [
-            '/docker_venv/bin/flake8',
+            'flake8',
             filepath,
             '--config=' + PYTHON3_DETAILS['checker-config'],
         ],

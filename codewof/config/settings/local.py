@@ -3,18 +3,31 @@
 from .base import *  # noqa
 from .base import env
 
-# GENERAL
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = True
-# https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
-SECRET_KEY = env('DJANGO_SECRET_KEY', default='HU69v4L0rrfp4JtAwZ9CXbDosJVCGwCsOevBSmIyZ9cLFidFtFnrXIStbFCVYF7P')
-# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = [
-    "localhost",
-    "0.0.0.0",
-    "127.0.0.1",
-]
+# DATABASE CONFIGURATION
+# ----------------------------------------------------------------------------
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("POSTGRES_DB"),  # noqa: F405
+        "USER": env("POSTGRES_USER"),  # noqa: F405
+        "PASSWORD": env("POSTGRES_PASSWORD"),  # noqa: F405
+        "HOST": env("POSTGRES_HOST"),  # noqa: F405
+        "PORT": env("POSTGRES_PORT"),  # noqa: F405
+        "ATOMIC_REQUESTS": True,
+    }
+}
+
+# DEBUG
+# ----------------------------------------------------------------------------
+DEBUG = env.bool("DJANGO_DEBUG", default=True)  # noqa: F405
+TEMPLATES[0]["OPTIONS"]["debug"] = DEBUG  # noqa: F405
+
+# SECRET CONFIGURATION
+# ----------------------------------------------------------------------------
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
+# Note: This key only used for development and testing.
+SECRET_KEY = env("DJANGO_SECRET_KEY", default="DJANGO_SECRET_KEY_FOR_LOCAL_DEVELOPMENT")  # noqa: F405
 
 # CACHES
 # ------------------------------------------------------------------------------
@@ -33,10 +46,8 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG  # noqa F405
 
 # EMAIL
 # ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-host
-EMAIL_HOST = 'localhost'
+EMAIL_HOST = 'mailhog'
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-port
 EMAIL_PORT = 1025
 
@@ -45,7 +56,7 @@ EMAIL_PORT = 1025
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#prerequisites
 INSTALLED_APPS += ['debug_toolbar']  # noqa F405
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#middleware
-MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']  # noqa F405
+MIDDLEWARE.insert(2, 'debug_toolbar.middleware.DebugToolbarMiddleware')  # noqa F405
 # https://django-debug-toolbar.readthedocs.io/en/latest/configuration.html#debug-toolbar-config
 
 
@@ -65,14 +76,22 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TEMPLATE_CONTEXT': True,
     'SHOW_TOOLBAR_CALLBACK': show_django_debug_toolbar,
 }
+
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#internal-ips
 INTERNAL_IPS = ['127.0.0.1', '10.0.2.2']
 
+# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = ["*"]
 
 # django-extensions
 # ------------------------------------------------------------------------------
 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html#configuration
 INSTALLED_APPS += ['django_extensions']  # noqa F405
 
-# Your stuff...
+SVG_DIRS.append(os.path.join(str(ROOT_DIR.path("build")), "svg"))  # noqa: F405
+
+# reCAPTCHA
 # ------------------------------------------------------------------------------
+# Use test keys
+RECAPTCHA_PUBLIC_KEY = '6LeG0TIcAAAAACAMZ92F_Yvd6TQ62YdOkpqZAVh4'
+RECAPTCHA_PRIVATE_KEY = '6LeG0TIcAAAAAH52RGgEPsHHHfh_uzMur6Ml2j7t'

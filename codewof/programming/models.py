@@ -10,6 +10,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from model_utils.managers import InheritanceManager
 from utils.TranslatableModel import TranslatableModel
+from users.models import Group, Membership
 
 SMALL = 100
 LARGE = 500
@@ -116,12 +117,27 @@ class Attempt(models.Model):
     datetime = models.DateTimeField(default=timezone.now)
     user_code = models.TextField()
     passed_tests = models.BooleanField(default=False)
+    like_users = models.ManyToManyField(User, through='Like')
 
     # skills_hinted = models.ManyToManyField('Skill', blank=True)
 
     def __str__(self):
         """Text representation of an attempt."""
         return "Attempted '" + str(self.question) + "' on " + str(self.datetime)
+
+    def get_like_users_for_group(self, group_pk):
+        """
+        Get the users that have liked the attempt that are also members of a particular group.
+
+        TODO: Look into a way of combining the database queries for efficiency.
+
+        :param group_pk: The pk of the group
+        :return: A queryset of User objects
+        """
+        group = Group.objects.get(pk=group_pk)
+        memberships = Membership.objects.filter(group=group)
+        like_users = User.objects.filter(pk__in=self.like_set.values_list('user', flat=True))
+        return like_users.filter(pk__in=memberships.values('user')).order_by('first_name', 'last_name')
 
 
 class TestCaseAttempt(models.Model):
@@ -130,6 +146,14 @@ class TestCaseAttempt(models.Model):
     attempt = models.ForeignKey('Attempt', on_delete=models.CASCADE)
     test_case = models.ForeignKey('TestCase', on_delete=models.CASCADE)
     passed = models.BooleanField()
+
+
+class Like(models.Model):
+    """A class representing the relationship between a User and an Attempt that they like."""
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    attempt = models.ForeignKey(Attempt, on_delete=models.CASCADE)
+    datetime = models.DateTimeField(default=timezone.now)
 
 
 # ----- Base question classes -------------------------------------------------

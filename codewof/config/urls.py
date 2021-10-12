@@ -2,12 +2,21 @@
 
 from django.conf import settings
 from django.urls import include, path
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views import defaults as default_views
+from rest_framework import routers
+from programming.urls import router as programming_router
+from research.urls import router as research_router
+from users.urls import router as users_router
+
 admin.site.login = login_required(admin.site.login)
 admin.site.site_header = 'CodeWOF'
+
+router = routers.DefaultRouter()
+router.registry.extend(programming_router.registry)
+router.registry.extend(research_router.registry)
+router.registry.extend(users_router.registry)
 
 urlpatterns = [
     path('', include('general.urls', namespace='general')),
@@ -17,10 +26,8 @@ urlpatterns = [
     path('users/', include('users.urls', namespace='users'),),
     path('accounts/', include('allauth.urls')),
     path('', include('programming.urls', namespace='programming'),),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
-] + static(
-    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
-)
+    path('api/', include(router.urls)),
+]
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

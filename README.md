@@ -1,9 +1,11 @@
-# CodeWOF
-
-[![Build Status](https://travis-ci.org/uccser/codewof.svg?branch=master)](https://travis-ci.org/uccser/codewof)
+# codeWOF
 
 CodeWOF is a website for maintaining your basic programming skills, developed at the University of Canterbury in New Zealand.
-The latest release of CodeWOF can be viewed at [https://www.codewof.co.nz/](https://www.codewof.co.nz/).
+
+[Production website](https://www.codewof.co.nz/) | [Development website](https://codewof-dev.csse.canterbury.ac.nz/)
+:-: | :-:
+`master` branch | `develop` branch
+[![Test and deploy](https://github.com/uccser/codewof/actions/workflows/test-and-deploy.yaml/badge.svg?branch=master)](https://github.com/uccser/codewof/actions/workflows/test-and-deploy.yaml) | [![Test and deploy](https://github.com/uccser/codewof/actions/workflows/test-and-deploy.yaml/badge.svg?branch=develop)](https://github.com/uccser/codewof/actions/workflows/test-and-deploy.yaml)
 
 ## Features
 

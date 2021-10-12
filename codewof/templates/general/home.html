@@ -12,9 +12,10 @@
             </h1>
             <p class="lead">Strengthen your programming skills, and maintain your coding warrant of fitness.</p>
 
-            {% if DEPLOYMENT_TYPE == 'dev' %}
-                <div class="alert alert-warning d-inline-block" role="alert">
-                    You are viewing the test server, which has all data wiped regularly.
+            {% if STAGING_ENVIRONMENT %}
+                <div class="alert alert-warning d-inline-block mb-0" role="alert">
+                    You are viewing the test website, which is used for testing and research.
+                    Data will be wiped after research projects.
                 </div>
             {% endif %}
         </div>
@@ -53,7 +54,7 @@
             <div class="col-12 col-md-6">
                 <p>
                     This website and all of its content is open source, and curated for you.
-                    It will evolve over time as we discover how to equip students and teachers in their programming practice.
+                    It will evolve over time as we discover how to better equip students and teachers in their programming practice.
                 </p>
             </div>
             <div class="col-12 col-md-6 px-5">

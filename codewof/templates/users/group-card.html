@@ -1,0 +1,11 @@
+<div class="card mb-3">
+  <div class="card-body">
+    {% if membership.role.name != 'Member' %}
+      <p class="float-right">{{ membership.role }}</p>
+    {% endif %}
+    <h5 class="card-title">{{ membership.group.name }}</h5>
+    <h6 class="card-subtitle">{{ membership.group.description }}</h6>
+    <small class="text-muted">{{ membership.group.membership_set.count }} Member(s)</small><br class="mb-2">
+    <a href="{% url 'users:groups-detail' membership.group.pk %}" class="card-link  stretched-link">View</a>
+  </div>
+</div>

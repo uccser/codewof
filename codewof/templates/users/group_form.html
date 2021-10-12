@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  {% if object %}
+    {% trans "Update Group" %}
+  {% else %}
+    {% trans "New Group" %}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <div class="col-md-6 offset-md-3">
+    <h1>
+      {% if object %}
+        {% trans "Update Group" %}
+      {% else %}
+        {% trans "New Group" %}
+      {% endif %}
+    </h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+
+      {% if object %}
+        <input class="btn btn-success" type="submit" value="Edit Group">
+      {% else %}
+        <input class="btn btn-success" type="submit" value="Create Group">
+      {% endif %}
+    </form>
+  </div>
+{% endblock %}

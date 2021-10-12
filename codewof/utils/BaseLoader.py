@@ -135,7 +135,7 @@ class BaseLoader():
         """
         directories = md_file_path.split('/')
         if 'en' not in directories:
-            custom_argument_rules = {
+            processor_argument_overrides = {
                 "image-container": {
                     "alt": False
                 },
@@ -147,7 +147,7 @@ class BaseLoader():
                 }
             }
         else:
-            custom_argument_rules = {
+            processor_argument_overrides = {
                 "image-container": {
                     "alt": True
                 },
@@ -162,7 +162,9 @@ class BaseLoader():
         custom_processors = self.converter.processor_defaults()
         if remove_title:
             custom_processors.add("remove-title")
-
+        settings = {
+            "processor_argument_overrides": processor_argument_overrides,
+        }
         templates = self.load_template_files()
         extensions = [
             "markdown.extensions.fenced_code",
@@ -174,7 +176,7 @@ class BaseLoader():
         self.converter = Verto(
             html_templates=templates,
             extensions=extensions,
-            custom_argument_rules=custom_argument_rules,
+            settings=settings,
             processors=custom_processors
         )
         """ End of hack. """

@@ -338,33 +338,6 @@ third-party-licences/fuse.txt
 ==============================================================================
 
 ==============================================================================
-google-api-python-client
-------------------------------------------------------------------------------
-https://github.com/googleapis/google-api-python-client
-Copyright 2014 Google Inc
-licensed under the Apache licence 2.0
-third-party-licences/google-api-python-client.txt
-==============================================================================
-
-==============================================================================
-google-auth (AKA Google Auth Python Library)
-------------------------------------------------------------------------------
-https://github.com/googleapis/google-auth-library-python
-Copyright holder not specified
-licensed under the Apache licence 2.0
-third-party-licences/google-auth.txt
-==============================================================================
-
-==============================================================================
-google-cloud-logging (AKA Python Client for Stackdriver Logging)
-------------------------------------------------------------------------------
-https://github.com/googleapis/python-logging
-Copyright holder not specified
-licensed under the Apache licence 2.0
-third-party-licences/google-cloud-logging.txt
-==============================================================================
-
-==============================================================================
 gulp
 ------------------------------------------------------------------------------
 https://github.com/gulpjs/gulp
@@ -563,16 +536,6 @@ third-party-licences/pep8-naming.txt
 ==============================================================================
 
 ==============================================================================
-Pillow
-------------------------------------------------------------------------------
-https://github.com/deschler/django-modeltranslation
-Copyright 2010-2020 Alex Clark and contributors
-    forked from the Python Imaging Library (PIL)
-licensed under the PIL Software Licence
-third-party-licences/pillow.txt
-==============================================================================
-
-==============================================================================
 popper.js
 ------------------------------------------------------------------------------
 https://github.com/popperjs/popper-core
@@ -655,15 +618,6 @@ third-party-licences/python-markdown-math.txt
 ==============================================================================
 
 ==============================================================================
-python-slugify
-------------------------------------------------------------------------------
-https://github.com/un33k/python-slugify
-Copyright Val Neekman
-licensed under the MIT licence
-third-party-licences/python-slugify.txt
-==============================================================================
-
-==============================================================================
 pytz
 ------------------------------------------------------------------------------
 https://pythonhosted.org/pytz
@@ -724,15 +678,6 @@ https://github.com/SortableJS/Sortable
 Copyright 2019 All contributors to Sortable
 licensed under the MIT licence
 third-party-licences/sortable.txt
-==============================================================================
-
-==============================================================================
-Sphinx
-------------------------------------------------------------------------------
-https://github.com/sphinx-doc/sphinx
-Copyright 2007-2020 the Sphinx team
-licensed under the BSD licence
-third-party-licences/sphinx.txt
 ==============================================================================
 
 ==============================================================================

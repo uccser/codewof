@@ -1,0 +1,1 @@
+print(number_of_names(['sam', 'eMILY', 'JAMES']))

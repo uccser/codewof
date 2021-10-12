@@ -1,15 +1,14 @@
 """Views for programming application."""
 
 import json
-from django.conf import settings
-from django.core import management
+from django.contrib.auth.decorators import login_required
 from django.views import generic
-from django.utils import timezone
 from django.db.models import Count, Max
 from django.db.models.functions import Coalesce
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 from programming.serializers import (
@@ -23,13 +22,11 @@ from programming.models import (
     TestCase,
     Attempt,
     TestCaseAttempt,
+    Like
 )
-from research.models import StudyRegistration
-
 from programming.codewof_utils import add_points, check_achievement_conditions
 
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
-BATCH_SIZE = 15
 
 
 class QuestionListView(LoginRequiredMixin, generic.ListView):
@@ -44,22 +41,7 @@ class QuestionListView(LoginRequiredMixin, generic.ListView):
         Returns:
             Question queryset.
         """
-        now = timezone.now()
-        if self.request.user.is_authenticated:
-            # Look for active study registration
-            try:
-                study_registration = StudyRegistration.objects.get(
-                    user=self.request.user,
-                    study_group__study__start_date__lte=now,
-                    study_group__study__end_date__gte=now,
-                )
-            except ObjectDoesNotExist:
-                study_registration = None
-
-        if study_registration:
-            questions = study_registration.study_group.questions.select_subclasses()
-        else:
-            questions = Question.objects.all().select_subclasses()
+        questions = Question.objects.all().select_subclasses()
 
         if self.request.user.is_authenticated:
             # TODO: Check if passed in last 90 days
@@ -90,19 +72,6 @@ class QuestionView(LoginRequiredMixin, generic.DetailView):
         except Question.DoesNotExist:
             raise Http404("No question matches the given ID.")
 
-        if self.request.user.is_authenticated:
-            # Look for active study registration
-            now = timezone.now()
-            try:
-                study_registration = StudyRegistration.objects.get(
-                    user=self.request.user,
-                    study_group__study__start_date__lte=now,
-                    study_group__study__end_date__gte=now,
-                )
-            except StudyRegistration.DoesNotExist:
-                study_registration = None
-            if study_registration and question not in study_registration.study_group.questions.select_subclasses():
-                raise PermissionDenied
         return question
 
     def get_context_data(self, **kwargs):
@@ -191,23 +160,6 @@ def save_question_attempt(request):
     return JsonResponse(result)
 
 
-def partial_backdate(request):
-    """Backdate a set number of user profiles.
-
-    Returns a 403 Forbidden response if the request was made to a live website and did not come from GCP.
-    """
-    # https://cloud.google.com/appengine/docs/standard/python3/scheduling-jobs-with-cron-yaml?hl=en_US
-    # #validating_cron_requests
-    if settings.DEBUG or 'X-Appengine-Cron' in request.headers:
-        management.call_command("backdate_points_and_achievements", profiles=BATCH_SIZE)
-        response = {
-            'success': True,
-        }
-        return JsonResponse(response)
-    else:
-        raise PermissionDenied()
-
-
 class CreateView(generic.base.TemplateView):
     """Page for creation programming questions."""
 
@@ -238,7 +190,7 @@ class CreateView(generic.base.TemplateView):
 class QuestionAPIViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows questions to be viewed."""
 
-    queryset = Question.objects.all().prefetch_related('attempt_set', 'groups')
+    queryset = Question.objects.all().prefetch_related('attempt_set')
     serializer_class = QuestionSerializer
 
 
@@ -260,3 +212,34 @@ class AttemptAPIViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = Attempt.objects.all().prefetch_related('profile')
     serializer_class = AttemptSerializer
+
+
+@require_http_methods(["POST"])
+@login_required()
+def like_attempt(request, pk):
+    """View for liking an attempt."""
+    user = request.user
+    attempt = Attempt.objects.get(pk=pk)
+
+    if user == attempt.profile.user:
+        raise Exception("User cannot like their own attempt.")
+    if Like.objects.filter(user=user, attempt=attempt).exists():
+        raise Exception("Cannot like an attempt more than once.")
+
+    Like(user=user, attempt=attempt).save()
+    return HttpResponse()
+
+
+@require_http_methods(["DELETE"])
+@login_required()
+def unlike_attempt(request, pk):
+    """View for unliking an attempt."""
+    user = request.user
+    attempt = Attempt.objects.get(pk=pk)
+
+    like = Like.objects.filter(user=user, attempt=attempt)
+    if not like.exists():
+        raise Exception("Can only unlike liked attempts.")
+
+    like.delete()
+    return HttpResponse()

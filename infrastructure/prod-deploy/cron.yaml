@@ -1,4 +1,0 @@
-cron:
-- description: "Background backdate task"
-  url: /tasks/backdate/
-  schedule: every 1 mins

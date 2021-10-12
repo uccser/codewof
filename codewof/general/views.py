@@ -1,6 +1,7 @@
 """Views for general application."""
 
 from django.urls import reverse_lazy
+from django.conf import settings
 from django.views.generic import (
     TemplateView,
     FormView,
@@ -24,6 +25,12 @@ class PolicyView(TemplateView):
     """View for website policies page."""
 
     template_name = 'general/policies.html'
+
+    def get_context_data(self, **kwargs):
+        """Get additional context data for template."""
+        context = super().get_context_data(**kwargs)
+        context['domain'] = settings.CODEWOF_DOMAIN
+        return context
 
 
 class ContactView(FormView):

@@ -1,0 +1,226 @@
+version: '3.8'
+
+# --- Base config -------------------------------------------------------------
+
+x-default-opts:
+    &default-opts
+    logging:
+        options:
+            max-size: '1m'
+            max-file: '3'
+
+# --- Base Django config ------------------------------------------------------
+
+x-django-config:
+    &django-config
+    image: ghcr.io/uccser/codewof:${CODEWOF_IMAGE_TAG}
+    environment:
+        CODEWOF_DOMAIN: ${CODEWOF_DOMAIN}
+        POSTGRES_HOST: postgres
+        POSTGRES_PORT: "5432"
+        DEPLOYMENT_ENVIRONMENT_FILE: /codewof_deployment_environment
+        DJANGO_SECRET_KEY_FILE: /run/secrets/codewof_django_secret_key
+        POSTGRES_DB_FILE: /run/secrets/codewof_postgres_db
+        POSTGRES_USER_FILE: /run/secrets/codewof_postgres_user
+        POSTGRES_PASSWORD_FILE: /run/secrets/codewof_postgres_password
+        MAILGUN_API_KEY_FILE: /run/secrets/codewof_mailgun_api_key
+        SAMPLE_DATA_ADMIN_PASSWORD_FILE: /run/secrets/codewof_sample_data_admin_password
+        SAMPLE_DATA_USER_PASSWORD_FILE: /run/secrets/codewof_sample_data_user_password
+        RECAPTCHA_PUBLIC_KEY_FILE: /run/secrets/codewof_recaptcha_public_key
+        RECAPTCHA_PRIVATE_KEY_FILE: /run/secrets/codewof_recaptcha_private_key
+    configs:
+        - codewof_deployment_environment
+    secrets:
+        - codewof_django_secret_key
+        - codewof_postgres_db
+        - codewof_postgres_user
+        - codewof_postgres_password
+        - codewof_mailgun_api_key
+        - codewof_sample_data_admin_password
+        - codewof_sample_data_user_password
+        - codewof_recaptcha_public_key
+        - codewof_recaptcha_private_key
+
+# -----------------------------------------------------------------------------
+
+services:
+    django:
+        <<: *default-opts
+        <<: *django-config
+        deploy:
+            replicas: 2
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: on-failure
+            labels:
+                - "traefik.enable=true"
+                - "traefik.docker.network=uccser-public"
+                - "traefik.http.services.codewof-django.loadbalancer.server.port=8000"
+                - "traefik.http.routers.codewof-django.service=codewof-django"
+                - "traefik.http.routers.codewof-django.rule=${CODEWOF_ROUTER_RULE}"
+                - "traefik.http.routers.codewof-django.entryPoints=web"
+                # Redirect non-www to www, only triggers in production swarm.
+                - "traefik.http.middlewares.codewof-redirect-non-www.redirectregex.regex=^https://codewof(.*)"
+                - "traefik.http.middlewares.codewof-redirect-non-www.redirectregex.replacement=https://www.codewof$${1}"
+                - "traefik.http.middlewares.codewof-redirect-non-www.redirectregex.permanent=true"
+        networks:
+            - uccser-public
+            - backend
+
+    cron-send-email-reminders:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py send_email_reminders
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+            labels:
+                - "swarm.cronjob.enable=true"
+                - "swarm.cronjob.schedule=0 1 * * * *" # Every hour, at 1 minute past
+                - "swarm.cronjob.skip-running=false"
+        networks:
+            - backend
+
+    cron-remove-expired-inivitations:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py remove_expired_inivitations
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+            labels:
+                - "swarm.cronjob.enable=true"
+                - "swarm.cronjob.schedule=0 0 0 * * *" # Daily
+                - "swarm.cronjob.skip-running=false"
+        networks:
+            - backend
+
+    cron-backdate:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py backdate_points_and_achievements
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+            labels:
+                - "swarm.cronjob.enable=true"
+                - "swarm.cronjob.schedule=0 0/15 * * * *" # Every 15 minutes
+                - "swarm.cronjob.skip-running=false"
+        networks:
+            - backend
+
+    task-update-data:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py update_data --skip_backdate
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+        networks:
+            - backend
+
+    task-raise-backdate-flags:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py raise_backdate_flags
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+        networks:
+            - backend
+
+    postgres:
+        <<: *default-opts
+        image: postgres:13.4
+        # TODO: Write test script that reads secret files
+        # to get correct username
+        # healthcheck:
+        #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+        #     start_period: 10s
+        #     interval: 10s
+        #     timeout: 5s
+        #     retries: 3
+        deploy:
+            replicas: 1
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==data
+            restart_policy:
+                condition: on-failure
+        environment:
+            POSTGRES_DB_FILE: /run/secrets/codewof_postgres_db
+            POSTGRES_USER_FILE: /run/secrets/codewof_postgres_user
+            POSTGRES_PASSWORD_FILE: /run/secrets/codewof_postgres_password
+        secrets:
+            - codewof_postgres_db
+            - codewof_postgres_user
+            - codewof_postgres_password
+        networks:
+            - backend
+        volumes:
+            - postgres-data:/var/lib/postgresql/data:Z
+            - postgres-data-backups:/backups:z
+
+configs:
+    codewof_deployment_environment:
+        external: true
+
+secrets:
+    codewof_django_secret_key:
+        external: true
+    codewof_postgres_db:
+        external: true
+    codewof_postgres_user:
+        external: true
+    codewof_postgres_password:
+        external: true
+    codewof_mailgun_api_key:
+        external: true
+    codewof_sample_data_admin_password:
+        external: true
+    codewof_sample_data_user_password:
+        external: true
+    codewof_recaptcha_public_key:
+        external: true
+    codewof_recaptcha_private_key:
+        external: true
+
+networks:
+    uccser-public:
+        external: true
+    backend:
+        driver: overlay
+        attachable: true
+
+volumes:
+    postgres-data: {}
+    postgres-data-backups: {}

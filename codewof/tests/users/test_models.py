@@ -2,8 +2,8 @@ import pytest
 from django.test import TestCase
 from users.models import UserType, User
 
-from codewof.tests.codewof_test_data_generator import generate_users
-from codewof.tests.conftest import user
+from tests.codewof_test_data_generator import generate_users
+from tests.conftest import user
 
 pytestmark = pytest.mark.django_db
 
@@ -16,7 +16,7 @@ class UserModelTests(TestCase):
 
     def test_default_username(self):
         user = User.objects.create(
-            id=3,
+            id=100,
             first_name='Test',
             last_name='Case',
             email='testcase@email.com',
