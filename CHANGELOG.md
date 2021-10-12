@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.1
+
+- Ensure footer is at the bottom of the page even when there is not enough content.
+- Clarify error when the line number is greater than the number of lines in the users code.
+
 ## 3.1.0
 
 - Add step by step introduction/tutorial to question pages.
