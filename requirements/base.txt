@@ -37,7 +37,7 @@ pep8-naming==0.9.1
 
 # Other
 pytz==2019.3
-python-dateutil==2.8.1
+python-dateutil==2.8.2
 argon2-cffi==19.2.0
 
 # I18n
