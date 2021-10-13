@@ -35,7 +35,7 @@ flake8-quotes==2.1.1
 pep8-naming==0.12.1
 
 # Other
-pytz==2019.3
+pytz==2021.3
 python-dateutil==2.8.2
 argon2-cffi==19.2.0
 
