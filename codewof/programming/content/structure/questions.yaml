@@ -1133,3 +1133,126 @@ add-gst:
     2: normal
     3: normal
     4: normal
+
+bookends:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+clean-room:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'if item in dirty_items:'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+clean-room-debug:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+divisible-by-six:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+teenagers:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+    6: normal
+
+storage-full:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
+    6: exceptional
+    7: normal
+
+how-many-seats:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'elif vehicle == "truck":'
+    - 'else:'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+valid-pin:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+estimate-legs:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+
+does-it-ascend:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for i in range(0, len(items)):'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+does-it-descend:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal

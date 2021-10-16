@@ -3,6 +3,8 @@ name: Test and deploy
 on:
   workflow_dispatch:
   push:
+  release:
+    types: [published]
 
 env:
   REGISTRY: ghcr.io
@@ -36,12 +38,8 @@ jobs:
         run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run dev
       - name: Migrate database
         run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
-      - name: Load questions
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_questions
-      - name: Load style errors
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_style_errors
-      - name: Load achievements
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_achievements
+      - name: Run update_data command
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py update_data
       - name: Collect static files
         run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
 
@@ -68,6 +66,7 @@ jobs:
     if: |
       (github.ref == 'refs/heads/develop')
       || startsWith(github.ref, 'refs/heads/research-study-')
+      || github.event_name == 'release'
     runs-on: ubuntu-20.04
     needs: [
       test-django-system-check,
@@ -102,10 +101,11 @@ jobs:
           retention-days: 3
 
   publish-docker-image:
-    name: Create and publish dev image
+    name: Create and publish Docker image
     if: |
       (github.ref == 'refs/heads/develop')
       || startsWith(github.ref, 'refs/heads/research-study-')
+      || github.event_name == 'release'
     runs-on: ubuntu-20.04
     needs: [
       create-static-files,
@@ -135,18 +135,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Docker metadata
-        if: |
-          (github.ref == 'refs/heads/develop')
-          || startsWith(github.ref, 'refs/heads/research-study-')
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch,enable=true
+            type=ref,event=tag,priority=1
+            type=ref,event=branch,priority=2
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2.6.1
+        uses: docker/build-push-action@v2.7.0
         with:
           file: ./infrastructure/production/django/Dockerfile
           context: .
@@ -154,4 +152,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           build-args: |
             GIT_SHA=${{ github.sha }}
-            BUILD_ENVIRONMENT=staging
+            BUILD_ENVIRONMENT=${{ github.event_name == 'release' && 'production' || 'staging' }}

@@ -1,0 +1,1 @@
+print(is_descending([4, 4, 2, 2]))
