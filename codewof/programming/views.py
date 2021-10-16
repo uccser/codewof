@@ -15,6 +15,7 @@ from programming.serializers import (
     QuestionSerializer,
     ProfileSerializer,
     AttemptSerializer,
+    LikeSerializer
 )
 from programming.models import (
     Profile,
@@ -243,3 +244,11 @@ def unlike_attempt(request, pk):
 
     like.delete()
     return HttpResponse()
+
+
+class LikeAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows attempt likes to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = Like.objects.all().select_related('user', 'attempt')
+    serializer_class = LikeSerializer

@@ -39,9 +39,9 @@ class ResearchMiddleware:
     def __init__(self, get_response):
         """One-time configuration and initialization.
 
-        Only load research middleware if running in a staging enviroment.
+        Only load research middleware if running in a staging environment and not testing.
         """
-        if not settings.PRODUCTION_ENVIRONMENT:
+        if not settings.PRODUCTION_ENVIRONMENT and not settings.TESTING:
             self.get_response = get_response
         else:
             raise MiddlewareNotUsed()

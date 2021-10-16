@@ -387,6 +387,7 @@ else:
 CODEWOF_DOMAIN = env('CODEWOF_DOMAIN', default='https://codewof.localhost')
 PRODUCTION_ENVIRONMENT = False
 STAGING_ENVIRONMENT = True
+TESTING = False
 BREADCRUMBS_TEMPLATE = 'django_bootstrap_breadcrumbs/bootstrap4.html'
 QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path('programming')), 'content')
 CUSTOM_VERTO_TEMPLATES = os.path.join(str(ROOT_DIR.path('utils')), 'custom_converter_templates', '')

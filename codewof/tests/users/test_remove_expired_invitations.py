@@ -34,7 +34,7 @@ class TestHandle(TestCase):
         self.sally = User.objects.get(pk=2)
         self.invitation1 = Invitation.objects.get(email=self.john.email, group=self.group_team_300, inviter=self.sally)
         self.invitation2 = Invitation.objects.get(email="john@mail.com", group=self.group_mystery, inviter=self.sally)
-        self.invitation3 = Invitation.objects.get(email=self.john.email, group=self.group_team_cserg,
+        self.invitation3 = Invitation.objects.get(email="uppercase@mail.com", group=self.group_team_cserg,
                                                   inviter=self.sally)
 
     def call_command(self, *args, **kwargs):
