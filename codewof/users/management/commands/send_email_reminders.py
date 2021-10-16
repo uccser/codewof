@@ -42,9 +42,6 @@ class Command(BaseCommand):
             html = self.build_email_html(user.first_name, message)
             body = self.build_email_plain(user.first_name, message)
 
-            # TODO: Remove this line at the end of the study
-            EmailReminder(user=user).save()
-
             send_mail(
                 'CodeWOF Reminder',
                 body,
