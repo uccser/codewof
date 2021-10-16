@@ -9,7 +9,7 @@ from django.core.mail import send_mail
 from django.core.management import BaseCommand
 from django.templatetags.static import static
 from django.utils import timezone
-from users.models import User, EmailReminder
+from users.models import User
 from programming.models import Attempt
 from utils.Weekday import Weekday
 from django.template.loader import get_template
