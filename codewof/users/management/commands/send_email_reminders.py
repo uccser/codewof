@@ -2,11 +2,12 @@
 
 from datetime import datetime
 from datetime import time
-
+from time import perf_counter
 import pytz
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.management import BaseCommand
+from django.templatetags.static import static
 from django.utils import timezone
 from users.models import User
 from programming.models import Attempt
@@ -16,7 +17,11 @@ from django.urls import reverse
 
 
 class Command(BaseCommand):
-    """Required command class for the custom Django send_email_reminders command."""
+    """
+    Required command class for the custom Django send_email_reminders command.
+
+    The script should run once every hour, preferably near the beginning of the hour.
+    """
 
     def handle(self, *args, **options):
         """
@@ -26,6 +31,8 @@ class Command(BaseCommand):
         :param options:
         :return:
         """
+        start_time = perf_counter()
+        print('Starting task for sending reminder emails.')
         users_to_email = self.get_users_to_email()
 
         for user in users_to_email:
@@ -43,6 +50,11 @@ class Command(BaseCommand):
                 fail_silently=False,
                 html_message=html
             )
+            print(f' - Reminder email sent to {user}.')
+        duration = perf_counter() - start_time
+        print('Completed task for sending reminder emails.')
+        print(f' - Emails sent: {len(users_to_email)}')
+        print(f' - Task duration: {duration:0.4f}')
 
     def get_days_since_last_attempt(self, today, user):
         """
@@ -75,7 +87,8 @@ class Command(BaseCommand):
         return email_template.render(
             {"username": username, "message": message,
              "dashboard_url": settings.CODEWOF_DOMAIN + reverse('users:dashboard'),
-             "settings_url": settings.CODEWOF_DOMAIN + reverse('users:update')})
+             "settings_url": settings.CODEWOF_DOMAIN + reverse('users:update'), "domain": settings.CODEWOF_DOMAIN,
+             "logo_src": settings.CODEWOF_DOMAIN + static('img/logos/logo.png')})
 
     def build_email_plain(self, username, message):
         """
@@ -87,7 +100,7 @@ class Command(BaseCommand):
         """
         return "Hi {},\n\n{}\nLet's practice!: {}\n\nThanks,\nThe Computer Science Education Research " \
                "Group\n\nYou received this email because you opted into reminders. You can change " \
-               "your reminder settings here: {}."\
+               "your reminder settings here: {}." \
             .format(username, message, settings.CODEWOF_DOMAIN + reverse('users:dashboard'),
                     settings.CODEWOF_DOMAIN + reverse('users:update'))
 

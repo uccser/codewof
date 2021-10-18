@@ -1,0 +1,5 @@
+Yes, HATS ends with s.
+Yes, HANDS ends with s.
+Yes, HEROES ends with s.
+Yes, HAMMERS ends with s.
+No, KEYBOARD doesn't end with s!

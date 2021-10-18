@@ -231,10 +231,17 @@ def generate_email_accounts():
         primary=True,
         verified=True
     )
+    email5 = EmailAddress(
+        user=user1,
+        email="UPPERcase@mail.com",
+        primary=False,
+        verified=True
+    )
     email1.save()
     email2.save()
     email3.save()
     email4.save()
+    email5.save()
 
 
 def generate_invitations():
@@ -260,7 +267,7 @@ def generate_invitations():
         date_expires=datetime.date(2021, 10, 22)
     )
     invitation_3 = Invitation.objects.create(
-        email=user1.email,
+        email="uppercase@mail.com",
         group=group_team_cserg,
         inviter=user2,
         date_sent=datetime.date(2020, 10, 20),

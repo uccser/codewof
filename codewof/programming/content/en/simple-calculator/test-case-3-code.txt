@@ -1,0 +1,1 @@
+print(calculate(3, 2, 'x'))
