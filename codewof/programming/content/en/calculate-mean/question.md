@@ -4,4 +4,4 @@ Write a function `mean(items)` that **returns** the average of `items`, a list o
 
 The mean is the sum of the items divided by the number of items. Your function will not be tested against an empty list.
 
-*Hint: the built in functions `sum()` and `len()` will come in handy.*
+*Hint: the built in functions `sum()` and `len()` may come in handy.*
