@@ -163,6 +163,7 @@ class QuestionsLoader(TranslatableModelLoader):
                     defaults['read_only_lines_bottom'] = int(question_data.get('number_of_read_only_lines_bottom', 0))
 
                 # TODO remove conditional once all difficulty levels assigned
+                # Don't need to consider parent difficulty levels as these do not exist
                 if difficulty_level:
                     defaults['difficulty_level'] = difficulty_level
 
@@ -178,18 +179,26 @@ class QuestionsLoader(TranslatableModelLoader):
                 # Add programming concepts
                 concept_slugs = question_data.get("concepts", [])
                 for concept_slug in concept_slugs:
+                    if type(concept_slug) is tuple:
+                        text, slug = concept_slug
+                        if text != "added":
+                            raise InvalidYAMLValueError(
+                                self.structure_file_path,
+                                "contexts - value '{} {}' - added text is invalid".format(text, slug)),
+                            )
                     try:
                         concept = ProgrammingConcepts.objects.get(
                             slug=concept_slug
                         )
                         if concept.children.exists():
-                            raise InvalidYAMLValueError(
-                                self.structure_file_path,
-                                "concepts - value '{}' is invalid".format(concept_slug),
-                                "Programming Concept with no children (parent concepts are not allowed)"
-                            )
-                        else:
-                            question.concepts.add(concept)
+                            # Check if need to add child concept
+                            for child in concept.children:
+                                if child not in concept_slugs:
+                                    concept_slugs.append(("added", child))
+                        # Check if need to add parent concept
+                        if concept.parent is not null and concept.parent not in concept_slugs:
+                            concept_slugs.append(concept.parent)
+                        question.concepts.add(concept)
                     except ObjectDoesNotExist:
                         raise KeyNotFoundError(
                             self.structure_file_path,
