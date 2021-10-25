@@ -7,6 +7,8 @@ from programming.models import (
 )
 from django.db.models import Q
 from django import forms
+from programming.widgets import IndentCheckbox
+
 
 class QuestionFilter(django_filters.FilterSet):
     difficulty_level=django_filters.filters.ModelMultipleChoiceFilter(
@@ -17,12 +19,13 @@ class QuestionFilter(django_filters.FilterSet):
 
     concepts = django_filters.filters.ModelMultipleChoiceFilter(
         queryset=ProgrammingConcepts.objects.prefetch_related('parent').order_by('number'),
-        widget=forms.CheckboxSelectMultiple,
+        widget=IndentCheckbox,
         conjoined=True
     )
+
     contexts = django_filters.filters.ModelMultipleChoiceFilter(
         queryset=QuestionContexts.objects.prefetch_related('parent').order_by('number'),
-        widget=forms.CheckboxSelectMultiple,
+        widget=IndentCheckbox,
         conjoined=True
     )
 

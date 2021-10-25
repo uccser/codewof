@@ -637,6 +637,9 @@ rectangle-pattern:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-1
+  concepts: 
+    - display-text
 
 leap-year:
   types:

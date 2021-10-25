@@ -1,11 +1,6 @@
-.qf-indent1 {
-    padding-left: 0px;
+input[data-indent-level="2"] + label {
+    margin-left: 1rem;
 }
-
-.qf-indent2 {
-    padding-left: 10px;
-}
-
-.qf-indent3 {
-    padding-left: 20px;
+input[data-indent-level="3"] + label {
+    margin-left: 2rem;
 }

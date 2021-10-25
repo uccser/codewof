@@ -35,6 +35,12 @@ def create_filter_helper(reset_url_pattern):
                 ),
                 css_class='form-group col-sm-12 col-md-4 mb-0',
             ),
+            # Column(
+            #     Div(
+            #         'concepts',
+            #         template='indented-list.html'
+            #     )
+            # )
             Column(
                 Field(
                     'contexts',

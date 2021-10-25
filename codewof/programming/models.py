@@ -61,10 +61,7 @@ class QuestionContexts(models.Model):
         Returns:
             Name of question context (str).
         """
-        if self.parent:
-            return "{}: {}".format(self.parent.__str__(), self.name)
-        else:
-            return self.name
+        return self.name
 
     class Meta:
         """Set consistent ordering of question contexts."""
@@ -94,10 +91,7 @@ class ProgrammingConcepts(models.Model):
         Returns:
             Name of programming concept (str).
         """
-        if self.parent:
-            return "{}: {}".format(self.parent.name, self.name)
-        else:
-            return self.name
+        return self.name
 
     class Meta:
         """Set consistent ordering of programming concepts."""
