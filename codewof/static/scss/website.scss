@@ -347,3 +347,12 @@ $red: #b94a48;
 #recaptcha-declaration {
     font-size: small;
 }
+
+summary {
+  cursor: pointer;
+  //TODO: Colour and hover colour
+}
+
+details div {
+  padding: ($spacer * .1) ($spacer * .1) ($spacer * .1) ($spacer * .1);
+}
