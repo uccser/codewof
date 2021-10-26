@@ -6,8 +6,9 @@ from crispy_forms.layout import (
     Field,
     Div,
     HTML,
-    Submit,
+    Submit
 )
+from crispy_forms.bootstrap import Accordion, AccordionGroup
 
 FILTER_HELPER_RESET_HTML_TEMPLATE = '<a href="{{% url "{}" %}}" class="btn btn-danger">Reset</a>'
 
@@ -21,37 +22,37 @@ def create_filter_helper(reset_url_pattern):
     filter_formatter = FormHelper()
     filter_formatter.form_method = 'get'
     filter_formatter.layout = Layout(
-        Row(
-            Column(
-                Field(
-                    'difficulty_level',
+        Accordion(
+            AccordionGroup(
+                'Filter Questions',
+                Row(
+                    Column(
+                        Field(
+                            'difficulty_level',
+                        ),
+                        css_class='col-sm-12 col-md-4 mb-0',
+                    ),
+                    Column(
+                        Field(
+                            'concepts',
+                            css_class='qf-indent2',
+                        ),
+                        css_class='form-group col-sm-12 col-md-4 mb-0',
+                    ),
+                    Column(
+                        Field(
+                            'contexts',
+                        ),
+                        css_class='form-group col-sm-12 col-md-4 mb-0',
+                    ),
                 ),
-                css_class='col-sm-12 col-md-4 mb-0',
-            ),
-            Column(
-                Field(
-                    'concepts',
-                    css_class='qf-indent2',
+                Div(
+                    HTML(FILTER_HELPER_RESET_HTML_TEMPLATE.format(reset_url_pattern)),
+                    Submit('submit', 'Filter questions', css_class='btn-success'),
+                    css_class='d-flex justify-content-between collapsed',
                 ),
-                css_class='form-group col-sm-12 col-md-4 mb-0',
-            ),
-            # Column(
-            #     Div(
-            #         'concepts',
-            #         template='indented-list.html'
-            #     )
-            # )
-            Column(
-                Field(
-                    'contexts',
-                ),
-                css_class='form-group col-sm-12 col-md-4 mb-0',
-            ),
-        ),
-        Div(
-            HTML(FILTER_HELPER_RESET_HTML_TEMPLATE.format(reset_url_pattern)),
-            Submit('submit', 'Filter questions', css_class='btn-success'),
-            css_class='d-flex justify-content-between',
+                active=False
+            )
         )
     )
     return filter_formatter

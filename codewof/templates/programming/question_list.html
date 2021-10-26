@@ -11,11 +11,7 @@
 
 {% block content %}
     <p>Currently all questions are based in Python 3.</p>
-    <div class="card filter-card mb-3">
-        <div class="card-body">
-            {% crispy filter.form filter_formatter %}
-        </div>
-    </div>
+    {% crispy filter.form filter_formatter %}
 
     {% if filter.qs %}
     <div class="row">
