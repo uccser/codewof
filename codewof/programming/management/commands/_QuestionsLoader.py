@@ -186,7 +186,7 @@ class QuestionsLoader(TranslatableModelLoader):
                         if text != "added":
                             raise InvalidYAMLValueError(
                                 self.structure_file_path,
-                                "contexts - value '{} {}' - added text is invalid".format(text, slug),
+                                "concepts - value '{} {}' - added text is invalid".format(text, slug),
                             )
                         concept = added_concept
                     try:
@@ -213,18 +213,30 @@ class QuestionsLoader(TranslatableModelLoader):
                 # Add question contexts
                 context_slugs = question_data.get("contexts", [])
                 for context_slug in context_slugs:
-                    try:
-                        context = QuestionContexts.objects.get(
-                            slug=context_slug
-                        )
-                        if context.children.exists():
+                    text = "not added"
+                    context = None
+                    if type(context_slug) is tuple:
+                        text, added_context = context_slug
+                        if text != "added":
                             raise InvalidYAMLValueError(
                                 self.structure_file_path,
-                                "contexts - value '{}' is invalid".format(context_slug),
-                                "Question Context with no children (parent contexts are not allowed)"
+                                "contexts - value '{} {}' - added text is invalid".format(text, slug),
                             )
-                        else:
-                            question.contexts.add(context)
+                        context = added_context
+                    try:
+                        if text != "added":
+                            context = QuestionContexts.objects.get(
+                                slug=context_slug
+                            )
+                        if context.children.exists() and text == "not added":
+                            # Check if need to add child context
+                            for child in context.children:
+                                if child not in context_slugs:
+                                    context_slugs.append(("added", child))
+                        # Check if need to add parent context
+                        if context.parent is not None and context.parent not in context_slugs:
+                            context_slugs.append(("added", context.parent))
+                        question.contexts.add(context)
                     except ObjectDoesNotExist:
                         raise KeyNotFoundError(
                             self.structure_file_path,
