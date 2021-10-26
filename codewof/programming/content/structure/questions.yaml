@@ -6,7 +6,6 @@ say-hello:
   difficulty: difficulty-0
   concepts: 
     - display-text
-    - single-condition
 
 # ride-share:
 #   type: function
@@ -36,6 +35,7 @@ add-10:
   difficulty: difficulty-1
   concepts:
     - display-text  
+    - single-condition
   contexts:
     - simple-mathematics
 
@@ -47,6 +47,8 @@ doubler:
     3: normal
     4: normal
     5: exceptional
+  concepts:
+    - multiple-conditions
   contexts:
     - advanced-geometry
 

@@ -179,25 +179,29 @@ class QuestionsLoader(TranslatableModelLoader):
                 # Add programming concepts
                 concept_slugs = question_data.get("concepts", [])
                 for concept_slug in concept_slugs:
+                    text = "not added"
+                    concept = None
                     if type(concept_slug) is tuple:
-                        text, slug = concept_slug
+                        text, added_concept = concept_slug
                         if text != "added":
                             raise InvalidYAMLValueError(
                                 self.structure_file_path,
-                                "contexts - value '{} {}' - added text is invalid".format(text, slug)),
+                                "contexts - value '{} {}' - added text is invalid".format(text, slug),
                             )
+                        concept = added_concept
                     try:
-                        concept = ProgrammingConcepts.objects.get(
-                            slug=concept_slug
-                        )
-                        if concept.children.exists():
+                        if text != "added":
+                            concept = ProgrammingConcepts.objects.get(
+                                slug=concept_slug
+                            )
+                        if concept.children.exists() and text == "not added":
                             # Check if need to add child concept
                             for child in concept.children:
                                 if child not in concept_slugs:
                                     concept_slugs.append(("added", child))
                         # Check if need to add parent concept
-                        if concept.parent is not null and concept.parent not in concept_slugs:
-                            concept_slugs.append(concept.parent)
+                        if concept.parent is not None and concept.parent not in concept_slugs:
+                            concept_slugs.append(("added", concept.parent))
                         question.concepts.add(concept)
                     except ObjectDoesNotExist:
                         raise KeyNotFoundError(
