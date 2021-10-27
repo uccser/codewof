@@ -36,7 +36,6 @@ class DifficultyLevel(models.Model):
 
     class Meta:
         """Meta options for class. Sort so that easiest questions appear first."""
-
         ordering = ['level']
 
 

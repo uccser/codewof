@@ -18,7 +18,6 @@ class IndentCheckbox(forms.CheckboxSelectMultiple):
 
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
         """Intent the checkbox based on the indent level stored in the object."""
-
         option = super().create_option(name, value, label, selected, index, subindex, attrs)
         if value:
             option['attrs']['data-indent-level'] = value.instance.indent_level
