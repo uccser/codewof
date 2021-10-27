@@ -118,12 +118,124 @@ ACHIEVEMENTS = [
         'parent': 'consecutive-days-7'
     },
     {
+        'id_name': 'solved-difficulty-moderate-15',
+        'display_name': 'Solved 15 moderate questions!',
+        'description': 'Solved 15 questions from the moderate category',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-gold-50.png',
+        'achievement_tier': 3,
+        'parent': None
+    },
+    {
+        'id_name': 'solved-difficulty-moderate-10',
+        'display_name': 'Solved 10 moderate questions!',
+        'description': 'Solved 10 questions from the moderate category',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 2,
+        'parent': 'solved-difficulty-moderate-15'
+    },
+    {
+        'id_name': 'solved-difficulty-moderate-5',
+        'display_name': 'Solved 5 moderate questions!',
+        'description': 'Solved 5 questions from the moderate category',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
+        'achievement_tier': 1,
+        'parent': 'solved-difficulty-moderate-10'
+    },
+    {
+        'id_name': 'solved-difficulty-easy-15',
+        'display_name': 'Solved 15 easy questions!',
+        'description': 'Solved 15 questions from the easy category',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-gold-50.png',
+        'achievement_tier': 3,
+        'parent': None
+    },
+    {
+        'id_name': 'solved-difficulty-easy-10',
+        'display_name': 'Solved 10 easy questions!',
+        'description': 'Solved 10 questions from the easy category',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 2,
+        'parent': 'solved-difficulty-easy-15'
+    },
+    {
         'id_name': 'solved-difficulty-easy-5',
         'display_name': 'Solved 5 easy questions!',
         'description': 'Solved 5 questions from the easy category',
-        'icon_name': 'img/icons/achievements/icons8-attempt-made-bronze-50.png',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
         'achievement_tier': 1,
+        'parent': 'solved-difficulty-easy-10'
+    },
+    {
+        'id_name': 'solved-difficulty-difficult-15',
+        'display_name': 'Solved 15 difficult questions!',
+        'description': 'Solved 15 questions from the difficult category',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-gold-50.png',
+        'achievement_tier': 3,
         'parent': None
+    },
+    {
+        'id_name': 'solved-difficulty-difficult-10',
+        'display_name': 'Solved 10 difficult questions!',
+        'description': 'Solved 10 questions from the difficult category',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 2,
+        'parent': 'solved-difficulty-difficult-15'
+    },
+    {
+        'id_name': 'solved-difficulty-difficult-5',
+        'display_name': 'Solved 5 difficult questions!',
+        'description': 'Solved 5 questions from the difficult category',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
+        'achievement_tier': 1,
+        'parent': 'solved-difficulty-difficult-10'
+    },
+    {
+        'id_name': 'solved-difficulty-complex-15',
+        'display_name': 'Solved 15 complex questions!',
+        'description': 'Solved 15 questions from the complex category',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-gold-50.png',
+        'achievement_tier': 3,
+        'parent': None
+    },
+    {
+        'id_name': 'solved-difficulty-complex-10',
+        'display_name': 'Solved 10 complex questions!',
+        'description': 'Solved 10 questions from the complex category',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 2,
+        'parent': 'solved-difficulty-complex-15'
+    },
+    {
+        'id_name': 'solved-difficulty-complex-5',
+        'display_name': 'Solved 5 complex questions!',
+        'description': 'Solved 5 questions from the complex category',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
+        'achievement_tier': 1,
+        'parent': 'solved-difficulty-complex-10'
+    },
+    {
+        'id_name': 'solved-concept-display-text-15',
+        'display_name': 'Solved 15 display text questions!',
+        'description': 'Solved 15 questions using the display text concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-gold-50.png',
+        'achievement_tier': 3,
+        'parent': None
+    },
+    {
+        'id_name': 'solved-concept-display-text-10',
+        'display_name': 'Solved 10 display text questions!',
+        'description': 'Solved 10 questions using the display text concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 2,
+        'parent': 'solved-concept-display-text-15'
+    },
+    {
+        'id_name': 'solved-concept-display-text-5',
+        'display_name': 'Solved 5 display text questions!',
+        'description': 'Solved 5 questions using the display text concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
+        'achievement_tier': 1,
+        'parent': 'solved-concept-display-text-10'
     }
 ]
 

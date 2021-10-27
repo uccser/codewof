@@ -145,15 +145,19 @@ factorial:
 #     1: normal
 #     2: normal
 
-# print-codewof:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - 'print("Welcome to codeWOF")'
-#     - 'return "Welcome to codeWOF!"'
-#   test-cases:
-#     1: normal
+print-codewof:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print("Welcome to codeWOF")'
+    - 'return "Welcome to codeWOF!"'
+  test-cases:
+    1: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+    - display-text
 
 # greeting:
 #   types:

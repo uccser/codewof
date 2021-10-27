@@ -17,6 +17,7 @@ from programming.models import (
     Achievement,
     Earned,
     DifficultyLevel,
+    ProgrammingConcepts
 )
 from django.http import JsonResponse
 
@@ -107,22 +108,27 @@ def get_days_consecutively_answered(profile, user_attempts=None):
 
     return highest_streak
 
-def get_questions_solved(profile, difficulty=None, user_attempts=None):
+def get_questions_solved(profile, difficulty=None, concept=None, user_attempts=None):
     if user_attempts is None:
         user_attempts = Attempt.objects.filter(profile=profile)
     
-    attempts = user_attempts.question
-
-    if len(attempts) <= 0:
+    success = user_attempts.filter(passed_tests=True).distinct('question__slug')
+    if len(success) <= 0:
         return 0
 
     count = 0
 
-    for attempt in attempts:
-        if difficulty != None and attempt.question.difficulty_level == difficulty:
+    for attempt in success:
+        if difficulty != None and attempt.question.difficulty_level.name == difficulty:
             count += 1
+        elif concept != None:
+            question_concepts = list(attempt.question.concepts.all())
+            for conc in question_concepts:
+                if conc.name == concept:
+                    count += 1
+                elif conc.parent != None:
+                    question_concepts.append(conc.parent)
     return count
-
 
 
 def get_questions_answered_in_past_month(profile, user_attempts=None):
@@ -230,23 +236,50 @@ def check_achievement_conditions(profile, user_attempts=None):
                 break
 
     # difficulty level achievements
-    difficulty_levels = DifficultyLevel.object.all()
+    difficulty_levels = DifficultyLevel.objects.all()
     for difficulty in difficulty_levels:
-        difficulty_achievements = achievement_objects.filter(id_name__contains="solved-difficulty-" + difficulty.name)
-        num_questions = get_questions_solved(profile, difficulty=difficulty.name, user_attempts=user_attempts)
-        for difficulty_achievement in difficulty_acheivements:
-            if difficulty_achievement not in earned_achievements:
-                n_questions = int(difficulty_achievement.id_name.split("-")[3])
-                if n_questions <= num_questions:
-                    Earned.objects.create(
-                        profile=profile,
-                        achievement=difficulty_achievement
-                    )
-                    new_acheivement_names += difficulty_achievement.display_name + '\n'
-                    new_achievement_objects.append(difficulty_achievement)
-                else:
-                    #hasn't achieved the current achievement tier so won't achieve any higher ones
-                    break
+        try:
+            difficulty_name = "solved-difficulty-{}".format(difficulty.name.lower())
+            difficulty_achievements = achievement_objects.filter(id_name__contains=difficulty_name)
+            num_questions = get_questions_solved(profile, difficulty=difficulty.name)
+            for difficulty_achievement in difficulty_achievements:
+                if difficulty_achievement not in earned_achievements:
+                    n_questions = int(difficulty_achievement.id_name.split("-")[3])
+                    if n_questions <= num_questions:
+                        Earned.objects.create(
+                            profile=profile,
+                            achievement=difficulty_achievement
+                        )
+                        new_achievement_names += difficulty_achievement.display_name + '\n'
+                        new_achievement_objects.append(difficulty_achievement)
+                    else:
+                        #hasn't achieved the current achievement tier so won't achieve any higher ones
+                        break
+        except Achievement.DoesNotExist:
+            logger.warning("No such achievements: solved-difficulty-" + difficulty.name.lower())
+
+    # concept achievements
+    concepts = ProgrammingConcepts.objects.all().filter(parent=None)
+    for concept in concepts:
+        try:
+            concept_name = "solved-concept-{}".format(concept.name.lower().replace(" ", "-"))
+            concept_achievements = achievement_objects.filter(id_name__contains=concept_name)
+            num_questions = get_questions_solved(profile, concept=concept.name)
+            for concept_achievement in concept_achievements:
+                if concept_achievement not in earned_achievements:
+                    n_questions = int(concept_achievement.id_name.split("-")[-1])
+                    if n_questions <= num_questions:
+                        Earned.objects.create(
+                            profile=profile,
+                            achievement=concept_achievement
+                        )
+                        new_achievement_names += concept_achievement.display_name + '\n'
+                        new_achievement_objects.append(concept_achievement)
+                    else:
+                        #hasn't achieved the current achievement tier so won't achieve any higher ones
+                        break
+        except Achievement.DoesNotExist:
+            logger.warning("No such achievements: solved-concept-" + difficulty.name.lower())
 
     new_points = calculate_achievement_points(new_achievement_objects)
     profile.points += new_points
