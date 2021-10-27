@@ -29,6 +29,9 @@ def create_filter_helper(reset_url_pattern):
                     Field(
                         'difficulty_level',
                     ),
+                    Field(
+                        'question_type'
+                    ),
                     css_class='col-sm-12 col-md-4 mb-0',
                 ),
                 Column(

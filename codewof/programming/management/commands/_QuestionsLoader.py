@@ -167,6 +167,8 @@ class QuestionsLoader(TranslatableModelLoader):
                 if difficulty_level:
                     defaults['difficulty_level'] = difficulty_level
 
+                defaults['question_type'] = question_type.title()
+
                 question, created = question_class.objects.update_or_create(
                     slug=slug,
                     defaults=defaults,

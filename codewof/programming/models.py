@@ -251,6 +251,7 @@ class Question(TranslatableModel):
 
     slug = models.SlugField(unique=True)
     title = models.CharField(max_length=SMALL)
+    question_type = models.CharField(max_length=SMALL, default="Program", null=False)
     question_text = models.TextField()
     solution = models.TextField()
     difficulty_level = models.ForeignKey(

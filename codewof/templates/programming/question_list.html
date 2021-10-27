@@ -11,7 +11,7 @@
 
 {% block content %}
     <p>Currently all questions are based in Python 3.</p>
-    <details>
+    <details open>
         <summary>Filter Questions</summary>
         {% crispy filter.form filter_formatter %}
     </details>
