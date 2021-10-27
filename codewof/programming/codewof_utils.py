@@ -126,7 +126,7 @@ def get_questions_solved(profile, difficulty=None, concept=None, user_attempts=N
             for conc in question_concepts:
                 if conc.name == concept:
                     count += 1
-                elif conc.parent != None:
+                elif conc.parent != None and conc.parent not in question_concepts:
                     question_concepts.append(conc.parent)
     return count
 

@@ -260,6 +260,30 @@ ACHIEVEMENTS = [
         'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
         'achievement_tier': 1,
         'parent': 'solved-concept-inputs-10'
+    },
+    {
+        'id_name': 'solved-concept-conditionals-15',
+        'display_name': 'Solved 15 conditionals questions!',
+        'description': 'Solved 15 questions using the conditionals concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-gold-50.png',
+        'achievement_tier': 3,
+        'parent': None
+    },
+    {
+        'id_name': 'solved-concept-conditionals-10',
+        'display_name': 'Solved 10 conditionals questions!',
+        'description': 'Solved 10 questions using the conditionals concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 2,
+        'parent': 'solved-concept-conditionals-15'
+    },
+    {
+        'id_name': 'solved-concept-conditionals-5',
+        'display_name': 'Solved 5 conditionals questions!',
+        'description': 'Solved 5 questions using the conditionals concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
+        'achievement_tier': 1,
+        'parent': 'solved-concept-conditionals-10'
     }
 ]
 
