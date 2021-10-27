@@ -9,9 +9,7 @@ from crispy_forms.layout import (
     Div,
     HTML,
     Submit,
-    Button
 )
-from crispy_forms.bootstrap import Accordion, AccordionGroup
 
 FILTER_HELPER_RESET_HTML_TEMPLATE = '<a href="{{% url "{}" %}}" class="btn btn-danger">Reset</a>'
 

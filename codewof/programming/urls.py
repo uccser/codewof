@@ -1,10 +1,8 @@
 """URL routing for programming application."""
 
 from django.urls import path
-from django_filters.views import FilterView
 from rest_framework import routers
 from programming import views
-from programming.filters import QuestionFilter
 
 app_name = 'programming'
 

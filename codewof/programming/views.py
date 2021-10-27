@@ -34,6 +34,7 @@ QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 
 class QuestionListView(LoginRequiredMixin, FilterView):
     """View for listing questions."""
+
     filterset_class = QuestionFilter
     context_object_name = 'questions'
     template_name = 'programming/question_list.html'
