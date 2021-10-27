@@ -380,7 +380,31 @@ ACHIEVEMENTS = [
         'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
         'achievement_tier': 1,
         'parent': 'solved-context-real-world-applications-10'
-    }
+    },
+    {
+        'id_name': 'solved-context-mathematics-15',
+        'display_name': 'Solved 15 mathematics questions!',
+        'description': 'Solved 15 questions in the mathematics context',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 3,
+        'parent': None
+    },
+    {
+        'id_name': 'solved-context-mathematics-10',
+        'display_name': 'Solved 10 mathematics questions!',
+        'description': 'Solved 10 questions in the mathematics context',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 2,
+        'parent': 'solved-context-mathematics-15'
+    },
+    {
+        'id_name': 'solved-context-mathematics-5',
+        'display_name': 'Solved 5 mathematics questions!',
+        'description': 'Solved 5 questions in the mathematics context',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
+        'achievement_tier': 1,
+        'parent': 'solved-context-mathematics-10'
+    },
 ]
 
 
