@@ -358,12 +358,28 @@ ACHIEVEMENTS = [
         'parent': 'solved-concept-lists-10'
     },
     {
+        'id_name': 'solved-context-real-world-applications-15',
+        'display_name': 'Solved 15 real world application questions!',
+        'description': 'Solved 15 questions in the real world application context',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 3,
+        'parent': None
+    },
+    {
+        'id_name': 'solved-context-real-world-applications-10',
+        'display_name': 'Solved 10 real world application questions!',
+        'description': 'Solved 10 questions in the real world application context',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 2,
+        'parent': 'solved-context-real-world-applications-15'
+    },
+    {
         'id_name': 'solved-context-real-world-applications-5',
         'display_name': 'Solved 5 real world application questions!',
         'description': 'Solved 5 questions in the real world application context',
         'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
         'achievement_tier': 1,
-        'parent': None
+        'parent': 'solved-context-real-world-applications-10'
     }
 ]
 
