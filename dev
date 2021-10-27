@@ -158,7 +158,7 @@ cmd_remove_expired_invitations() {
 defhelp remove_expired_invitations "Remove all Invitation objects where date_expires is before the current datetime."
 
 cmd_backdate() {
-  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py backdate_points_and_achievements --ignore_flags
+  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py backdate_points_and_achievements --profiles -1 --ignore_flags
 }
 defhelp backdate 'Re-calculate points and achievements earned for all user profiles.'
 
