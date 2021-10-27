@@ -17,7 +17,8 @@ from programming.models import (
     Achievement,
     Earned,
     DifficultyLevel,
-    ProgrammingConcepts
+    ProgrammingConcepts,
+    QuestionContexts
 )
 from django.http import JsonResponse
 
@@ -108,7 +109,7 @@ def get_days_consecutively_answered(profile, user_attempts=None):
 
     return highest_streak
 
-def get_questions_solved(profile, difficulty=None, concept=None, user_attempts=None):
+def get_questions_solved(profile, difficulty=None, concept=None, context=None, user_attempts=None):
     if user_attempts is None:
         user_attempts = Attempt.objects.filter(profile=profile)
     
@@ -121,13 +122,23 @@ def get_questions_solved(profile, difficulty=None, concept=None, user_attempts=N
     for attempt in success:
         if difficulty != None and attempt.question.difficulty_level.name == difficulty:
             count += 1
+            break
         elif concept != None:
             question_concepts = list(attempt.question.concepts.all())
             for conc in question_concepts:
                 if conc.name == concept:
                     count += 1
+                    break
                 elif conc.parent != None and conc.parent not in question_concepts:
                     question_concepts.append(conc.parent)
+        elif context != None:
+            question_contexts = list(attempt.question.contexts.all())
+            for cont in question_contexts:
+                if cont.name == context:
+                    count += 1
+                    break
+                elif cont.parent != None and cont.parent not in question_contexts:
+                    question_contexts.append(cont.parent)
     return count
 
 
@@ -279,7 +290,30 @@ def check_achievement_conditions(profile, user_attempts=None):
                         #hasn't achieved the current achievement tier so won't achieve any higher ones
                         break
         except Achievement.DoesNotExist:
-            logger.warning("No such achievements: solved-concept-" + difficulty.name.lower())
+            logger.warning("No such achievements: solved-concept-" + concept.name.lower())
+
+    # context achievements
+    contexts = QuestionContexts.objects.all().filter(parent=None)
+    for context in contexts:
+        try:
+            context_name = "solved-context-{}".format(context.name.lower().replace(" ", "-"))
+            context_achievements = achievement_objects.filter(id_name__contains=context_name)
+            num_questions = get_questions_solved(profile, context=context.name)
+            for context_achievement in context_achievements:
+                if context_achievement not in earned_achievements:
+                    n_questions = int(context_achievement.id_name.split("-")[-1])
+                    if n_questions <= num_questions:
+                        Earned.objects.create(
+                            profile=profile,
+                            achievement=context_achievement
+                        )
+                        new_achievement_names += context_achievement.display_name + '\n'
+                        new_achievement_objects.append(context_achievement)
+                    else:
+                        #hasn't achieved the current achievement tier so won't achieve any higher ones
+                        break
+        except Achievement.DoesNotExist:
+            logger.warning("No such achievements: solved-context-" + context.name.lower())
 
     new_points = calculate_achievement_points(new_achievement_objects)
     profile.points += new_points

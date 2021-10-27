@@ -284,6 +284,86 @@ ACHIEVEMENTS = [
         'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
         'achievement_tier': 1,
         'parent': 'solved-concept-conditionals-10'
+    },
+    {
+        'id_name': 'solved-concept-loops-15',
+        'display_name': 'Solved 15 loops questions!',
+        'description': 'Solved 15 questions using the loops concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-gold-50.png',
+        'achievement_tier': 3,
+        'parent': None
+    },
+    {
+        'id_name': 'solved-concept-loops-10',
+        'display_name': 'Solved 10 loops questions!',
+        'description': 'Solved 10 questions using the loops concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 2,
+        'parent': 'solved-concept-loops-15'
+    },
+    {
+        'id_name': 'solved-concept-loops-5',
+        'display_name': 'Solved 5 loops questions!',
+        'description': 'Solved 5 questions using the loops concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
+        'achievement_tier': 1,
+        'parent': 'solved-concept-loops-10'
+    },
+    {
+        'id_name': 'solved-concept-string-operations-15',
+        'display_name': 'Solved 15 string operation questions!',
+        'description': 'Solved 15 questions using the string operation concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-gold-50.png',
+        'achievement_tier': 3,
+        'parent': None
+    },
+    {
+        'id_name': 'solved-concept-string-operations-10',
+        'display_name': 'Solved 10 string operation questions!',
+        'description': 'Solved 10 questions using the string operation concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 2,
+        'parent': 'solved-concept-string-operations-15'
+    },
+    {
+        'id_name': 'solved-concept-string-operations-5',
+        'display_name': 'Solved 5 string operation questions!',
+        'description': 'Solved 5 questions using the string operation concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
+        'achievement_tier': 1,
+        'parent': 'solved-concept-string-operations-10'
+    },
+    {
+        'id_name': 'solved-concept-lists-15',
+        'display_name': 'Solved 15 lists questions!',
+        'description': 'Solved 15 questions using the lists concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-gold-50.png',
+        'achievement_tier': 3,
+        'parent': None
+    },
+    {
+        'id_name': 'solved-concept-lists-10',
+        'display_name': 'Solved 10 lists questions!',
+        'description': 'Solved 10 questions using the lists concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 2,
+        'parent': 'solved-concept-lists-15'
+    },
+    {
+        'id_name': 'solved-concept-lists-5',
+        'display_name': 'Solved 5 lists questions!',
+        'description': 'Solved 5 questions using the lists concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
+        'achievement_tier': 1,
+        'parent': 'solved-concept-lists-10'
+    },
+    {
+        'id_name': 'solved-context-real-world-applications-5',
+        'display_name': 'Solved 5 real world application questions!',
+        'description': 'Solved 5 questions in the real world application context',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
+        'achievement_tier': 1,
+        'parent': None
     }
 ]
 
