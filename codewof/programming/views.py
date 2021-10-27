@@ -35,9 +35,9 @@ QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 class QuestionListView(LoginRequiredMixin, FilterView):
     """View for listing questions."""
 
-    filterset_class=QuestionFilter
+    filterset_class = QuestionFilter
     context_object_name = 'questions'
-    template_name='programming/question_list.html'
+    template_name = 'programming/question_list.html'
 
     def get_queryset(self):
         """Return questions objects for page.
@@ -66,6 +66,7 @@ class QuestionListView(LoginRequiredMixin, FilterView):
 
     def get_context_data(self, **kwargs):
         """Provide the context data for the question list view.
+
         Returns:
             Dictionary of context data.
         """

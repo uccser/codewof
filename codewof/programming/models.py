@@ -58,6 +58,8 @@ class QuestionContexts(models.Model):
 
     def __str__(self):
         """
+        To string method.
+        
         Returns:
             Name of question context (str).
         """

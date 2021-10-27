@@ -1,3 +1,5 @@
+"""Utilities for programming application."""
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import (
     Layout,
@@ -13,8 +15,10 @@ from crispy_forms.bootstrap import Accordion, AccordionGroup
 
 FILTER_HELPER_RESET_HTML_TEMPLATE = '<a href="{{% url "{}" %}}" class="btn btn-danger">Reset</a>'
 
+
 def create_filter_helper(reset_url_pattern):
     """Return filter formatting helper.
+
     Args:
         reset_url_pattern (str): URL to set reset button to.
     Returns:

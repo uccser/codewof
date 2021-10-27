@@ -1,3 +1,5 @@
+"""Filters for programming application."""
+
 import django_filters
 from programming.models import (
     Question,
@@ -11,7 +13,10 @@ from programming.widgets import IndentCheckbox
 
 
 class QuestionFilter(django_filters.FilterSet):
-    difficulty_level=django_filters.filters.ModelMultipleChoiceFilter(
+    """Filter for questions extends FilterSet
+    Allows for filtering of question type, difficulty level, concepts and contexts"""
+
+    difficulty_level = django_filters.filters.ModelMultipleChoiceFilter(
         queryset=DifficultyLevel.objects.order_by('level'),
         widget=forms.CheckboxSelectMultiple
     )
@@ -33,5 +38,6 @@ class QuestionFilter(django_filters.FilterSet):
     )
 
     class Meta:
+        """Meta options for Filter. Sets which model and fields are filtered."""
         model = Question
         fields = {'difficulty_level', 'concepts', 'contexts', 'question_type'}
