@@ -117,7 +117,7 @@ def get_questions_solved(profile, difficulty=None, concept=None, context=None, u
     """
     if user_attempts is None:
         user_attempts = Attempt.objects.filter(profile=profile)
-    
+
     success = user_attempts.filter(passed_tests=True).distinct('question__slug')
     if len(success) <= 0:
         return 0
@@ -125,24 +125,24 @@ def get_questions_solved(profile, difficulty=None, concept=None, context=None, u
     count = 0
 
     for attempt in success:
-        if difficulty != None and attempt.question.difficulty_level.name == difficulty:
+        if difficulty is not None and attempt.question.difficulty_level.name == difficulty:
             count += 1
             break
-        elif concept != None:
+        elif concept is not None:
             question_concepts = list(attempt.question.concepts.all())
             for conc in question_concepts:
                 if conc.name == concept:
                     count += 1
                     break
-                elif conc.parent != None and conc.parent not in question_concepts:
+                elif conc.parent is not None and conc.parent not in question_concepts:
                     question_concepts.append(conc.parent)
-        elif context != None:
+        elif context is not None:
             question_contexts = list(attempt.question.contexts.all())
             for cont in question_contexts:
                 if cont.name == context:
                     count += 1
                     break
-                elif cont.parent != None and cont.parent not in question_contexts:
+                elif cont.parent is not None and cont.parent not in question_contexts:
                     question_contexts.append(cont.parent)
     return count
 
@@ -269,7 +269,7 @@ def check_achievement_conditions(profile, user_attempts=None):
                         new_achievement_names += difficulty_achievement.display_name + '\n'
                         new_achievement_objects.append(difficulty_achievement)
                     else:
-                        #hasn't achieved the current achievement tier so won't achieve any higher ones
+                        # hasn't achieved the current achievement tier so won't achieve any higher ones
                         break
         except Achievement.DoesNotExist:
             logger.warning("No such achievements: solved-difficulty-" + difficulty.name.lower())
@@ -292,7 +292,7 @@ def check_achievement_conditions(profile, user_attempts=None):
                         new_achievement_names += concept_achievement.display_name + '\n'
                         new_achievement_objects.append(concept_achievement)
                     else:
-                        #hasn't achieved the current achievement tier so won't achieve any higher ones
+                        # hasn't achieved the current achievement tier so won't achieve any higher ones
                         break
         except Achievement.DoesNotExist:
             logger.warning("No such achievements: solved-concept-" + concept.name.lower())
@@ -315,7 +315,7 @@ def check_achievement_conditions(profile, user_attempts=None):
                         new_achievement_names += context_achievement.display_name + '\n'
                         new_achievement_objects.append(context_achievement)
                     else:
-                        #hasn't achieved the current achievement tier so won't achieve any higher ones
+                        # hasn't achieved the current achievement tier so won't achieve any higher ones
                         break
         except Achievement.DoesNotExist:
             logger.warning("No such achievements: solved-context-" + context.name.lower())

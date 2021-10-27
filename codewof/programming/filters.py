@@ -7,7 +7,6 @@ from programming.models import (
     ProgrammingConcepts,
     QuestionContexts,
 )
-from django.db.models import Q
 from django import forms
 from programming.widgets import IndentCheckbox
 

@@ -21,6 +21,7 @@ User = get_user_model()
 class DifficultyLevel(models.Model):
     """Model for question difficulty level."""
 
+
     slug = models.SlugField()
     level = models.PositiveSmallIntegerField()
     name = models.TextField()
@@ -59,7 +60,7 @@ class QuestionContexts(models.Model):
     def __str__(self):
         """
         To string method.
-        
+
         Returns:
             Name of question context (str).
         """
