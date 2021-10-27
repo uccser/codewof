@@ -117,6 +117,14 @@ ACHIEVEMENTS = [
         'achievement_tier': 1,
         'parent': 'consecutive-days-7'
     },
+    {
+        'id_name': 'solved-difficulty-easy-5',
+        'display_name': 'Solved 5 easy questions!',
+        'description': 'Solved 5 questions from the easy category',
+        'icon_name': 'img/icons/achievements/icons8-attempt-made-bronze-50.png',
+        'achievement_tier': 1,
+        'parent': None
+    }
 ]
 
 

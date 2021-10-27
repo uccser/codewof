@@ -16,6 +16,7 @@ from programming.models import (
     Attempt,
     Achievement,
     Earned,
+    DifficultyLevel,
 )
 from django.http import JsonResponse
 
@@ -105,6 +106,23 @@ def get_days_consecutively_answered(profile, user_attempts=None):
         highest_streak = streak
 
     return highest_streak
+
+def get_questions_solved(profile, difficulty=None, user_attempts=None):
+    if user_attempts is None:
+        user_attempts = Attempt.objects.filter(profile=profile)
+    
+    attempts = user_attempts.question
+
+    if len(attempts) <= 0:
+        return 0
+
+    count = 0
+
+    for attempt in attempts:
+        if difficulty != None and attempt.question.difficulty_level == difficulty:
+            count += 1
+    return count
+
 
 
 def get_questions_answered_in_past_month(profile, user_attempts=None):
@@ -210,6 +228,25 @@ def check_achievement_conditions(profile, user_attempts=None):
             else:
                 # hasn't achieved the current achievement tier so won't achieve any higher ones
                 break
+
+    # difficulty level achievements
+    difficulty_levels = DifficultyLevel.object.all()
+    for difficulty in difficulty_levels:
+        difficulty_achievements = achievement_objects.filter(id_name__contains="solved-difficulty-" + difficulty.name)
+        num_questions = get_questions_solved(profile, difficulty=difficulty.name, user_attempts=user_attempts)
+        for difficulty_achievement in difficulty_acheivements:
+            if difficulty_achievement not in earned_achievements:
+                n_questions = int(difficulty_achievement.id_name.split("-")[3])
+                if n_questions <= num_questions:
+                    Earned.objects.create(
+                        profile=profile,
+                        achievement=difficulty_achievement
+                    )
+                    new_acheivement_names += difficulty_achievement.display_name + '\n'
+                    new_achievement_objects.append(difficulty_achievement)
+                else:
+                    #hasn't achieved the current achievement tier so won't achieve any higher ones
+                    break
 
     new_points = calculate_achievement_points(new_achievement_objects)
     profile.points += new_points
