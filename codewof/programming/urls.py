@@ -1,7 +1,6 @@
 """URL routing for programming application."""
 
 from django.urls import path
-from django.conf.urls import url
 from django_filters.views import FilterView
 from rest_framework import routers
 from programming import views

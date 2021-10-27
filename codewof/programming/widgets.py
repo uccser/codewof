@@ -10,14 +10,15 @@ from django import forms
 
 
 class IndentCheckbox(forms.CheckboxSelectMultiple):
-    """IndentedCheckbox extended from CheckboxSelectMultiple
+    """IndentedCheckbox extended from CheckboxSelectMultiple.
+
     Intended for use in the question filtering system
-    Indents checkboxes based on the indent level of stored in the object."""
+    Indents checkboxes based on the indent level of stored in the object.
+    """
 
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
         """
-        Creates the indent level option on the checkbox.
-        Intents the checkbox based on the indent level stored in the object.
+        Intent the checkbox based on the indent level stored in the object.
         """
         option = super().create_option(name, value, label, selected, index, subindex, attrs)
         if value:

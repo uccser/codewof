@@ -18,10 +18,9 @@ User = get_user_model()
 
 # ----- Question classification -----------------------------------------------------
 
+
 class DifficultyLevel(models.Model):
     """Model for question difficulty level."""
-
-
     slug = models.SlugField()
     level = models.PositiveSmallIntegerField()
     name = models.TextField()

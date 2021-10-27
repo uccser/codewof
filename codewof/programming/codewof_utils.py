@@ -109,9 +109,10 @@ def get_days_consecutively_answered(profile, user_attempts=None):
 
     return highest_streak
 
+
 def get_questions_solved(profile, difficulty=None, concept=None, context=None, user_attempts=None):
     """
-    Gets the number of questions solved based on either difficulty, concept or context.
+    Get the number of questions solved based on either difficulty, concept or context.
 
     Gets all successful attempts and counts the number that meet the given difficulty, concept or context.
     """

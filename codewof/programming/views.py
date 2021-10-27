@@ -34,8 +34,6 @@ QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 
 class QuestionListView(LoginRequiredMixin, FilterView):
     """View for listing questions."""
-
-
     filterset_class = QuestionFilter
     context_object_name = 'questions'
     template_name = 'programming/question_list.html'
@@ -74,6 +72,7 @@ class QuestionListView(LoginRequiredMixin, FilterView):
         context = super().get_context_data(**kwargs)
         context['filter_formatter'] = create_filter_helper("programming:question_list")
         return context
+
 
 class QuestionView(LoginRequiredMixin, generic.DetailView):
     """Displays a question.
