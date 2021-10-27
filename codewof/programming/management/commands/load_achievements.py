@@ -236,6 +236,30 @@ ACHIEVEMENTS = [
         'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
         'achievement_tier': 1,
         'parent': 'solved-concept-display-text-10'
+    },
+    {
+        'id_name': 'solved-concept-inputs-15',
+        'display_name': 'Solved 15 input questions!',
+        'description': 'Solved 15 questions using the input concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-gold-50.png',
+        'achievement_tier': 3,
+        'parent': None
+    },
+    {
+        'id_name': 'solved-concept-inputs-10',
+        'display_name': 'Solved 10 input questions!',
+        'description': 'Solved 10 questions using the input concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-silver-50.png',
+        'achievement_tier': 2,
+        'parent': 'solved-concept-inputs-15'
+    },
+    {
+        'id_name': 'solved-concept-inputs-5',
+        'display_name': 'Solved 5 input questions!',
+        'description': 'Solved 5 questions using the input concept',
+        'icon_name': 'img/icons/achievements/icons8-question-solved-bronze-50.png',
+        'achievement_tier': 1,
+        'parent': 'solved-concept-inputs-10'
     }
 ]
 
