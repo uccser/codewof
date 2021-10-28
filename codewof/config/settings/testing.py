@@ -18,6 +18,8 @@ INSTALLED_APPS += [  # noqa: F405
     "test_without_migrations",
 ]
 
+TESTING = True
+
 # DATABASE CONFIGURATION
 # ----------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases

@@ -1,4 +1,3 @@
-#TODO - Fix new tags
 say-hello:
   type: program
   test-cases:
@@ -73,27 +72,27 @@ double-evens:
     - simple-mathematics
   difficulty: difficulty-1
 
-# countdown:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "for i in range(num):"
-#     - "while num > 1:"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: exceptional
+countdown:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "for i in range(num):"
+    - "while num > 1:"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
 
-# repeated-add-10:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: exceptional
+repeated-add-10:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
 
 factorial:
   types:
@@ -112,38 +111,38 @@ factorial:
   contexts:
     - advanced-mathematics
 
-# ticket-calculator:
-#   type: debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 1
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
+ticket-calculator:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
 
-# rectangle-area:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+rectangle-area:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# where-is:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
+where-is:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
 
-# pieces-of-chocolate:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
+pieces-of-chocolate:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
 
 print-codewof:
   types:
@@ -159,26 +158,26 @@ print-codewof:
     - functions
     - display-text
 
-# greeting:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - 'print("Hello" + name + "!")'
-#     - 'print("Hello " + name)'
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+greeting:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print("Hello" + name + "!")'
+    - 'print("Hello " + name)'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# string-concatenation:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: exceptional
+string-concatenation:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
 
 bus-info:
   types:
@@ -199,120 +198,120 @@ bus-info:
   contexts:
     - real-world-applications
 
-# voting-age:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: exceptional
-#     4: exceptional
-#     5: exceptional
-#     6: exceptional
+voting-age:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: exceptional
+    6: exceptional
 
-# over-the-limit:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - 'return "True"'
-#     - 'return "False"'
-#     - "if mcg_per_litre >= 250:"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: exceptional
-#     4: exceptional
-#     5: exceptional
-#     6: exceptional
-#     7: exceptional
+over-the-limit:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'return "True"'
+    - 'return "False"'
+    - "if mcg_per_litre >= 250:"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: exceptional
+    6: exceptional
+    7: exceptional
 
-# low-battery:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "if percent <= 20:"
-#     - 'is_low = "True"'
-#     - 'is_low = "False"'
-#   test-cases:
-#     1: normal
-#     2: exceptional
-#     3: exceptional
-#     4: normal
-#     5: exceptional
-#     6: exceptional
+low-battery:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "if percent <= 20:"
+    - 'is_low = "True"'
+    - 'is_low = "False"'
+  test-cases:
+    1: normal
+    2: exceptional
+    3: exceptional
+    4: normal
+    5: exceptional
+    6: exceptional
 
-# full-name:
-#   type: debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+full-name:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# hours-to-seconds:
-#   type: debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 1
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
+hours-to-seconds:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
 
-# how-many-dozens:
-#   type: debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: exceptional
-#     4: exceptional
-#     5: exceptional
+how-many-dozens:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: exceptional
 
-# favourite-number:
-#   type: debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 1
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
-#     6: normal
-#     7: normal
-#     8: normal
+favourite-number:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+    6: normal
+    7: normal
+    8: normal
 
-# string-too-long:
-#   type: debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 1
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
-#     6: normal
-#     7: normal
+string-too-long:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+    6: normal
+    7: normal
 
-# price-in-budget:
-#   type: debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 1
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
-#     6: normal
+price-in-budget:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+    6: normal
 
 find-highest-number:
   type: debugging
@@ -332,189 +331,189 @@ find-highest-number:
     - single-condition
   difficulty: difficulty-2
 
-# shutdown-machine:
-#   type: program
-#   test-cases:
-#     1: exceptional
-#     2: exceptional
-#     3: normal
-#     4: normal
-#     5: exceptional
-#     6: exceptional
+shutdown-machine:
+  type: program
+  test-cases:
+    1: exceptional
+    2: exceptional
+    3: normal
+    4: normal
+    5: exceptional
+    6: exceptional
 
-# triangle-pattern:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "for i in range(1, x):"
-#     - 'print(" ")'
-#     - 'print("*")'
-#     - 'print(i * " ")'
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+triangle-pattern:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "for i in range(1, x):"
+    - 'print(" ")'
+    - 'print("*")'
+    - 'print(i * " ")'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# divisible-by-3:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+divisible-by-3:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# reverse-string:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "for char in range(len(string), -1, -1):"
-#     - "for char in range(len(string) - 1, 1, 1):"
-#     - "print(string[char])"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+reverse-string:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "for char in range(len(string), -1, -1):"
+    - "for char in range(len(string) - 1, 1, 1):"
+    - "print(string[char])"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# rotate-words:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: exceptional
-#     4: normal
+rotate-words:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
 
-# good-password:
-#   types:
-#     - program
-#   test-cases:
-#     1: exceptional
-#     2: exceptional
-#     3: normal
-#     4: normal
-#     5: normal
+good-password:
+  types:
+    - program
+  test-cases:
+    1: exceptional
+    2: exceptional
+    3: normal
+    4: normal
+    5: normal
 
-# shopping-list:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+shopping-list:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# find-smallest-number:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: exceptional
-#     2: normal
-#     3: exceptional
-#     4: normal
-#     5: normal
+find-smallest-number:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: exceptional
+    2: normal
+    3: exceptional
+    4: normal
+    5: normal
 
-# book-titles:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "print(name.upper())"
-#     - "print(name.lower())"
-#     - "print(name)"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+book-titles:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "print(name.upper())"
+    - "print(name.lower())"
+    - "print(name)"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# total-under-10:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "if number > 10:"
-#     - "total = number"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: exceptional
-#     4: normal
+total-under-10:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "if number > 10:"
+    - "total = number"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
 
-# go-tramping:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: exceptional
-#     5: exceptional
-#     6: exceptional
+go-tramping:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+    5: exceptional
+    6: exceptional
 
-# make-even:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: exceptional
-#     6: exceptional
+make-even:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
+    6: exceptional
 
-# print-score:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "score = points / total_possible"
-#     - "score = points * total_possible / 100"
-#     - "print(score)"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+print-score:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "score = points / total_possible"
+    - "score = points * total_possible / 100"
+    - "print(score)"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# h-words:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: exceptional
+h-words:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
 
-# print-pet:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - 'print(name + "is a " + age + "-year-old " + species + ".")'
-#     - 'print(name + "is a " + "age" + "-year-old " + species + ".")'
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+print-pet:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(name + "is a " + age + "-year-old " + species + ".")'
+    - 'print(name + "is a " + "age" + "-year-old " + species + ".")'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# print-squares:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "print(num ^ 2)"
-#     - "print(num x num)"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: exceptional
-#     5: exceptional
+print-squares:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "print(num ^ 2)"
+    - "print(num x num)"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+    5: exceptional
 
 drawn-out-string:
   types:
@@ -535,219 +534,219 @@ drawn-out-string:
     - string-operations
   difficulty: difficulty-1
 
-# add-up-numbers:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: exceptional
-#     4: exceptional
-#     5: normal
+add-up-numbers:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: normal
 
-# evens-out:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 3
-#   number_of_read_only_lines_bottom: 1
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: exceptional
-#     4: exceptional
-#     5: normal
+evens-out:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+    5: normal
 
-# happy-birthday:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: exceptional
+happy-birthday:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
 
-# give-me-5:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: exceptional
-#     3: normal
-#     4: normal
-#     5: normal
+give-me-5:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: normal
+    5: normal
 
-# while-away:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 2
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: normal
-#     2: exceptional
-#     3: normal
-#     4: normal
+while-away:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 2
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: normal
 
-# times-2:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: normal
-#     2: exceptional
-#     3: normal
-#     4: exceptional
-#     5: normal
-#     6: exceptional
+times-2:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: exceptional
+    5: normal
+    6: exceptional
 
-# days-to-target:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "population * 2"
-#     - "population = population ** 2"
-#     - "print(days)"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: exceptional
-#     4: normal
-#     5: normal
+days-to-target:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "population * 2"
+    - "population = population ** 2"
+    - "print(days)"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
+    5: normal
 
-# roll-call:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "print(name.title())"
-#     - "print(name.capitalize())"
-#     - "print(name.swapcase())"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: exceptional
+roll-call:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "print(name.title())"
+    - "print(name.capitalize())"
+    - "print(name.swapcase())"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
 
-# lunch:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+lunch:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# signature:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+signature:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# print-bigger-number:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: exceptional
-#     5: exceptional
+print-bigger-number:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+    5: exceptional
 
-# rectangle-pattern:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "for i in range(width):"
-#     - 'print("height * "#")'
-#     - 'print("#")'
-#     - "print(width * height)"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#   difficulty: difficulty-1
-#   concepts: 
-#     - display-text
+rectangle-pattern:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "for i in range(width):"
+    - 'print("height * "#")'
+    - 'print("#")'
+    - "print(width * height)"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+  difficulty: difficulty-1
+  concepts: 
+    - display-text
 
-# leap-year:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: exceptional
+leap-year:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
 
-# discounted-cost:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 2
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+discounted-cost:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 2
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# celsius-to-fahrenheit:
-#   type: function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
+celsius-to-fahrenheit:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
 
-# fahrenheit-to-celsius:
-#   type: function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
+fahrenheit-to-celsius:
+  type: function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
 
-# rollercoaster-ride:
-#   types:
-#     - function
-#     - parsons
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+rollercoaster-ride:
+  types:
+    - function
+    - parsons
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# how-many-dogs:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 2
-#   number_of_read_only_lines_bottom: 1
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+how-many-dogs:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 2
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# total-evens:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+total-evens:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
 driver-speed:
   types:
@@ -764,82 +763,82 @@ driver-speed:
     - advanced-conditionals
     - functions
 
-# fizz-buzz:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "elif num / 3 == 0:"
-#     - "elif num / 5 == 0:"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+fizz-buzz:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "elif num / 3 == 0:"
+    - "elif num / 5 == 0:"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# inside-outside:
-#   type: debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
+inside-outside:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
 
-# eight-is-great:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "if a or b == 8:"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
+eight-is-great:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "if a or b == 8:"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
 
-# sum-lucky-7:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
+sum-lucky-7:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
 
-# duck-goose:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+duck-goose:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# remove-bugs:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+remove-bugs:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# nth-to-last:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 1
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+nth-to-last:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
 factorial-debug:
   types:
@@ -860,27 +859,27 @@ factorial-debug:
   contexts:
     - advanced-mathematics
 
-# sum-unlucky-7:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 3
-#   number_of_read_only_lines_bottom: 1
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
+sum-unlucky-7:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
 
-# pass-the-parcel:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 1
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+pass-the-parcel:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
 end-of-file:
   types:
@@ -898,48 +897,48 @@ end-of-file:
     - lists
   difficulty: difficulty-1
 
-# is-this-the-end:
-#   types:
-#     - function
-#     - parsons
-#   parsons-extra-lines:
-#     - "print(x == y)"
-#     - "y -= 1"
-#     - "y = items[index]"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: exceptional
+is-this-the-end:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "print(x == y)"
+    - "y -= 1"
+    - "y = items[index]"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
 
-# long-count:
-#   types:
-#     - parsons
-#   parsons-extra-lines:
-#     - "length = 1"
-#     - "return items"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+long-count:
+  types:
+    - parsons
+  parsons-extra-lines:
+    - "length = 1"
+    - "return items"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# playing-card:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+playing-card:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# marco-polo:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+marco-polo:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
 say-kia-ora:
   types:
@@ -950,259 +949,382 @@ say-kia-ora:
     - display-text
   difficulty: difficulty-0
 
-# favourite-food:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+favourite-food:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# even-or-odd:
-#   types:
-#     - function
-#   test-cases:
-#     1: exceptional
-#     2: normal
-#     3: normal
-#     4: exceptional
-#     5: normal
+even-or-odd:
+  types:
+    - function
+  test-cases:
+    1: exceptional
+    2: normal
+    3: normal
+    4: exceptional
+    5: normal
 
-# less-than-6:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: exceptional
-#     3: normal
-#     4: exceptional
-#     5: exceptional
+less-than-6:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+    4: exceptional
+    5: exceptional
 
-# best-paper-scissors-rock:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+best-paper-scissors-rock:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# guessing-game:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: exceptional
-#     4: normal
-#     5: normal
-#     6: exceptional
+guessing-game:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
+    5: normal
+    6: exceptional
 
-# rectangle-perimeter:
-#   types:
-#     - debugging
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+rectangle-perimeter:
+  types:
+    - debugging
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# square-perimeter:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
+square-perimeter:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
 
-# square-area:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
-#     5: normal
+square-area:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
 
-# simple-calculator:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+simple-calculator:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# vertical-line:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
+vertical-line:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
 
-# horizontal-line:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
+horizontal-line:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
 
-# acceleration-calculator:
-#   type: debugging
-#   number_of_read_only_lines_top: 1
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: normal
-#     2: normal
+acceleration-calculator:
+  type: debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
 
-# can-afford:
-#   type: debugging
-#   number_of_read_only_lines_top: 3
-#   number_of_read_only_lines_bottom: 2
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+can-afford:
+  type: debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 2
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# mountain-climbing:
-#   types:
-#     - parsons
-#   parsons-extra-lines:
-#     - "while current_height <= height:"
-#     - "current_height += height"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+mountain-climbing:
+  types:
+    - parsons
+  parsons-extra-lines:
+    - "while current_height <= height:"
+    - "current_height += height"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# first-letters:
-#   types:
-#     - parsons
-#   parsons-extra-lines:
-#     - "result += words[0]"
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+first-letters:
+  types:
+    - parsons
+  parsons-extra-lines:
+    - "result += words[0]"
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# is-a-divisor:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+is-a-divisor:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# # TODO: Make it require a for loop
-# largest-number:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+# TODO: Make it require a for loop
+largest-number:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# print-burger:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+print-burger:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# shout-it:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+shout-it:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# fancy-divider-one:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+fancy-divider-one:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# fancy-divider-two:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+fancy-divider-two:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# driving-danger-level:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+driving-danger-level:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# driving-danger-level-debug:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 6
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+driving-danger-level-debug:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 6
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# plural-words:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+plural-words:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# are-we-there-yet:
-#   types:
-#     - program
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: exceptional
-#     4: normal
-#     5: exceptional
-#     6: normal
+are-we-there-yet:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
+    5: exceptional
+    6: normal
 
-# how-many-names:
-#   types:
-#     - debugging
-#   number_of_read_only_lines_top: 3
-#   number_of_read_only_lines_bottom: 0
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+how-many-names:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
 
-# triangle-perimeter:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
+triangle-perimeter:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
 
-# add-gst:
-#   types:
-#     - function
-#   test-cases:
-#     1: normal
-#     2: normal
-#     3: normal
-#     4: normal
+add-gst:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+bookends:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+clean-room:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'if item in dirty_items:'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+clean-room-debug:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+divisible-by-six:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+teenagers:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+    6: normal
+
+storage-full:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: exceptional
+    6: exceptional
+    7: normal
+
+how-many-seats:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'elif vehicle == "truck":'
+    - 'else:'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+valid-pin:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+estimate-legs:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+
+does-it-ascend:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'for i in range(0, len(items)):'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+does-it-descend:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 3
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal

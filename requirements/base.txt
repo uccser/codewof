@@ -1,19 +1,18 @@
 # Django
 django==3.2.6
 django-environ==0.4.5
-django-bootstrap-breadcrumbs==0.9.2
-django-model-utils==4.0.0
+django-model-utils==4.1.1
 django-anymail[mailgun]==7.0.0
 django-mail-templated==2.6.5
-django-allauth==0.44.0
+django-allauth==0.45.0
 django-crispy-forms==1.13.0
 django-activeurl==0.2.0
 django-autoslug==1.9.8
 djangorestframework==3.12.4
 coreapi==2.3.3
-django-filter==2.4.0
+django-filter==21.1
 django-inline-svg==0.1.1
-django-ckeditor==5.9.0
+django-ckeditor==6.1.0
 django-recaptcha==2.0.6
 django-bootstrap-breadcrumbs==0.9.2
 
@@ -30,14 +29,14 @@ python-markdown-math==0.6
 PyYAML==5.4.1
 
 # Style checker
-flake8==3.9.2
+flake8==4.0.1
 flake8-docstrings==1.5.0
 flake8-quotes==2.1.1
-pep8-naming==0.9.1
+pep8-naming==0.12.1
 
 # Other
 pytz==2019.3
-python-dateutil==2.8.1
+python-dateutil==2.8.2
 argon2-cffi==19.2.0
 
 # I18n

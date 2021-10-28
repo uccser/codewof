@@ -126,10 +126,11 @@ def get_questions_solved(profile, difficulty=None, concept=None, context=None, u
     count = 0
 
     for attempt in success:
-        if difficulty is not None and attempt.question.difficulty_level.name == difficulty:
-            count += 1
-            break
-        elif concept is not None:
+        if attempt.question.difficulty_level is not None:
+            if difficulty is not None and attempt.question.difficulty_level.name == difficulty:
+                count += 1
+                break
+        if concept is not None and attempt.question.concepts is not None:
             question_concepts = list(attempt.question.concepts.all())
             for conc in question_concepts:
                 if conc.name == concept:
@@ -137,7 +138,7 @@ def get_questions_solved(profile, difficulty=None, concept=None, context=None, u
                     break
                 elif conc.parent is not None and conc.parent not in question_concepts:
                     question_concepts.append(conc.parent)
-        elif context is not None:
+        if context is not None and attempt.question.contexts is not None:
             question_contexts = list(attempt.question.contexts.all())
             for cont in question_contexts:
                 if cont.name == context:

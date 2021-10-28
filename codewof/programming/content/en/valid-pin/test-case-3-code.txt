@@ -1,0 +1,1 @@
+print(is_valid_pin('a-23'))

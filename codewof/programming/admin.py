@@ -12,6 +12,7 @@ from programming.models import (
     Profile,
     Achievement,
     Earned,
+    Like,
 )
 
 User = get_user_model()
@@ -82,3 +83,4 @@ admin.site.register(QuestionTypeDebugging)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Achievement, AchievementAdmin)
 admin.site.register(Earned, EarnedAdmin)
+admin.site.register(Like)

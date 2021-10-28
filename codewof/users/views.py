@@ -17,11 +17,17 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.views.generic import DetailView, RedirectView, UpdateView, CreateView, DeleteView
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
+from django.db.models.functions import Lower
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 from users.serializers import (
     UserSerializer,
     UserTypeSerializer,
+    GroupSerializer,
+    MembershipSerializer,
+    GroupRoleSerializer,
+    InvitationSerializer,
+    EmailReminderSerializer,
 )
 from programming import settings as programming_settings
 from users.forms import UserChangeForm, GroupCreateUpdateForm, GroupInvitationsForm
@@ -39,6 +45,7 @@ from users.models import (
     GroupRole,
     Invitation,
     UserType,
+    EmailReminder,
 )
 from programming.codewof_utils import get_questions_answered_in_past_month, backdate_user
 from users.mixins import AdminRequiredMixin, AdminOrMemberRequiredMixin, SufficientAdminsMixin, \
@@ -116,8 +123,8 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context['all_complete'] = all_complete
         memberships = user.membership_set.all().order_by('group__name')
         groups = memberships.values('group').distinct()
-        emails = EmailAddress.objects.filter(user=user, verified=True)
-        invitations = Invitation.objects.filter(email__in=emails.values('email')).exclude(group__in=groups)\
+        emails = EmailAddress.objects.annotate(email_lower=Lower('email')).filter(user=user, verified=True)
+        invitations = Invitation.objects.filter(email__in=emails.values('email_lower')).exclude(group__in=groups)\
             .order_by('group__pk', '-date_sent').distinct('group__pk')
 
         context['memberships'] = memberships
@@ -361,20 +368,22 @@ def create_invitations(request, pk, group):
             skipped = []
 
             for email in emails:
-                email = email.strip()
+                email = email.lower().strip()
                 if len(Invitation.objects.filter(email=email, group=group)) > 0:
                     skipped.append(email)
                     continue
 
                 try:
-                    user = EmailAddress.objects.get(email=email).user
-                    invitee_emails = EmailAddress.objects.filter(user=user)
+                    user = EmailAddress.objects.annotate(email_lower=Lower('email')).get(email_lower=email).user
+                    invitee_emails = EmailAddress.objects.annotate(email_lower=Lower('email')).filter(user=user)
                 except EmailAddress.DoesNotExist:
                     user = None
 
+                # If user with that email exists and they are already a member or an invitation has been sent to one of
+                # their other emails.
                 if user is not None and (len(Membership.objects.filter(user=user, group=group)) > 0
-                                         or len(Invitation.objects.filter(email__in=invitee_emails.values('email'),
-                                                                          group=group)) > 0):
+                                         or len(Invitation.objects.filter(
+                        email__in=invitee_emails.values('email_lower'), group=group)) > 0):
                     skipped.append(email)
                     continue
 
@@ -418,8 +427,8 @@ def invitee_required(f):
 
     @wraps(f)
     def g(request, *args, **kwargs):
-        emails = EmailAddress.objects.filter(user=request.user, verified=True)
-        if Invitation.objects.filter(pk=kwargs['pk'], email__in=emails.values('email')):
+        emails = EmailAddress.objects.annotate(email_lower=Lower('email')).filter(user=request.user, verified=True)
+        if Invitation.objects.filter(pk=kwargs['pk'], email__in=emails.values('email_lower')):
             return f(request, *args, **kwargs)
         else:
             raise PermissionDenied()
@@ -431,14 +440,18 @@ def invitee_required(f):
 @login_required()
 @invitee_required
 def accept_invitation(request, pk):
-    """View for accepting an invitation and creating a membership."""
+    """
+    View for accepting an invitation and creating a membership.
+
+    Removes any duplicate invitations as well.
+    """
     invitation = Invitation.objects.get(pk=pk)
     membership_role = GroupRole.objects.get(name="Member")
     if not Membership.objects.filter(user=request.user, group=invitation.group).exists():
         Membership(user=request.user, group=invitation.group, role=membership_role).save()
 
-    emails = EmailAddress.objects.filter(user=request.user)
-    Invitation.objects.filter(email__in=emails.values('email'), group=invitation.group).delete()
+    emails = EmailAddress.objects.annotate(email_lower=Lower('email')).filter(user=request.user)
+    Invitation.objects.filter(email__in=emails.values('email_lower'), group=invitation.group).delete()
 
     return HttpResponse()
 
@@ -447,10 +460,14 @@ def accept_invitation(request, pk):
 @login_required()
 @invitee_required
 def reject_invitation(request, pk):
-    """View for rejecting an invitation."""
+    """
+    View for rejecting an invitation.
+
+    Removes any duplicate invitations as well.
+    """
     invitation = Invitation.objects.get(pk=pk)
-    emails = EmailAddress.objects.filter(user=request.user)
-    Invitation.objects.filter(email__in=emails.values('email'), group=invitation.group).delete()
+    emails = EmailAddress.objects.annotate(email_lower=Lower('email')).filter(user=request.user)
+    Invitation.objects.filter(email__in=emails.values('email_lower'), group=invitation.group).delete()
 
     return HttpResponse()
 
@@ -462,3 +479,43 @@ def get_group_emails(request, pk, group):
     """View for obtaining the email addresses of the members of the group."""
     emails_list = list(group.users.values_list('email', flat=True))
     return JsonResponse({"emails": emails_list})
+
+
+class GroupAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows groups to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+
+class MembershipAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows group memberships to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = Membership.objects.all().select_related('user', 'group', 'role')
+    serializer_class = MembershipSerializer
+
+
+class GroupRoleAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows group roles to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = GroupRole.objects.all()
+    serializer_class = GroupRoleSerializer
+
+
+class InvitationAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows group invitations to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = Invitation.objects.all().select_related('group', 'inviter')
+    serializer_class = InvitationSerializer
+
+
+class EmailReminderAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint that allows email reminders to be viewed."""
+
+    permission_classes = [IsAdminUser]
+    queryset = EmailReminder.objects.all().select_related('user')
+    serializer_class = EmailReminderSerializer

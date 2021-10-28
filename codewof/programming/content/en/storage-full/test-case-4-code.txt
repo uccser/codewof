@@ -1,0 +1,1 @@
+print(storage_is_full(85, 100))

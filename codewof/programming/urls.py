@@ -10,6 +10,7 @@ router = routers.SimpleRouter()
 router.register(r'programming/questions', views.QuestionAPIViewSet)
 router.register(r'programming/attempts', views.AttemptAPIViewSet)
 router.register(r'programming/profiles', views.ProfileAPIViewSet)
+router.register(r'programming/likes', views.LikeAPIViewSet)
 
 urlpatterns = [
     path('questions/', views.QuestionListView.as_view(), name='question_list'),
