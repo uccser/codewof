@@ -106,7 +106,7 @@ def get_logo_src():
 
     :return:
     """
-    logo_src = settings.CODEWOF_DOMAIN + static('img/logos/logo.png')
+    logo_src = settings.CODEWOF_DOMAIN + static('img/logos/logo-colour.png')
     if not logo_src.startswith("https://"):
         logo_src = "https://" + logo_src
     return logo_src

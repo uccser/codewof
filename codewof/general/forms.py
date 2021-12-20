@@ -3,11 +3,12 @@
 from django import forms
 from django.conf import settings
 from django.core.mail import send_mail, mail_managers
-from django.template.loader import render_to_string
+from django.template.loader import render_to_string, get_template
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
+from django.templatetags.static import static
 
 MESSAGE_TEMPLATE = "{}\n\n-----\nMessage sent from {} <{}>\n"
 
@@ -31,6 +32,7 @@ class ContactForm(forms.Form):
         mail_managers(
             subject,
             MESSAGE_TEMPLATE.format(message, name, from_email),
+            html_message=self.build_email_html(name, subject, message, from_email)
         )
         if self.cleaned_data.get('cc_sender'):
             send_mail(
@@ -39,7 +41,23 @@ class ContactForm(forms.Form):
                 settings.DEFAULT_FROM_EMAIL,
                 [from_email],
                 fail_silently=False,
+                html_message=self.build_email_html(name, subject, message, from_email)
             )
+
+    def build_email_html(self, name, subject, message, email):
+        """
+        Construct HTML for the email body using the email_reminder.html template.
+
+        :param name: The string name to insert in the template.
+        :param subject: The subject name to insert in the template.
+        :param message: The string message to insert in the template.
+        :param email: The string email to insert in the template.
+        :return: The rendered HTML.
+        """
+        email_template = get_template("general/contact-email.html")
+        return email_template.render(
+            {"name": name, "subject": subject, "message": message, "email": email, "domain": settings.CODEWOF_DOMAIN,
+             "logo_src": settings.CODEWOF_DOMAIN + static('img/logos/logo-colour.png')})
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""

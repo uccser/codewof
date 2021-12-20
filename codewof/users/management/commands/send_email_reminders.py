@@ -88,7 +88,7 @@ class Command(BaseCommand):
             {"username": username, "message": message,
              "dashboard_url": settings.CODEWOF_DOMAIN + reverse('users:dashboard'),
              "settings_url": settings.CODEWOF_DOMAIN + reverse('users:update'), "domain": settings.CODEWOF_DOMAIN,
-             "logo_src": settings.CODEWOF_DOMAIN + static('img/logos/logo.png')})
+             "logo_src": settings.CODEWOF_DOMAIN + static('img/logos/logo-colour.png')})
 
     def build_email_plain(self, username, message):
         """
