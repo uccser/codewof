@@ -159,7 +159,17 @@
     </p>
   </main>
   <!-- Footer information. Footer is a useful landmark element. -->
-  {% block footer %}{% endblock %}
+  <footer>
+    <div style="border-top: 2px solid #eaeaea;">
+      <!-- This link uses descriptive text to inform the user what will happen with the link is tapped. -->
+      <!-- It also uses inline styles since some email clients won't render embedded styles from the head. -->
+      {% block footer_message %}{% endblock %}
+
+      <p>Yay!</p>
+      <p>{{ VERSION_NUMBER }}</p>
+      <p style="font-size: 16px; font-weight: 400; line-height: 24px;">{{ DOMAIN }}</p>
+    </div>
+  </footer>
 
 </div>
 <!--[if (gte mso 9)|(IE)]>

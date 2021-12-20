@@ -13,4 +13,5 @@ def version_number(request):
     return {
         "VERSION_NUMBER": __version__,
         "GIT_SHA": settings.GIT_SHA,
+        "DOMAIN": settings.CODEWOF_DOMAIN
     }
