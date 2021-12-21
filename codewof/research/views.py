@@ -88,10 +88,10 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         """
         Construct plaintext for the email body.
 
-        :param study: This study.
-        :param form: The form for this study.
-        :param registration: The study registration of the user for this study.
-        :return: The rendered HTML.
+        :param study: A dictionary containing information for the study.
+        :param form: The consent form for the study.
+        :param registration: The study registration of the user.
+        :return: A string email body.
         """
         message = f"Dear {self.request.user.first_name}\n\n" \
                   f"Thank you for registering for the \"{study['title']}\" study. " \
@@ -109,9 +109,9 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         """
         Construct HTML for the email body using the consent_confirm.html template.
 
-        :param study: This study.
-        :param form: The form for this study.
-        :param registration: The study registration of the user for this study.
+        :param study: A dictionary containing information for the study.
+        :param form: The consent form for the study.
+        :param registration: The study registration of the user.
         :return: The rendered HTML.
         """
         email_template = get_template("research/email/consent_confirm.html")

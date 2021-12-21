@@ -46,10 +46,10 @@ class ContactForm(forms.Form):
 
     def build_email_html(self, name, subject, message, email):
         """
-        Construct HTML for the email body using the email_reminder.html template.
+        Construct HTML for the email body using the contact-email.html template.
 
         :param name: The string name to insert in the template.
-        :param subject: The subject name to insert in the template.
+        :param subject: The string subject to insert in the template.
         :param message: The string message to insert in the template.
         :param email: The string email to insert in the template.
         :return: The rendered HTML.
