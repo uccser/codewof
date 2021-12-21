@@ -1,0 +1,10 @@
+{% extends "email_template.html" %}
+{% load account %}
+{% load i18n %}
+
+{% user_display user as user_display %}
+
+{% block greeting %}{% blocktrans %}Hi {{ user_display }},{% endblocktrans %}{% endblock %}
+{% block main_message %}{% block content %}{% endblock %}{% endblock %}
+
+{% block conclusion %}{% blocktrans %}Thanks,<br>The codeWOF team{% endblocktrans %}{% endblock %}
