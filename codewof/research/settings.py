@@ -42,4 +42,5 @@ USER_TYPES_ALLOWED = [
 # Appearance
 SLUG = '2021-study'
 TITLE = '2021 Study'
-# Description is stored in research/study_description.html
+DESCRIPTION = 'This is an example description.'
+# HTML Description is stored in research/study_description.html
