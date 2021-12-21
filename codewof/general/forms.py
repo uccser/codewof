@@ -8,7 +8,6 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
-from django.templatetags.static import static
 
 MESSAGE_TEMPLATE = "{}\n\n-----\nMessage sent from {} <{}>\n"
 

@@ -7,7 +7,6 @@ import pytz
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.management import BaseCommand
-from django.templatetags.static import static
 from django.utils import timezone
 from users.models import User
 from programming.models import Attempt

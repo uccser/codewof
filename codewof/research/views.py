@@ -2,7 +2,6 @@
 
 from django.core.mail import send_mail
 from django.template.loader import get_template
-from django.templatetags.static import static
 from django.views import generic
 from django.contrib import messages
 from django.conf import settings
