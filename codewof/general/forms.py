@@ -29,10 +29,11 @@ class ContactForm(forms.Form):
         subject = self.cleaned_data['subject']
         from_email = self.cleaned_data['from_email']
         message = self.cleaned_data['message']
+        html = self.build_email_html(name, subject, message, from_email)
         mail_managers(
             subject,
             MESSAGE_TEMPLATE.format(message, name, from_email),
-            html_message=self.build_email_html(name, subject, message, from_email)
+            html_message=html
         )
         if self.cleaned_data.get('cc_sender'):
             send_mail(
@@ -41,7 +42,7 @@ class ContactForm(forms.Form):
                 settings.DEFAULT_FROM_EMAIL,
                 [from_email],
                 fail_silently=False,
-                html_message=self.build_email_html(name, subject, message, from_email)
+                html_message=html
             )
 
     def build_email_html(self, name, subject, message, email):
@@ -55,9 +56,8 @@ class ContactForm(forms.Form):
         :return: The rendered HTML.
         """
         email_template = get_template("general/contact-email.html")
-        return email_template.render(
-            {"name": name, "subject": subject, "message": message, "email": email, "domain": settings.CODEWOF_DOMAIN,
-             "logo_src": settings.CODEWOF_DOMAIN + static('img/logos/logo-colour.png')})
+        return email_template.render({"name": name, "subject": subject, "message": message, "email": email,
+                                      "DOMAIN": settings.CODEWOF_DOMAIN})
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""

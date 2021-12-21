@@ -118,8 +118,7 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         email_template = get_template("research/email/consent_confirm.html")
         return email_template.render(
             {"user": self.request.user, "study": study, "form": form, "registration": registration,
-             "domain": settings.CODEWOF_DOMAIN,
-             "logo_src": settings.CODEWOF_DOMAIN + static('img/logos/logo-colour.png')})
+             "DOMAIN": settings.CODEWOF_DOMAIN})
 
 
 class ResearcherPermission(permissions.BasePermission):
