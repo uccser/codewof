@@ -93,7 +93,7 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
         :param registration: The study registration of the user.
         :return: A string email body.
         """
-        message = f"Dear {self.request.user.first_name}\n\n" \
+        message = f"Dear {self.request.user.first_name},\n\n" \
                   f"Thank you for registering for the \"{study['title']}\" study. " \
                   f"Below is a copy of the information sheet, and your signed consent form.\n\n" \
                   f"{study['description']}\n\n" \
@@ -102,7 +102,7 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
             message += ("I AGREE" if field.value() else "I DO NOT AGREE") + f" - {field.label}\n"
         message += f"\nEmail address: {self.request.user.email}\n" \
                    f"Date: {registration.datetime}\n\n" \
-                   "Thank you,\nThe codeWOF team"
+                   f"Thank you,\nThe CodeWOF team\n\n{settings.CODEWOF_DOMAIN}"
         return message
 
     def build_email_html(self, study, form, registration):

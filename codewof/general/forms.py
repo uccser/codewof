@@ -9,7 +9,7 @@ from crispy_forms.layout import Layout, Submit, HTML
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
 
-MESSAGE_TEMPLATE = "{}\n\n-----\nMessage sent from {} <{}>\n"
+MESSAGE_TEMPLATE = "{}\n\n-----\nMessage sent from {} <{}>\n\n{}\n"
 
 
 class ContactForm(forms.Form):
@@ -28,16 +28,17 @@ class ContactForm(forms.Form):
         subject = self.cleaned_data['subject']
         from_email = self.cleaned_data['from_email']
         message = self.cleaned_data['message']
+        plain = MESSAGE_TEMPLATE.format(message, name, from_email, settings.CODEWOF_DOMAIN)
         html = self.build_email_html(name, subject, message, from_email)
         mail_managers(
             subject,
-            MESSAGE_TEMPLATE.format(message, name, from_email),
+            plain,
             html_message=html
         )
         if self.cleaned_data.get('cc_sender'):
             send_mail(
                 subject,
-                MESSAGE_TEMPLATE.format(message, name, from_email),
+                plain,
                 settings.DEFAULT_FROM_EMAIL,
                 [from_email],
                 fail_silently=False,

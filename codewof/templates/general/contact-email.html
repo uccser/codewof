@@ -4,6 +4,6 @@
 
 {% block header %}{{ subject }}{% endblock %}
 
-{% block main_message %}{{ message }}{% endblock %}
+{% block main_message %}<span style="white-space: pre-wrap;">{{ message }}</span>{% endblock %}
 
 {% block conclusion %}From,<br>{{ name }} &lt;{{ email }}&gt;{% endblock %}

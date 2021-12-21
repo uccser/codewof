@@ -96,11 +96,10 @@ class Command(BaseCommand):
         :param message: The string message to insert in the template.
         :return: The string message.
         """
-        return "Hi {},\n\n{}\nLet's practice!: {}\n\nThanks,\nThe Computer Science Education Research " \
-               "Group\n\nYou received this email because you opted into reminders. You can change " \
-               "your reminder settings here: {}." \
+        return "Hi {},\n\n{}\n\nLet's practice!: {}\n\nThanks,\nThe CodeWOF team\n\nYou received this email because " \
+               "you opted into reminders. You can change your reminder settings here: {}.\n\n{}" \
             .format(username, message, settings.CODEWOF_DOMAIN + reverse('users:dashboard'),
-                    settings.CODEWOF_DOMAIN + reverse('users:update'))
+                    settings.CODEWOF_DOMAIN + reverse('users:update'), settings.CODEWOF_DOMAIN)
 
     def get_users_to_email(self):
         """
