@@ -128,7 +128,7 @@ jobs:
           tar -xz --file artifacts/static-files/static-files.tar.gz --directory codewof/staticfiles
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v1.10.0
+        uses: docker/login-action@v1.12.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
