@@ -1,0 +1,1 @@
+print(speeding_tickets([95, 100, 101, 100, 120], 100))

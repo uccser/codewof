@@ -1,0 +1,1 @@
+print(pick_pens(['blue', 'black'], True))

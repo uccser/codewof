@@ -1256,3 +1256,151 @@ does-it-descend:
     2: normal
     3: normal
     4: normal
+   
+beep-boop:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+
+farewell:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+pen-picker:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 2
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+lost-cat:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+
+storeys-climbed:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+print-footprints:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+change-dogs:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+form-circle:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+days-of-coffee:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 2
+  number_of_read_only_lines_bottom: 3
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+
+calculate-mean:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+address:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+
+remove-seal:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+
+speeders:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'if speed < speed_limit + 4:'
+    - 'total + 1'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+
+forest:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 1
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+    6: normal
+
+space-cargo:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print(cargo)'
+    - 'ejected_item = cargo.remove()'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal

@@ -1,0 +1,1 @@
+days_of_coffee(0, 2.50)
