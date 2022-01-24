@@ -7,7 +7,6 @@ import pytz
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.management import BaseCommand
-from django.templatetags.static import static
 from django.utils import timezone
 from users.models import User
 from programming.models import Attempt
@@ -87,8 +86,7 @@ class Command(BaseCommand):
         return email_template.render(
             {"username": username, "message": message,
              "dashboard_url": settings.CODEWOF_DOMAIN + reverse('users:dashboard'),
-             "settings_url": settings.CODEWOF_DOMAIN + reverse('users:update'), "domain": settings.CODEWOF_DOMAIN,
-             "logo_src": settings.CODEWOF_DOMAIN + static('img/logos/logo.png')})
+             "settings_url": settings.CODEWOF_DOMAIN + reverse('users:update'), "DOMAIN": settings.CODEWOF_DOMAIN})
 
     def build_email_plain(self, username, message):
         """
@@ -98,11 +96,10 @@ class Command(BaseCommand):
         :param message: The string message to insert in the template.
         :return: The string message.
         """
-        return "Hi {},\n\n{}\nLet's practice!: {}\n\nThanks,\nThe Computer Science Education Research " \
-               "Group\n\nYou received this email because you opted into reminders. You can change " \
-               "your reminder settings here: {}." \
+        return "Hi {},\n\n{}\n\nLet's practice!: {}\n\nThanks,\nThe CodeWOF team\n\nYou received this email because " \
+               "you opted into reminders. You can change your reminder settings here: {}.\n\n{}" \
             .format(username, message, settings.CODEWOF_DOMAIN + reverse('users:dashboard'),
-                    settings.CODEWOF_DOMAIN + reverse('users:update'))
+                    settings.CODEWOF_DOMAIN + reverse('users:update'), settings.CODEWOF_DOMAIN)
 
     def get_users_to_email(self):
         """

@@ -12,6 +12,7 @@ def get_study_for_context():
     context = {
         'slug': settings.SLUG,
         'title': settings.TITLE,
+        'description': settings.DESCRIPTION,
         'start': settings.START_DATETIME,
         'end': settings.END_DATETIME,
     }

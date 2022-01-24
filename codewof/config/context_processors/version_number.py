@@ -12,5 +12,5 @@ def version_number(request):
     """
     return {
         "VERSION_NUMBER": __version__,
-        "GIT_SHA": settings.GIT_SHA,
+        "GIT_SHA": settings.GIT_SHA
     }
