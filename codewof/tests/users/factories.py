@@ -3,10 +3,11 @@
 from typing import Any, Sequence
 from django.contrib.auth import get_user_model
 import factory
+from factory.django import DjangoModelFactory
 from users.models import UserType
 
 
-class UserFactory(factory.DjangoModelFactory):
+class UserFactory(DjangoModelFactory):
     """Factory for generating users."""
 
     email = factory.Faker("email")
