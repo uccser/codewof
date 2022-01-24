@@ -1,10 +1,10 @@
 # Django
-django==3.2.6
+django==3.2.11
 django-environ==0.8.1
 django-model-utils==4.1.1
-django-anymail[mailgun]==7.0.0
+django-anymail[mailgun]==8.5
 django-mail-templated==2.6.5
-django-allauth==0.45.0
+django-allauth==0.47.0
 django-crispy-forms==1.13.0
 django-activeurl==0.2.0
 django-autoslug==1.9.8
@@ -37,7 +37,7 @@ pep8-naming==0.12.1
 # Other
 pytz==2021.3
 python-dateutil==2.8.2
-argon2-cffi==19.2.0
+argon2-cffi==21.3.0
 
 # I18n
 django-modeltranslation==0.17.3
