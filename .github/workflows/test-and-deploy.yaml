@@ -85,7 +85,7 @@ jobs:
         run: docker-compose -f docker-compose.local.yml up -d
 
       - name: Create production static files
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run build
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run generate-production-assets
 
       - name: Collect staticfiles
         run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python manage.py collectstatic --no-input
