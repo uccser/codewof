@@ -94,7 +94,7 @@ jobs:
         run: tar czf static-files.tar.gz --directory codewof/staticfiles/ .
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: static-files
           path: static-files.tar.gz
