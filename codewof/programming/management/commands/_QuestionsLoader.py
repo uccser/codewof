@@ -2,10 +2,12 @@
 
 from os.path import join
 from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
 from utils.TranslatableModelLoader import TranslatableModelLoader
 from utils.errors import (
     MissingRequiredFieldError,
     InvalidYAMLValueError,
+    KeyNotFoundError
 )
 from utils.language_utils import get_available_languages
 from programming.models import (
@@ -17,6 +19,9 @@ from programming.models import (
     QuestionTypeParsonsTestCase,
     QuestionTypeDebugging,
     QuestionTypeDebuggingTestCase,
+    DifficultyLevel,
+    ProgrammingConcepts,
+    QuestionContexts
 )
 
 VALID_QUESTION_TYPES = {
@@ -129,6 +134,21 @@ class QuestionsLoader(TranslatableModelLoader):
                         language, initial_code_filename), encoding='UTF-8').read()
                     question_translations[language]['initial_code'] = initial_code
 
+            if "difficulty" in question_data:
+                difficulty_slug = question_data['difficulty']
+                try:
+                    difficulty_level = DifficultyLevel.objects.get(
+                        slug=difficulty_slug
+                    )
+                except ObjectDoesNotExist:
+                    raise KeyNotFoundError(
+                        self.structure_file_path,
+                        difficulty_slug,
+                        "Difficulty Level"
+                    )
+            else:
+                difficulty_level = None
+
             for question_type in question_types:
                 slug = '{}-{}'.format(question_slug, question_type)
                 question_class = VALID_QUESTION_TYPES[question_type]['question_class']
@@ -142,6 +162,13 @@ class QuestionsLoader(TranslatableModelLoader):
                     defaults['read_only_lines_top'] = int(question_data.get('number_of_read_only_lines_top', 0))
                     defaults['read_only_lines_bottom'] = int(question_data.get('number_of_read_only_lines_bottom', 0))
 
+                # TODO remove conditional once all difficulty levels assigned
+                # Don't need to consider parent difficulty levels as these do not exist
+                if difficulty_level:
+                    defaults['difficulty_level'] = difficulty_level
+
+                defaults['question_type'] = question_type.title()
+
                 question, created = question_class.objects.update_or_create(
                     slug=slug,
                     defaults=defaults,
@@ -150,6 +177,74 @@ class QuestionsLoader(TranslatableModelLoader):
                 self.populate_translations(question, question_translations)
                 self.mark_translation_availability(question, required_fields=required_fields)
                 question.save()
+
+                # Add programming concepts
+                concept_slugs = question_data.get("concepts", [])
+                for concept_slug in concept_slugs:
+                    text = "not added"
+                    concept = None
+                    if type(concept_slug) is tuple:
+                        text, added_concept = concept_slug
+                        if text != "added":
+                            raise InvalidYAMLValueError(
+                                self.structure_file_path,
+                                "concepts - value '{} {}' - added text is invalid".format(text, slug),
+                            )
+                        concept = added_concept
+                    try:
+                        if text != "added":
+                            concept = ProgrammingConcepts.objects.get(
+                                slug=concept_slug
+                            )
+                        if concept.children.exists() and text == "not added":
+                            # Check if need to add child concept
+                            for child in concept.children:
+                                if child not in concept_slugs:
+                                    concept_slugs.append(("added", child))
+                        # Check if need to add parent concept
+                        if concept.parent is not None and concept.parent not in concept_slugs:
+                            concept_slugs.append(("added", concept.parent))
+                        question.concepts.add(concept)
+                    except ObjectDoesNotExist:
+                        raise KeyNotFoundError(
+                            self.structure_file_path,
+                            concept_slug,
+                            "Concepts"
+                        )
+
+                # Add question contexts
+                context_slugs = question_data.get("contexts", [])
+                for context_slug in context_slugs:
+                    text = "not added"
+                    context = None
+                    if type(context_slug) is tuple:
+                        text, added_context = context_slug
+                        if text != "added":
+                            raise InvalidYAMLValueError(
+                                self.structure_file_path,
+                                "contexts - value '{} {}' - added text is invalid".format(text, slug),
+                            )
+                        context = added_context
+                    try:
+                        if text != "added":
+                            context = QuestionContexts.objects.get(
+                                slug=context_slug
+                            )
+                        if context.children.exists() and text == "not added":
+                            # Check if need to add child context
+                            for child in context.children:
+                                if child not in context_slugs:
+                                    context_slugs.append(("added", child))
+                        # Check if need to add parent context
+                        if context.parent is not None and context.parent not in context_slugs:
+                            context_slugs.append(("added", context.parent))
+                        question.contexts.add(context)
+                    except ObjectDoesNotExist:
+                        raise KeyNotFoundError(
+                            self.structure_file_path,
+                            context_slug,
+                            "Contexts"
+                        )
 
                 test_case_class = VALID_QUESTION_TYPES[question_type]['test_case_class']
                 for (test_case_id, test_case_type) in question_test_cases.items():

@@ -2,6 +2,9 @@ say-hello:
   type: program
   test-cases:
     1: normal
+  difficulty: difficulty-0
+  concepts:
+    - display-text
 
 # ride-share:
 #   type: function
@@ -28,6 +31,12 @@ add-10:
   test-cases:
     1: normal
     2: normal
+  difficulty: difficulty-0
+  concepts:
+    - display-text
+    - inputs
+  contexts:
+    - simple-mathematics
 
 doubler:
   type: function
@@ -37,6 +46,11 @@ doubler:
     3: normal
     4: normal
     5: exceptional
+  concepts:
+    - functions
+  contexts:
+    - simple-mathematics
+  difficulty: difficulty-1
 
 double-evens:
   types:
@@ -51,6 +65,12 @@ double-evens:
     3: normal
     4: normal
     5: exceptional
+  concepts:
+    - single-condition
+    - functions
+  contexts:
+    - simple-mathematics
+  difficulty: difficulty-1
 
 countdown:
   types:
@@ -83,6 +103,13 @@ factorial:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - multiple-conditions
+    - conditional-loops
+  contexts:
+    - advanced-mathematics
 
 ticket-calculator:
   type: debugging
@@ -126,6 +153,10 @@ print-codewof:
     - 'return "Welcome to codeWOF!"'
   test-cases:
     1: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+    - display-text
 
 greeting:
   types:
@@ -160,6 +191,12 @@ bus-info:
     2: exceptional
     3: normal
     4: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - functions
+    - string-operations
+  contexts:
+    - real-world-applications
 
 voting-age:
   types:
@@ -286,6 +323,13 @@ find-highest-number:
     3: normal
     4: exceptional
     5: exceptional
+  context:
+    - real-world-applications
+  concepts:
+    - lists
+    - range-loops
+    - single-condition
+  difficulty: difficulty-2
 
 shutdown-machine:
   type: program
@@ -484,6 +528,11 @@ drawn-out-string:
     2: normal
     3: normal
     4: normal
+  concepts:
+    - range-loops
+    - functions
+    - string-operations
+  difficulty: difficulty-1
 
 add-up-numbers:
   types:
@@ -625,6 +674,9 @@ rectangle-pattern:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
 
 leap-year:
   types:
@@ -704,6 +756,12 @@ driver-speed:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-2
+  contexts:
+    - real-world-applications
+  concepts:
+    - advanced-conditionals
+    - functions
 
 fizz-buzz:
   types:
@@ -793,6 +851,13 @@ factorial-debug:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - multiple-conditions
+    - conditional-loops
+  contexts:
+    - advanced-mathematics
 
 sum-unlucky-7:
   types:
@@ -827,6 +892,10 @@ end-of-file:
     1: normal
     2: normal
     3: exceptional
+  concepts:
+    - functions
+    - lists
+  difficulty: difficulty-1
 
 is-this-the-end:
   types:
@@ -876,6 +945,9 @@ say-kia-ora:
     - program
   test-cases:
     1: normal
+  concepts:
+    - display-text
+  difficulty: difficulty-0
 
 favourite-food:
   types:
@@ -1256,7 +1328,7 @@ does-it-descend:
     2: normal
     3: normal
     4: normal
-   
+
 beep-boop:
   types:
     - function

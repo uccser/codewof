@@ -15,7 +15,7 @@
             </em>
         </div>
         <div class="qc-title">
-            {{ question.title }}
+            {{ question.title }} {%if question.difficulty_level%} ({{question.difficulty_level}}) {%endif%}
         </div>
     </a>
 </div>

@@ -106,6 +106,7 @@ THIRD_PARTY_APPS = [
     'ckeditor',
     'captcha',
     'django_bootstrap_breadcrumbs',
+    'django_filters',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',

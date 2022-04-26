@@ -3,12 +3,13 @@
 import json
 from django.contrib.auth.decorators import login_required
 from django.views import generic
-from django.db.models import Count, Max
+from django.db.models import Count, Max, Exists, OuterRef
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_http_methods
+from django_filters.views import FilterView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 from programming.serializers import (
@@ -26,15 +27,18 @@ from programming.models import (
     Like
 )
 from programming.codewof_utils import add_points, check_achievement_conditions
+from programming.filters import QuestionFilter
+from programming.utils import create_filter_helper
 
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 
 
-class QuestionListView(LoginRequiredMixin, generic.ListView):
+class QuestionListView(LoginRequiredMixin, FilterView):
     """View for listing questions."""
 
-    model = Question
+    filterset_class = QuestionFilter
     context_object_name = 'questions'
+    template_name = 'programming/question_list.html'
 
     def get_queryset(self):
         """Return questions objects for page.
@@ -42,17 +46,33 @@ class QuestionListView(LoginRequiredMixin, generic.ListView):
         Returns:
             Question queryset.
         """
-        questions = Question.objects.all().select_subclasses()
-
-        if self.request.user.is_authenticated:
-            # TODO: Check if passed in last 90 days
-            for question in questions:
-                question.completed = Attempt.objects.filter(
-                    profile=self.request.user.profile,
-                    question=question,
-                    passed_tests=True,
-                ).exists()
+        user_successful_attempt_subquery = Attempt.objects.filter(
+            profile=self.request.user.profile,
+            question=OuterRef('pk'),
+            passed_tests=True,
+        )
+        questions = (
+            Question.objects.all()
+                .select_subclasses()
+                .select_related('difficulty_level')
+                .prefetch_related(
+                'concepts',
+                'concepts__parent',
+                'contexts',
+                'contexts__parent',
+            )
+            .annotate(completed=Exists(user_successful_attempt_subquery))
+        )
         return questions
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the question list view.
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        context['filter_formatter'] = create_filter_helper("programming:question_list")
+        return context
 
 
 class QuestionView(LoginRequiredMixin, generic.DetailView):

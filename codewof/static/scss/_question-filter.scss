@@ -1,0 +1,6 @@
+input[data-indent-level="2"] + label {
+  margin-left: 1rem;
+}
+input[data-indent-level="3"] + label {
+  margin-left: 2rem;
+}
