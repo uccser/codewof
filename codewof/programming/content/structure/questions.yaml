@@ -46,11 +46,11 @@ doubler:
     3: normal
     4: normal
     5: exceptional
+  difficulty: difficulty-1
   concepts:
     - functions
   contexts:
     - simple-mathematics
-  difficulty: difficulty-1
 
 double-evens:
   types:
@@ -65,12 +65,12 @@ double-evens:
     3: normal
     4: normal
     5: exceptional
+  difficulty: difficulty-1
   concepts:
     - single-condition
     - functions
   contexts:
     - simple-mathematics
-  difficulty: difficulty-1
 
 countdown:
   types:
@@ -83,6 +83,14 @@ countdown:
     1: normal
     2: normal
     3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - single-condition
+    - conditional-loops
+  contexts:
+    - simple-mathematics
 
 repeated-add-10:
   types:
@@ -93,6 +101,14 @@ repeated-add-10:
     3: normal
     4: normal
     5: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+    - single-condition
+    - conditional-loops
+  contexts:
+    - simple-mathematics
 
 factorial:
   types:
@@ -121,6 +137,12 @@ ticket-calculator:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-0
+  concepts:
+    - functions
+    - multiple-conditions
+  contexts:
+    - real-world-applications
 
 rectangle-area:
   types:
@@ -129,6 +151,12 @@ rectangle-area:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+  contexts:
+    - simple-mathematics
 
 where-is:
   types:
@@ -136,6 +164,11 @@ where-is:
   test-cases:
     1: normal
     2: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+    - string-operations
 
 pieces-of-chocolate:
   types:
@@ -143,6 +176,11 @@ pieces-of-chocolate:
   test-cases:
     1: normal
     2: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+  contexts:
+    - simple-mathematics
 
 print-codewof:
   types:
@@ -170,6 +208,11 @@ greeting:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - functions
+    - string-operations
 
 string-concatenation:
   types:
@@ -178,6 +221,11 @@ string-concatenation:
     1: normal
     2: normal
     3: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+    - string-operations
 
 bus-info:
   types:
@@ -208,6 +256,12 @@ voting-age:
     4: exceptional
     5: exceptional
     6: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+  contexts:
+    - real-world-applications
 
 over-the-limit:
   types:
@@ -225,6 +279,12 @@ over-the-limit:
     5: exceptional
     6: exceptional
     7: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - functions
+    - single-condition
+  contexts:
+    - real-world-applications
 
 low-battery:
   types:
@@ -241,6 +301,12 @@ low-battery:
     4: normal
     5: exceptional
     6: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - functions
+    - single-condition
+  contexts:
+    - real-world-applications
 
 full-name:
   type: debugging
@@ -251,6 +317,13 @@ full-name:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - string-operations
+  contexts:
+    - real-world-applications
 
 hours-to-seconds:
   type: debugging
@@ -262,6 +335,12 @@ hours-to-seconds:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-0
+  concepts:
+    - functions
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 how-many-dozens:
   type: debugging
@@ -273,6 +352,12 @@ how-many-dozens:
     3: exceptional
     4: exceptional
     5: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - functions
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 favourite-number:
   type: debugging
@@ -287,6 +372,10 @@ favourite-number:
     6: normal
     7: normal
     8: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - single-condition
 
 string-too-long:
   type: debugging
@@ -300,6 +389,12 @@ string-too-long:
     5: normal
     6: normal
     7: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+    - single-condition
+  contexts:
+    - real-world-applications
 
 price-in-budget:
   type: debugging
@@ -312,6 +407,12 @@ price-in-budget:
     4: normal
     5: normal
     6: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - single-condition
+  contexts:
+    - real-world-applications
 
 find-highest-number:
   type: debugging
@@ -323,13 +424,14 @@ find-highest-number:
     3: normal
     4: exceptional
     5: exceptional
-  context:
-    - real-world-applications
+  difficulty: difficulty-2
   concepts:
     - lists
     - range-loops
     - single-condition
-  difficulty: difficulty-2
+  context:
+    - simple-mathematics
+    - real-world-applications
 
 shutdown-machine:
   type: program
@@ -340,6 +442,14 @@ shutdown-machine:
     4: normal
     5: exceptional
     6: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - single-condition
+    - conditional-loops
+  contexts:
+    - real-world-applications
 
 triangle-pattern:
   types:
@@ -355,6 +465,11 @@ triangle-pattern:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - multiple-conditions
 
 divisible-by-3:
   types:
@@ -363,6 +478,15 @@ divisible-by-3:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-3
+  concepts:
+    - display-text
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
 
 reverse-string:
   types:
@@ -376,6 +500,12 @@ reverse-string:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - range-loops
+    - string-operations
 
 rotate-words:
   types:
@@ -385,6 +515,12 @@ rotate-words:
     2: normal
     3: exceptional
     4: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+    - range-loops
+    - string-operations
 
 good-password:
   types:
@@ -395,6 +531,14 @@ good-password:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - single-condition
+    - conditional-loops
+  contexts:
+    - real-world-applications
 
 shopping-list:
   types:
@@ -404,6 +548,15 @@ shopping-list:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - range-loops
+    - string-operations
+    - lists
+  contexts:
+    - real-world-applications
 
 find-smallest-number:
   types:
@@ -416,6 +569,15 @@ find-smallest-number:
     3: exceptional
     4: normal
     5: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 book-titles:
   types:
@@ -429,6 +591,15 @@ book-titles:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - range-loops
+    - string-operations
+    - lists
+  contexts:
+    - real-world-applications
 
 total-under-10:
   types:
@@ -442,6 +613,14 @@ total-under-10:
     2: normal
     3: exceptional
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
 
 go-tramping:
   types:
@@ -453,6 +632,14 @@ go-tramping:
     4: exceptional
     5: exceptional
     6: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - multiple-conditions
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 make-even:
   types:
@@ -464,6 +651,13 @@ make-even:
     4: normal
     5: exceptional
     6: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - multiple-conditions
+  contexts:
+    - simple-mathematics
 
 print-score:
   types:
@@ -478,6 +672,14 @@ print-score:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - string-operations
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 h-words:
   types:
@@ -487,6 +689,12 @@ h-words:
     2: normal
     3: normal
     4: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+    - single-condition
+    - string-operations
 
 print-pet:
   types:
@@ -500,6 +708,13 @@ print-pet:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - string-operations
+  contexts:
+    - real-world-applications
 
 print-squares:
   types:
@@ -514,6 +729,15 @@ print-squares:
     3: normal
     4: exceptional
     5: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - functions
+    - inputs
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
 
 drawn-out-string:
   types:
@@ -528,11 +752,12 @@ drawn-out-string:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-1
   concepts:
     - range-loops
     - functions
     - string-operations
-  difficulty: difficulty-1
+    - display-text
 
 add-up-numbers:
   types:
@@ -545,6 +770,14 @@ add-up-numbers:
     3: exceptional
     4: exceptional
     5: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - functions
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
 
 evens-out:
   types:
@@ -557,6 +790,14 @@ evens-out:
     3: exceptional
     4: exceptional
     5: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
 
 happy-birthday:
   types:
@@ -567,6 +808,14 @@ happy-birthday:
     3: normal
     4: normal
     5: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+    - string-operations
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 give-me-5:
   types:
@@ -577,6 +826,12 @@ give-me-5:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+    - single-condition
+    - conditional-loops
 
 while-away:
   types:
@@ -588,6 +843,12 @@ while-away:
     2: exceptional
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - single-condition
+    - conditional-loops
 
 times-2:
   types:
@@ -601,6 +862,11 @@ times-2:
     4: exceptional
     5: normal
     6: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - functions
+  contexts:
+    - simple-mathematics
 
 days-to-target:
   types:
@@ -616,6 +882,14 @@ days-to-target:
     3: exceptional
     4: normal
     5: normal
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - single-condition
+    - conditional-loops
+  contexts:
+    - advanced-mathematics
+    - real-world-applications
 
 roll-call:
   types:
@@ -630,6 +904,15 @@ roll-call:
     2: normal
     3: normal
     4: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - functions
+    - range-loops
+    - string-operations
+    - lists
+  contexts:
+    - real-world-applications
 
 lunch:
   types:
@@ -639,6 +922,14 @@ lunch:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - single-condition
+    - string-operations
+  contexts:
+    - real-world-applications
 
 signature:
   types:
@@ -647,6 +938,13 @@ signature:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - string-operations
+  contexts:
+    - real-world-applications
 
 print-bigger-number:
   types:
@@ -659,6 +957,13 @@ print-bigger-number:
     3: normal
     4: exceptional
     5: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - single-condition
+  contexts:
+    - simple-mathematics
 
 rectangle-pattern:
   types:
@@ -677,6 +982,11 @@ rectangle-pattern:
   difficulty: difficulty-1
   concepts:
     - display-text
+    - functions
+    - single-condition
+    - range-loops
+  contexts:
+    - basic-geometry
 
 leap-year:
   types:
@@ -686,6 +996,13 @@ leap-year:
     2: normal
     3: normal
     4: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - advanced-conditionals
+  contexts:
+    - advanced-mathematics
+    - real-world-applications
 
 discounted-cost:
   types:
@@ -697,6 +1014,12 @@ discounted-cost:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 celsius-to-fahrenheit:
   type: function
@@ -706,6 +1029,12 @@ celsius-to-fahrenheit:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 fahrenheit-to-celsius:
   type: function
@@ -715,6 +1044,12 @@ fahrenheit-to-celsius:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 rollercoaster-ride:
   types:
@@ -725,6 +1060,14 @@ rollercoaster-ride:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - multiple-conditions
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 how-many-dogs:
   types:
@@ -736,6 +1079,16 @@ how-many-dogs:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+    - single-condition
+    - range-loops
+    - string-operations
+    - lists
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 total-evens:
   types:
@@ -747,6 +1100,14 @@ total-evens:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
 
 driver-speed:
   types:
@@ -757,11 +1118,11 @@ driver-speed:
     2: normal
     3: normal
   difficulty: difficulty-2
-  contexts:
-    - real-world-applications
   concepts:
     - advanced-conditionals
     - functions
+  contexts:
+    - real-world-applications
 
 fizz-buzz:
   types:
@@ -775,6 +1136,13 @@ fizz-buzz:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - advanced-conditionals
+  contexts:
+    - simple-mathematics
 
 inside-outside:
   type: debugging
@@ -786,6 +1154,13 @@ inside-outside:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - multiple-conditions
+  contexts:
+    - simple-mathematics
 
 eight-is-great:
   types:
@@ -799,6 +1174,13 @@ eight-is-great:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - multiple-conditions
+  contexts:
+    - simple-mathematics
 
 sum-lucky-7:
   types:
@@ -809,6 +1191,15 @@ sum-lucky-7:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-3
+  concepts:
+    - display-text
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
 
 duck-goose:
   types:
@@ -818,6 +1209,12 @@ duck-goose:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - multiple-conditions
+    - string-operations
 
 remove-bugs:
   types:
@@ -829,6 +1226,12 @@ remove-bugs:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - single-condition
+    - range-loops
+    - lists
 
 nth-to-last:
   types:
@@ -839,6 +1242,10 @@ nth-to-last:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - lists
 
 factorial-debug:
   types:
@@ -870,6 +1277,12 @@ sum-unlucky-7:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-3
+  concepts:
+    - display-text
+    - functions
+  contexts:
+    - simple-mathematics
 
 pass-the-parcel:
   types:
@@ -880,6 +1293,12 @@ pass-the-parcel:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - range-loops
+    - lists
 
 end-of-file:
   types:
@@ -892,10 +1311,10 @@ end-of-file:
     1: normal
     2: normal
     3: exceptional
+  difficulty: difficulty-1
   concepts:
     - functions
     - lists
-  difficulty: difficulty-1
 
 is-this-the-end:
   types:
@@ -910,6 +1329,11 @@ is-this-the-end:
     2: normal
     3: normal
     4: exceptional
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - multiple-conditions
+    - lists
 
 long-count:
   types:
@@ -922,6 +1346,13 @@ long-count:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
 
 playing-card:
   types:
@@ -931,6 +1362,15 @@ playing-card:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - single-condition
+    - conditional-loops
+    - lists
+  contexts:
+    - real-world-applications
 
 marco-polo:
   types:
@@ -939,15 +1379,21 @@ marco-polo:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+    - single-condition
+    - conditional-loops
 
 say-kia-ora:
   types:
     - program
   test-cases:
     1: normal
+  difficulty: difficulty-0
   concepts:
     - display-text
-  difficulty: difficulty-0
 
 favourite-food:
   types:
@@ -956,6 +1402,11 @@ favourite-food:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+    - string-operations
 
 even-or-odd:
   types:
@@ -966,6 +1417,13 @@ even-or-odd:
     3: normal
     4: exceptional
     5: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - single-condition
+  contexts:
+    - simple-mathematics
 
 less-than-6:
   types:
@@ -976,6 +1434,15 @@ less-than-6:
     3: normal
     4: exceptional
     5: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
 
 best-paper-scissors-rock:
   types:
@@ -984,6 +1451,13 @@ best-paper-scissors-rock:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+    - multiple-conditions
+  contexts:
+    - real-world-applications
 
 guessing-game:
   types:
@@ -995,6 +1469,13 @@ guessing-game:
     4: normal
     5: normal
     6: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - multiple-conditions
+  contexts:
+    - simple-mathematics
 
 rectangle-perimeter:
   types:
@@ -1004,6 +1485,12 @@ rectangle-perimeter:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+  contexts:
+    - simple-mathematics
+    - basic-geometry
 
 square-perimeter:
   types:
@@ -1014,6 +1501,12 @@ square-perimeter:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+  contexts:
+    - simple-mathematics
+    - basic-geometry
 
 square-area:
   types:
@@ -1024,6 +1517,12 @@ square-area:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+  contexts:
+    - simple-mathematics
+    - basic-geometry
 
 simple-calculator:
   types:
@@ -1033,6 +1532,12 @@ simple-calculator:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - advanced-conditionals
+  contexts:
+    - advanced-mathematics
 
 vertical-line:
   types:
@@ -1040,6 +1545,12 @@ vertical-line:
   test-cases:
     1: normal
     2: normal
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - single-condition
+  contexts:
+    - advanced-mathematics
 
 horizontal-line:
   types:
@@ -1047,6 +1558,12 @@ horizontal-line:
   test-cases:
     1: normal
     2: normal
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - single-condition
+  contexts:
+    - advanced-mathematics
 
 acceleration-calculator:
   type: debugging
@@ -1055,6 +1572,11 @@ acceleration-calculator:
   test-cases:
     1: normal
     2: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+  contexts:
+    - advanced-mathematics
 
 can-afford:
   type: debugging
@@ -1065,6 +1587,13 @@ can-afford:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - multiple-conditions
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 mountain-climbing:
   types:
@@ -1076,6 +1605,13 @@ mountain-climbing:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - single-condition
+    - conditional-loops
+  contexts:
+    - simple-mathematics
 
 first-letters:
   types:
@@ -1086,6 +1622,11 @@ first-letters:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - range-loops
+    - string-operations
 
 is-a-divisor:
   types:
@@ -1094,6 +1635,15 @@ is-a-divisor:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-3
+  concepts:
+    - display-text
+    - inputs
+    - single-condition
+    - conditional-loops
+    - string-operations
+  contexts:
+    - advanced-mathematics
 
 # TODO: Make it require a for loop
 largest-number:
@@ -1103,6 +1653,14 @@ largest-number:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - multiple-conditions
+    - range-loops
+  contexts:
+    - simple-mathematics
 
 print-burger:
   types:
@@ -1111,6 +1669,12 @@ print-burger:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - functions
+    - range-loops
+    - lists
 
 shout-it:
   types:
@@ -1119,6 +1683,11 @@ shout-it:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+    - string-operations
 
 fancy-divider-one:
   types:
@@ -1128,6 +1697,11 @@ fancy-divider-one:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - string-operations
 
 fancy-divider-two:
   types:
@@ -1137,6 +1711,11 @@ fancy-divider-two:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - string-operations
 
 driving-danger-level:
   types:
@@ -1146,6 +1725,13 @@ driving-danger-level:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - multiple-conditions
+  contexts:
+    - real-world-applications
 
 driving-danger-level-debug:
   types:
@@ -1157,6 +1743,14 @@ driving-danger-level-debug:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - multiple-conditions
+    - string-operations
+  contexts:
+    - real-world-applications
 
 plural-words:
   types:
@@ -1166,6 +1760,15 @@ plural-words:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - single-condition
+    - conditional-loops
+    - string-operations
+  contexts:
+    - real-world-applications
 
 are-we-there-yet:
   types:
@@ -1177,6 +1780,12 @@ are-we-there-yet:
     4: normal
     5: exceptional
     6: normal
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - single-condition
+    - conditional-loops
 
 how-many-names:
   types:
@@ -1188,6 +1797,13 @@ how-many-names:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - single-condition
+    - range-loops
+    - string-operations
+    - lists
 
 triangle-perimeter:
   types:
@@ -1196,6 +1812,12 @@ triangle-perimeter:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+  contexts:
+    - basic-geometry
+    - simple-mathematics
 
 add-gst:
   types:
@@ -1205,6 +1827,11 @@ add-gst:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+  contexts:
+    - simple-mathematics
 
 bookends:
   types:
@@ -1213,6 +1840,11 @@ bookends:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - range-loops
+    - lists
 
 clean-room:
   types:
@@ -1226,6 +1858,14 @@ clean-room:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - real-world-applications
 
 clean-room-debug:
   types:
@@ -1238,6 +1878,14 @@ clean-room-debug:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - real-world-applications
 
 divisible-by-six:
   types:
@@ -1248,6 +1896,13 @@ divisible-by-six:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-3
+  concepts:
+    - display-text
+    - functions
+    - multiple-conditions
+  contexts:
+    - advanced-mathematics
 
 teenagers:
   types:
@@ -1259,6 +1914,13 @@ teenagers:
     4: normal
     5: normal
     6: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+    - single-condition
+  contexts:
+    - simple-mathematics
 
 storage-full:
   types:
@@ -1271,6 +1933,12 @@ storage-full:
     5: exceptional
     6: exceptional
     7: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - single-condition
+  contexts:
+    - simple-mathematics
 
 how-many-seats:
   types:
@@ -1285,6 +1953,15 @@ how-many-seats:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - advanced-conditionals
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 valid-pin:
   types:
@@ -1295,6 +1972,13 @@ valid-pin:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - multiple-conditions
+    - string-operations
+  contexts:
+    - real-world-applications
 
 estimate-legs:
   types:
@@ -1304,6 +1988,13 @@ estimate-legs:
     2: normal
     3: normal
     4: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 does-it-ascend:
   types:
@@ -1317,6 +2008,14 @@ does-it-ascend:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-3
+  concepts:
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
 
 does-it-descend:
   types:
@@ -1328,6 +2027,14 @@ does-it-descend:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
 
 beep-boop:
   types:
@@ -1337,6 +2044,13 @@ beep-boop:
     2: normal
     3: normal
     4: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - functions
+    - multiple-conditions
+    - range-loops
+    - string-operations
 
 farewell:
   types:
@@ -1346,6 +2060,11 @@ farewell:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - functions
+    - string-operations
 
 pen-picker:
   types:
@@ -1356,6 +2075,11 @@ pen-picker:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - single-condition
+    - lists
 
 lost-cat:
   types:
@@ -1364,6 +2088,13 @@ lost-cat:
     1: normal
     2: normal
     3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - multiple-conditions
+    - conditional-loops
+    - string-operations
 
 storeys-climbed:
   types:
@@ -1373,6 +2104,13 @@ storeys-climbed:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - inputs
+  contexts:
+    - simple-mathematics
+    - real-world-applications
 
 print-footprints:
   types:
@@ -1381,6 +2119,11 @@ print-footprints:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - functions
+    - string-operations
 
 change-dogs:
   types:
@@ -1390,6 +2133,10 @@ change-dogs:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - string-operations
 
 form-circle:
   types:
@@ -1398,6 +2145,11 @@ form-circle:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-1
+  concepts:
+    - display-text
+    - functions
+    - string-operations
 
 days-of-coffee:
   types:
@@ -1410,6 +2162,14 @@ days-of-coffee:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-3
+  concepts:
+    - display-text
+    - functions
+    - string-operations
+  contexts:
+    - advanced-mathematics
+    - real-world-applications
 
 calculate-mean:
   types:
@@ -1419,6 +2179,12 @@ calculate-mean:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+    - lists
+  contexts:
+    - simple-mathematics
 
 address:
   types:
@@ -1428,6 +2194,13 @@ address:
     2: normal
     3: normal
     4: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - display-text
+    - inputs
+    - string-operations
+  contexts:
+    - real-world-applications
 
 remove-seal:
   types:
@@ -1436,6 +2209,11 @@ remove-seal:
     1: normal
     2: normal
     3: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - single-condition
+    - lists
 
 speeders:
   types:
@@ -1449,6 +2227,14 @@ speeders:
     2: normal
     3: normal
     4: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - real-world-applications
 
 forest:
   types:
@@ -1462,6 +2248,12 @@ forest:
     4: normal
     5: normal
     6: normal
+  difficulty: difficulty-2
+  concepts:
+    - functions
+    - lists
+  contexts:
+    - real-world-applications
 
 space-cargo:
   types:
@@ -1476,3 +2268,10 @@ space-cargo:
     3: normal
     4: normal
     5: normal
+  difficulty: difficulty-3
+  concepts:
+    - display-text
+    - functions
+    - lists
+  contexts:
+    - simple-mathematics
