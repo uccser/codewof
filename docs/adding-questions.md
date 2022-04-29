@@ -51,7 +51,7 @@ There are three stages to adding a question:
 
 1. Add question metadata (language independent)
 2. Add question content (language dependent)
-3. Add question tags
+3. Add question tags (difficulty, concepts, contexts)
 
 ### Adding question metadata
 
@@ -100,11 +100,38 @@ Each question directory should have the following files:
 
 ## Adding question tags
 
-Each question can be tagged by difficulty, programming concepts and programming contexts. This allows users to easily search
-for questions of a specific type.
+Each question must be tagged by difficulty, and can be tagged by programming concepts and programming contexts.
+This allows users to easily search for questions of a specific type.
 
-Question difficulty is determined by []: # (TODO).
+Open directory `codewof/programming/content/structure/questions.yaml`
 
-Programming concepts include []: # (TODO).
+Each question **requires** a `difficulty`, either:
+- `difficulty-0` - Easy
+- `difficulty-1` - Moderate
+- `difficulty-2` - Difficult
+- `difficulty-3` - Complex
 
-Programming contexts are []: # (TODO).
+If applicable, one or more `concepts` should be added to the question from the following:
+
+- `display-text` - Display Text
+- `functions` - Functions
+- `inputs` - Inputs
+- Conditionals
+  - `single-condition` - Single Condition
+  - `multiple-conditions` - Multiple Conditions
+  - `advanced-conditionals` - Advanced Conditionals
+- Loops
+  - `conditional-loops` - Conditional Loops
+  - `range-loops` - Range Loops
+- `string-operations` - String Operations
+- `lists` - Lists
+
+If applicable, one or more `contexts` should be added to the question from the following:
+
+- Mathematics
+  - Geometry
+    - `basic-geometry` - Basic Geometry
+    - `advanced-geometry` - Advanced Geometry
+  - `simple-mathematics` - Simple Mathematics
+  - `advanced-mathematics` - Advanced Mathematics
+- `real-world-applications` - Real World Applications
