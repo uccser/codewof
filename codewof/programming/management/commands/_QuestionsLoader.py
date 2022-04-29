@@ -162,10 +162,7 @@ class QuestionsLoader(TranslatableModelLoader):
                     defaults['read_only_lines_top'] = int(question_data.get('number_of_read_only_lines_top', 0))
                     defaults['read_only_lines_bottom'] = int(question_data.get('number_of_read_only_lines_bottom', 0))
 
-                # TODO remove conditional once all difficulty levels assigned
-                # Don't need to consider parent difficulty levels as these do not exist
-                if difficulty_level:
-                    defaults['difficulty_level'] = difficulty_level
+                defaults['difficulty_level'] = difficulty_level
 
                 defaults['question_type'] = question_type.title()
 

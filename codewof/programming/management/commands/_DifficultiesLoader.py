@@ -20,7 +20,6 @@ class DifficultiesLoader(TranslatableModelLoader):
         """
         difficulties_structure = self.load_yaml_file(self.structure_file_path)
 
-        difficulty_translations = self.get_blank_translation_dictionary()
         required_translation_fields = ["name"]
         difficulties_translations = self.get_yaml_translations(
             self.structure_filename,

@@ -1,17 +1,13 @@
 display-text:
-  colour: #TODO
   number: 1
 
 functions:
-  colour: #TODO
   number: 2
 
 inputs:
-  colour: #TODO
   number: 3
 
 conditionals:
-  colour: #TODO
   number: 4
   children:
     - single-condition
@@ -19,16 +15,13 @@ conditionals:
     - advanced-conditionals
 
 loops:
-  colour: #TODO
   number: 5
   children:
     - conditional-loops
     - range-loops
 
 string-operations:
-  colour: #TODO
   number: 6
 
 lists:
-  colour: #TODO
   number: 7

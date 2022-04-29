@@ -119,8 +119,6 @@ class Attempt(models.Model):
     passed_tests = models.BooleanField(default=False)
     like_users = models.ManyToManyField(User, through='Like')
 
-    # skills_hinted = models.ManyToManyField('Skill', blank=True)
-
     def __str__(self):
         """Text representation of an attempt."""
         return "Attempted '" + str(self.question) + "' on " + str(self.datetime)
@@ -258,7 +256,7 @@ class Question(TranslatableModel):
     difficulty_level = models.ForeignKey(
         DifficultyLevel,
         related_name='questions',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True
     )

@@ -1,9 +1,7 @@
 real-world-applications:
-  colour: #TODO
   number: 1
 
 mathematics:
-  colour: #TODO
   number: 2
   children:
     - simple-mathematics
