@@ -24,13 +24,13 @@ class QuestionFilter(django_filters.FilterSet):
     concepts = django_filters.filters.ModelMultipleChoiceFilter(
         queryset=ProgrammingConcepts.objects.prefetch_related('parent').order_by('number'),
         widget=IndentCheckbox,
-        conjoined=True
+        conjoined=False,
     )
 
     contexts = django_filters.filters.ModelMultipleChoiceFilter(
         queryset=QuestionContexts.objects.prefetch_related('parent').order_by('number'),
         widget=IndentCheckbox,
-        conjoined=True
+        conjoined=False,
     )
 
     question_type = django_filters.filters.AllValuesMultipleFilter(
