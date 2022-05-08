@@ -194,10 +194,11 @@ class QuestionsLoader(TranslatableModelLoader):
                                 slug=concept_slug
                             )
                         if concept.children.exists() and text == "not added":
-                            # Check if need to add child concept
-                            for child in concept.children:
-                                if child not in concept_slugs:
-                                    concept_slugs.append(("added", child))
+                            raise InvalidYAMLValueError(
+                                self.structure_file_path,
+                                "concepts - value '{} {}' - added text is invalid due to being a parent filter"
+                                    .format(text, slug),
+                            )
                         # Check if need to add parent concept
                         if concept.parent is not None and concept.parent not in concept_slugs:
                             concept_slugs.append(("added", concept.parent))
@@ -228,10 +229,11 @@ class QuestionsLoader(TranslatableModelLoader):
                                 slug=context_slug
                             )
                         if context.children.exists() and text == "not added":
-                            # Check if need to add child context
-                            for child in context.children:
-                                if child not in context_slugs:
-                                    context_slugs.append(("added", child))
+                            raise InvalidYAMLValueError(
+                                self.structure_file_path,
+                                "contexts - value '{} {}' - added text is invalid due to being a parent filter"
+                                    .format(text, slug),
+                            )
                         # Check if need to add parent context
                         if context.parent is not None and context.parent not in context_slugs:
                             context_slugs.append(("added", context.parent))
