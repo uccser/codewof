@@ -24,7 +24,8 @@
     grid-template-areas:
         "qc-checkbox qc-type"
         "qc-checkbox qc-title"
-        "qc-checkbox qc-details";
+        "qc-checkbox qc-details"
+        "qc-tags qc-tags";
     grid-template-columns: auto 1fr auto;
     grid-template-rows: auto auto;
     border: 3px solid grey;
@@ -73,4 +74,10 @@
   font-size: 0.8rem;
   color: #3e4347;
   grid-area: qc-details
+}
+
+.qc-tags {
+    align-self: end;
+    margin-top: 0.5rem;
+    grid-area: qc-tags;
 }

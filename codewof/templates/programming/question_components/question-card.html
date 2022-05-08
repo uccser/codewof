@@ -15,7 +15,20 @@
             </em>
         </div>
         <div class="qc-title">
-            {{ question.title }} {%if question.difficulty_level%} ({{question.difficulty_level}}) {%endif%}
+            {{ question.title }}
+        </div>
+        <div class="qc-tags">
+            {% include "programming/question_components/badges/difficulty.html" %}
+            {% for concept in question.concepts.all %}
+                {% if concept.slug == "display-text" or concept.slug == "functions" or concept.slug == "inputs" or concept.slug == "single-condition" or concept.slug == "multiple-conditions" or concept.slug == "advanced-conditionals" or concept.slug == "conditional-loops" or concept.slug == "range-loops" or concept.slug == "string-operations" or concept.slug == "lists" %}
+                    {% include "programming/question_components/badges/concept.html" %}
+                {% endif %}
+            {% endfor %}
+            {% for context in question.contexts.all %}
+                {% if context.slug in "real-world-applications" or context.slug == "simple-mathematics" or context.slug == "advanced-mathematics" or context.slug == "basic-geometry" or context.slug == "advanced-geometry" %}
+                    {% include "programming/question_components/badges/context.html" %}
+                {% endif %}
+            {% endfor %}
         </div>
     </a>
 </div>

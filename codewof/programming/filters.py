@@ -7,8 +7,7 @@ from programming.models import (
     ProgrammingConcepts,
     QuestionContexts,
 )
-from django import forms
-from programming.widgets import IndentCheckbox
+from programming.widgets import IndentCheckbox, DifficultyCheckbox, TypeCheckbox
 
 
 class QuestionFilter(django_filters.FilterSet):
@@ -18,7 +17,7 @@ class QuestionFilter(django_filters.FilterSet):
 
     difficulty_level = django_filters.filters.ModelMultipleChoiceFilter(
         queryset=DifficultyLevel.objects.order_by('level'),
-        widget=forms.CheckboxSelectMultiple
+        widget=DifficultyCheckbox,
     )
 
     concepts = django_filters.filters.ModelMultipleChoiceFilter(
@@ -34,7 +33,7 @@ class QuestionFilter(django_filters.FilterSet):
     )
 
     question_type = django_filters.filters.AllValuesMultipleFilter(
-        widget=forms.CheckboxSelectMultiple
+        widget=TypeCheckbox,
     )
 
     class Meta:
