@@ -61,6 +61,7 @@ class QuestionListView(LoginRequiredMixin, FilterView):
                 'contexts',
                 'contexts__parent',
             )
+            .order_by('difficulty_level')
             .annotate(completed=Exists(user_successful_attempt_subquery))
         )
         return questions
