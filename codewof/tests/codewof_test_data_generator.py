@@ -13,7 +13,10 @@ from programming.models import (
     QuestionTypeParsons,
     QuestionTypeDebugging,
     QuestionTypeProgramTestCase,
-    Like
+    Like,
+    DifficultyLevel,
+    ProgrammingConcepts,
+    QuestionContexts,
 )
 from research.models import StudyRegistration
 from users.models import UserType, Group, GroupRole, Membership, Invitation
@@ -23,7 +26,19 @@ User = get_user_model()
 
 def generate_questions():
     """Generate questions for use in codeWOF tests. Questions contain minimum information and complexity."""
-    Question.objects.create(slug="question-1", title='Test', question_text='Hello')
+    DifficultyLevel.objects.create(slug='easy', level=0, name='Easy')
+    Question.objects.create(
+        slug="question-1",
+        title='Test',
+        question_text='Hello',
+        difficulty_level=DifficultyLevel.objects.get(slug='easy'),
+    )
+
+    ProgrammingConcepts.objects.create(name='Display Text', slug='display-text', number=1)
+    Question.objects.get(slug='question-1').concepts.add(ProgrammingConcepts.objects.get(slug='display-text'))
+
+    QuestionContexts.objects.create(name='Mathematics', slug='mathematics', number=2)
+    Question.objects.get(slug='question-1').contexts.add(QuestionContexts.objects.get(slug='mathematics'))
 
     QuestionTypeProgram.objects.create(
         slug="program-question-1",

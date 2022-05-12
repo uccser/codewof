@@ -276,6 +276,18 @@ class QuestionModelTests(TestCase):
         question = Question.objects.get_subclass(slug='question-1')
         self.assertTrue(isinstance(question, Question))
 
+    def test_difficulty(self):
+        question = Question.objects.get(slug='question-1')
+        self.assertEqual('Easy', question.difficulty_level.name)
+
+    def test_concepts(self):
+        question = Question.objects.get(slug='question-1')
+        self.assertEqual('Display Text', question.concepts.all().first().name)
+
+    def test_contexts(self):
+        question = Question.objects.get(slug='question-1')
+        self.assertEqual('Mathematics', question.contexts.all().first().name)
+
 
 class QuestionTypeProgramModelTests(TestCase):
     @classmethod
