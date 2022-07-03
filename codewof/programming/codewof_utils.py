@@ -9,6 +9,7 @@ import json
 import logging
 import time
 import statistics
+from collections import defaultdict
 from dateutil.relativedelta import relativedelta
 
 from programming.models import (
@@ -107,15 +108,50 @@ def get_days_consecutively_answered(profile, user_attempts=None):
     return highest_streak
 
 
+def filter_questions_answered_in_past_month(attempts):
+    """Filters the given attempts by only returning those answered within the past month."""
+    today = datetime.datetime.now().replace(tzinfo=None) + relativedelta(days=1)
+    last_month = today - relativedelta(months=1)
+    solved = attempts.filter(datetime__gte=last_month.date(), passed_tests=True)
+    return solved
+
+
 def get_questions_answered_in_past_month(profile, user_attempts=None):
     """Get the number questions successfully answered in the past month."""
     if user_attempts is None:
         user_attempts = Attempt.objects.filter(profile=profile)
-
-    today = datetime.datetime.now().replace(tzinfo=None) + relativedelta(days=1)
-    last_month = today - relativedelta(months=1)
-    solved = user_attempts.filter(datetime__gte=last_month.date(), passed_tests=True)
+    solved = filter_questions_answered_in_past_month(user_attempts)
     return len(solved)
+
+
+def get_level_and_skill_dict(solved):
+    """Returns a dictionary of level and skill information from a given set of solved attempts."""
+    levels_and_skills = {
+        'difficulty_level': defaultdict(int),
+        'concept_num': defaultdict(int),
+        'context_num': defaultdict(int),
+    }
+    for attempt in solved:
+        question = attempt.question
+        levels_and_skills['difficulty_level'][question.difficulty_level.level] += 1
+        for concept_num in set(concept.number for concept in question.concepts.all()):
+            levels_and_skills['concept_num'][concept_num] += 1
+        for context_num in set(context.number for context in question.contexts.all()):
+            levels_and_skills['context_num'][context_num] += 1
+    return levels_and_skills
+
+
+def get_level_and_skill_info(profile):
+    """
+    Returns a dictionary of level and skill information from a given profile, taking all solved attempts and those
+    solved within the past month.
+    """
+    solved = Attempt.objects.filter(profile=profile, passed_tests=True)
+    info = {
+        'all': get_level_and_skill_dict(solved),
+        'month': get_level_and_skill_dict(filter_questions_answered_in_past_month(solved)),
+    }
+    return info
 
 
 def check_achievement_conditions(profile, user_attempts=None):

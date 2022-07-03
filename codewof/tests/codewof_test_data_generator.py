@@ -44,8 +44,11 @@ def generate_questions():
         slug="program-question-1",
         title='Test',
         question_text='Hello',
-        solution="question_answer"
+        solution="question_answer",
+        difficulty_level=DifficultyLevel.objects.get(slug='easy'),
     )
+    Question.objects.get(slug='program-question-1').concepts.add(ProgrammingConcepts.objects.get(slug='display-text'))
+    Question.objects.get(slug='program-question-1').contexts.add(QuestionContexts.objects.get(slug='mathematics'))
 
     QuestionTypeFunction.objects.create(
         slug="function-question-1",

@@ -6,6 +6,9 @@ from programming.models import (
     Attempt,
     Achievement,
     Earned,
+    DifficultyLevel,
+    ProgrammingConcepts,
+    QuestionContexts,
 )
 from tests.codewof_test_data_generator import (
     generate_users,
@@ -19,7 +22,10 @@ from programming.codewof_utils import (
     backdate_points_and_achievements,
     calculate_achievement_points,
     check_achievement_conditions,
+    filter_questions_answered_in_past_month,
     get_days_consecutively_answered,
+    get_level_and_skill_dict,
+    get_level_and_skill_info,
     get_questions_answered_in_past_month,
     POINTS_ACHIEVEMENT,
     POINTS_SOLUTION,
@@ -139,11 +145,51 @@ class TestCodewofUtils(TestCase):
         streak = get_days_consecutively_answered(user.profile)
         self.assertEqual(streak, 2)
 
+    def test_filter_questions_answered_in_past_month(self):
+        generate_attempts()
+        user = User.objects.get(id=1)
+        user_attempts = Attempt.objects.filter(profile=user.profile)
+        solved = filter_questions_answered_in_past_month(user_attempts)
+        self.assertEqual(len(solved), 1)
+        self.assertEqual(type(solved[0]), Attempt)
+
     def test_get_questions_answered_in_past_month(self):
         generate_attempts()
         user = User.objects.get(id=1)
         num_solved = get_questions_answered_in_past_month(user.profile)
         self.assertEqual(num_solved, 1)
+
+    def test_get_level_and_skill_dict(self):
+        generate_attempts()
+        user = User.objects.get(id=1)
+        solved = Attempt.objects.filter(profile=user.profile, passed_tests=True)
+        level_and_skill_dict = get_level_and_skill_dict(solved)
+        expected = {
+            'difficulty_level': {DifficultyLevel.objects.get(slug='easy').level: len(solved)},
+            'concept_num': {ProgrammingConcepts.objects.get(slug='display-text').number: len(solved)},
+            'context_num': {QuestionContexts.objects.get(slug='mathematics').number: len(solved)},
+        }
+        self.assertEqual(level_and_skill_dict, expected)
+
+    def test_get_level_and_skill_info(self):
+        generate_attempts()
+        user = User.objects.get(id=1)
+        solved = Attempt.objects.filter(profile=user.profile, passed_tests=True)
+        solved_in_past_month = filter_questions_answered_in_past_month(solved)
+        level_and_skill_info = get_level_and_skill_info(user.profile)
+        expected = {
+            'all': {
+                'difficulty_level': {DifficultyLevel.objects.get(slug='easy').level: len(solved)},
+                'concept_num': {ProgrammingConcepts.objects.get(slug='display-text').number: len(solved)},
+                'context_num': {QuestionContexts.objects.get(slug='mathematics').number: len(solved)},
+            },
+            'month': {
+                'difficulty_level': {DifficultyLevel.objects.get(slug='easy').level: len(solved_in_past_month)},
+                'concept_num': {ProgrammingConcepts.objects.get(slug='display-text').number: len(solved_in_past_month)},
+                'context_num': {QuestionContexts.objects.get(slug='mathematics').number: len(solved_in_past_month)},
+            },
+        }
+        self.assertEqual(level_and_skill_info, expected)
 
     def test_backdate_points_correct_second_attempt(self):
         user = User.objects.get(id=2)
