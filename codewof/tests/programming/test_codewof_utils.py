@@ -15,6 +15,7 @@ from tests.codewof_test_data_generator import (
     generate_achievements,
     generate_questions,
     generate_attempts,
+    generate_attempts_multiple_questions,
 )
 from programming.codewof_utils import (
     add_points,
@@ -22,7 +23,7 @@ from programming.codewof_utils import (
     backdate_points_and_achievements,
     calculate_achievement_points,
     check_achievement_conditions,
-    filter_questions_answered_in_past_month,
+    filter_attempts_in_past_month,
     get_days_consecutively_answered,
     get_level_and_skill_dict,
     get_level_and_skill_info,
@@ -145,13 +146,13 @@ class TestCodewofUtils(TestCase):
         streak = get_days_consecutively_answered(user.profile)
         self.assertEqual(streak, 2)
 
-    def test_filter_questions_answered_in_past_month(self):
+    def test_filter_attempts_in_past_month(self):
         generate_attempts()
         user = User.objects.get(id=1)
         user_attempts = Attempt.objects.filter(profile=user.profile)
-        solved = filter_questions_answered_in_past_month(user_attempts)
-        self.assertEqual(len(solved), 1)
-        self.assertEqual(type(solved[0]), Attempt)
+        solved = filter_attempts_in_past_month(user_attempts)
+        self.assertEqual(len(solved), 3)
+        self.assertTrue(all(type(solved_attempt) == Attempt for solved_attempt in solved))
 
     def test_get_questions_answered_in_past_month(self):
         generate_attempts()
@@ -160,33 +161,73 @@ class TestCodewofUtils(TestCase):
         self.assertEqual(num_solved, 1)
 
     def test_get_level_and_skill_dict(self):
-        generate_attempts()
+        generate_attempts_multiple_questions()
         user = User.objects.get(id=1)
-        solved = Attempt.objects.filter(profile=user.profile, passed_tests=True)
-        level_and_skill_dict = get_level_and_skill_dict(solved)
+        all_attempts = Attempt.objects.filter(profile=user.profile)
+        solved = all_attempts.filter(passed_tests=True)
+        level_and_skill_dict = get_level_and_skill_dict(solved, all_attempts)
         expected = {
-            'difficulty_level': {DifficultyLevel.objects.get(slug='easy').level: len(solved)},
-            'concept_num': {ProgrammingConcepts.objects.get(slug='display-text').number: len(solved)},
-            'context_num': {QuestionContexts.objects.get(slug='mathematics').number: len(solved)},
+            'difficulty_level': {
+                DifficultyLevel.objects.get(slug='easy').level: {
+                    'num_solved': len(solved.filter(question__slug='program-question-1')),
+                    'attempts': [len(all_attempts.filter(question__slug='program-question-1'))],
+                },
+                DifficultyLevel.objects.get(slug='moderate').level: {
+                    'num_solved': len(solved.filter(question__slug='function-question-1')),
+                    'attempts': [len(all_attempts.filter(question__slug='function-question-1'))],
+                },
+            },
+            'concept_num': {
+                ProgrammingConcepts.objects.get(slug='display-text').number: {
+                    'num_solved': len(solved.filter(question__slug='program-question-1')),
+                    'attempts': [len(all_attempts.filter(question__slug='program-question-1'))]},
+            },
+            'context_num': {
+                QuestionContexts.objects.get(slug='mathematics').number: {
+                    'num_solved': len(solved.filter(question__slug='program-question-1')),
+                    'attempts': [len(all_attempts.filter(question__slug='program-question-1'))]},
+            },
         }
         self.assertEqual(level_and_skill_dict, expected)
 
     def test_get_level_and_skill_info(self):
-        generate_attempts()
+        generate_attempts_multiple_questions()
         user = User.objects.get(id=1)
-        solved = Attempt.objects.filter(profile=user.profile, passed_tests=True)
-        solved_in_past_month = filter_questions_answered_in_past_month(solved)
+        all_attempts = Attempt.objects.filter(profile=user.profile)
+        solved = all_attempts.filter(passed_tests=True)
         level_and_skill_info = get_level_and_skill_info(user.profile)
         expected = {
             'all': {
-                'difficulty_level': {DifficultyLevel.objects.get(slug='easy').level: len(solved)},
-                'concept_num': {ProgrammingConcepts.objects.get(slug='display-text').number: len(solved)},
-                'context_num': {QuestionContexts.objects.get(slug='mathematics').number: len(solved)},
+                'difficulty_level': {
+                    DifficultyLevel.objects.get(slug='easy').level: {
+                        'num_solved': len(solved.filter(question__slug='program-question-1')),
+                        'attempts': [len(all_attempts.filter(question__slug='program-question-1'))],
+                    },
+                    DifficultyLevel.objects.get(slug='moderate').level: {
+                        'num_solved': len(solved.filter(question__slug='function-question-1')),
+                        'attempts': [len(all_attempts.filter(question__slug='function-question-1'))],
+                    },
+                },
+                'concept_num': {
+                    ProgrammingConcepts.objects.get(slug='display-text').number: {
+                        'num_solved': len(solved.filter(question__slug='program-question-1')),
+                        'attempts': [len(all_attempts.filter(question__slug='program-question-1'))]},
+                },
+                'context_num': {
+                    QuestionContexts.objects.get(slug='mathematics').number: {
+                        'num_solved': len(solved.filter(question__slug='program-question-1')),
+                        'attempts': [len(all_attempts.filter(question__slug='program-question-1'))]},
+                },
             },
             'month': {
-                'difficulty_level': {DifficultyLevel.objects.get(slug='easy').level: len(solved_in_past_month)},
-                'concept_num': {ProgrammingConcepts.objects.get(slug='display-text').number: len(solved_in_past_month)},
-                'context_num': {QuestionContexts.objects.get(slug='mathematics').number: len(solved_in_past_month)},
+                'difficulty_level': {
+                    DifficultyLevel.objects.get(slug='moderate').level: {
+                        'num_solved': len(solved.filter(question__slug='function-question-1')),
+                        'attempts': [len(all_attempts.filter(question__slug='function-question-1'))],
+                    },
+                },
+                'concept_num': {},
+                'context_num': {},
             },
         }
         self.assertEqual(level_and_skill_info, expected)
