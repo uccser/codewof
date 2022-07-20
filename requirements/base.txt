@@ -1,5 +1,5 @@
 # Django
-django==3.2.11
+django==3.2.14
 django-environ==0.9.0
 django-model-utils==4.2.0
 django-anymail[mailgun]==8.6
