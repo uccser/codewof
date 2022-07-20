@@ -3,7 +3,7 @@
 
 # Testing
 # ------------------------------------------------------------------------------
-mypy==0.931  # https://github.com/python/mypy
+mypy==0.971  # https://github.com/python/mypy
 pytest==7.1.2  # https://github.com/pytest-dev/pytest
 pytest-sugar==0.9.5  # https://github.com/Frozenball/pytest-sugar
 
