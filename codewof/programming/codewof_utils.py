@@ -123,10 +123,23 @@ def get_questions_answered_in_past_month(profile, user_attempts=None):
     return len(solved)
 
 
+def remove_duplicate_question_slugs(attempts):
+    """Removes attempts with question slugs of another attempt, from a given set of attempts."""
+    attempts_without_duplicates = []
+    question_slugs = set()
+    for attempt in attempts:
+        slug = attempt.question.slug
+        if slug not in question_slugs:
+            attempts_without_duplicates.append(attempt)
+        question_slugs.add(slug)
+    return attempts_without_duplicates
+
+
 def get_level_and_skill_dict(solved, all_attempts):
     """Returns a dictionary of level and skill information from a given set of solved and all attempts."""
+    solved_without_duplicates = remove_duplicate_question_slugs(solved)
     levels_and_skills = {'difficulty_level': dict(), 'concept_num': dict(), 'context_num': dict()}
-    for solved_attempt in solved:
+    for solved_attempt in solved_without_duplicates:
         question = solved_attempt.question
         num_attempts = len(all_attempts.filter(question__slug=question.slug))
 
