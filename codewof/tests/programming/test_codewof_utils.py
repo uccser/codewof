@@ -25,12 +25,11 @@ from programming.codewof_utils import (
     check_achievement_conditions,
     filter_attempts_in_past_month,
     get_days_consecutively_answered,
-    get_level_and_skill_dict,
-    get_level_and_skill_info,
     get_questions_answered_in_past_month,
     POINTS_ACHIEVEMENT,
     POINTS_SOLUTION,
 )
+from programming.skill_and_level_tracking import get_level_and_skill_dict, get_level_and_skill_info
 from tests.conftest import user
 
 User = get_user_model()
