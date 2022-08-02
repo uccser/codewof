@@ -51,7 +51,7 @@ defhelp start 'Start development environment.'
 # Stop development environment
 cmd_end() {
   echo "Stopping systems..."
-  docker-compose -f docker-compose.local.yml down
+  docker-compose -f docker-compose.local.yml down --remove-orphans
 }
 defhelp end 'Stop development environment.'
 

@@ -383,9 +383,7 @@ CKEDITOR_CONFIGS = {
 # ------------------------------------------------------------------------------
 DEPLOYED = env.bool('DEPLOYED')
 GIT_SHA = env('GIT_SHA', default=None)
-if GIT_SHA:
-    GIT_SHA = GIT_SHA[:8]
-else:
+if not GIT_SHA:
     GIT_SHA = "local development"
 CODEWOF_DOMAIN = env('CODEWOF_DOMAIN', default='https://codewof.localhost')
 PRODUCTION_ENVIRONMENT = False

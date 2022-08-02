@@ -26,6 +26,16 @@ ARG GIT_SHA
 ARG BUILD_ENVIRONMENT
 ARG APP_HOME=/app
 
+LABEL org.opencontainers.image.title='codeWOF'
+LABEL org.opencontainers.image.description='A website for maintaining your basic programming skills.'
+LABEL org.opencontainers.image.authors='University of Canterbury Computer Science Education Research Group (UCCSER) https://github.com/uccser'
+LABEL org.opencontainers.image.url='https://www.codewof.co.nz/'
+LABEL org.opencontainers.image.documentation='https://github.com/uccser/codewof'
+LABEL org.opencontainers.image.source='https://github.com/uccser/codewof'
+LABEL org.opencontainers.image.vendor='University of Canterbury Computer Science Education Research Group (UCCSER)'
+LABEL org.opencontainers.image.licenses='MIT'
+LABEL org.opencontainers.image.revision=${GIT_SHA}
+
 # Set environment variables
 ENV LANG C.UTF-8
 ENV DEPLOYED=True
