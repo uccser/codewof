@@ -53,9 +53,9 @@ class QuestionListView(LoginRequiredMixin, FilterView):
         )
         questions = (
             Question.objects.all()
-                .select_subclasses()
-                .select_related('difficulty_level')
-                .prefetch_related(
+            .select_subclasses()
+            .select_related('difficulty_level')
+            .prefetch_related(
                 'concepts',
                 'concepts__parent',
                 'contexts',
@@ -68,8 +68,8 @@ class QuestionListView(LoginRequiredMixin, FilterView):
 
     def get_context_data(self, **kwargs):
         """Provide the context data for the question list view.
-        Returns:
-            Dictionary of context data.
+
+        Returns: Dictionary of context data.
         """
         context = super().get_context_data(**kwargs)
         context['filter_formatter'] = create_filter_helper("programming:question_list")

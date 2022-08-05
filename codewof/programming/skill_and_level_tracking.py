@@ -1,6 +1,4 @@
-"""
-Skill and level tracking for codeWOF.
-"""
+"""Skill and level tracking for codeWOF."""
 
 from programming.codewof_utils import filter_attempts_in_past_month
 from programming.models import Attempt
@@ -8,8 +6,9 @@ from programming.models import Attempt
 
 def get_level_and_skill_info(profile):
     """
-    Returns a dictionary of level and skill information from a given profile, taking solved plus all attempts and those
-    within the past month.
+    Return a dictionary of level and skill information from a given profile.
+
+    This uses the solved plus all attempts and those within the past month.
     """
     all_attempts = Attempt.objects.filter(profile=profile)
     solved = all_attempts.filter(passed_tests=True)
@@ -23,7 +22,7 @@ def get_level_and_skill_info(profile):
 
 
 def get_level_and_skill_dict(solved, all_attempts):
-    """Returns a dictionary of level and skill information from a given set of solved and all attempts."""
+    """Return a dictionary of level and skill information from a given set of solved and all attempts."""
     solved_without_duplicates = remove_duplicate_question_slugs(solved)
     levels_and_skills = {'difficulty_level': dict(), 'concept_num': dict(), 'context_num': dict()}
     for solved_attempt in solved_without_duplicates:
@@ -50,7 +49,7 @@ def get_level_and_skill_dict(solved, all_attempts):
 
 
 def remove_duplicate_question_slugs(attempts):
-    """Removes attempts with question slugs of another attempt, from a given set of attempts."""
+    """Remove attempts with question slugs of another attempt, from a given set of attempts."""
     attempts_without_duplicates = []
     question_slugs = set()
     for attempt in attempts:

@@ -1,6 +1,4 @@
-"""
-Question recommendations for codeWOF.
-"""
+"""Question recommendations for codeWOF."""
 
 import statistics
 
@@ -8,7 +6,7 @@ from programming.models import DifficultyLevel, ProgrammingConcepts, QuestionCon
 
 
 def get_recommendation_values(info):
-    """Gets the recommendation values for the difficulty, concept, and context (unfinished)."""
+    """Get the recommendation values for the difficulty, concept, and context (unfinished)."""
     difficulty_quantity = len(DifficultyLevel.objects.all())
     concept_quantity = len(ProgrammingConcepts.objects.all())
     context_quantity = len(QuestionContexts.objects.all())
@@ -19,8 +17,9 @@ def get_recommendation_values(info):
 
 def get_scores(info, difficulty_quantity, concept_quantity, context_quantity):
     """
-    Returns a dictionary of scores from the given tracked information, with scores based on all questions answered, and
-    those answered within the past month.
+    Return a dictionary of scores from the given tracked information.
+
+    Creates scores based on all questions answered, and those answered within the past month.
     """
     return {
         'all': {
@@ -37,7 +36,7 @@ def get_scores(info, difficulty_quantity, concept_quantity, context_quantity):
 
 
 def generate_scores(quantity, info_category):
-    """Generates and returns the scores based on a given information category (e.g. difficulty)."""
+    """Generate and return the scores based on a given information category (e.g. difficulty)."""
     scores = [None] * quantity
     for category_num in range(quantity):
         if category_num in info_category:
@@ -49,7 +48,7 @@ def generate_scores(quantity, info_category):
 
 
 def get_comfortable_difficulty(scores, difficulty_levels):
-    """Returns a comfortable difficulty level (reasonable for the user to solve, not too hard or easy)."""
+    """Return a comfortable difficulty level (reasonable for the user to solve, not too hard or easy)."""
     difficulty_scores = scores['month']['difficulty']
     comfortable_difficulty = calculate_comfortable_difficulty(difficulty_scores, difficulty_levels)
     if comfortable_difficulty is None:
@@ -61,7 +60,7 @@ def get_comfortable_difficulty(scores, difficulty_levels):
 
 
 def calculate_comfortable_difficulty(difficulty_scores, difficulty_levels):
-    """Calculates and returns a comfortable difficulty level based on the supplied scores."""
+    """Calculate and return a comfortable difficulty level based on the supplied scores."""
     if len(difficulty_levels) < 1:
         return None
     max_difficulty_low_score = None

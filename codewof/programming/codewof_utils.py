@@ -108,7 +108,7 @@ def get_days_consecutively_answered(profile, user_attempts=None):
 
 
 def filter_attempts_in_past_month(attempts):
-    """Filters the given attempts by only returning those within the past month."""
+    """Filter the given attempts by only returning those within the past month."""
     today = datetime.datetime.now().replace(tzinfo=None) + relativedelta(days=1)
     last_month = today - relativedelta(months=1)
     solved = attempts.filter(datetime__gte=last_month.date())

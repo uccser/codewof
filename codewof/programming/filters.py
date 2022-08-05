@@ -12,6 +12,7 @@ from programming.widgets import IndentCheckbox, DifficultyCheckbox, TypeCheckbox
 
 class QuestionFilter(django_filters.FilterSet):
     """Filter for questions extends FilterSet.
+
     Allows for filtering of question type, difficulty level, concepts and contexts
     """
 

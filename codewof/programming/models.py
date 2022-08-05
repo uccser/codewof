@@ -166,8 +166,8 @@ class DifficultyLevel(models.Model):
 
     def __str__(self):
         """Text representation of difficulty level.
-        Returns:
-            Difficulty level string
+
+        Returns: Difficulty level string
         """
         return self.name
 
@@ -196,8 +196,8 @@ class QuestionContexts(models.Model):
     def __str__(self):
         """
         To string method.
-        Returns:
-            Name of question context (str).
+
+        Returns: Name of question context (str).
         """
         return self.name
 
@@ -225,8 +225,8 @@ class ProgrammingConcepts(models.Model):
 
     def __str__(self):
         """Text representation of a programming concept.
-        Returns:
-            Name of programming concept (str).
+
+        Returns: Name of programming concept (str).
         """
         return self.name
 

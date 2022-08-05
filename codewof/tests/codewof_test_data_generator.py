@@ -431,8 +431,8 @@ def generate_attempts_multiple_questions():
     """
     Generate attempts for codeWOF tests.
 
-    Attempts are generated for user 1 and 3 different questions, with attempts created to cover consecutive days, failed
-    attempts, and passed attempts.
+    Attempts are generated for user 1 and 3 different questions, with attempts created to cover consecutive days,
+    failed attempts, and passed attempts.
     """
     user = User.objects.get(id=1)
     program_question = Question.objects.get(slug='program-question-1')

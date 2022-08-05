@@ -10,5 +10,4 @@ class Command(management.base.BaseCommand):
 
     def handle(self, *args, **options):
         """Automatically called when the updatedata command is given."""
-
         management.call_command("load_questions")

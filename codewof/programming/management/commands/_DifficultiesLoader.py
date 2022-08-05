@@ -14,9 +14,8 @@ class DifficultiesLoader(TranslatableModelLoader):
     @transaction.atomic
     def load(self):
         """Load difficulties.
-        Raise:
-            MissingRequiredFieldError: when no object can be found with the matching
-                attribute.
+
+        Raise: MissingRequiredFieldError: when no object can be found with the matching attribute.
         """
         difficulties_structure = self.load_yaml_file(self.structure_file_path)
 
