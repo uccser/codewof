@@ -9,11 +9,6 @@ from programming.models import DifficultyLevel, ProgrammingConcepts, QuestionCon
 from programming.skill_and_level_tracking import get_level_and_skill_info
 
 
-difficulty_levels = sorted(list(set([difficulty.level for difficulty in DifficultyLevel.objects.all()])))
-concept_numbers = sorted(list(set([concept.number for concept in ProgrammingConcepts.objects.all()])))
-context_numbers = sorted(list(set([context.number for context in QuestionContexts.objects.all()])))
-
-
 def get_recommended_questions(profile):
     """Get the recommended questions based on the user's previously answered questions."""
     level_and_skill_info = get_level_and_skill_info(profile)
@@ -25,22 +20,28 @@ def get_recommended_questions(profile):
 
 def get_scores(level_and_skill_info):
     """
-    Return a dictionary of scores from the given tracked information.
+    Return a dictionary of scores and numbers from the given tracked information.
 
     Creates scores based on all questions answered, and those answered within the past month.
     """
+    difficulty_levels = sorted(list(set([difficulty.level for difficulty in DifficultyLevel.objects.all()])))
+    concept_numbers = sorted(list(set([concept.number for concept in ProgrammingConcepts.objects.all()])))
+    context_numbers = sorted(list(set([context.number for context in QuestionContexts.objects.all()])))
     return {
         'difficulty': {
             'all': generate_scores(difficulty_levels, level_and_skill_info['all']['difficulty_level']),
             'month': generate_scores(difficulty_levels, level_and_skill_info['month']['difficulty_level']),
+            'numbers': difficulty_levels,
         },
         'concept': {
             'all': generate_scores(concept_numbers, level_and_skill_info['all']['concept_num']),
             'month': generate_scores(concept_numbers, level_and_skill_info['month']['concept_num']),
+            'numbers': concept_numbers,
         },
         'context': {
             'all': generate_scores(context_numbers, level_and_skill_info['all']['context_num']),
             'month': generate_scores(context_numbers, level_and_skill_info['month']['context_num']),
+            'numbers': context_numbers,
         },
     }
 
@@ -83,12 +84,14 @@ def calculate_recommended_questions(scores, unsolved_questions):
 def get_recommendation_categories(scores, unsolved_questions):
     """Get the recommendations for all categories (comfortable difficulty, and comfortable concepts/contexts)."""
     comfortable_difficulties = get_comfortable_difficulties(scores['difficulty'])
-    uncomfortable_concepts = get_uncomfortable_concepts_or_contexts(scores['concept'], concept_numbers)
-    uncomfortable_contexts = get_uncomfortable_concepts_or_contexts(scores['context'], context_numbers)
+    uncomfortable_concepts = get_uncomfortable_concepts_or_contexts(scores['concept'])
+    uncomfortable_contexts = get_uncomfortable_concepts_or_contexts(scores['context'])
     comfortable_difficulty_recommendations = get_recommendations(
         unsolved_questions, comfortable_difficulties, uncomfortable_concepts, uncomfortable_contexts
     )
-    uncomfortable_difficulties = get_uncomfortable_difficulties(comfortable_difficulties)
+    uncomfortable_difficulties = get_uncomfortable_difficulties(
+        comfortable_difficulties, scores['difficulty']['numbers']
+    )
     comfortable_concepts = list(reversed(uncomfortable_concepts))
     comfortable_contexts = list(reversed(uncomfortable_contexts))
     comfortable_concepts_contexts_recommendations = get_recommendations(
@@ -160,15 +163,15 @@ def get_random_recommendations(comfortable_difficulty_questions, comfortable_con
 
 def get_comfortable_difficulties(scores):
     """Return comfortable difficulty levels (reasonable for the user to solve, not too hard or easy, in-order)."""
-    comfortable_difficulty = calculate_comfortable_difficulties(scores['month'])
+    comfortable_difficulty = calculate_comfortable_difficulties(scores['month'], scores['numbers'])
     if comfortable_difficulty is None:
-        comfortable_difficulty = calculate_comfortable_difficulties(scores['all'])
+        comfortable_difficulty = calculate_comfortable_difficulties(scores['all'], scores['numbers'])
     if comfortable_difficulty is None:
         comfortable_difficulty = 0
     return comfortable_difficulty
 
 
-def calculate_comfortable_difficulties(difficulty_scores):
+def calculate_comfortable_difficulties(difficulty_scores, difficulty_levels):
     """Calculate and return comfortable difficulty levels (in-order) based on the supplied scores."""
     comfortable_difficulty = None
     max_difficulty_low_score = None
@@ -195,7 +198,7 @@ def calculate_comfortable_difficulties(difficulty_scores):
         ]
 
 
-def get_uncomfortable_difficulties(comfortable_difficulties):
+def get_uncomfortable_difficulties(comfortable_difficulties, difficulty_levels):
     """Calculate and return uncomfortable difficulty levels (in-order), using the supplied comfortable difficulties."""
     comfortable_difficulty = comfortable_difficulties[0]
     if comfortable_difficulty + 1 <= max(difficulty_levels):
@@ -208,16 +211,16 @@ def get_uncomfortable_difficulties(comfortable_difficulties):
     ]
 
 
-def get_uncomfortable_concepts_or_contexts(scores, category_nums):
+def get_uncomfortable_concepts_or_contexts(scores):
     """
     Return uncomfortable concept or context numbers.
 
     In order, the concepts/contexts either have not been done recently/before, or the user has struggled to answer
     questions with them.
     """
-    uncomfortable_categories = calculate_uncomfortable_concepts_or_contexts(category_nums, scores['month'])
+    uncomfortable_categories = calculate_uncomfortable_concepts_or_contexts(scores['numbers'], scores['month'])
     if len(uncomfortable_categories) <= 1:
-        uncomfortable_categories = calculate_uncomfortable_concepts_or_contexts(category_nums, scores['all'])
+        uncomfortable_categories = calculate_uncomfortable_concepts_or_contexts(scores['numbers'], scores['all'])
     return uncomfortable_categories
 
 
