@@ -60,10 +60,22 @@ def generate_scores(numbers, info_category):
 
 def get_unsolved_questions(profile):
     """Get all questions unsolved by the user."""
-    return Question.objects.all().filter(
-        Q(attempt__isnull=True) | (Q(attempt__passed_tests=False, attempt__profile=profile))
-    ).distinct('pk').select_subclasses()
-
+    return (
+        Question.objects.all()
+        .filter(
+            Q(attempt__isnull=True) | (Q(attempt__passed_tests=False, attempt__profile=profile))
+        )
+        .distinct('pk')
+        .select_subclasses()
+        .select_related('difficulty_level')
+        .prefetch_related(
+            'concepts',
+            'concepts__parent',
+            'contexts',
+            'contexts__parent',
+        )
+    )
+ 
 
 def calculate_recommended_questions(scores, unsolved_questions):
     """

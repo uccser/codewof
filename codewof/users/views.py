@@ -1,18 +1,15 @@
 """Views for users application."""
 import json
 import logging
-from random import Random
 
 from django.db import transaction
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
-from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.views.generic import DetailView, RedirectView, UpdateView, CreateView, DeleteView
 from django.views.decorators.http import require_http_methods
@@ -29,13 +26,12 @@ from users.serializers import (
     InvitationSerializer,
     EmailReminderSerializer,
 )
-from programming import settings as programming_settings
+from django.template.loader import render_to_string
 from users.forms import UserChangeForm, GroupCreateUpdateForm, GroupInvitationsForm
 from functools import wraps
 from allauth.account.admin import EmailAddress
 
 from programming.models import (
-    Question,
     Attempt,
     Achievement
 )
@@ -48,6 +44,7 @@ from users.models import (
     EmailReminder,
 )
 from programming.codewof_utils import get_questions_answered_in_past_month, backdate_user
+from programming.question_recommendations import get_recommended_questions
 from users.mixins import AdminRequiredMixin, AdminOrMemberRequiredMixin, SufficientAdminsMixin, \
     RequestUserIsMembershipUserMixin
 from users.utils import send_invitation_email
@@ -86,47 +83,13 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         user = self.request.user
         if not user.profile.has_backdated:
             backdate_user(user.profile)
-        context = super().get_context_data(**kwargs)
-        now = timezone.now()
-        today = now.date()
-
-        # Get questions not attempted before today
-        questions = Question.objects.all()
-
-        # TODO: Also filter by questions added before today
-        questions = questions.filter(
-            Q(attempt__isnull=True)
-            | (Q(attempt__passed_tests=False) & Q(attempt__datetime__date__lte=today))
-            | (Q(attempt__passed_tests=True) & Q(attempt__datetime__date=today))
-        ).order_by('pk').distinct('pk').select_subclasses()
-        questions = list(questions)
-
-        # Randomly pick 3 based off seed of todays date
-        if len(questions) > 0:
-            random_seeded = Random('{}{}'.format(user.pk, today))
-            number_to_do = min(len(questions), programming_settings.QUESTIONS_PER_DAY)
-            todays_questions = random_seeded.sample(questions, number_to_do)
-            all_complete = True
-            for question in todays_questions:
-                question.completed = Attempt.objects.filter(
-                    profile=user.profile,
-                    question=question,
-                    passed_tests=True,
-                ).exists()
-                if all_complete and not question.completed:
-                    all_complete = False
-        else:
-            todays_questions = list()
-            all_complete = False
-
-        context['questions_to_do'] = todays_questions
-        context['all_complete'] = all_complete
         memberships = user.membership_set.all().order_by('group__name')
         groups = memberships.values('group').distinct()
         emails = EmailAddress.objects.annotate(email_lower=Lower('email')).filter(user=user, verified=True)
         invitations = Invitation.objects.filter(email__in=emails.values('email_lower')).exclude(group__in=groups)\
             .order_by('group__pk', '-date_sent').distinct('group__pk')
 
+        context = super().get_context_data(**kwargs)
         context['memberships'] = memberships
         context['invitations'] = invitations
         context['codewof_profile'] = self.object.profile
@@ -479,6 +442,19 @@ def get_group_emails(request, pk, group):
     """View for obtaining the email addresses of the members of the group."""
     emails_list = list(group.users.values_list('email', flat=True))
     return JsonResponse({"emails": emails_list})
+
+
+@require_http_methods(["GET"])
+@login_required()
+def get_recommendations(request):
+    """View for calculating and obtaining the HTML of a user's recommended questions."""
+    recommended_questions = get_recommended_questions(request.user.profile)
+    questions_html = []
+    for question in recommended_questions:
+        questions_html.append(
+            render_to_string('programming/question_components/question-card.html', {'question': question})
+        )
+    return JsonResponse({'recommended_questions': questions_html})
 
 
 class GroupAPIViewSet(viewsets.ReadOnlyModelViewSet):

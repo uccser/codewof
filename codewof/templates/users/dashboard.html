@@ -13,28 +13,55 @@
     {% comment %} Left column {% endcomment %}
     <div class="col-12 col-md-8 mb-3">
         {% comment %} Conditional here to check if allowed to use website {% endcomment %}
-        <h2>Your questions for today</h2>
+        <h2>Your recommended questions</h2>
         <p>We recommend doing one or two questions per day, to maintain your programming skills over a long period of time.</p>
 
-        {% if questions_to_do %}
-            <div class="row">
-                {% for question in questions_to_do %}
-                    <div class="col-12 col-md-6">
-                        {% include "programming/question_components/question-card.html" %}
+        <div id="recommendations" class="row">
+            <div class="col-12 col-md-6">
+                <div class="recommendation-border">
+                    <div class="recommendation">
+                        <p>
+                            <strong>Want to maintain your skills?</strong>
+                            <br>
+                            This question is likely to be at a difficulty you are accustomed to,
+                            while utilising a wide range of programming concepts and question contexts.
+                        </p>
+                        <div id="question-1">
+                            <br>
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <br><br>
+                        </div>
                     </div>
-                {% endfor %}
-            </div>
-            {% if all_complete %}
-                <div class="alert alert-success" role="alert">
-                    Great work completing today's questions! Come back tomorrow for a new set.
                 </div>
-            {% endif %}
-        {% else %}
-            <div class="alert alert-secondary" role="alert">
-                <strong>Sorry!</strong> We currently don't have questions for you to do today.
             </div>
-        {% endif %}
+            <div class="col-12 col-md-6">
+                <div class="recommendation-border">
+                    <div class="recommendation">
+                        <p>
+                            <strong>Are you up for a challenge?</strong>
+                            <br>
+                            This question is at a higher difficulty level than what you are comfortable with,
+                            while making use of some concepts and contexts you are well versed in.
+                        </p>
+                        <div id="question-2">
+                            <br>
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <br><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <br>
         <p>You've solved {{ num_questions_answered }} question{{ num_questions_answered|pluralize }} in the last month!</p>
 
         <h2>Groups</h2>
@@ -110,7 +137,11 @@ function getAcceptURL(invitationID) {
 function getRejectURL(invitationID) {
   return `{% url 'users:groups-invitations-reject' 0 %}`.replace("0", invitationID);
 }
+function getRecommendedQuestionsURL() {
+    return `{% url 'users:recommended-questions' %}`;
+}
 </script>
 
 <script src="{% static 'js/groups/invitations.js' %}"></script>
+<script src="{% static 'js/question_recommendations/recommended_questions.js' %}"></script>
 {% endblock scripts %}
