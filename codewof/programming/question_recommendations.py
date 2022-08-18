@@ -75,7 +75,7 @@ def get_unsolved_questions(profile):
             'contexts__parent',
         )
     )
- 
+
 
 def calculate_recommended_questions(scores, unsolved_questions):
     """
