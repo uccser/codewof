@@ -10,11 +10,11 @@ pytest-sugar==0.9.5  # https://github.com/Frozenball/pytest-sugar
 # Code quality
 # ------------------------------------------------------------------------------
 # flake8 is installed as dependency in base.txt
-coverage==6.4.2  # https://github.com/nedbat/coveragepy
+coverage==6.4.4  # https://github.com/nedbat/coveragepy
 pydocstyle==6.1.1
 
 # Django
 # ------------------------------------------------------------------------------
-django-debug-toolbar==3.5.0  # https://github.com/jazzband/django-debug-toolbar
+django-debug-toolbar==3.6.0  # https://github.com/jazzband/django-debug-toolbar
 django-extensions==3.2.0  # https://github.com/django-extensions/django-extensions
 pytest-django==4.5.2  # https://github.com/pytest-dev/pytest-django
