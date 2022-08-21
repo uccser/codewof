@@ -11,6 +11,26 @@
 
 {% block content %}
     <p>Currently all questions are based in Python 3.</p>
+    <br>
+    <h2>Your recommended questions</h2>
+    <div id="recommendations" class="row">
+        {% for description, question in recommendations %}
+            <div class="col-12 col-md-6">
+                <div class="recommendation-border">
+                    <div class="recommendation">
+                        <p>
+                            <strong>{{ description.0 }}</strong>
+                            <br>
+                            {{ description.1 }}
+                        </p>
+                        {% include "programming/question_components/question-card.html" %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <br>
+    <h2>All questions</h2>
     <details open>
         <summary>Filter Questions</summary>
         {% crispy filter.form filter_formatter %}

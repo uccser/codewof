@@ -9,6 +9,22 @@ from programming.models import DifficultyLevel, ProgrammingConcepts, QuestionCon
 from programming.skill_and_level_tracking import get_level_and_skill_info
 
 
+def get_recommendation_descriptions():
+    """Get recommendation descriptions, using a (heading, details) format."""
+    return (
+        (
+            'Want to maintain your skills?',
+            'This question is likely to be at a difficulty you are accustomed to, while making use of a wide range of '
+            'programming concepts and question contexts.'
+        ),
+        (
+            'Are you up for a challenge?',
+            'This question is at a higher difficulty level than what you are likely to be comfortable with, while '
+            'utilising concepts and contexts you are well versed in.'
+        ),
+    )
+
+
 def get_recommended_questions(profile):
     """Get the recommended questions based on the user's previously answered questions."""
     level_and_skill_info = get_level_and_skill_info(profile)

@@ -12,6 +12,8 @@ from django.views.decorators.http import require_http_methods
 from django_filters.views import FilterView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
+
+from programming.question_recommendations import get_recommended_questions, get_recommendation_descriptions
 from programming.serializers import (
     QuestionSerializer,
     ProfileSerializer,
@@ -71,8 +73,15 @@ class QuestionListView(LoginRequiredMixin, FilterView):
 
         Returns: Dictionary of context data.
         """
+        user = self.request.user
+
         context = super().get_context_data(**kwargs)
         context['filter_formatter'] = create_filter_helper("programming:question_list")
+        recommendation_descriptions = get_recommendation_descriptions()
+        recommended_questions = get_recommended_questions(user.profile)
+        context['recommendations'] = [(description, question) for description, question in zip(
+            recommendation_descriptions, recommended_questions
+        )]
         return context
 
 

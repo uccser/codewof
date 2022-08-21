@@ -26,7 +26,6 @@ from users.serializers import (
     InvitationSerializer,
     EmailReminderSerializer,
 )
-from django.template.loader import render_to_string
 from users.forms import UserChangeForm, GroupCreateUpdateForm, GroupInvitationsForm
 from functools import wraps
 from allauth.account.admin import EmailAddress
@@ -44,7 +43,7 @@ from users.models import (
     EmailReminder,
 )
 from programming.codewof_utils import get_questions_answered_in_past_month, backdate_user
-from programming.question_recommendations import get_recommended_questions
+from programming.question_recommendations import get_recommended_questions, get_recommendation_descriptions
 from users.mixins import AdminRequiredMixin, AdminOrMemberRequiredMixin, SufficientAdminsMixin, \
     RequestUserIsMembershipUserMixin
 from users.utils import send_invitation_email
@@ -90,6 +89,11 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             .order_by('group__pk', '-date_sent').distinct('group__pk')
 
         context = super().get_context_data(**kwargs)
+        recommendation_descriptions = get_recommendation_descriptions()
+        recommended_questions = get_recommended_questions(user.profile)
+        context['recommendations'] = [(description, question) for description, question in zip(
+            recommendation_descriptions, recommended_questions
+        )]
         context['memberships'] = memberships
         context['invitations'] = invitations
         context['codewof_profile'] = self.object.profile
@@ -442,19 +446,6 @@ def get_group_emails(request, pk, group):
     """View for obtaining the email addresses of the members of the group."""
     emails_list = list(group.users.values_list('email', flat=True))
     return JsonResponse({"emails": emails_list})
-
-
-@require_http_methods(["GET"])
-@login_required()
-def get_recommendations(request):
-    """View for calculating and obtaining the HTML of a user's recommended questions."""
-    recommended_questions = get_recommended_questions(request.user.profile)
-    questions_html = []
-    for question in recommended_questions:
-        questions_html.append(
-            render_to_string('programming/question_components/question-card.html', {'question': question})
-        )
-    return JsonResponse({'recommended_questions': questions_html})
 
 
 class GroupAPIViewSet(viewsets.ReadOnlyModelViewSet):
