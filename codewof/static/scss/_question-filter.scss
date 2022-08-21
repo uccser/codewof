@@ -285,3 +285,27 @@ input[filter="2"][name="contexts"] + label {
   @extend .context-filter;
   @extend .context-2;
 }
+
+.filter-box {
+  margin: 12px;
+  font-weight: bold;
+}
+
+details {
+  &[open] summary:before {
+    content: '⊖';
+  }
+
+  summary {
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:before {
+      content: '⊕';
+      margin-right: 0.5rem;
+      padding-bottom: 0.15rem;
+      opacity: .6;
+    }
+  }
+}

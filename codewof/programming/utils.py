@@ -55,6 +55,7 @@ def create_filter_helper(reset_url_pattern):
                 Submit('submit', 'Filter questions', css_class='btn-success'),
                 css_class='d-flex justify-content-between collapsed',
             ),
+            css_class='filter-box'
         )
     )
     return filter_formatter
