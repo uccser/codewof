@@ -79,9 +79,10 @@ class QuestionListView(LoginRequiredMixin, FilterView):
         context['filter_formatter'] = create_filter_helper("programming:question_list")
         recommendation_descriptions = get_recommendation_descriptions()
         recommended_questions = get_recommended_questions(user.profile)
-        context['recommendations'] = [(description, question) for description, question in zip(
-            recommendation_descriptions, recommended_questions
-        )]
+        if len(recommendation_descriptions) == len(recommended_questions):
+            context['recommendations'] = [(description, question) for description, question in zip(
+                recommendation_descriptions, recommended_questions
+            )]
         return context
 
 

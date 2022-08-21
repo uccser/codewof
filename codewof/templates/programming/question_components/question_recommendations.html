@@ -1,0 +1,24 @@
+{% load static %}
+
+<div class="row">
+    {% if recommendations %}
+        {% for description, question in recommendations %}
+            <div class="col-12 col-md-6">
+                <div class="recommendation-border">
+                    <div class="recommendation">
+                        <p>
+                            <strong>{{ description.0 }}</strong>
+                            <br>
+                            {{ description.1 }}
+                        </p>
+                        {% include "programming/question_components/question-card.html" %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-secondary" role="alert">
+            <strong>Sorry!</strong> We currently don't have any question recommendations for you.
+        </div>
+    {% endif %}
+</div>

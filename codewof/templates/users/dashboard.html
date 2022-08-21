@@ -15,24 +15,7 @@
         {% comment %} Conditional here to check if allowed to use website {% endcomment %}
         <h2>Your recommended questions</h2>
         <p>We recommend doing one or two questions per day, to maintain your programming skills over a long period of time.</p>
-
-        <div id="recommendations" class="row">
-            {% for description, question in recommendations %}
-                <div class="col-12 col-md-6">
-                    <div class="recommendation-border">
-                        <div class="recommendation">
-                            <p>
-                                <strong>{{ description.0 }}</strong>
-                                <br>
-                                {{ description.1 }}
-                            </p>
-                            {% include "programming/question_components/question-card.html" %}
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-
+        {% include "programming/question_components/question_recommendations.html" %}
         <br>
         <p>You've solved {{ num_questions_answered }} question{{ num_questions_answered|pluralize }} in the last month!</p>
 

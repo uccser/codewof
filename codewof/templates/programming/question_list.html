@@ -13,22 +13,7 @@
     <p>Currently all questions are based in Python 3.</p>
     <br>
     <h2>Your recommended questions</h2>
-    <div id="recommendations" class="row">
-        {% for description, question in recommendations %}
-            <div class="col-12 col-md-6">
-                <div class="recommendation-border">
-                    <div class="recommendation">
-                        <p>
-                            <strong>{{ description.0 }}</strong>
-                            <br>
-                            {{ description.1 }}
-                        </p>
-                        {% include "programming/question_components/question-card.html" %}
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+    {% include "programming/question_components/question_recommendations.html" %}
     <br>
     <h2>All questions</h2>
     <details>

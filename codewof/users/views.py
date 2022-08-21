@@ -91,9 +91,10 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         recommendation_descriptions = get_recommendation_descriptions()
         recommended_questions = get_recommended_questions(user.profile)
-        context['recommendations'] = [(description, question) for description, question in zip(
-            recommendation_descriptions, recommended_questions
-        )]
+        if len(recommendation_descriptions) == len(recommended_questions):
+            context['recommendations'] = [(description, question) for description, question in zip(
+                recommendation_descriptions, recommended_questions
+            )]
         context['memberships'] = memberships
         context['invitations'] = invitations
         context['codewof_profile'] = self.object.profile
