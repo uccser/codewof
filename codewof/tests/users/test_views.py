@@ -346,6 +346,7 @@ class TestGroupCreateView(TestCase):
     def setUpTestData(cls):
         # never modify this object in tests
         generate_users(user)
+        generate_questions()
         management.call_command("load_group_roles")
 
     def setUp(self):
@@ -718,6 +719,7 @@ class TestGroupDeleteView(TestCase):
     def setUpTestData(cls):
         # never modify this object in tests
         generate_users(user)
+        generate_questions()
         generate_groups()
         generate_memberships()
         management.call_command("load_group_roles")
@@ -1082,6 +1084,7 @@ class TestMembershipDeleteView(TestCase):
     def setUpTestData(cls):
         # never modify this object in tests
         generate_users(user)
+        generate_questions()
         generate_groups()
         generate_memberships()
         management.call_command("load_group_roles")
