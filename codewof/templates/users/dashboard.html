@@ -18,6 +18,8 @@
         {% include "programming/question_components/question_recommendations.html" %}
         <br>
         <p>You've solved {{ num_questions_answered }} question{{ num_questions_answered|pluralize }} in the last month!</p>
+        <a class="btn btn-primary btn-sm" href="{% url 'programming:question_list' %}">Questions</a>
+        <br><br>
 
         <h2>Groups</h2>
         {% if memberships %}
