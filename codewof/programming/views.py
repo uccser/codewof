@@ -83,6 +83,7 @@ class QuestionListView(LoginRequiredMixin, FilterView):
             context['recommendations'] = [(description, question) for description, question in zip(
                 recommendation_descriptions, recommended_questions
             )]
+        context['filter_button_pressed'] = "submit" in self.request.GET
         return context
 
 

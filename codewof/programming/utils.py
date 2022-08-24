@@ -11,7 +11,7 @@ from crispy_forms.layout import (
     Submit,
 )
 
-FILTER_HELPER_RESET_HTML_TEMPLATE = '<a href="{{% url "{}" %}}" class="btn btn-danger">Reset</a>'
+FILTER_HELPER_RESET_HTML_TEMPLATE = '<a href="{{% url "{}" %}}?submit=Reset" class="btn btn-danger">Reset</a>'
 
 
 def create_filter_helper(reset_url_pattern):
