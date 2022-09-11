@@ -192,10 +192,8 @@ def get_random_recommendations(comfortable_difficulty_questions, comfortable_con
 def get_comfortable_difficulties(scores):
     """Return comfortable difficulty levels (reasonable for the user to solve, not too hard or easy, in-order)."""
     comfortable_difficulty = calculate_comfortable_difficulties(scores['month'], scores['numbers'])
-    if comfortable_difficulty is None:
+    if comfortable_difficulty == scores['numbers']:
         comfortable_difficulty = calculate_comfortable_difficulties(scores['all'], scores['numbers'])
-    if comfortable_difficulty is None:
-        comfortable_difficulty = 0
     return comfortable_difficulty
 
 
