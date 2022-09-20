@@ -30,6 +30,7 @@ from programming.codewof_utils import (
     POINTS_SOLUTION,
 )
 from programming.skill_and_level_tracking import get_level_and_skill_dict, get_level_and_skill_info
+from programming.question_recommendations import get_scores, get_recommended_questions, get_unsolved_questions
 from tests.conftest import user
 
 User = get_user_model()
@@ -230,6 +231,76 @@ class TestCodewofUtils(TestCase):
             },
         }
         self.assertEqual(level_and_skill_info, expected)
+
+    def test_get_scores(self):
+        generate_attempts_multiple_questions()
+        user = User.objects.get(id=1)
+        all_attempts = Attempt.objects.filter(profile=user.profile)
+        solved = all_attempts.filter(passed_tests=True)
+        level_and_skill_info = get_level_and_skill_info(user.profile)
+        scores = get_scores(level_and_skill_info)
+        expected = {
+            'difficulty': {
+                'all': [
+                    sum([
+                        -len(solved.filter(question__difficulty_level__slug='easy')),
+                        len(all_attempts.filter(question__difficulty_level__slug='easy')),
+                        -1,
+                    ]),
+                    sum([
+                        -len(solved.filter(question__difficulty_level__slug='moderate')),
+                        len(all_attempts.filter(question__difficulty_level__slug='moderate')),
+                        -1,
+                    ]),
+                    None,
+                ],
+                'month': [
+                    None,
+                    sum([
+                        -len(solved.filter(question__difficulty_level__slug='moderate')),
+                        len(all_attempts.filter(question__difficulty_level__slug='moderate')),
+                        -1,
+                    ]),
+                    None,
+                ],
+                'numbers': sorted(list(set([difficulty.level for difficulty in DifficultyLevel.objects.all()]))),
+            },
+            'concept': {
+                'all': [
+                    sum([
+                        -len(solved.filter(question__slug='program-question-1')),
+                        len(all_attempts.filter(question__slug='program-question-1')),
+                        -1,
+                    ]),
+                ],
+                'month': [None],
+                'numbers': sorted(list(set([concept.number for concept in ProgrammingConcepts.objects.all()]))),
+            },
+            'context': {
+                'all': [
+                    sum([
+                        -len(solved.filter(question__slug='program-question-1')),
+                        len(all_attempts.filter(question__slug='program-question-1')),
+                        -1,
+                    ]),
+                ],
+                'month': [None],
+                'numbers': sorted(list(set([context.number for context in QuestionContexts.objects.all()]))),
+            },
+        }
+        self.assertEqual(scores, expected)
+
+    def test_get_num_unsolved_questions(self):
+        generate_attempts_multiple_questions()
+        user = User.objects.get(id=1)
+        num_unsolved_questions = len(get_unsolved_questions(user.profile))
+        self.assertEqual(num_unsolved_questions, 4)
+
+    def test_get_num_recommended_questions(self):
+        generate_attempts_multiple_questions()
+        user = User.objects.get(id=1)
+        num_recommended_questions = len(get_recommended_questions(user.profile))
+        self.assertEqual(num_recommended_questions, 2)
 
     def test_backdate_points_correct_second_attempt(self):
         user = User.objects.get(id=2)
