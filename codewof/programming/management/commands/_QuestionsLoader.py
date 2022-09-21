@@ -211,7 +211,7 @@ class QuestionsLoader(TranslatableModelLoader):
                                 self.structure_file_path,
                                 "contexts - value '{}' - added context is invalid due to being a parent"
                                     .format(slug),
-                                    )
+                            )
                         context_slugs_to_add.add(context_slug)
                         if context.parent is not None and context.parent not in context_slugs:
                             context_slugs_to_add.add(context.parent.slug)
