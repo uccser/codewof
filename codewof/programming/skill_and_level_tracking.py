@@ -23,7 +23,7 @@ def get_level_and_skill_info(profile):
 
 def get_level_and_skill_dict(solved, all_attempts):
     """Return a dictionary of level and skill information from a given set of solved and all attempts."""
-    solved_without_duplicates = remove_duplicate_question_slugs(solved)
+    solved_without_duplicates = solved.distinct('question__slug')
     levels_and_skills = {'difficulty_level': dict(), 'concept_num': dict(), 'context_num': dict()}
     for solved_attempt in solved_without_duplicates:
         question = solved_attempt.question
@@ -46,15 +46,3 @@ def get_level_and_skill_dict(solved, all_attempts):
             levels_and_skills['context_num'][context_num]['num_solved'] += 1
             levels_and_skills['context_num'][context_num]['attempts'].append(num_attempts)
     return levels_and_skills
-
-
-def remove_duplicate_question_slugs(attempts):
-    """Remove attempts with question slugs of another attempt, from a given set of attempts."""
-    attempts_without_duplicates = []
-    question_slugs = set()
-    for attempt in attempts:
-        slug = attempt.question.slug
-        if slug not in question_slugs:
-            attempts_without_duplicates.append(attempt)
-        question_slugs.add(slug)
-    return attempts_without_duplicates

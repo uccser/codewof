@@ -1,3 +1,11 @@
+/**
+ * This checkbox listener dynamically checks, unchecks, enables, and disables checkboxes for filters in the "Filter
+ * Questions" panel on the Questions page, based on the indentation of filters. This includes automatically checking
+ * and disabling indented filters that belong to a filter that has been checked, and unchecking and enabling filters
+ * that belong to a filter that has been unchecked. Additionally, this is also performed on load of the page, based on
+ * which filters have been checked.
+ */
+
 function getElementIndex(element) {
     let index = 0;
     while ((element = element.previousElementSibling)) {
@@ -14,7 +22,7 @@ function getCheckboxIndexesAndArray(checkboxes) {
     const checkboxIndexes = [];
     const checkboxArray = [];
     for (const checkbox of checkboxes) {
-        const index = $("input").index(checkbox);
+        const index = [...document.querySelectorAll("input")].indexOf(checkbox);
         checkboxIndexes.push(index);
         checkboxArray.push(checkbox);
     }
@@ -36,7 +44,7 @@ function modifyCheckboxes(index, checkboxIndexes, checkboxArray, event) {
 }
 
 function addCheckboxListener(indent, checkboxes) {
-    const indentIndex = $("input").index(indent);
+    const indentIndex = [...document.querySelectorAll("input")].indexOf(indent);
     indent.addEventListener("change", (event) => {
         const [checkboxIndexes, checkboxArray] = getCheckboxIndexesAndArray(checkboxes);
         modifyCheckboxes(indentIndex + 1, checkboxIndexes, checkboxArray, event);

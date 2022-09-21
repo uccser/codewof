@@ -80,6 +80,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         """Get additional context data for template."""
         user = self.request.user
+        context = super().get_context_data(**kwargs)
         if not user.profile.has_backdated:
             backdate_user(user.profile)
         memberships = user.membership_set.all().order_by('group__name')
@@ -88,7 +89,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         invitations = Invitation.objects.filter(email__in=emails.values('email_lower')).exclude(group__in=groups)\
             .order_by('group__pk', '-date_sent').distinct('group__pk')
 
-        context = super().get_context_data(**kwargs)
         recommendation_descriptions = get_recommendation_descriptions()
         recommended_questions = get_recommended_questions(user.profile)
         if len(recommendation_descriptions) == len(recommended_questions):

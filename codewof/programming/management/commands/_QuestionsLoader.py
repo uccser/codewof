@@ -177,73 +177,53 @@ class QuestionsLoader(TranslatableModelLoader):
 
                 # Add programming concepts
                 concept_slugs = question_data.get("concepts", [])
+                concept_slugs_to_add = set()
                 for concept_slug in concept_slugs:
-                    text = "not added"
-                    concept = None
-                    if type(concept_slug) is tuple:
-                        text, added_concept = concept_slug
-                        if text != "added":
-                            raise InvalidYAMLValueError(
-                                self.structure_file_path,
-                                "concepts - value '{} {}' - added text is invalid".format(text, slug),
-                            )
-                        concept = added_concept
                     try:
-                        if text != "added":
-                            concept = ProgrammingConcepts.objects.get(
-                                slug=concept_slug
-                            )
-                        if concept.children.exists() and text == "not added":
+                        concept = ProgrammingConcepts.objects.get(slug=concept_slug)
+                        if concept.children.exists():
                             raise InvalidYAMLValueError(
                                 self.structure_file_path,
-                                "concepts - value '{} {}' - added text is invalid due to being a parent filter"
-                                    .format(text, slug),
+                                "concepts - value '{}' - added concept is invalid due to being a parent"
+                                    .format(slug),
                             )
-                        # Check if need to add parent concept
+                        concept_slugs_to_add.add(concept_slug)
                         if concept.parent is not None and concept.parent not in concept_slugs:
-                            concept_slugs.append(("added", concept.parent))
-                        question.concepts.add(concept)
+                            concept_slugs_to_add.add(concept.parent.slug)
                     except ObjectDoesNotExist:
                         raise KeyNotFoundError(
                             self.structure_file_path,
                             concept_slug,
                             "Concepts"
                         )
+                for concept_slug in concept_slugs_to_add:
+                    concept = ProgrammingConcepts.objects.get(slug=concept_slug)
+                    question.concepts.add(concept)
 
                 # Add question contexts
                 context_slugs = question_data.get("contexts", [])
+                context_slugs_to_add = set()
                 for context_slug in context_slugs:
-                    text = "not added"
-                    context = None
-                    if type(context_slug) is tuple:
-                        text, added_context = context_slug
-                        if text != "added":
-                            raise InvalidYAMLValueError(
-                                self.structure_file_path,
-                                "contexts - value '{} {}' - added text is invalid".format(text, slug),
-                            )
-                        context = added_context
                     try:
-                        if text != "added":
-                            context = QuestionContexts.objects.get(
-                                slug=context_slug
-                            )
-                        if context.children.exists() and text == "not added":
+                        context = QuestionContexts.objects.get(slug=context_slug)
+                        if context.children.exists():
                             raise InvalidYAMLValueError(
                                 self.structure_file_path,
-                                "contexts - value '{} {}' - added text is invalid due to being a parent filter"
-                                    .format(text, slug),
-                            )
-                        # Check if need to add parent context
+                                "contexts - value '{}' - added context is invalid due to being a parent"
+                                    .format(slug),
+                                    )
+                        context_slugs_to_add.add(context_slug)
                         if context.parent is not None and context.parent not in context_slugs:
-                            context_slugs.append(("added", context.parent))
-                        question.contexts.add(context)
+                            context_slugs_to_add.add(context.parent.slug)
                     except ObjectDoesNotExist:
                         raise KeyNotFoundError(
                             self.structure_file_path,
                             context_slug,
                             "Contexts"
                         )
+                for context_slug in context_slugs_to_add:
+                    context = QuestionContexts.objects.get(slug=context_slug)
+                    question.contexts.add(context)
 
                 test_case_class = VALID_QUESTION_TYPES[question_type]['test_case_class']
                 for (test_case_id, test_case_type) in question_test_cases.items():

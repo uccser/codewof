@@ -97,7 +97,6 @@ Each question directory should have the following files:
 
 - `initial.py` (debugging type only) - Python file for initial code to display.
 
-
 ## Adding question tags
 
 Each question must be tagged by difficulty, and can be tagged by programming concepts and programming contexts.
@@ -111,7 +110,8 @@ Each question **requires** a `difficulty`, either:
 - `difficulty-2` - Difficult
 - `difficulty-3` - Complex
 
-If applicable, one or more `concepts` should be added to the question from the following:
+If applicable, one or more `concepts` should be added to the question from the following
+(i.e. you cannot have a question with the "Conditionals" concept, it needs to be a sub-category such as `single-condition`):
 
 - `display-text` - Display Text
 - `functions` - Functions
@@ -126,7 +126,8 @@ If applicable, one or more `concepts` should be added to the question from the f
 - `string-operations` - String Operations
 - `lists` - Lists
 
-If applicable, one or more `contexts` should be added to the question from the following:
+If applicable, one or more `contexts` should be added to the question from the following
+(i.e. you cannot have a question with the "Geometry" context, it needs to be a sub-category such as `basic-geometry`):
 
 - Mathematics
   - Geometry

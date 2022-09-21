@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
-{% load crispy_forms_tags %}
-{% load static %}
+{% load static crispy_forms_tags %}
 
 {% block title %}Questions{% endblock %}
 
@@ -32,8 +31,7 @@
         {% else %}
             <p class="text-center">
                 <strong>Sorry!</strong></br>
-                No questions found matching the selected filters. </br>
-                We recommend a less specific search.
+                No questions found matching the selected filters.
             </p>
         {% endif %}
 
