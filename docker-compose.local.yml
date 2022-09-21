@@ -13,12 +13,12 @@ services:
             - ./infrastructure/local/postgres/.envs
         command: /start
         networks:
-            - uccser-development-proxy
+            - uccser-development-stack
             - backend
         labels:
             # General labels
             - "traefik.enable=true"
-            - "traefik.docker.network=uccser-development-proxy"
+            - "traefik.docker.network=uccser-development-stack"
             - "traefik.http.services.codewof-django.loadbalancer.server.port=8000"
             # HTTPS
             - "traefik.http.routers.codewof-django.entryPoints=web-secure"
@@ -62,5 +62,5 @@ services:
 networks:
     backend:
         driver: bridge
-    uccser-development-proxy:
+    uccser-development-stack:
         external: true
