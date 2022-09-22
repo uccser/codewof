@@ -3,6 +3,7 @@ name: Test and deploy
 on:
   workflow_dispatch:
   push:
+  pull-request:
   release:
     types: [published]
 
@@ -64,9 +65,10 @@ jobs:
   create-static-files:
     name: Create static files
     if: |
-      (github.ref == 'refs/heads/develop')
+      (github.ref == 'refs/heads/develop'
       || startsWith(github.ref, 'refs/heads/research-study-')
-      || github.event_name == 'release'
+      || github.event_name == 'release')
+      && github.event_name != 'pull_request'
     runs-on: ubuntu-20.04
     needs: [
       test-django-system-check,
@@ -103,9 +105,10 @@ jobs:
   publish-docker-image:
     name: Create and publish Docker image
     if: |
-      (github.ref == 'refs/heads/develop')
+      (github.ref == 'refs/heads/develop'
       || startsWith(github.ref, 'refs/heads/research-study-')
-      || github.event_name == 'release'
+      || github.event_name == 'release')
+      && github.event_name != 'pull_request'
     runs-on: ubuntu-20.04
     needs: [
       create-static-files,
