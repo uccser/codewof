@@ -8,7 +8,7 @@ django-allauth==0.51.0
 django-crispy-forms==1.14.0
 django-activeurl==0.2.0
 django-autoslug==1.9.8
-djangorestframework==3.13.1
+djangorestframework==3.14.0
 coreapi==2.3.3
 django-filter==22.1
 django-inline-svg==0.1.1
