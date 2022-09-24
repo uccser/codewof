@@ -72,6 +72,8 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
 
         defaults["indent_level"] = indent_level
 
+        defaults["has_children"] = "children" in concept_data
+
         concept, created = ProgrammingConcepts.objects.update_or_create(
             slug=concept_slug,
             defaults=defaults,

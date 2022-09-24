@@ -192,6 +192,7 @@ class QuestionContexts(models.Model):
         related_name="children",
         on_delete=models.CASCADE
     )
+    has_children = models.BooleanField(default=False)
 
     def __str__(self):
         """
@@ -222,6 +223,7 @@ class ProgrammingConcepts(models.Model):
         related_name="children",
         on_delete=models.CASCADE
     )
+    has_children = models.BooleanField(default=False)
 
     def __str__(self):
         """Text representation of a programming concept.
