@@ -47,10 +47,11 @@ A question can only be one type, expect for questions that can be both function 
 
 ## Adding a question
 
-There are two stages to adding a question:
+There are three stages to adding a question:
 
 1. Add question metadata (language independent)
 2. Add question content (language dependent)
+3. Add question tags (difficulty, concepts, contexts)
 
 ### Adding question metadata
 
@@ -95,3 +96,43 @@ Each question directory should have the following files:
   - `test-case-N-output.txt` - Expected output for test case.
 
 - `initial.py` (debugging type only) - Python file for initial code to display.
+
+## Adding question tags
+
+Each question must be tagged by difficulty, and can be tagged by programming concepts and programming contexts.
+This allows users to easily search for questions of a specific type.
+
+Open directory `codewof/programming/content/structure/questions.yaml`
+
+Each question **requires** a `difficulty`, either:
+- `difficulty-0` - Easy
+- `difficulty-1` - Moderate
+- `difficulty-2` - Difficult
+- `difficulty-3` - Complex
+
+If applicable, one or more `concepts` should be added to the question from the following
+(i.e. you cannot have a question with the "Conditionals" concept, it needs to be a sub-category such as `single-condition`):
+
+- `display-text` - Display Text
+- `functions` - Functions
+- `inputs` - Inputs
+- Conditionals
+  - `single-condition` - Single Condition
+  - `multiple-conditions` - Multiple Conditions
+  - `advanced-conditionals` - Advanced Conditionals
+- Loops
+  - `conditional-loops` - Conditional Loops
+  - `range-loops` - Range Loops
+- `string-operations` - String Operations
+- `lists` - Lists
+
+If applicable, one or more `contexts` should be added to the question from the following
+(i.e. you cannot have a question with the "Geometry" context, it needs to be a sub-category such as `basic-geometry`):
+
+- Mathematics
+  - Geometry
+    - `basic-geometry` - Basic Geometry
+    - `advanced-geometry` - Advanced Geometry
+  - `simple-mathematics` - Simple Mathematics
+  - `advanced-mathematics` - Advanced Mathematics
+- `real-world-applications` - Real World Applications

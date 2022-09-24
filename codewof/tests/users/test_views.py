@@ -97,9 +97,7 @@ class UserDetailViewTest(TestCase):
         resp = self.client.get('/users/dashboard/')
         self.assertEqual(resp.status_code, 200)
 
-        self.assertEqual(len(resp.context['questions_to_do']), 2)
         self.assertEqual(len(resp.context['all_achievements']), len(Achievement.objects.all()))
-        self.assertEqual(resp.context['all_complete'], False)
         self.assertEqual(resp.context['codewof_profile'], user.profile)
         self.assertEqual(resp.context['goal'], user.profile.goal)
         self.assertEqual(resp.context['num_questions_answered'], 1)
@@ -348,6 +346,7 @@ class TestGroupCreateView(TestCase):
     def setUpTestData(cls):
         # never modify this object in tests
         generate_users(user)
+        generate_questions()
         management.call_command("load_group_roles")
 
     def setUp(self):
@@ -720,6 +719,7 @@ class TestGroupDeleteView(TestCase):
     def setUpTestData(cls):
         # never modify this object in tests
         generate_users(user)
+        generate_questions()
         generate_groups()
         generate_memberships()
         management.call_command("load_group_roles")
@@ -1084,6 +1084,7 @@ class TestMembershipDeleteView(TestCase):
     def setUpTestData(cls):
         # never modify this object in tests
         generate_users(user)
+        generate_questions()
         generate_groups()
         generate_memberships()
         management.call_command("load_group_roles")

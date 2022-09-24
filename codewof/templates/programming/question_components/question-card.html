@@ -17,5 +17,18 @@
         <div class="qc-title">
             {{ question.title }}
         </div>
+        <div class="qc-tags">
+            {% include "programming/question_components/badges/difficulty.html" %}
+            {% for concept in question.concepts.all %}
+                {% if not concept.has_children %}
+                    {% include "programming/question_components/badges/concept.html" %}
+                {% endif %}
+            {% endfor %}
+            {% for context in question.contexts.all %}
+                {% if not context.has_children %}
+                    {% include "programming/question_components/badges/context.html" %}
+                {% endif %}
+            {% endfor %}
+        </div>
     </a>
 </div>

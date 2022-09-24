@@ -13,7 +13,10 @@ from programming.models import (
     QuestionTypeParsons,
     QuestionTypeDebugging,
     QuestionTypeProgramTestCase,
-    Like
+    Like,
+    DifficultyLevel,
+    ProgrammingConcepts,
+    QuestionContexts,
 )
 from research.models import StudyRegistration
 from users.models import UserType, Group, GroupRole, Membership, Invitation
@@ -23,20 +26,38 @@ User = get_user_model()
 
 def generate_questions():
     """Generate questions for use in codeWOF tests. Questions contain minimum information and complexity."""
-    Question.objects.create(slug="question-1", title='Test', question_text='Hello')
+    DifficultyLevel.objects.create(slug='easy', level=0, name='Easy')
+    DifficultyLevel.objects.create(slug='moderate', level=1, name='Moderate')
+    DifficultyLevel.objects.create(slug='difficult', level=2, name='Difficult')
+    Question.objects.create(
+        slug="question-1",
+        title='Test',
+        question_text='Hello',
+        difficulty_level=DifficultyLevel.objects.get(slug='easy'),
+    )
+
+    ProgrammingConcepts.objects.create(name='Display Text', slug='display-text', number=1)
+    Question.objects.get(slug='question-1').concepts.add(ProgrammingConcepts.objects.get(slug='display-text'))
+
+    QuestionContexts.objects.create(name='Mathematics', slug='mathematics', number=2)
+    Question.objects.get(slug='question-1').contexts.add(QuestionContexts.objects.get(slug='mathematics'))
 
     QuestionTypeProgram.objects.create(
         slug="program-question-1",
         title='Test',
         question_text='Hello',
-        solution="question_answer"
+        solution="question_answer",
+        difficulty_level=DifficultyLevel.objects.get(slug='easy'),
     )
+    Question.objects.get(slug='program-question-1').concepts.add(ProgrammingConcepts.objects.get(slug='display-text'))
+    Question.objects.get(slug='program-question-1').contexts.add(QuestionContexts.objects.get(slug='mathematics'))
 
     QuestionTypeFunction.objects.create(
         slug="function-question-1",
         title='Test',
         question_text='Hello',
-        solution="question_answer"
+        solution="question_answer",
+        difficulty_level=DifficultyLevel.objects.get(slug='moderate'),
     )
 
     QuestionTypeParsons.objects.create(
@@ -44,7 +65,8 @@ def generate_questions():
         title='Test',
         question_text='Hello',
         solution="question_answer",
-        lines="These are\nthe lines"
+        lines="These are\nthe lines",
+        difficulty_level=DifficultyLevel.objects.get(slug='difficult'),
     )
 
     QuestionTypeDebugging.objects.create(
@@ -52,7 +74,8 @@ def generate_questions():
         title='Test',
         question_text='Hello',
         solution="question_answer",
-        initial_code=''
+        initial_code='',
+        difficulty_level=DifficultyLevel.objects.get(slug='difficult'),
     )
 
 
@@ -402,6 +425,27 @@ def generate_attempts():
                            datetime=datetime.date(2019, 9, 9))
     Attempt.objects.create(profile=user.profile, question=question, passed_tests=True,
                            datetime=datetime.date(2019, 9, 10))
+
+
+def generate_attempts_multiple_questions():
+    """
+    Generate attempts for codeWOF tests.
+
+    Attempts are generated for user 1 and 3 different questions, with attempts created to cover consecutive days,
+    failed attempts, and passed attempts.
+    """
+    user = User.objects.get(id=1)
+    program_question = Question.objects.get(slug='program-question-1')
+    function_question = Question.objects.get(slug='function-question-1')
+    parsons_question = Question.objects.get(slug='parsons-question-1')
+    Attempt.objects.create(profile=user.profile, question=program_question, passed_tests=False,
+                           datetime=datetime.date(2019, 9, 9))
+    Attempt.objects.create(profile=user.profile, question=program_question, passed_tests=False,
+                           datetime=datetime.date(2019, 9, 9))
+    Attempt.objects.create(profile=user.profile, question=program_question, passed_tests=True,
+                           datetime=datetime.date(2019, 9, 10))
+    Attempt.objects.create(profile=user.profile, question=function_question, passed_tests=True)
+    Attempt.objects.create(profile=user.profile, question=parsons_question, passed_tests=False)
 
 
 def generate_likes():

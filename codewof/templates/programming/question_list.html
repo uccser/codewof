@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load static crispy_forms_tags %}
+
 {% block title %}Questions{% endblock %}
 
 {% block page_heading %}
@@ -8,14 +10,33 @@
 
 {% block content %}
     <p>Currently all questions are based in Python 3.</p>
+    <br>
+    <h2>Your recommended questions</h2>
+    {% include "programming/question_components/question_recommendations.html" %}
+    <br>
+    <h2>All questions</h2>
+    <details {% if filter_button_pressed %} open {% endif %}>
+        <summary>Filter Questions</summary>
+        {% crispy filter.form filter_formatter %}
+    </details>
 
-    {% if questions %}
+    {% if filter.qs %}
         <div class="row">
-            {% for question in questions %}
+            {% for question in filter.qs %}
                 <div class="col-12 col-md-6 col-lg-4">
                     {% include "programming/question_components/question-card.html" %}
                 </div>
             {% endfor %}
         </div>
-    {% endif %}
-{% endblock %}
+        {% else %}
+            <p class="text-center">
+                <strong>Sorry!</strong></br>
+                No questions found matching the selected filters.
+            </p>
+        {% endif %}
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/question_list/checkbox_listener.js' %}"></script>
+{% endblock scripts %}

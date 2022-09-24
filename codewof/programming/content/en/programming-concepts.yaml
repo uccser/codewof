@@ -1,0 +1,35 @@
+display-text:
+  name: Display Text
+
+functions:
+  name: Functions
+
+inputs:
+  name: Inputs
+
+conditionals:
+  name: Conditionals
+
+single-condition:
+  name: Single Condition
+
+multiple-conditions:
+  name: Multiple Conditions
+
+advanced-conditionals:
+  name: Advanced Conditionals
+
+loops:
+  name: Loops
+
+conditional-loops:
+  name: Conditional Loops
+
+range-loops:
+  name: Range Loops
+
+string-operations:
+  name: String Operations
+
+lists:
+  name: Lists

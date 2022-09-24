@@ -119,8 +119,6 @@ class Attempt(models.Model):
     passed_tests = models.BooleanField(default=False)
     like_users = models.ManyToManyField(User, through='Like')
 
-    # skills_hinted = models.ManyToManyField('Skill', blank=True)
-
     def __str__(self):
         """Text representation of an attempt."""
         return "Attempted '" + str(self.question) + "' on " + str(self.datetime)
@@ -156,6 +154,90 @@ class Like(models.Model):
     datetime = models.DateTimeField(default=timezone.now)
 
 
+# ----- Question classification -----------------------------------------------------
+
+class DifficultyLevel(models.Model):
+    """Model for question difficulty level."""
+
+    slug = models.SlugField()
+    level = models.PositiveSmallIntegerField()
+    name = models.TextField()
+    hint = models.TextField()
+
+    def __str__(self):
+        """Text representation of difficulty level.
+
+        Returns: Difficulty level string
+        """
+        return self.name
+
+    class Meta:
+        """Meta options for class. Sort so that easiest questions appear first."""
+
+        ordering = ['level']
+
+
+class QuestionContexts(models.Model):
+    """Model for question context."""
+
+    slug = models.SlugField(unique=True, null=True)
+    name = models.CharField(max_length=LARGE)
+    css_class = models.CharField(max_length=30)
+    number = models.PositiveSmallIntegerField()
+    hint = models.TextField()
+    indent_level = models.PositiveSmallIntegerField(default=0)
+    parent = models.ForeignKey(
+        "self",
+        null=True,
+        related_name="children",
+        on_delete=models.CASCADE
+    )
+    has_children = models.BooleanField(default=False)
+
+    def __str__(self):
+        """
+        To string method.
+
+        Returns: Name of question context (str).
+        """
+        return self.name
+
+    class Meta:
+        """Set consistent ordering of question contexts."""
+
+        ordering = ["number", "name"]
+
+
+class ProgrammingConcepts(models.Model):
+    """Model for a programming concept."""
+
+    name = models.CharField(max_length=LARGE)
+    slug = models.SlugField(unique=True, null=True)
+    css_class = models.CharField(max_length=30)
+    number = models.PositiveSmallIntegerField()
+    hint = models.TextField()
+    indent_level = models.PositiveSmallIntegerField(default=1)
+    parent = models.ForeignKey(
+        "self",
+        null=True,
+        related_name="children",
+        on_delete=models.CASCADE
+    )
+    has_children = models.BooleanField(default=False)
+
+    def __str__(self):
+        """Text representation of a programming concept.
+
+        Returns: Name of programming concept (str).
+        """
+        return self.name
+
+    class Meta:
+        """Set consistent ordering of programming concepts."""
+
+        ordering = ["number", "name"]
+
+
 # ----- Base question classes -------------------------------------------------
 
 class Question(TranslatableModel):
@@ -169,10 +251,26 @@ class Question(TranslatableModel):
 
     slug = models.SlugField(unique=True)
     title = models.CharField(max_length=SMALL)
+    question_type = models.CharField(max_length=SMALL, default="Program", null=False)
     question_text = models.TextField()
     solution = models.TextField()
-    # skill_areas = models.ManyToManyField('SkillArea', related_name='questions')
-    # skills = models.ManyToManyField('Skill', blank=True)
+
+    difficulty_level = models.ForeignKey(
+        DifficultyLevel,
+        related_name='questions',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    concepts = models.ManyToManyField(
+        ProgrammingConcepts,
+        related_name='concepts'
+    )
+    contexts = models.ManyToManyField(
+        QuestionContexts,
+        related_name='contexts'
+    )
+
     objects = InheritanceManager()
 
     def get_absolute_url(self):
@@ -337,18 +435,3 @@ class QuestionTypeDebuggingTestCase(TestCase):
         """Meta information for class."""
 
         verbose_name = 'Debugging Problem Question Test Case'
-
-
-# class Skill(models.Model):
-#     name = models.CharField(max_length=SMALL)
-#     hint = models.CharField(max_length=LARGE)
-#     subskills = models.ManyToManyField('self', symmetrical=False, blank=True)
-
-#     def __str__(self):
-#         return self.name
-
-# class SkillArea(models.Model):
-#     name = models.CharField(max_length=SMALL)
-
-#     def __str__(self):
-#         return self.name

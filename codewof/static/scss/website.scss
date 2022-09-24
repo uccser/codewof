@@ -43,6 +43,8 @@
 @import "homepage";
 @import "footer";
 @import "question-card";
+@import "question-filter";
+@import "question-recommendations";
 
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Righteous&display=swap');
 @import "node_modules/codemirror/lib/codemirror";
@@ -345,4 +347,12 @@ $red: #b94a48;
 #signup-declarations,
 #recaptcha-declaration {
     font-size: small;
+}
+
+summary {
+  cursor: pointer;
+}
+
+details div {
+  padding: ($spacer * .1);
 }
