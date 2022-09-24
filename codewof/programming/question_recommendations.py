@@ -1,4 +1,15 @@
-"""Question recommendations for codeWOF."""
+"""
+Question recommendations for codeWOF.
+
+The two questions that are generated from the recommendations make use of the scores allocated to each category type.
+Comfortable and uncomfortable categories are part of the terminology used as part of the logic for finding suitable
+questions to recommend. A comfortable category refers to a category that the CodeWOF user is accustomed to. For
+example, the first recommendation aims to retrieve a question with a comfortable difficulty, while also making use of
+uncomfortable concepts and contexts. A similar situation applies regarding the second recommendation, but with the
+opposite logic. Because each difficulty level can be ranked, in terms of easiest to hardest, and concepts or contexts
+cannot be ranked in such a manner, their respective comfortable and uncomfortable properties are calculated in
+different manners.
+"""
 
 import random
 import statistics
@@ -63,7 +74,16 @@ def get_scores(level_and_skill_info):
 
 
 def generate_scores(numbers, info_category):
-    """Generate and return the scores based on a given information category (e.g. difficulty)."""
+    """
+    Generate and return the scores based on a given information category (e.g. difficulty).
+
+    The scores intend to yield a low or negative value when the user is performing well at answering the given type of
+    question. As part of this, each correctly answered question removes a value of one from the score. Whereas, if a
+    user is struggling with a particular question, the intent is that a high or positive score is retrieved. This is
+    shown by the fact that the average number of attempts taken to answer each question is added to the score.
+    Additionally, a value of one is removed from the score, referring to the first attempt of the question, which is
+    unnecessary to influence the score, as each correctly solved question takes at least one attempt.
+    """
     scores = [None] * len(numbers)
     for index, category_num in enumerate(numbers):
         if category_num in info_category:
@@ -198,7 +218,24 @@ def get_comfortable_difficulties(scores):
 
 
 def calculate_comfortable_difficulties(difficulty_scores, difficulty_levels):
-    """Calculate and return comfortable difficulty levels (in-order) based on the supplied scores."""
+    """
+    Calculate and return comfortable difficulty levels (in a prioritised order) based on the supplied scores.
+
+    The easiest difficulty is set as the most comfortable when scores are not assigned to the difficulties, in cases
+    where there are no questions answered by a given CodeWOF user. This is to ensure that no assumptions are made in
+    terms of how well a user performs at answering CodeWOF questions, and to start them with a question difficulty that
+    is expected to be comfortable to the user. Otherwise, if possible, the most comfortable difficulty is set to the
+    hardest difficulty with a score less than or equal to zero. This is done to ensure that questions are recommended
+    at a difficulty that the user has been demonstrably able to answer effectively, as shown by the low score. In the
+    case where only higher scores are assigned to difficulties, one difficulty level less than the easiest with the
+    said type of score is assigned as the most comfortable difficulty. Additionally, this is only assigned with one
+    difficulty level reduced in cases where it is not already the easiest difficulty. The reasoning for this is that
+    while the CodeWOF user has proven themselves to be able to answer such a question, due to the scoring having been
+    set, the high score indicates that the user is struggling with the given type of question. Therefore, by setting
+    the comfortable difficulty to a level lower, this intends to remediate the impact of the higher score as part of
+    the question recommendation. The subsequently in-order comfortable difficulties use lower difficulties (in
+    decreasing difficulty order), and then higher difficulties (in increasing difficulty order).
+    """
     comfortable_difficulty = None
     max_difficulty_low_score = None
     min_difficulty_high_score = None
@@ -225,7 +262,16 @@ def calculate_comfortable_difficulties(difficulty_scores, difficulty_levels):
 
 
 def get_uncomfortable_difficulties(comfortable_difficulties, difficulty_levels):
-    """Calculate and return uncomfortable difficulty levels (in-order), using the supplied comfortable difficulties."""
+    """
+    Calculate and return uncomfortable difficulty levels (in a prioritised order), using the supplied comfortable
+    difficulties.
+
+    Simply, the most uncomfortable difficulty is set to one harder difficulty level than the most comfortable
+    difficulty level. Otherwise, if the most comfortable difficulty is already the hardest difficulty level, this is
+    set to equal said difficulty. The reasoning for this was to apply a challenge that is adaptive to the user's most
+    comfortable difficulty, and to ensure that an outrageously hard question is not delivered to the user, where only a
+    single difficulty level lift is applied.
+    """
     comfortable_difficulty = comfortable_difficulties[0]
     if comfortable_difficulty + 1 <= max(difficulty_levels):
         comfortable_difficulty += 1
@@ -251,7 +297,18 @@ def get_uncomfortable_concepts_or_contexts(scores):
 
 
 def calculate_uncomfortable_concepts_or_contexts(category_nums, category_scores):
-    """Calculate and return an uncomfortable concepts or contexts based on the supplied scores."""
+    """
+    Calculate and return an uncomfortable concepts or contexts (in a prioritised order) based on the supplied scores.
+
+    The most comfortable concepts or contexts are assigned in sets. For example, the calculation of the most
+    comfortable concepts would generate a set of one or more concept types. Because of this, the most uncomfortable
+    concepts or contexts are assigned by gathering the set of concepts or contexts that are not assigned scores.
+    However, if there are no concepts or contexts with a score unassigned, the set of concepts/contexts with the
+    highest score is assigned as the most uncomfortable. This was done to take into account a mix of concepts or
+    contexts, while also prioritising the scoring assigned. Additionally, the aforementioned concepts or contexts with
+    unassigned scores are especially useful, where these indicate question types that a given user has not attempted.
+    The subsequently in-order uncomfortable concepts or contexts use lower scores (i.e. decreasing score values).
+    """
     uncomfortable_concepts_or_contexts = []
     excluded_category_nums = set()
     all_concepts_or_contexts_added = False
