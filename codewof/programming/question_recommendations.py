@@ -263,8 +263,7 @@ def calculate_comfortable_difficulties(difficulty_scores, difficulty_levels):
 
 def get_uncomfortable_difficulties(comfortable_difficulties, difficulty_levels):
     """
-    Calculate and return uncomfortable difficulty levels (in a prioritised order), using the supplied comfortable
-    difficulties.
+    Calculate and return uncomfortable difficulty levels (in a prioritised order), using the comfortable difficulties.
 
     Simply, the most uncomfortable difficulty is set to one harder difficulty level than the most comfortable
     difficulty level. Otherwise, if the most comfortable difficulty is already the hardest difficulty level, this is
