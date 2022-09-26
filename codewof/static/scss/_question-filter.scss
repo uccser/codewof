@@ -7,6 +7,9 @@ input[data-indent-level="3"] + label {
   margin-left: 2rem;
 }
 
+%filter-label {
+    cursor: pointer;
+}
 
 // Difficulties
 
@@ -50,6 +53,7 @@ $difficulty-complex: #FFA2A2;
 
 .difficulty-filter {
   @extend .difficulty;
+  @extend %filter-label;
   font-size: 0.95rem;
 }
 
@@ -116,6 +120,7 @@ input[filter="3"] + label {
 
 .type-filter {
   @extend .type;
+  @extend %filter-label;
   font-size: 0.95rem;
 }
 
@@ -207,6 +212,7 @@ $concept-lists: #D0EB88;
 
 .concept-filter {
   @extend .concept;
+  @extend %filter-label;
   font-size: 0.95rem;
 }
 
@@ -273,6 +279,7 @@ $context-mathematics: #bea7f2;
 
 .context-filter {
   @extend .context;
+  @extend %filter-label;
   font-size: 0.95rem;
 }
 
