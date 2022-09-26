@@ -10,6 +10,19 @@
             <h3 class="d-inline">{{ question.title }}</h3>
             <button id="introjs-tutorial" class="btn btn-outline-secondary btn-sm float-right">How does this page work?</button>
         </div>
+        <div class="mb-2">
+            {% include "programming/question_components/badges/difficulty.html" %}
+            {% for concept in question.concepts.all %}
+                {% if not concept.has_children %}
+                    {% include "programming/question_components/badges/concept.html" %}
+                {% endif %}
+            {% endfor %}
+            {% for context in question.contexts.all %}
+                {% if not context.has_children %}
+                    {% include "programming/question_components/badges/context.html" %}
+                {% endif %}
+            {% endfor %}
+        </div>
         <div class="question-text">
             {{ question.question_text|safe }}
         </div>
