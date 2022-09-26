@@ -174,7 +174,10 @@ function svg() {
 // Watch
 function watchPaths() {
     // watch(`${paths.sass}/*.scss`, scss)
-    watch([`${paths.js_source}/*.js`, `!${paths.js_source}/*.min.js`], js).on("change", reload)
+    watch([`${paths.js_source}/*.js`, `!${paths.js_source}/*.min.js`], js)
+    watch([`${paths.css_source}/**/*.css`], css)
+    watch([`${paths.scss_source}/**/*.scss`], scss)
+    watch([`${paths.images_source}/**/*`], img)
 }
 
 // Generate all assets
@@ -188,12 +191,10 @@ const generateAssets = parallel(
 )
 
 // Set up dev environment
-// const dev = parallel(
-//     // initBrowserSync,
-//     watchPaths
-// )
+const dev = parallel(
+    watchPaths
+)
 exports["generate-assets"] = generateAssets
-// exports["dev"] = dev
+exports["dev"] = dev
 // TODO: Look at cleaning build folder
-exports.default = generateAssets
-// exports.default = series(generateAssets, dev)
+exports.default = series(generateAssets, dev)
