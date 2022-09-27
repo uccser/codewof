@@ -1,6 +1,5 @@
 """Module for factories for tesing user application."""
 
-from typing import Any, Sequence
 from django.contrib.auth import get_user_model
 import factory
 from factory.django import DjangoModelFactory
