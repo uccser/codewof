@@ -15,8 +15,13 @@
     {% include "programming/question_components/question_recommendations.html" %}
     <br>
     <h2>All questions</h2>
-    <details {% if filter_button_pressed %} open {% endif %}>
-        <summary>Filter Questions</summary>
+    <details id="question-filter" {% if filter_button_pressed %} open {% endif %}>
+        <summary>
+            Filter Questions
+            <div id="filter-summary" class="text-muted text-right">
+                <div id="filter-summary-text"></div>
+            </div>
+        </summary>
         {% crispy filter.form filter_formatter %}
     </details>
 

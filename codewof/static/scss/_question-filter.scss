@@ -24,28 +24,32 @@ $difficulty-complex: #FFA2A2;
   &-0 {
     color: darken($difficulty-easy, 60%);
     background-color: $difficulty-easy;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($difficulty-easy, 10%);
     }
   }
   &-1 {
     color: darken($difficulty-moderate, 60%);
     background-color: $difficulty-moderate;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($difficulty-moderate, 10%);
     }
   }
   &-2 {
     color: darken($difficulty-difficult, 60%);
     background-color: $difficulty-difficult;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($difficulty-difficult, 10%);
     }
   }
   &-3 {
     color: darken($difficulty-complex, 60%);
     background-color: $difficulty-complex;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($difficulty-complex, 10%);
     }
   }
@@ -74,7 +78,8 @@ $difficulty-complex: #FFA2A2;
     box-shadow:inset 0 0 0 2px $question-type-debugging;
     color: darken($question-type-debugging, 60%);
     background-color: lighten($question-type-debugging, 40%);
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: lighten($question-type-debugging, 35%);
     }
   }
@@ -82,7 +87,8 @@ $difficulty-complex: #FFA2A2;
     box-shadow:inset 0 0 0 2px $question-type-function;
     color: darken($question-type-function, 60%);
     background-color: lighten($question-type-function, 40%);
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: lighten($question-type-function, 35%);
     }
   }
@@ -90,7 +96,8 @@ $difficulty-complex: #FFA2A2;
     box-shadow:inset 0 0 0 2px $question-type-parsons;
     color: darken($question-type-parsons, 60%);
     background-color: lighten($question-type-parsons, 40%);
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: lighten($question-type-parsons, 35%);
     }
   }
@@ -98,7 +105,8 @@ $difficulty-complex: #FFA2A2;
     box-shadow:inset 0 0 0 2px $question-type-program;
     color: darken($question-type-program, 60%);
     background-color: lighten($question-type-program, 40%);
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: lighten($question-type-program, 35%);
     }
   }
@@ -148,49 +156,56 @@ $concept-lists: #D0EB88;
   &-1 {
     color: darken($concept-display-text, 60%);
     background-color: $concept-display-text;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($concept-display-text, 10%);
     }
   }
   &-2 {
     color: darken($concept-functions, 60%);
     background-color: $concept-functions;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($concept-functions, 10%);
     }
   }
   &-3 {
     color: darken($concept-inputs, 60%);
     background-color: $concept-inputs;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($concept-inputs, 10%);
     }
   }
   &-4 {
     color: darken($concept-conditionals, 60%);
     background-color: $concept-conditionals;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($concept-conditionals, 10%);
     }
   }
   &-5 {
     color: darken($concept-loops, 60%);
     background-color: $concept-loops;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($concept-loops, 10%);
     }
   }
   &-6 {
     color: darken($concept-string-operations, 60%);
     background-color: $concept-string-operations;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($concept-string-operations, 10%);
     }
   }
   &-7 {
     color: darken($concept-lists, 60%);
     background-color: $concept-lists;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($concept-lists, 10%);
     }
   }
@@ -221,14 +236,16 @@ $context-mathematics: #bea7f2;
   &-1 {
     color: darken($context-real-world-applications, 60%);
     background-color: $context-real-world-applications;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($context-real-world-applications, 10%);
     }
   }
   &-2 {
     color: darken($context-mathematics, 60%);
     background-color: $context-mathematics;
-    &.link:hover {
+    &.link:hover,
+    &.custom-control-label:hover {
       background-color: darken($context-mathematics, 10%);
     }
   }
@@ -252,7 +269,7 @@ $context-mathematics: #bea7f2;
   font-weight: bold;
 }
 
-details {
+details#question-filter {
   &[open] summary:before {
     content: '⊖';
   }
@@ -267,6 +284,15 @@ details {
       margin-right: 0.5rem;
       padding-bottom: 0.15rem;
       opacity: .6;
+    }
+    #filter-summary {
+        @extend .flex-grow;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 80%;
+        margin-left: 1rem;
+        min-height: 2.7rem;
     }
   }
 }
