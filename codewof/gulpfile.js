@@ -174,7 +174,7 @@ function svg() {
 // Watch
 function watchPaths() {
     // watch(`${paths.sass}/*.scss`, scss)
-    watch([`${paths.js_source}/*.js`, `!${paths.js_source}/*.min.js`], js)
+    watch([`${paths.js_source}/**/*.js`, `!${paths.js_source}/*.min.js`], js)
     watch([`${paths.css_source}/**/*.css`], css)
     watch([`${paths.scss_source}/**/*.scss`], scss)
     watch([`${paths.images_source}/**/*`], img)
