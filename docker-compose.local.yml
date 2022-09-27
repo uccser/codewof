@@ -39,8 +39,6 @@ services:
             - ./codewof/static:/app/static:z
             - ./codewof/build:/app/build:z
         command: npm run dev
-        profiles:
-            - static-files
         ports:
             - "3000:3000"
             # Expose browsersync UI: https://www.browsersync.io/docs/options/#option-ui

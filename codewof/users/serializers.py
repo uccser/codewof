@@ -1,7 +1,7 @@
 """Serializers for user models."""
 
 from rest_framework import serializers
-from users.models import User, UserType, Group, Membership, GroupRole, Invitation, EmailReminder
+from users.models import User, UserType, Group, Membership, GroupRole, Invitation
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -108,20 +108,4 @@ class InvitationSerializer(serializers.ModelSerializer):
             'email',
             'date_sent',
             'date_expires'
-        )
-
-
-class EmailReminderSerializer(serializers.ModelSerializer):
-    """Serializer for codeWOF email reminders."""
-
-    user = serializers.ReadOnlyField(source='user.pk')
-
-    class Meta:
-        """Meta settings for serializer."""
-
-        model = EmailReminder
-        fields = (
-            'pk',
-            'user',
-            'datetime',
         )

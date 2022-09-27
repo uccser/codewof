@@ -1,3 +1,4 @@
-<span class="context context-{{ context.number }}">
+<{% if link %}a href="{% url 'programming:question_list' %}?contexts={{ context.pk }}"{% else %}span{% endif %}
+    class="context context-{{ context.number }}{% if link %} link{% endif %}">
     {{ context }}
-</span>
+</{% if link %}a{% else %}span{% endif %}>

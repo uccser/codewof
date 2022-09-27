@@ -45,6 +45,7 @@
         "last 2 versions"
     ],
     "scripts": {
+        "dev": "gulp",
         "generate-assets": "gulp generate-assets",
         "generate-production-assets": "gulp generate-assets --production"
     }

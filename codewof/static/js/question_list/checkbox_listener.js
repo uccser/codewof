@@ -6,6 +6,9 @@
  * which filters have been checked.
  */
 
+var filterSummaryText;
+var allCheckboxes;
+
 function getElementIndex(element) {
     let index = 0;
     while ((element = element.previousElementSibling)) {
@@ -60,7 +63,42 @@ function modifyCheckboxesOnLoad(checkboxes) {
     }
 }
 
+function updateFilterSummary() {
+    /**
+     * Update the summary of applied filters.
+     */
+    var filter_count = 0;
+
+    allCheckboxes.forEach(function (checkbox) {
+        if (checkbox.checked && !checkbox.disabled) {
+            filter_count++;
+        }
+    });
+
+    if (filter_count == 1) {
+        filterSummaryText.textContent = '1 filter applied';
+    } else {
+        filterSummaryText.textContent = `${filter_count} filters applied`;
+    }
+};
+
+function resetFilter() {
+    /**
+     * Reset the filter to no options selected.
+     *
+     * This is different from a <input type="reset"> which sets the form
+     * to it's original state, which could be prepopulated from the URL.
+     */
+    allCheckboxes.forEach(function (checkbox) {
+        checkbox.checked = false;
+        checkbox.disabled = false;
+    });
+    updateFilterSummary();
+}
+
 window.onload = () => {
+    filterSummaryText = document.getElementById('filter-summary-text');
+
     const checkboxesIndentOne = getCheckboxes(1);
     const checkboxesIndentTwo = getCheckboxes(2);
     const checkboxesIndentThree = getCheckboxes(3);
@@ -71,4 +109,13 @@ window.onload = () => {
         addCheckboxListener(indentTwo, checkboxesIndentThree);
     }
     modifyCheckboxesOnLoad([...checkboxesIndentOne, ...checkboxesIndentTwo]);
+
+    allCheckboxes = document.querySelectorAll('#question-filter input');
+    allCheckboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', updateFilterSummary);
+    });
+    updateFilterSummary();
+
+    let resetButton = document.querySelector('#question-filter input[name="reset"]');
+    resetButton.addEventListener('click', resetFilter);
 }
