@@ -1,0 +1,4 @@
+<{% if link %}a href="{% url 'programming:question_list' %}?difficulty_level={{ question.difficulty_level.pk }}"{% else %}span{% endif %}
+    class="difficulty difficulty-{{ question.difficulty_level.level }}{% if link %} link{% endif %}">
+    {{ question.difficulty_level }}
+</{% if link %}a{% else %}span{% endif %}>

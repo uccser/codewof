@@ -1,15 +1,15 @@
 """Forms for user application."""
 
-from django import forms
-from django.contrib import auth
-from django.urls import reverse
-from django.utils.translation import gettext as _
-from django.template.loader import render_to_string
-from users.models import UserType, Group
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML, Fieldset, ButtonHolder, Button, Div
+from django import forms
+from django.contrib import auth
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.translation import gettext as _
+from users.models import UserType, Group
 
 User = auth.get_user_model()
 
@@ -109,11 +109,13 @@ class UserChangeForm(forms.ModelForm):
                 'user_type',
             ),
             HTML("<h2>Emails</h2>"),
-            Button('emails', 'Manage your email addresses', css_class='btn btn-outline-primary',
+            Button('emails', 'Manage your email addresses', css_class='btn btn-primary',
                    onclick="window.location.href = '{}';".format(reverse('account_email'))),
 
             Div(
-                HTML("<p id=\"notifications-p\">Send me notifications on:</p>"),
+                HTML("<p class=\"email-reminder-warning-p text-warning\">Warning! Email reminders may end up in your "
+                     "spam. Unmark the email as spam to prevent this.</p>"),
+                HTML("<p>Send me reminders on:</p>"),
                 'remind_on_monday',
                 'remind_on_tuesday',
                 'remind_on_wednesday',
@@ -127,7 +129,7 @@ class UserChangeForm(forms.ModelForm):
                 'timezone',
             ),
             ButtonHolder(
-                Submit('submit', 'Update', css_class='btn btn-primary')
+                Submit('submit', 'Update', css_class='btn btn-success')
             ),
         )
 
@@ -147,7 +149,11 @@ class UserAdminChangeForm(auth.forms.UserChangeForm):
         """Metadata for UserAdminChangeForm class."""
 
         model = User
-        fields = ('email', 'last_name', 'user_type')
+        fields = (
+            'email',
+            'last_name',
+            'user_type',
+        )
 
 
 class UserAdminCreationForm(auth.forms.UserCreationForm):
@@ -157,7 +163,12 @@ class UserAdminCreationForm(auth.forms.UserCreationForm):
         """Metadata for UserAdminCreationForm class."""
 
         model = User
-        fields = ('email', 'first_name', 'last_name', 'user_type')
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'user_type',
+        )
 
 
 class GroupCreateUpdateForm(forms.ModelForm):
@@ -189,7 +200,10 @@ class GroupCreateUpdateForm(forms.ModelForm):
 
     feed_enabled = forms.BooleanField(
         label='Enable Feed?',
-        required=False
+        required=False,
+        help_text="The feed displays the latest successful (all tests passed) question attempts of members of the "
+                  "group. Each feed entry includes the user's name, the question they answered, "
+                  "and the date and time of submission. Members can also like feed entries."
     )
 
     class Meta:

@@ -1,5 +1,73 @@
 # Changelog
 
+## 5.0.0
+
+- Add question recommendations to users.
+    - Track proficiency of users' programming skills, using this information to suggest exercises for the user to perform.
+- Add descriptive tags for each programming question.
+- Add filtering of questions by question type, difficulty, contexts, and concepts.
+- Add 15 new Python 3 questions.
+- Contact emails show which domain they were sent from.
+- Add URL for website status information.
+- Allow 'likes' to be viewed in the admin interface.
+- Disable API on production website.
+- Use HTML templates for emails, replacing current plaintext emails.
+- Add `update_data` management command for consistency across UCCSER repositories.
+- Enable CORS headers for providing version information across domains.
+- Set Gulp to watch for changed files and rebuild them as required.
+- Update project to use uccser-development-stack v3.
+- Auto-merge minor dependency updates (this includes minor and patch updates).
+- Allow all dependency update pull requests to be created (remove open limit on Dependabot).
+- Add OCI labels to Django Docker image.
+- Ignore updates to non-LTS Django packages.
+- Remove outdated helper script.
+- Remove unused Travis CI configuration file.
+- Remove unused Browser Sync functionality within Gulpfile.
+- Dependency updates:
+    - Add django-cors-headers 3.13.0.
+    - Update ansi-colors from 4.1.1 to 4.1.3.
+    - Update argon2-cffi from 19.2.0 to 21.3.0.
+    - Update autoprefixer from 10.3.1 to 10.4.12.
+    - Update bootstrap from 4.6.0 to 4.6.2.
+    - Update clipboard from 2.0.8 to 2.0.11.
+    - Update codemirror from 5.63.1 to 5.65.1.
+    - Update coverage from 6.0.2 to 6.4.4.
+    - Update cssnano from 5.0.8 to 5.1.13.
+    - Update django from 3.2.6 to 3.2.15.
+    - Update django-allauth from 0.45.0 to 0.51.0.
+    - Update django-anymail[mailgun] from 7.0.0 to 8.6.
+    - Update django-ckeditor from 6.1.0 to 6.5.1.
+    - Update django-crispy-forms from 1.9.0 to 1.14.0.
+    - Update django-debug-toolbar from 3.2.2 to 3.6.0.
+    - Update django-environ from 0.4.5 to 0.9.0.
+    - Update django-extensions from 3.0.8 to 3.2.1.
+    - Update django-filter from 21.1 to 22.1.
+    - Update django-model-utils from 4.1.1 to 4.2.0.
+    - Update django-modeltranslation from 0.17.3 to 0.18.4.
+    - Update django-recaptcha from 2.0.6 to 3.0.0.
+    - Update djangorestframework from 3.12.4 to 3.14.0.
+    - Update factory-boy from 2.12.0 to 3.2.1.
+    - Update fancy-log from 1.3.3 to 2.0.0.
+    - Update flake8-docstrings from 1.5.0 to 1.6.0.
+    - Update flake8-quotes from 2.1.1 to 3.3.1.
+    - Update fuse.js from 6.4.6 to 6.6.2.
+    - Update gulp-postcss from 9.0.0 to 9.0.1.
+    - Update gulp-sass from 5.0.0 to 5.1.0.
+    - Update intro.js from 4.2.2 to 6.0.0.
+    - Update jquery from 3.6.0 to 3.6.1.
+    - Update mypy from 0.782 to 0.971.
+    - Update postcss from 8.3.6 to 8.4.16.
+    - Update psycopg2 from 2.9.1 to 2.9.3.
+    - Update pytest from 6.2.5 to 7.1.3.
+    - Update pytest-django 3.9.0 to 4.5.2.
+    - Update pytest-sugar from 0.9.4 to 0.9.5.
+    - Update pytz from 2019.3 to 2022.2.1.
+    - Update sass from 1.42.1 to 1.55.0.
+    - Update sortablejs from 1.8.4 to 1.15.0.
+    - Update whitenoise from 5.3.0 to 6.2.0.
+    - Update yargs from 7.1.1 to 7.5.1.
+    - Remove browser-sync 2.27.5.
+
 ## 4.0.0
 
 - Add user groups, including invite functionality.

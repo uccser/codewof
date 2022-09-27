@@ -1,0 +1,1 @@
+print(eject_cargo(['Fuel Cell', 'Fuel Cell', 'Space Food', 'Rain Coat'], 2))

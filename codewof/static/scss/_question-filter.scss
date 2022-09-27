@@ -1,0 +1,298 @@
+@import "core-variables";
+
+input[data-indent-level="2"] + label {
+  margin-left: 1rem;
+}
+input[data-indent-level="3"] + label {
+  margin-left: 2rem;
+}
+
+%filter-label {
+    cursor: pointer;
+}
+
+// Difficulties
+
+$difficulty-easy: #F7E89C;
+$difficulty-moderate: #FAD19E;
+$difficulty-difficult: #FCB9A0;
+$difficulty-complex: #FFA2A2;
+.difficulty {
+  @extend .badge;
+  user-select: none;
+  vertical-align: 2px;
+  &-0 {
+    color: darken($difficulty-easy, 60%);
+    background-color: $difficulty-easy;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($difficulty-easy, 10%);
+    }
+  }
+  &-1 {
+    color: darken($difficulty-moderate, 60%);
+    background-color: $difficulty-moderate;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($difficulty-moderate, 10%);
+    }
+  }
+  &-2 {
+    color: darken($difficulty-difficult, 60%);
+    background-color: $difficulty-difficult;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($difficulty-difficult, 10%);
+    }
+  }
+  &-3 {
+    color: darken($difficulty-complex, 60%);
+    background-color: $difficulty-complex;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($difficulty-complex, 10%);
+    }
+  }
+}
+
+.difficulty-filter {
+  @extend .difficulty;
+  @extend %filter-label;
+  font-size: 0.95rem;
+}
+
+@for $i from 0 through 3 {
+    input[filter="#{$i}"] + label {
+        @extend .difficulty-filter;
+        @extend .difficulty-#{$i};
+    }
+}
+
+// Types
+
+.type {
+  @extend .badge;
+  user-select: none;
+  vertical-align: 2px;
+  &-debugging {
+    box-shadow:inset 0 0 0 2px $question-type-debugging;
+    color: darken($question-type-debugging, 60%);
+    background-color: lighten($question-type-debugging, 40%);
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: lighten($question-type-debugging, 35%);
+    }
+  }
+  &-function {
+    box-shadow:inset 0 0 0 2px $question-type-function;
+    color: darken($question-type-function, 60%);
+    background-color: lighten($question-type-function, 40%);
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: lighten($question-type-function, 35%);
+    }
+  }
+  &-parsons {
+    box-shadow:inset 0 0 0 2px $question-type-parsons;
+    color: darken($question-type-parsons, 60%);
+    background-color: lighten($question-type-parsons, 40%);
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: lighten($question-type-parsons, 35%);
+    }
+  }
+  &-program {
+    box-shadow:inset 0 0 0 2px $question-type-program;
+    color: darken($question-type-program, 60%);
+    background-color: lighten($question-type-program, 40%);
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: lighten($question-type-program, 35%);
+    }
+  }
+}
+
+.type-filter {
+  @extend .type;
+  @extend %filter-label;
+  font-size: 0.95rem;
+}
+
+input[filter="Debugging"] + label {
+  @extend .type-filter;
+  @extend .type-debugging;
+}
+
+input[filter="Function"] + label {
+  @extend .type-filter;
+  @extend .type-function;
+}
+
+input[filter="Parsons"] + label {
+  @extend .type-filter;
+  @extend .type-parsons;
+}
+
+input[filter="Program"] + label {
+  @extend .type-filter;
+  @extend .type-program;
+}
+
+
+// Concepts
+
+$concept-display-text: #A2DAF2;
+$concept-functions: #AADDE0;
+$concept-inputs: #B1E0CF;
+$concept-conditionals: #B9E3BD;
+$concept-loops: #C1E5AB;
+$concept-string-operations: #C8E89A;
+$concept-lists: #D0EB88;
+.concept {
+  @extend .badge;
+  @extend .badge-pill;
+  user-select: none;
+  vertical-align: 2px;
+  &-1 {
+    color: darken($concept-display-text, 60%);
+    background-color: $concept-display-text;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($concept-display-text, 10%);
+    }
+  }
+  &-2 {
+    color: darken($concept-functions, 60%);
+    background-color: $concept-functions;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($concept-functions, 10%);
+    }
+  }
+  &-3 {
+    color: darken($concept-inputs, 60%);
+    background-color: $concept-inputs;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($concept-inputs, 10%);
+    }
+  }
+  &-4 {
+    color: darken($concept-conditionals, 60%);
+    background-color: $concept-conditionals;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($concept-conditionals, 10%);
+    }
+  }
+  &-5 {
+    color: darken($concept-loops, 60%);
+    background-color: $concept-loops;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($concept-loops, 10%);
+    }
+  }
+  &-6 {
+    color: darken($concept-string-operations, 60%);
+    background-color: $concept-string-operations;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($concept-string-operations, 10%);
+    }
+  }
+  &-7 {
+    color: darken($concept-lists, 60%);
+    background-color: $concept-lists;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($concept-lists, 10%);
+    }
+  }
+}
+
+.concept-filter {
+  @extend .concept;
+  @extend %filter-label;
+  font-size: 0.95rem;
+}
+
+@for $i from 1 through 7 {
+    input[filter="#{$i}"][name="concepts"] + label {
+        @extend .concept-filter;
+        @extend .concept-#{$i};
+    }
+}
+
+// Contexts
+
+$context-real-world-applications: #e3b5f5;
+$context-mathematics: #bea7f2;
+.context {
+  @extend .badge;
+  @extend .badge-pill;
+  user-select: none;
+  vertical-align: 2px;
+  &-1 {
+    color: darken($context-real-world-applications, 60%);
+    background-color: $context-real-world-applications;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($context-real-world-applications, 10%);
+    }
+  }
+  &-2 {
+    color: darken($context-mathematics, 60%);
+    background-color: $context-mathematics;
+    &.link:hover,
+    &.custom-control-label:hover {
+      background-color: darken($context-mathematics, 10%);
+    }
+  }
+}
+
+.context-filter {
+  @extend .context;
+  @extend %filter-label;
+  font-size: 0.95rem;
+}
+
+@for $i from 1 through 2 {
+    input[filter="#{$i}"][name="contexts"] + label {
+        @extend .context-filter;
+        @extend .context-#{$i};
+    }
+}
+
+.filter-box {
+  margin: 12px;
+  font-weight: bold;
+}
+
+details#question-filter {
+  &[open] summary:before {
+    content: '⊖';
+  }
+
+  summary {
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:before {
+      content: '⊕';
+      margin-right: 0.5rem;
+      padding-bottom: 0.15rem;
+      opacity: .6;
+    }
+    #filter-summary {
+        @extend .flex-grow;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 80%;
+        margin-left: 1rem;
+        min-height: 2.7rem;
+    }
+  }
+}

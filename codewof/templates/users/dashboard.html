@@ -13,29 +13,13 @@
     {% comment %} Left column {% endcomment %}
     <div class="col-12 col-md-8 mb-3">
         {% comment %} Conditional here to check if allowed to use website {% endcomment %}
-        <h2>Your questions for today</h2>
+        <h2>Your recommended questions</h2>
         <p>We recommend doing one or two questions per day, to maintain your programming skills over a long period of time.</p>
-
-        {% if questions_to_do %}
-            <div class="row">
-                {% for question in questions_to_do %}
-                    <div class="col-12 col-md-6">
-                        {% include "programming/question_components/question-card.html" %}
-                    </div>
-                {% endfor %}
-            </div>
-            {% if all_complete %}
-                <div class="alert alert-success" role="alert">
-                    Great work completing today's questions! Come back tomorrow for a new set.
-                </div>
-            {% endif %}
-        {% else %}
-            <div class="alert alert-secondary" role="alert">
-                <strong>Sorry!</strong> We currently don't have questions for you to do today.
-            </div>
-        {% endif %}
-
+        {% include "programming/question_components/question_recommendations.html" %}
+        <br>
         <p>You've solved {{ num_questions_answered }} question{{ num_questions_answered|pluralize }} in the last month!</p>
+        <a class="btn btn-primary btn-sm" href="{% url 'programming:question_list' %}">View All Questions</a>
+        <br><br>
 
         <h2>Groups</h2>
         {% if memberships %}

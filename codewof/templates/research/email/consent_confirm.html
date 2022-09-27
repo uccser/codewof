@@ -1,0 +1,27 @@
+{% extends "email_template.html" %}
+
+{% block title %}CodeWOF Research Consent Confirmation{% endblock %}
+
+{% block header %}CodeWOF Research Consent Confirmation{% endblock %}
+
+{% block greeting %}Dear {{ user.first_name }},{% endblock %}
+
+{% block main_message %}
+
+Thank you for registering for the "{{ study.title }}" study.
+Below is a copy of the information sheet, and your signed consent form.<br>
+
+<i>{% include "research/study_description.html" %}</i>
+
+<strong>Consent Form</strong><br><br>
+{% for field in form %}
+<b>{% if field.value %}I AGREE{% else %}I DO NOT AGREE{% endif %}</b> - {{ field.label }}<br>
+{% endfor %}
+
+<br>
+<b>Email address</b>: {{ user.email }}<br>
+<b>Date</b>: {{ registration.datetime|time:"g:i A" }} {{ registration.datetime|date:"l j F Y" }}
+
+{% endblock %}
+
+{% block conclusion %}Thank you,<br>The CodeWOF team{% endblock %}

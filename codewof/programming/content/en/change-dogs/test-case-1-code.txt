@@ -1,0 +1,1 @@
+print(change_dogs("That dog is adorable!"))

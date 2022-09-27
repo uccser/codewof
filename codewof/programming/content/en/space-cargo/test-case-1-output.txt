@@ -1,0 +1,3 @@
+Ejected Rain Coat
+Ejected Space Food
+['Fuel Cell', 'Fuel Cell']

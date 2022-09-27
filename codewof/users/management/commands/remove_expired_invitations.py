@@ -7,7 +7,11 @@ from users.models import Invitation
 
 
 class Command(BaseCommand):
-    """Required command class for the custom Django removed_expired_invitations command."""
+    """
+    Required command class for the custom Django removed_expired_invitations command.
+
+    The script should run at least once a day.
+    """
 
     def handle(self, *args, **options):
         """Get Invitations that have expired and delete them."""

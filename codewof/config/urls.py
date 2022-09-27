@@ -9,6 +9,7 @@ from rest_framework import routers
 from programming.urls import router as programming_router
 from research.urls import router as research_router
 from users.urls import router as users_router
+from . import views
 
 admin.site.login = login_required(admin.site.login)
 admin.site.site_header = 'CodeWOF'
@@ -27,6 +28,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('', include('programming.urls', namespace='programming'),),
     path('api/', include(router.urls)),
+    path('status/', view=views.get_release_and_commit, name="get-release-and-commit")
 ]
 
 if settings.DEBUG:

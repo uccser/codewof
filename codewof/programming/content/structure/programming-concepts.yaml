@@ -1,0 +1,27 @@
+display-text:
+  number: 1
+
+functions:
+  number: 2
+
+inputs:
+  number: 3
+
+conditionals:
+  number: 4
+  children:
+    - single-condition
+    - multiple-conditions
+    - advanced-conditionals
+
+loops:
+  number: 5
+  children:
+    - conditional-loops
+    - range-loops
+
+string-operations:
+  number: 6
+
+lists:
+  number: 7

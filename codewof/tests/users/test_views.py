@@ -3,6 +3,7 @@ import json
 
 import pytest
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models.functions import Lower
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
 from django.core import management
@@ -65,7 +66,7 @@ class UserDetailViewTest(TestCase):
         self.membership4 = Membership.objects.get(user=self.john, group=self.group_south)
         self.invitation1 = Invitation.objects.get(email=self.john.email, group=self.group_team_300, inviter=self.sally)
         self.invitation2 = Invitation.objects.get(email="john@mail.com", group=self.group_mystery, inviter=self.sally)
-        self.invitation3 = Invitation.objects.get(email=self.john.email, group=self.group_team_cserg,
+        self.invitation3 = Invitation.objects.get(email="uppercase@mail.com", group=self.group_team_cserg,
                                                   inviter=self.sally)
 
     def login_user(self):
@@ -96,9 +97,7 @@ class UserDetailViewTest(TestCase):
         resp = self.client.get('/users/dashboard/')
         self.assertEqual(resp.status_code, 200)
 
-        self.assertEqual(len(resp.context['questions_to_do']), 2)
         self.assertEqual(len(resp.context['all_achievements']), len(Achievement.objects.all()))
-        self.assertEqual(resp.context['all_complete'], False)
         self.assertEqual(resp.context['codewof_profile'], user.profile)
         self.assertEqual(resp.context['goal'], user.profile.goal)
         self.assertEqual(resp.context['num_questions_answered'], 1)
@@ -116,21 +115,22 @@ class UserDetailViewTest(TestCase):
     def test_context_object_invitations_in_correct_order(self):
         self.login_user()
         resp = self.client.get('/users/dashboard/')
-        john_emails = EmailAddress.objects.filter(user=self.john)
-        john_invitations = Invitation.objects.filter(email__in=john_emails.values('email'))
+        john_emails = EmailAddress.objects.annotate(email_lower=Lower('email')).filter(user=self.john)
+        john_invitations = Invitation.objects.filter(email__in=john_emails.values('email_lower'))
 
         self.assertEqual(len(john_invitations), 3)
         self.assertEqual(len(resp.context['invitations']), 3)
         self.assertEqual(resp.context['invitations'][0], self.invitation2)
         self.assertEqual(resp.context['invitations'][1], self.invitation1)
+        # Invitation email is all lowercase while the matching email address has upper case letters, but still works
         self.assertEqual(resp.context['invitations'][2], self.invitation3)
 
     def test_context_object_invitations_is_missing_invalid_invitations(self):
         self.login_user()
         generate_invalid_invitations()
         resp = self.client.get('/users/dashboard/')
-        john_emails = EmailAddress.objects.filter(user=self.john)
-        john_invitations = Invitation.objects.filter(email__in=john_emails.values('email'))
+        john_emails = EmailAddress.objects.annotate(email_lower=Lower('email')).filter(user=self.john)
+        john_invitations = Invitation.objects.filter(email__in=john_emails.values('email_lower'))
 
         self.assertEqual(len(john_invitations), 6)
         self.assertEqual(set(resp.context['invitations']), {self.invitation1, self.invitation2, self.invitation3})
@@ -346,6 +346,7 @@ class TestGroupCreateView(TestCase):
     def setUpTestData(cls):
         # never modify this object in tests
         generate_users(user)
+        generate_questions()
         management.call_command("load_group_roles")
 
     def setUp(self):
@@ -718,6 +719,7 @@ class TestGroupDeleteView(TestCase):
     def setUpTestData(cls):
         # never modify this object in tests
         generate_users(user)
+        generate_questions()
         generate_groups()
         generate_memberships()
         management.call_command("load_group_roles")
@@ -1082,6 +1084,7 @@ class TestMembershipDeleteView(TestCase):
     def setUpTestData(cls):
         # never modify this object in tests
         generate_users(user)
+        generate_questions()
         generate_groups()
         generate_memberships()
         management.call_command("load_group_roles")
@@ -1266,12 +1269,41 @@ class TestCreateInvitationsView(TestCase):
         self.assertEqual(str(messages[0]), 'The following emails had invitations sent to them: user1@mail.com, '
                                            'user2@mail.com, user3@mail.com')
 
+    def test_case_is_converted(self):
+        self.login_user(self.john)
+        emails = ['User1@mail.com']
+        resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
+                                {'emails': '\n'.join(emails)}, follow=True)
+        messages = list(resp.context['messages'])
+        outbox = get_outbox_sorted()
+
+        self.assertEqual(len(outbox), 1)
+        self.assertEqual(outbox[0].to[0], emails[0].lower())
+        self.assertTrue(Invitation.objects.filter(email=emails[0].lower(), group=self.group_north).exists())
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'The following emails had invitations sent to them: user1@mail.com')
+
     def test_existing_invitation(self):
         self.login_user(self.john)
         email = 'user1@mail.com'
         Invitation(email=email, group=self.group_north, inviter=self.john).save()
         resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
                                 {'emails': email}, follow=True)
+        messages = list(resp.context['messages'])
+        outbox = get_outbox_sorted()
+
+        self.assertEqual(len(outbox), 0)
+        self.assertEqual(len(Invitation.objects.filter(email=email, group=self.group_north)), 1)
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'The following emails were skipped either because they have already been '
+                                           'invited or are already a member of the group: user1@mail.com')
+
+    def test_existing_invitation_but_different_case(self):
+        self.login_user(self.john)
+        email = 'user1@mail.com'
+        Invitation(email=email, group=self.group_north, inviter=self.john).save()
+        resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_north.pk]),
+                                {'emails': email.capitalize()}, follow=True)
         messages = list(resp.context['messages'])
         outbox = get_outbox_sorted()
 
@@ -1313,6 +1345,25 @@ class TestCreateInvitationsView(TestCase):
         self.assertEqual(str(messages[0]),
                          'The following emails were skipped either because they have already been '
                          'invited or are already a member of the group: john@mail.com')
+
+    def test_existing_invitation_to_different_email_but_different_case(self):
+        self.login_user(self.sally)
+        admin_role = GroupRole.objects.get(name="Admin")
+        Membership(user=self.sally, group=self.group_mystery, role=admin_role).save()
+        Invitation(email=self.john.email, group=self.group_mystery, inviter=self.sally).save()
+        resp = self.client.post(reverse('users:groups-memberships-invite', args=[self.group_mystery.pk]),
+                                {'emails': "uppercase@mail.com"}, follow=True)
+        messages = list(resp.context['messages'])
+        outbox = get_outbox_sorted()
+        john_emails = EmailAddress.objects.filter(user=self.john)
+        john_invitations = Invitation.objects.filter(email__in=john_emails.values('email'), group=self.group_mystery)
+
+        self.assertEqual(len(outbox), 0)
+        self.assertEqual(len(john_invitations), 1)
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]),
+                         'The following emails were skipped either because they have already been '
+                         'invited or are already a member of the group: uppercase@mail.com')
 
     def test_existing_invitation_to_different_email_in_same_request(self):
         self.login_user(self.sally)
@@ -1381,7 +1432,10 @@ class TestAcceptInvitation(TestCase):
         self.group_mystery = Group.objects.get(name="Group Mystery")
         self.group_class_1 = Group.objects.get(name="Class 1")
         self.group_north = Group.objects.get(name="Group North")
+        self.group_team_cserg = Group.objects.get(name="Team CSERG")
         self.invitation = Invitation.objects.get(email="john@mail.com", group=self.group_mystery)
+        self.invitation_different_case = Invitation.objects.get(email="uppercase@mail.com",
+                                                                group=self.group_team_cserg)
         self.invitation_already_member = Invitation.objects.get(email=self.john.email, group=self.group_north)
         self.invitation_unverified_email = Invitation.objects.get(email="jack@mail.com", group=self.group_class_1)
         self.client = Client()
@@ -1408,6 +1462,11 @@ class TestAcceptInvitation(TestCase):
     def test_can_accept_if_invitee(self):
         self.login_user(self.john)
         resp = self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation.pk]))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_can_accept_if_invite_email_case_does_not_match_email_address_object_case(self):
+        self.login_user(self.john)
+        resp = self.client.post(reverse('users:groups-invitations-accept', args=[self.invitation_different_case.pk]))
         self.assertEqual(resp.status_code, 200)
 
     def test_accepting_deletes_the_invitation(self):
@@ -1451,7 +1510,10 @@ class TestRejectInvitation(TestCase):
         self.sally = User.objects.get(pk=2)
         self.group_mystery = Group.objects.get(name="Group Mystery")
         self.group_class_1 = Group.objects.get(name="Class 1")
+        self.group_team_cserg = Group.objects.get(name="Team CSERG")
         self.invitation = Invitation.objects.get(email="john@mail.com", group=self.group_mystery)
+        self.invitation_different_case = Invitation.objects.get(email="uppercase@mail.com",
+                                                                group=self.group_team_cserg)
         self.invitation_unverified_email = Invitation.objects.get(email="jack@mail.com", group=self.group_class_1)
         self.client = Client()
 
@@ -1478,6 +1540,11 @@ class TestRejectInvitation(TestCase):
     def test_can_reject_if_invitee(self):
         self.login_user(self.john)
         resp = self.client.delete(reverse('users:groups-invitations-reject', args=[self.invitation.pk]))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_can_reject_if_invite_email_case_does_not_match_email_address_object_case(self):
+        self.login_user(self.john)
+        resp = self.client.delete(reverse('users:groups-invitations-reject', args=[self.invitation_different_case.pk]))
         self.assertEqual(resp.status_code, 200)
 
     def test_rejecting_deletes_the_invitation(self):

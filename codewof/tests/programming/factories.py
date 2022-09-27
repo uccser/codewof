@@ -2,12 +2,12 @@
 
 import random
 from factory import (
-    DjangoModelFactory,
     Faker,
     Iterator,
     LazyAttribute,
     post_generation,
 )
+from factory.django import DjangoModelFactory
 from programming.models import Question, Profile, Attempt
 from django.utils import timezone
 

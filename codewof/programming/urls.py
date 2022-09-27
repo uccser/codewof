@@ -1,15 +1,18 @@
 """URL routing for programming application."""
 
 from django.urls import path
+from django.conf import settings
 from rest_framework import routers
 from programming import views
 
 app_name = 'programming'
 
 router = routers.SimpleRouter()
-router.register(r'programming/questions', views.QuestionAPIViewSet)
-router.register(r'programming/attempts', views.AttemptAPIViewSet)
-router.register(r'programming/profiles', views.ProfileAPIViewSet)
+if not settings.PRODUCTION_ENVIRONMENT:
+    router.register(r'programming/questions', views.QuestionAPIViewSet)
+    router.register(r'programming/attempts', views.AttemptAPIViewSet)
+    router.register(r'programming/profiles', views.ProfileAPIViewSet)
+    router.register(r'programming/likes', views.LikeAPIViewSet)
 
 urlpatterns = [
     path('questions/', views.QuestionListView.as_view(), name='question_list'),

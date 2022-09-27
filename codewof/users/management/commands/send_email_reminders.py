@@ -16,7 +16,11 @@ from django.urls import reverse
 
 
 class Command(BaseCommand):
-    """Required command class for the custom Django send_email_reminders command."""
+    """
+    Required command class for the custom Django send_email_reminders command.
+
+    The script should run once every hour, preferably near the beginning of the hour.
+    """
 
     def handle(self, *args, **options):
         """
@@ -82,7 +86,7 @@ class Command(BaseCommand):
         return email_template.render(
             {"username": username, "message": message,
              "dashboard_url": settings.CODEWOF_DOMAIN + reverse('users:dashboard'),
-             "settings_url": settings.CODEWOF_DOMAIN + reverse('users:update')})
+             "settings_url": settings.CODEWOF_DOMAIN + reverse('users:update'), "DOMAIN": settings.CODEWOF_DOMAIN})
 
     def build_email_plain(self, username, message):
         """
@@ -92,11 +96,10 @@ class Command(BaseCommand):
         :param message: The string message to insert in the template.
         :return: The string message.
         """
-        return "Hi {},\n\n{}\nLet's practice!: {}\n\nThanks,\nThe Computer Science Education Research " \
-               "Group\n\nYou received this email because you opted into reminders. You can change " \
-               "your reminder settings here: {}."\
+        return "Hi {},\n\n{}\n\nLet's practice!: {}\n\nThanks,\nThe CodeWOF team\n\nYou received this email because " \
+               "you opted into reminders. You can change your reminder settings here: {}.\n\n{}" \
             .format(username, message, settings.CODEWOF_DOMAIN + reverse('users:dashboard'),
-                    settings.CODEWOF_DOMAIN + reverse('users:update'))
+                    settings.CODEWOF_DOMAIN + reverse('users:update'), settings.CODEWOF_DOMAIN)
 
     def get_users_to_email(self):
         """

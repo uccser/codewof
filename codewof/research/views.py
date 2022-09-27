@@ -1,5 +1,7 @@
 """Views for research application."""
 
+from django.core.mail import send_mail
+from django.template.loader import get_template
 from django.views import generic
 from django.contrib import messages
 from django.conf import settings
@@ -7,7 +9,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
 from django.shortcuts import redirect
-from mail_templated import send_mail
 from rest_framework import viewsets, permissions
 from rest_framework.permissions import IsAdminUser
 from research.forms import ResearchConsentForm
@@ -70,21 +71,53 @@ class StudyConsentFormView(LoginRequiredMixin, FormView):
             send_study_results=form.cleaned_data.get('send_study_results', False)
         )
         send_mail(
-            'research/email/consent_confirm.tpl',
-            {
-                'user': self.request.user,
-                'study': study,
-                'form': form,
-                'registration': registration,
-            },
+            'CodeWOF Research Consent Confirmation',
+            self.build_email_plain(study, form, registration),
             settings.DEFAULT_FROM_EMAIL,
             [self.request.user.email],
+            fail_silently=False,
+            html_message=self.build_email_html(study, form, registration)
         )
         messages.success(
             self.request,
             'You are successfully enrolled into the {} study. You have been emailed a copy of your signed consent form.'.format(study['title'])  # noqa: E501
         )
         return redirect('research:home')
+
+    def build_email_plain(self, study, form, registration):
+        """
+        Construct plaintext for the email body.
+
+        :param study: A dictionary containing information for the study.
+        :param form: The consent form for the study.
+        :param registration: The study registration of the user.
+        :return: A string email body.
+        """
+        message = f"Dear {self.request.user.first_name},\n\n" \
+                  f"Thank you for registering for the \"{study['title']}\" study. " \
+                  f"Below is a copy of the information sheet, and your signed consent form.\n\n" \
+                  f"{study['description']}\n\n" \
+                  "Consent Form\n"
+        for field in form:
+            message += ("I AGREE" if field.value() else "I DO NOT AGREE") + f" - {field.label}\n"
+        message += f"\nEmail address: {self.request.user.email}\n" \
+                   f"Date: {registration.datetime}\n\n" \
+                   f"Thank you,\nThe CodeWOF team\n\n{settings.CODEWOF_DOMAIN}"
+        return message
+
+    def build_email_html(self, study, form, registration):
+        """
+        Construct HTML for the email body using the consent_confirm.html template.
+
+        :param study: A dictionary containing information for the study.
+        :param form: The consent form for the study.
+        :param registration: The study registration of the user.
+        :return: The rendered HTML.
+        """
+        email_template = get_template("research/email/consent_confirm.html")
+        return email_template.render(
+            {"user": self.request.user, "study": study, "form": form, "registration": registration,
+             "DOMAIN": settings.CODEWOF_DOMAIN})
 
 
 class ResearcherPermission(permissions.BasePermission):

@@ -1,0 +1,9 @@
+{% extends "email_template.html" %}
+
+{% block title %}CodeWOF Contact{% endblock %}
+
+{% block header %}{{ subject }}{% endblock %}
+
+{% block main_message %}<span style="white-space: pre-wrap;">{{ message }}</span>{% endblock %}
+
+{% block conclusion %}From,<br>{{ name }} &lt;{{ email }}&gt;{% endblock %}

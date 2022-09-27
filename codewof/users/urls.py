@@ -1,14 +1,20 @@
 """URL routing for users application."""
 
 from django.urls import path
+from django.conf import settings
 from rest_framework import routers
 from . import views
 
 app_name = "users"
 
 router = routers.SimpleRouter()
-router.register(r'users/users', views.UserAPIViewSet)
-router.register(r'users/user-types', views.UserTypeAPIViewSet)
+if not settings.PRODUCTION_ENVIRONMENT:
+    router.register(r'users/users', views.UserAPIViewSet)
+    router.register(r'users/user-types', views.UserTypeAPIViewSet)
+    router.register(r'users/groups', views.GroupAPIViewSet)
+    router.register(r'users/memberships', views.MembershipAPIViewSet)
+    router.register(r'users/group-roles', views.GroupRoleAPIViewSet)
+    router.register(r'users/invitations', views.InvitationAPIViewSet)
 
 
 urlpatterns = [

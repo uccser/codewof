@@ -9,7 +9,6 @@ const pjson = require('./package.json')
 // Plugins
 const autoprefixer = require('autoprefixer')
 const browserify = require('browserify')
-const browserSync = require('browser-sync').create()
 const buffer = require('vinyl-buffer');
 const c = require('ansi-colors')
 const concat = require('gulp-concat')
@@ -23,7 +22,6 @@ const log = require('fancy-log')
 const pixrem = require('pixrem')
 const postcss = require('gulp-postcss')
 const postcssFlexbugFixes = require('postcss-flexbugs-fixes')
-const reload = browserSync.reload
 const sass = require('gulp-sass')(require('sass'));
 const sourcemaps = require('gulp-sourcemaps')
 const tap = require('gulp-tap')
@@ -173,34 +171,13 @@ function svg() {
         .pipe(dest(paths.svg_output))
 }
 
-// Browser sync server for live reload
-function initBrowserSync() {
-    browserSync.init(
-        [
-            // `${paths.css}/*.css`,
-            `${paths.js}/*.js`
-        ], {
-        // https://www.browsersync.io/docs/options/#option-proxy
-        proxy: {
-            target: 'codewof.localhost/:80',
-            proxyReq: [
-                function (proxyReq, req) {
-                    // Assign proxy "host" header same as current request at Browsersync server
-                    proxyReq.setHeader('Host', req.headers.host)
-                }
-            ]
-        },
-        // https://www.browsersync.io/docs/options/#option-open
-        // Disable as it doesn't work from inside a container
-        open: false
-    }
-    )
-}
-
 // Watch
 function watchPaths() {
     // watch(`${paths.sass}/*.scss`, scss)
-    watch([`${paths.js_source}/*.js`, `!${paths.js_source}/*.min.js`], js).on("change", reload)
+    watch([`${paths.js_source}/**/*.js`, `!${paths.js_source}/*.min.js`], js)
+    watch([`${paths.css_source}/**/*.css`], css)
+    watch([`${paths.scss_source}/**/*.scss`], scss)
+    watch([`${paths.images_source}/**/*`], img)
 }
 
 // Generate all assets
@@ -215,11 +192,9 @@ const generateAssets = parallel(
 
 // Set up dev environment
 const dev = parallel(
-    initBrowserSync,
     watchPaths
 )
 exports["generate-assets"] = generateAssets
 exports["dev"] = dev
 // TODO: Look at cleaning build folder
-exports.default = generateAssets
-// exports.default = series(generateAssets, dev)
+exports.default = series(generateAssets, dev)

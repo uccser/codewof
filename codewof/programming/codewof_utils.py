@@ -107,14 +107,19 @@ def get_days_consecutively_answered(profile, user_attempts=None):
     return highest_streak
 
 
+def filter_attempts_in_past_month(attempts):
+    """Filter the given attempts by only returning those within the past month."""
+    today = datetime.datetime.now().replace(tzinfo=None) + relativedelta(days=1)
+    last_month = today - relativedelta(months=1)
+    solved = attempts.filter(datetime__gte=last_month.date())
+    return solved
+
+
 def get_questions_answered_in_past_month(profile, user_attempts=None):
     """Get the number questions successfully answered in the past month."""
     if user_attempts is None:
-        user_attempts = Attempt.objects.filter(profile=profile)
-
-    today = datetime.datetime.now().replace(tzinfo=None) + relativedelta(days=1)
-    last_month = today - relativedelta(months=1)
-    solved = user_attempts.filter(datetime__gte=last_month.date(), passed_tests=True)
+        user_attempts = Attempt.objects.filter(profile=profile, passed_tests=True)
+    solved = filter_attempts_in_past_month(user_attempts)
     return len(solved)
 
 

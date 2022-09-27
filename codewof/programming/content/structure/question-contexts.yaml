@@ -1,0 +1,12 @@
+real-world-applications:
+  number: 1
+
+mathematics:
+  number: 2
+  children:
+    - simple-mathematics
+    - advanced-mathematics
+    - geometry:
+      children:
+        - basic-geometry
+        - advanced-geometry

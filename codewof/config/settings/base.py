@@ -93,6 +93,7 @@ DJANGO_APPS = [
     'django.contrib.admin',
 ]
 THIRD_PARTY_APPS = [
+    'corsheaders',
     'anymail',
     'mail_templated',
     'crispy_forms',
@@ -105,6 +106,7 @@ THIRD_PARTY_APPS = [
     'ckeditor',
     'captcha',
     'django_bootstrap_breadcrumbs',
+    'django_filters',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
@@ -168,6 +170,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -380,13 +383,12 @@ CKEDITOR_CONFIGS = {
 # ------------------------------------------------------------------------------
 DEPLOYED = env.bool('DEPLOYED')
 GIT_SHA = env('GIT_SHA', default=None)
-if GIT_SHA:
-    GIT_SHA = GIT_SHA[:8]
-else:
+if not GIT_SHA:
     GIT_SHA = "local development"
 CODEWOF_DOMAIN = env('CODEWOF_DOMAIN', default='https://codewof.localhost')
 PRODUCTION_ENVIRONMENT = False
 STAGING_ENVIRONMENT = True
+TESTING = False
 BREADCRUMBS_TEMPLATE = 'django_bootstrap_breadcrumbs/bootstrap4.html'
 QUESTIONS_BASE_PATH = os.path.join(str(ROOT_DIR.path('programming')), 'content')
 CUSTOM_VERTO_TEMPLATES = os.path.join(str(ROOT_DIR.path('utils')), 'custom_converter_templates', '')
@@ -425,6 +427,12 @@ STYLE_CHECKER_TEMP_FILES_ROOT = os.path.join(str(ROOT_DIR), 'temp', 'style')
 STYLE_CHECKER_MAX_CHARACTER_COUNT = 10000
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "https://canterbury.ac.nz"
+]
 
 # Sample Data
 # ------------------------------------------------------------------------------

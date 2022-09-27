@@ -1,0 +1,1 @@
+print(eject_cargo(['First Aid Kit', 'Space Plant', 'Bottled Water', 'Fuel Cell'], 0))

@@ -1,0 +1,4 @@
+<{% if link %}a href="{% url 'programming:question_list' %}?concepts={{ concept.pk }}"{% else %}span{% endif %}
+    class="concept concept-{{ concept.number }}{% if link %} link{% endif %}">
+    {{ concept }}
+</{% if link %}a{% else %}span{% endif %}>
