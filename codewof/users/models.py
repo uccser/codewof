@@ -61,7 +61,7 @@ class User(AbstractUser):
     remind_on_sunday = models.BooleanField(default=False)
 
     # Determine when to send the email reminder
-    timezone = models.CharField(max_length=32, choices=TIMEZONES, default='Pacific/Auckland')
+    timezone = models.CharField(max_length=100, choices=TIMEZONES, default='Pacific/Auckland')
 
     REMINDER_DAYS = [remind_on_monday, remind_on_tuesday, remind_on_wednesday, remind_on_thursday, remind_on_friday,
                      remind_on_saturday, remind_on_sunday]
@@ -157,14 +157,3 @@ class Invitation(models.Model):
     email = models.EmailField()
     date_sent = models.DateTimeField(default=django_timezone.now)
     date_expires = models.DateTimeField(default=get_default_invitation_expiry)
-
-
-class EmailReminder(models.Model):
-    """
-    A temporary class for logging email reminders.
-
-    TODO: Remove this class at end of study
-    """
-
-    datetime = models.DateTimeField(default=django_timezone.now)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)

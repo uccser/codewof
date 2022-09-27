@@ -24,7 +24,6 @@ from users.serializers import (
     MembershipSerializer,
     GroupRoleSerializer,
     InvitationSerializer,
-    EmailReminderSerializer,
 )
 from users.forms import UserChangeForm, GroupCreateUpdateForm, GroupInvitationsForm
 from functools import wraps
@@ -40,7 +39,6 @@ from users.models import (
     GroupRole,
     Invitation,
     UserType,
-    EmailReminder,
 )
 from programming.codewof_utils import get_questions_answered_in_past_month, backdate_user
 from programming.question_recommendations import get_recommended_questions, get_recommendation_descriptions
@@ -479,11 +477,3 @@ class InvitationAPIViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = Invitation.objects.all().select_related('group', 'inviter')
     serializer_class = InvitationSerializer
-
-
-class EmailReminderAPIViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint that allows email reminders to be viewed."""
-
-    permission_classes = [IsAdminUser]
-    queryset = EmailReminder.objects.all().select_related('user')
-    serializer_class = EmailReminderSerializer
