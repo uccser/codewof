@@ -7,11 +7,9 @@ from crispy_forms.layout import (
     Column,
     Field,
     Div,
-    HTML,
+    Button,
     Submit,
 )
-
-FILTER_HELPER_RESET_HTML_TEMPLATE = '<a href="{{% url "{}" %}}?submit=Reset" class="btn btn-danger">Reset</a>'
 
 
 def create_filter_helper(reset_url_pattern):
@@ -51,7 +49,7 @@ def create_filter_helper(reset_url_pattern):
                 ),
             ),
             Div(
-                HTML(FILTER_HELPER_RESET_HTML_TEMPLATE.format(reset_url_pattern)),
+                Button('reset', 'Reset', css_class='btn-danger'),
                 Submit('submit', 'Filter questions', css_class='btn-success'),
                 css_class='d-flex justify-content-between collapsed',
             ),

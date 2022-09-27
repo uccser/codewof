@@ -82,6 +82,20 @@ function updateFilterSummary() {
     }
 };
 
+function resetFilter() {
+    /**
+     * Reset the filter to no options selected.
+     *
+     * This is different from a <input type="reset"> which sets the form
+     * to it's original state, which could be prepopulated from the URL.
+     */
+    allCheckboxes.forEach(function (checkbox) {
+        checkbox.checked = false;
+        checkbox.disabled = false;
+    });
+    updateFilterSummary();
+}
+
 window.onload = () => {
     filterSummaryText = document.getElementById('filter-summary-text');
 
@@ -101,4 +115,7 @@ window.onload = () => {
         checkbox.addEventListener('change', updateFilterSummary);
     });
     updateFilterSummary();
+
+    let resetButton = document.querySelector('#question-filter input[name="reset"]');
+    resetButton.addEventListener('click', resetFilter);
 }
