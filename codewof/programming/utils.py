@@ -50,7 +50,7 @@ def create_filter_helper(reset_url_pattern):
             ),
             Div(
                 Button('reset', 'Reset', css_class='btn-danger'),
-                Submit('submit', 'Filter questions', css_class='btn-success'),
+                Submit('', 'Filter questions', css_class='btn-success'),
                 css_class='d-flex justify-content-between collapsed',
             ),
             css_class='filter-box'
