@@ -11,15 +11,15 @@
             <button id="introjs-tutorial" class="btn btn-outline-secondary btn-sm float-right">How does this page work?</button>
         </div>
         <div class="mb-2">
-            {% include "programming/question_components/badges/difficulty.html" %}
+            {% include "programming/question_components/badges/difficulty.html" with link=True %}
             {% for concept in question.concepts.all %}
                 {% if not concept.has_children %}
-                    {% include "programming/question_components/badges/concept.html" %}
+                    {% include "programming/question_components/badges/concept.html" with link=True %}
                 {% endif %}
             {% endfor %}
             {% for context in question.contexts.all %}
                 {% if not context.has_children %}
-                    {% include "programming/question_components/badges/context.html" %}
+                    {% include "programming/question_components/badges/context.html" with link=True %}
                 {% endif %}
             {% endfor %}
         </div>
