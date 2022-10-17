@@ -1,5 +1,22 @@
 # Changelog
 
+## 5.0.1
+
+- Fix bug where a sequence of code characters could stop the JavaScript file from parsing correctly.
+- Delete management command with duplicated command name
+- Dependency updates:
+    - Update dependabot/fetch-metadata from v1.3.3 to v1.3.4.
+    - Update docker/login-action from v2.0.0 to v2.1.0.
+    - Update docker/build-push-action from v3.1.1 to v3.2.0.
+    - Update postcss from 8.4.16 to 8.4.18.
+    - Update yargs from 17.5.1 to 17.6.0.
+    - Update psycopg2 from 2.9.3 to 2.9.4.
+    - Update pytz from 2022.2.1 to 2022.4.
+    - Update django-modeltranslation from 0.18.4 to 0.18.5.
+    - Update mypy from 0.971 to 0.982.
+    - Update coverage from 6.4.4 to 6.5.0.
+    - Update django-debug-toolbar from 3.6.0 to 3.7.0.
+
 ## 5.0.0
 
 - Add question recommendations to users.
