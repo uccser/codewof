@@ -115,7 +115,7 @@
         {% if question.QUESTION_TYPE == QUESTION_TYPE_DEBUGGING %}
             var read_only_lines_top = {{ question.read_only_lines_top }};
             var read_only_lines_bottom = {{ question.read_only_lines_bottom }};
-            var initial_code = `{{ question.initial_code|escapejs }}`;
+            var initial_code = '{{ question.initial_code|escapejs }}';
         {% endif %}
     </script>
     <script src="{% static question_js %}"></script>

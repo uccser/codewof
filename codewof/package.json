@@ -30,13 +30,13 @@
         "jquery": "3.6.1",
         "pixrem": "5.0.0",
         "popper.js": "1.16.1",
-        "postcss": "8.4.16",
+        "postcss": "8.4.18",
         "postcss-flexbugs-fixes": "5.0.2",
         "sass": "1.55.0",
         "skulpt": "0.11.1",
         "sortablejs": "1.15.0",
         "vinyl-buffer": "1.0.1",
-        "yargs": "17.5.1"
+        "yargs": "17.6.0"
     },
     "engines": {
         "node": ">=8"
