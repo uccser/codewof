@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.0.2
+
+- Add Plausible analytics.
+- Dependency updates:
+    - Update autoprefixer from 10.4.12 to 10.4.13.
+    - Update cssnano from 5.1.13 to 5.1.14.
+    - Update django from 3.2.15 to 3.2.16.
+    - Update psycopg2 from 2.9.4 to 2.9.5.
+    - Update pytz from 2022.4 to 2022.5.
+    - Update pytest from 7.1.3 to 7.2.0.
+
 ## 5.0.1
 
 - Fix bug where a sequence of code characters could stop the JavaScript file from parsing correctly.
