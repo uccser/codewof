@@ -21,8 +21,8 @@
     <meta name="msapplication-config" content="{% static 'img/favicon/browserconfig.xml' %}">
     <meta name="theme-color" content="#ffffff">
 
-    {% if DEPLOYED %}
-      <!-- Analytics -->
+    {% if PRODUCTION_ENVIRONMENT %}
+      <script defer data-domain="codewof.co.nz" src="https://plausible.io/js/plausible.js"></script>
     {% endif %}
 
     <!-- Styling -->
