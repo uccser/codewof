@@ -3,9 +3,11 @@
 ## Step 1: Development Stack
 
 Start with the [UCCSER Installation Guide][1].
-You will need Docker and Docker Compose, as well as the UCCSER Development Stack before you can install CodeWOF.
+You will need Docker and Docker Compose, as well as the
+UCCSER Development Stack, before you can install CodeWOF.
 
-Once the Development Stack is installed, and started, we can move onto installing CodeWOF
+Once the Development Stack is installed, and started,
+we can move onto installing CodeWOF.
 
 ## Step 2: Get the code
 
@@ -40,7 +42,7 @@ while you wait.
 Once this is done, you should be able to see the website in all its glory.
 But wait... there's more!
 
-## Step 4: Setting up an account.
+## Step 4: Setting up an account
 
 If you try and navigate to the Questions page, you'll see that you
 need to sign in. For development, there is a command to help you do just that!
