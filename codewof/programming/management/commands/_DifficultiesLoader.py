@@ -58,4 +58,9 @@ class DifficultiesLoader(TranslatableModelLoader):
                 verb_text = 'Updated'
 
             self.log(f'{verb_text} difficulty: {difficulty.name}')
+
+        _, result = DifficultyLevel.objects.exclude(slug__in=difficulties_structure.keys()).delete()
+        if result.get('programming.DifficultyLevel', 0) > 0:
+            self.log('Deleted {} difficulty level(s)'.format(result['programming.DifficultyLevel']))
+
         self.log("All difficulties loaded!\n")

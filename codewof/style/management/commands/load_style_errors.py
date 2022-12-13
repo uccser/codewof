@@ -45,6 +45,7 @@ class Command(management.base.BaseCommand):
         """Automatically called when the load_style_errors command is given."""
         created_count = 0
         updated_count = 0
+        deleted_count = 0
 
         for language_code in get_language_slugs():
             # Import langauge data
@@ -86,4 +87,9 @@ class Command(management.base.BaseCommand):
                 else:
                     updated_count += 1
                     print('Updated {}'.format(obj))
-        print('Style errors loaded ({} created, {} updated).'.format(created_count, updated_count))
+
+            _, result = Error.objects.filter(language=language_code).exclude(code__in=language_data.keys()).delete()
+            deleted_count += result.get('style.Error', 0)
+            print('Deleted {} unused style errors.'.format(deleted_count))
+
+        print('Style errors loaded ({} created, {} updated, {} deleted).'.format(created_count, updated_count, deleted_count))

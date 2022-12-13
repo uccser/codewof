@@ -44,12 +44,21 @@ class QuestionContextsLoader(TranslatableModelLoader):
             required_slugs=context_structure.keys()
         )
 
+        loaded_contexts = []
         for (context_slug, context_data) in context_structure.items():
-            self.load_single_context(context_slug, context_data, None, 1)
+            loaded_contexts += self.load_context_with_children(context_slug, context_data, None, 1)
+
+        _, result = QuestionContexts.objects.exclude(slug__in=loaded_contexts).delete()
+        if result.get('programming.QuestionContexts', 0) > 0:
+            self.log("Deleted {} context(s)".format(result['programming.QuestionContexts']))
+
         self.log("All contexts loaded!\n")
 
-    def load_single_context(self, context_slug, context_data, parent, indent_level):
-        """Load a single context."""
+    def load_context_with_children(self, context_slug, context_data, parent, indent_level):
+        """Load a single context and all its children.
+           Returns a list of context slugs loaded, including the context passed in and all its children.
+        """
+        loaded_contexts = [context_slug]
         context_number = None
         if indent_level == 1:
             try:
@@ -113,4 +122,6 @@ class QuestionContextsLoader(TranslatableModelLoader):
                 else:
                     child_slug = child
                     child_data = []
-                self.load_single_context(child_slug, child_data, context, indent_level + 1)
+                loaded_contexts += self.load_context_with_children(child_slug, child_data, context, indent_level + 1)
+        
+        return loaded_contexts

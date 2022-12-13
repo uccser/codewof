@@ -305,9 +305,14 @@ class TestCase(TranslatableModel):
     """
 
     number = models.PositiveSmallIntegerField(default=1)
+    type = models.CharField(max_length=SMALL, default="Program", null=False)
     expected_output = models.TextField(blank=True)
     objects = InheritanceManager()
 
+    def __str__(self):
+        """Text representation of a test case."""
+        return self.type
+        pass
 
 # ----- Program question ------------------------------------------------------
 
