@@ -3,12 +3,13 @@ from django.test import TestCase
 from programming.management.commands._QuestionContextsLoader import QuestionContextsLoader
 from programming.models import QuestionContexts
 
+
 class QuestionContextsLoaderTest(TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.loader_name = "question_contexts"
         self.BASE_PATH = "tests/programming/loaders/assets/question-contexts/"
-    
+
     def test_multiple_contexts(self):
         config_file = "multiple-contexts.yaml"
         loader = QuestionContextsLoader(

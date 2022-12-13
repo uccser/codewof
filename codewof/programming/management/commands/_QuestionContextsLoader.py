@@ -56,7 +56,8 @@ class QuestionContextsLoader(TranslatableModelLoader):
 
     def load_context_with_children(self, context_slug, context_data, parent, indent_level):
         """Load a single context and all its children.
-           Returns a list of context slugs loaded, including the context passed in and all its children.
+
+        Returns a list of context slugs loaded, including the context passed in and all its children.
         """
         loaded_contexts = [context_slug]
         context_number = None
@@ -123,5 +124,5 @@ class QuestionContextsLoader(TranslatableModelLoader):
                     child_slug = child
                     child_data = []
                 loaded_contexts += self.load_context_with_children(child_slug, child_data, context, indent_level + 1)
-        
+
         return loaded_contexts

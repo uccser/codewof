@@ -3,6 +3,7 @@ from django.test import TestCase
 from programming.management.commands._ProgrammingConceptsLoader import ProgrammingConceptsLoader
 from programming.models import ProgrammingConcepts
 
+
 class ProgrammingConceptsLoaderTest(TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -16,7 +17,7 @@ class ProgrammingConceptsLoaderTest(TestCase):
             base_path=self.BASE_PATH,
         )
         loader.load()
-        
+
         self.assertQuerysetEqual(
             ProgrammingConcepts.objects.all(),
             [

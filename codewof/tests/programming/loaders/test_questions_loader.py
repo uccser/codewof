@@ -5,14 +5,14 @@ from programming.models import Question, DifficultyLevel, ProgrammingConcepts, T
 
 from utils.errors.InvalidYAMLValueError import InvalidYAMLValueError
 
+
 class QuestionsLoaderTest(DjangoTestCase):
-    """Tests for the QuestionsLoader"""
+    """Tests for the QuestionsLoader."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.loader_name = "questions"
         self.BASE_PATH = "tests/programming/loaders/assets/questions/"
-        # DifficultyLevel.objects.create(slug='difficulty-0', level=0, name='Difficulty 0')
 
     @classmethod
     def setUpTestData(cls):

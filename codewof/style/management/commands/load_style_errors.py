@@ -92,4 +92,6 @@ class Command(management.base.BaseCommand):
             deleted_count += result.get('style.Error', 0)
             print('Deleted {} unused style errors.'.format(deleted_count))
 
-        print('Style errors loaded ({} created, {} updated, {} deleted).'.format(created_count, updated_count, deleted_count))
+        print(
+            'Style errors loaded ({} created, {} updated, {} deleted).'
+            .format(created_count, updated_count, deleted_count))

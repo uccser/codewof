@@ -3,8 +3,9 @@ from django.test import TestCase
 from programming.management.commands._DifficultiesLoader import DifficultiesLoader
 from programming.models import DifficultyLevel
 
+
 class DifficultiesLoaderTest(TestCase):
-    """Tests for the DifficultiesLoader"""
+    """Tests for the DifficultiesLoader."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -80,5 +81,3 @@ class DifficultiesLoaderTest(TestCase):
             ],
             ordered=False,
         )
-
-            

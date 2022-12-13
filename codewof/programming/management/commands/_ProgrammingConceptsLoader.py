@@ -54,7 +54,8 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
 
     def load_concept_with_children(self, concept_slug, concept_data, parent, indent_level):
         """Load a programming concept and its children.
-           Returns a list of all concepts loaded.
+
+        Returns a list of all concepts loaded.
         """
         loaded_concepts = [concept_slug]
         concept_number = None
