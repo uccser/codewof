@@ -145,4 +145,6 @@ class Command(BaseCommand):
             )
             print("{} achievement: {}".format("Created" if created else "Updated", achievement['id_name']))
 
+        Achievement.objects.exclude(id_name__in=all_achievements.keys()).delete()
+
         print("{} achievements loaded!\n".format(len(all_achievements)))

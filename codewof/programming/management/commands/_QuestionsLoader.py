@@ -4,11 +4,10 @@ from os.path import join
 from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 from utils.TranslatableModelLoader import TranslatableModelLoader
-from utils.errors import (
-    MissingRequiredFieldError,
-    InvalidYAMLValueError,
-    KeyNotFoundError
-)
+from utils.errors.InvalidYAMLValueError import InvalidYAMLValueError
+from utils.errors.MissingRequiredFieldError import MissingRequiredFieldError
+from utils.errors.KeyNotFoundError import KeyNotFoundError
+
 from utils.language_utils import get_available_languages
 from programming.models import (
     QuestionTypeProgram,
@@ -226,7 +225,17 @@ class QuestionsLoader(TranslatableModelLoader):
                     question.contexts.add(context)
 
                 test_case_class = VALID_QUESTION_TYPES[question_type]['test_case_class']
+                current_number = 1
                 for (test_case_id, test_case_type) in question_test_cases.items():
+                    print(current_number, test_case_id)
+                    if test_case_id != current_number:
+                        raise InvalidYAMLValueError(
+                            self.structure_file_path,
+                            "test_case_number {}".format(test_case_id),
+                            "Test case numbers must be sequential"
+                        )
+                    current_number += 1
+
                     test_case_translations = self.get_blank_translation_dictionary()
 
                     if question_class == QuestionTypeProgram:
@@ -261,6 +270,7 @@ class QuestionsLoader(TranslatableModelLoader):
                     test_case, created = test_case_class.objects.update_or_create(
                         question=question,
                         number=test_case_id,
+                        type=test_case_type,
                         defaults={},
                     )
 
@@ -283,6 +293,21 @@ class QuestionsLoader(TranslatableModelLoader):
                     verb_text = 'Updated'
 
                 self.log('{} {} question: {}'.format(verb_text, question_type, question.title))
+
+        slugs = []
+        for slug, data in questions_structure.items():
+            if "types" in data:
+                slugs.extend(["{}-{}".format(slug, t) for t in data["types"]])
+            else:
+                slugs.append("{}-{}".format(slug, data["type"]))
+        for question_type in VALID_QUESTION_TYPES.values():
+            question_class = question_type['question_class']
+
+            _, deleted = question_class.objects.exclude(slug__in=slugs).delete()
+            if deleted and question_class._meta.label in deleted:
+                if (number_deleted := deleted[question_class._meta.label]) > 0:
+                    self.log('Deleted {} question(s)'.format(number_deleted))
+
         self.log("All questions loaded!\n")
 
 
