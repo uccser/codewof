@@ -27,4 +27,6 @@ jobs:
         run: gh pr comment -b "@dependabot merge" "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          # We need to use a personal access token here, as the GITHUB_TOKEN
+          # does not have push access to the repository, and thus cannot control dependabot.
+          GITHUB_TOKEN: ${{secrets.PERSONAL_ACCESS_TOKEN}}
