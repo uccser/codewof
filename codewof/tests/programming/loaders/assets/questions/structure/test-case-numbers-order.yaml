@@ -1,0 +1,8 @@
+say-hello-4:
+  type: program
+  test-cases:
+    2: normal
+    1: normal
+  difficulty: difficulty-0
+  concepts:
+    - display-text

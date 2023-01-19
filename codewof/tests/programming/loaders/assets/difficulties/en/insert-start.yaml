@@ -1,0 +1,14 @@
+difficulty-0:
+  name: "Trivial"
+
+difficulty-1:
+  name: "Easy"
+
+difficulty-2:
+  name: "Moderate"
+
+difficulty-3:
+  name: "Difficult"
+
+difficulty-4:
+  name: "Complex"

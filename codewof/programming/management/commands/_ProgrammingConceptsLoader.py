@@ -42,12 +42,22 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
             required_slugs=concept_structure.keys()
         )
 
+        loaded_concepts = []
         for (concept_slug, concept_data) in concept_structure.items():
-            self.load_single_concept(concept_slug, concept_data, None, 1)
+            loaded_concepts += self.load_concept_with_children(concept_slug, concept_data, None, 1)
+
+        _, result = ProgrammingConcepts.objects.exclude(slug__in=loaded_concepts).delete()
+        if result.get('programming.ProgrammingConcepts', 0) > 0:
+            self.log('Deleted {} programming concepts(s)'.format(result['programming.ProgrammingConcepts']))
+
         self.log("All concepts loaded!\n")
 
-    def load_single_concept(self, concept_slug, concept_data, parent, indent_level):
-        """Load single concept."""
+    def load_concept_with_children(self, concept_slug, concept_data, parent, indent_level):
+        """Load a programming concept and its children.
+
+        Returns a list of all concepts loaded.
+        """
+        loaded_concepts = [concept_slug]
         concept_number = None
         if indent_level == 1:
             try:
@@ -111,4 +121,6 @@ class ProgrammingConceptsLoader(TranslatableModelLoader):
                 else:
                     child_slug = child
                     child_data = []
-                self.load_single_concept(child_slug, child_data, concept, indent_level + 1)
+                loaded_concepts += self.load_concept_with_children(child_slug, child_data, concept, indent_level + 1)
+
+        return loaded_concepts

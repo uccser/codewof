@@ -19,3 +19,13 @@ class Error(models.Model):
     def __str__(self):
         """Text representation of an error."""
         return '{} - {}'.format(self.language, self.code)
+
+    class Meta:
+        """Meta class for Error model."""
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=['language', 'code'],
+                name='unique_language_code',
+            ),
+        ]

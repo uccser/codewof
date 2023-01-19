@@ -1305,7 +1305,7 @@ end-of-file:
     - function
     - parsons
   parsons-extra-lines:
-    - "return(file)"
+    - "return file"
     - 'file += "EOF"'
   test-cases:
     1: normal

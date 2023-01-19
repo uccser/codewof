@@ -38,3 +38,7 @@ class Command(BaseCommand):
             else:
                 verb_text = 'Updated'
             print('{} group role: {}'.format(verb_text, group_role_data['name']))
+
+        _, result = GroupRole.objects.exclude(slug__in=[group_role['slug'] for group_role in GROUP_ROLES]).delete()
+        if result.get('users.GroupRole', 0) > 0:
+            print('Deleted {} group role(s)'.format(result['users.GroupRole']))

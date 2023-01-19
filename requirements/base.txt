@@ -2,9 +2,9 @@
 django==3.2.16
 django-environ==0.9.0
 django-model-utils==4.3.1
-django-anymail[mailgun]==8.6
+django-anymail[mailgun]==9.0
 django-mail-templated==2.6.5
-django-allauth==0.51.0
+django-allauth==0.52.0
 django-crispy-forms==1.14.0
 django-activeurl==0.2.0
 django-autoslug==1.9.8
@@ -18,24 +18,24 @@ django-bootstrap-breadcrumbs==0.9.2
 
 # Web serving
 gunicorn==20.1.0
-whitenoise==6.2.0
+whitenoise==6.3.0
 
 # Database APIs
 psycopg2==2.9.5
 
 # Content loading
-verto==1.0.1
+verto==1.1.0
 python-markdown-math==0.6
-PyYAML==5.4.1
+PyYAML==6.0
 
 # Style checker
-flake8==4.0.1
+flake8==6.0.0
 flake8-docstrings==1.6.0
-flake8-quotes==3.3.1
-pep8-naming==0.13.2
+flake8-quotes==3.3.2
+pep8-naming==0.13.3
 
 # Other
-pytz==2022.6
+pytz==2022.7.1
 python-dateutil==2.8.2
 argon2-cffi==21.3.0
 
