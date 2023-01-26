@@ -30,7 +30,7 @@ PyYAML==6.0
 
 # Style checker
 flake8==6.0.0
-flake8-docstrings==1.6.0
+flake8-docstrings==1.7.0
 flake8-quotes==3.3.2
 pep8-naming==0.13.3
 
