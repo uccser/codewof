@@ -4,13 +4,13 @@
 # Testing
 # ------------------------------------------------------------------------------
 mypy==0.991  # https://github.com/python/mypy
-pytest==7.2.1  # https://github.com/pytest-dev/pytest
-pytest-sugar==0.9.6  # https://github.com/Frozenball/pytest-sugar
+pytest==7.3.0  # https://github.com/pytest-dev/pytest
+pytest-sugar==0.9.7  # https://github.com/Frozenball/pytest-sugar
 
 # Code quality
 # ------------------------------------------------------------------------------
 # flake8 is installed as dependency in base.txt
-coverage==7.1.0  # https://github.com/nedbat/coveragepy
+coverage==7.2.3  # https://github.com/nedbat/coveragepy
 pydocstyle==6.3.0
 
 # Django
