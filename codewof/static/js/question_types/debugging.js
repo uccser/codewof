@@ -1,6 +1,4 @@
 var base = require('./base.js');
-var CodeMirror = require('codemirror');
-require('codemirror/mode/python/python.js');
 const introJS = require('intro.js');
 
 var test_cases = {};
@@ -15,25 +13,7 @@ $(document).ready(function () {
         mark_lines_as_read_only(editor);
     });
 
-    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        mode: {
-            name: "python",
-            version: 3,
-            singleLineStringErrors: false
-        },
-        lineNumbers: true,
-        textWrapping: false,
-        styleActiveLine: true,
-        autofocus: true,
-        indentUnit: 4,
-        viewportMargin: Infinity,
-        // Replace tabs with 4 spaces. Taken from https://stackoverflow.com/questions/15183494/codemirror-tabs-to-spaces
-        extraKeys: {
-            "Tab": function(cm) {
-                cm.replaceSelection("    ", "end");
-            }
-        }
-    });
+    var editor = base.editor;
 
     mark_lines_as_read_only(editor);
 
