@@ -40,7 +40,7 @@ python-dateutil==2.8.2
 argon2-cffi==21.3.0
 
 # I18n
-django-modeltranslation==0.18.10
+django-modeltranslation==0.18.11
 
 # CORS
 django-cors-headers==3.14.0
