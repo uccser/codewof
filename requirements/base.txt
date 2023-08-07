@@ -43,4 +43,4 @@ argon2-cffi==21.3.0
 django-modeltranslation==0.18.11
 
 # CORS
-django-cors-headers==3.14.0
+django-cors-headers==4.2.0
