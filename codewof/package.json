@@ -30,7 +30,7 @@
         "jquery": "3.7.1",
         "pixrem": "5.0.0",
         "popper.js": "1.16.1",
-        "postcss": "8.4.29",
+        "postcss": "8.4.30",
         "postcss-flexbugs-fixes": "5.0.2",
         "sass": "1.67.0",
         "skulpt": "0.11.1",
