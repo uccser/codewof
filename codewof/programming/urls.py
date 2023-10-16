@@ -17,6 +17,11 @@ if not settings.PRODUCTION_ENVIRONMENT:
 urlpatterns = [
     path('questions/', views.QuestionListView.as_view(), name='question_list'),
     path('questions/create/', views.CreateView.as_view(), name='create'),
+    path('questions/created/', views.DraftQuestionListView.as_view(), name='draft_list'),
+    path('questions/created/new/', views.DraftQuestionView.as_view(), name='new_draft'),
+    path('questions/created/<int:pk>/', views.DraftQuestionView.as_view(), name='edit_draft'),
+    path('questions/created/<int:pk>/submit/', views.SubmitQuestionView.as_view(), name='submit_draft'),
+    path('questions/created/<int:pk>/delete/', views.DeleteQuestionView.as_view(), name='delete_draft'),
     path('questions/<int:pk>/', views.QuestionView.as_view(), name='question'),
     path('ajax/save_question_attempt/', views.save_question_attempt, name='save_question_attempt'),
     path('attempts/<int:pk>/like', views.like_attempt, name='like_attempt'),

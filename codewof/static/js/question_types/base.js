@@ -155,79 +155,82 @@ function scroll_to_element(containerId, element) {
     }
 }
 
-var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-    mode: {
-        name: "python",
-        version: 3,
-        singleLineStringErrors: false
-    },
-    lineNumbers: true,
-    textWrapping: false,
-    styleActiveLine: true,
-    autofocus: true,
-    indentUnit: 4,
-    viewportMargin: Infinity,
-    // Replace tabs with 4 spaces, and remove all 4 when deleting if possible.
-    // Taken from https://stackoverflow.com/questions/15183494/codemirror-tabs-to-spaces and
-    // https://stackoverflow.com/questions/32622128/codemirror-how-to-read-editor-text-before-or-after-cursor-position
-    extraKeys: {
-        "Tab": function(cm) {
-            cm.replaceSelection("    ", "end");
+function create_new_editor(containerId) {
+    // Allows pages to have multiple editors
+    return CodeMirror.fromTextArea(document.getElementById(containerId), {
+        mode: {
+            name: "python",
+            version: 3,
+            singleLineStringErrors: false
         },
-        "Backspace": function(cm) {
-            doc = cm.getDoc();
-            line = doc.getCursor().line;   // Cursor line
-            ch = doc.getCursor().ch;       // Cursor character
+        lineNumbers: true,
+        textWrapping: false,
+        styleActiveLine: true,
+        autofocus: true,
+        indentUnit: 4,
+        viewportMargin: Infinity,
+        // Replace tabs with 4 spaces, and remove all 4 when deleting if possible.
+        // Taken from https://stackoverflow.com/questions/15183494/codemirror-tabs-to-spaces and
+        // https://stackoverflow.com/questions/32622128/codemirror-how-to-read-editor-text-before-or-after-cursor-position
+        extraKeys: {
+            "Tab": function(cm) {
+                cm.replaceSelection("    ", "end");
+            },
+            "Backspace": function(cm) {
+                doc = cm.getDoc();
+                line = doc.getCursor().line;   // Cursor line
+                ch = doc.getCursor().ch;       // Cursor character
 
-            if (doc.somethingSelected()) {  // Remove user-selected characters
-                doc.replaceSelection("");
-            } else {    // Determine the ends of the selection to delete
-                from = {line, ch};
-                to = {line, ch};
-                stringToTest = doc.getLine(line).substr(Math.max(ch - 4,0), Math.min(ch, 4));
+                if (doc.somethingSelected()) {  // Remove user-selected characters
+                    doc.replaceSelection("");
+                } else {    // Determine the ends of the selection to delete
+                    from = {line, ch};
+                    to = {line, ch};
+                    stringToTest = doc.getLine(line).substr(Math.max(ch - 4,0), Math.min(ch, 4));
 
-                if (stringToTest === "    ") {  // Remove 4 spaces (dedent)
-                    from = {line, ch: ch - 4};
-                } else if (ch == 0) {   // Remove last character of previous line
-                    if (line > 0) {
-                        from = {line: line - 1, ch: doc.getLine(line - 1).length};
+                    if (stringToTest === "    ") {  // Remove 4 spaces (dedent)
+                        from = {line, ch: ch - 4};
+                    } else if (ch == 0) {   // Remove last character of previous line
+                        if (line > 0) {
+                            from = {line: line - 1, ch: doc.getLine(line - 1).length};
+                        }
+                    } else {    // Remove preceding character
+                        from = {line, ch: ch - 1};
                     }
-                } else {    // Remove preceding character
-                    from = {line, ch: ch - 1};
+
+                    // Delete the selection
+                    doc.replaceRange("", from, to);
                 }
+            },
+            "Delete" : function(cm) {
+                doc = cm.getDoc();
+                line = doc.getCursor().line;   // Cursor line
+                ch = doc.getCursor().ch;       // Cursor character
 
-                // Delete the selection
-                doc.replaceRange("", from, to);
-            }
-        },
-        "Delete" : function(cm) {
-            doc = cm.getDoc();
-            line = doc.getCursor().line;   // Cursor line
-            ch = doc.getCursor().ch;       // Cursor character
+                if (doc.somethingSelected()) {  // Remove user-selected characters
+                    doc.replaceSelection("");
+                } else {    // Determine the ends of the selection to delete
+                    from = {line, ch};
+                    to = {line, ch};
+                    stringToTest = doc.getLine(line).substr(ch, 4);
 
-            if (doc.somethingSelected()) {  // Remove user-selected characters
-                doc.replaceSelection("");
-            } else {    // Determine the ends of the selection to delete
-                from = {line, ch};
-                to = {line, ch};
-                stringToTest = doc.getLine(line).substr(ch, 4);
-
-                if (stringToTest === "    ") {  // Remove 4 spaces (dedent)
-                    to = {line, ch: ch + 4};
-                } else if (ch == doc.getLine(line).length) {   // Remove first character of next line
-                    if (line < doc.size - 1) {
-                        to = {line: line + 1, ch: 0};
+                    if (stringToTest === "    ") {  // Remove 4 spaces (dedent)
+                        to = {line, ch: ch + 4};
+                    } else if (ch == doc.getLine(line).length) {   // Remove first character of next line
+                        if (line < doc.size - 1) {
+                            to = {line: line + 1, ch: 0};
+                        }
+                    } else {    // Remove following character
+                        to = {line, ch: ch + 1};
                     }
-                } else {    // Remove following character
-                    to = {line, ch: ch + 1};
-                }
 
-                // Delete the selection
-                doc.replaceRange("", from, to);
+                    // Delete the selection
+                    doc.replaceRange("", from, to);
+                }
             }
         }
-    }
-});
+    });
+}
 
 exports.ajax_request = ajax_request;
 exports.clear_submission_feedback = clear_submission_feedback;
@@ -235,4 +238,4 @@ exports.display_submission_feedback = display_submission_feedback;
 exports.update_test_case_status = update_test_case_status;
 exports.run_test_cases = run_test_cases;
 exports.scroll_to_element = scroll_to_element;
-exports.editor = editor;
+exports.create_new_editor = create_new_editor;

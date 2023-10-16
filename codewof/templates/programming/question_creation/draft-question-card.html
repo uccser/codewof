@@ -1,0 +1,43 @@
+{% load static svg %}
+
+<div class="qc-container">
+    <div class="qc-card qc-{{ draft.question_type }} qc-card-draft">
+        <div class="qc-checkbox">
+            <img class="question-checkbox img-selected-false" src="{% static 'img/icons/icons8-unchecked-checkbox-50.png' %}" />
+            <img class="question-checkbox img-selected-true d-none" src="{% static 'img/icons/icons8-checked-checkbox-50.png' %}" />
+        </div>
+        <div class="qc-type">
+            <em>
+                {{ draft.question_type|capfirst }}
+            </em>
+        </div>
+        <div class="qc-title">
+            {{ draft.title }}
+        </div>
+        <div class="qc-tags">
+            {% include "programming/question_components/badges/difficulty.html" %}
+            {% for concept in draft.concepts.all %}
+                {% if not concept.has_children %}
+                    {% include "programming/question_components/badges/concept.html" %}
+                {% endif %}
+            {% endfor %}
+            {% for context in draft.contexts.all %}
+                {% if not context.has_children %}
+                    {% include "programming/question_components/badges/context.html" %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div id="buttons" class="qc-buttons d-none">
+            <a class="btn btn-outline-dark" href="{{ draft.get_absolute_url }}">View/Edit</a>
+            <form id="submitForm-{{ draft.id }}" method="post" action="{{ draft.get_absolute_url }}submit/">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{draft.id}}" />
+            </form>
+            <button type="submit" form="submitForm-{{ draft.id }}" class="btn btn-primary ml-auto">Submit</button>
+        </div>
+        <button class="btn btn-outline-danger qc-delete delete-modal-button d-none"
+                data-object-name="{{ draft.title }}" data-object-type="question" data-object-id="{{ draft.id }}" data-delete-url="{% url 'programming:delete_draft' pk=draft.id %}">
+            {% svg 'delete-icon-24' %}
+        </button>
+    </div>
+</div>
