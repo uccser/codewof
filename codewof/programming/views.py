@@ -4,7 +4,7 @@ import json
 import yaml
 import os
 from django.contrib.auth.decorators import login_required
-from django.views import generic, View
+from django.views import generic
 from django.urls import reverse
 from django.db.models import Count, Max, Exists, OuterRef
 from django.db.models.functions import Coalesce
@@ -99,6 +99,7 @@ class QuestionListView(LoginRequiredMixin, FilterView):
         context['filter_button_pressed'] = "submit" in self.request.GET
         return context
 
+
 class DraftQuestionListView(LoginRequiredMixin, FilterView):
     """View for listing draft questions created by the user."""
 
@@ -131,19 +132,19 @@ class DraftQuestionListView(LoginRequiredMixin, FilterView):
 
         Returns: Dictionary of context data.
         """
-        user = self.request.user
-
         context = super().get_context_data(**kwargs)
         context['filter_formatter'] = create_filter_helper("programming:draft_list")
         context['filter_button_pressed'] = "submit" in self.request.GET
         return context
 
+
 class DeleteQuestionView(LoginRequiredMixin, generic.base.TemplateView):
-    """ A "view" to handle requests to delete drafts """
+    """A "view" to handle requests to delete drafts."""
+
     model = Draft
 
     def get_object(self, **kwargs):
-        """Get draft object"""
+        """Get draft object."""
         try:
             draft = Draft.objects.get_subclass(
                 pk=self.kwargs['pk']
@@ -154,6 +155,7 @@ class DeleteQuestionView(LoginRequiredMixin, generic.base.TemplateView):
         return draft
 
     def post(self, request, *args, **kwargs):
+        """Check that the user is the author of the draft, and if so delete it."""
         self.object = self.get_object()
         if not request.user.is_authenticated or not request.user == self.object.author.user:
             return HttpResponseForbidden()
@@ -161,8 +163,10 @@ class DeleteQuestionView(LoginRequiredMixin, generic.base.TemplateView):
         messages.info(request, 'Question deleted successfully.')
         return redirect(reverse('programming:draft_list'))
 
+
 class SubmitQuestionView(LoginRequiredMixin, generic.CreateView):
-    """ Handles request to create a new question from a draft """
+    """Handles request to create a new question from a draft."""
+
     template_name = 'programming/add_question.html'
     model = Draft
 
@@ -178,7 +182,7 @@ class SubmitQuestionView(LoginRequiredMixin, generic.CreateView):
         return draft
 
     def create_question_from_draft(self):
-        """Create a question model based on draft WITHOUT saving it"""
+        """Create a question model based on draft without saving it."""
         # Choose question model appropriately for the type
         model_name = f"QuestionType{self.object.question_type.title()}"
         class_ = getattr(programming.models, model_name)
@@ -186,28 +190,35 @@ class SubmitQuestionView(LoginRequiredMixin, generic.CreateView):
 
         # Populate model with appropriate information
         # Default fields
-        question.slug=self.object.slug
-        question.languages=self.object.languages
-        question.title=self.object.title
-        question.question_type=self.object.question_type
-        question.question_text=self.object.question_text
-        question.solution=self.object.solution
-        question.difficulty_level=self.object.difficulty_level
+        question.slug = self.object.slug
+        question.languages = self.object.languages
+        question.title = self.object.title
+        question.question_type = self.object.question_type
+        question.question_text = self.object.question_text
+        question.solution = self.object.solution
+        question.difficulty_level = self.object.difficulty_level
 
         # Model-specific fields
         if self.object.question_type == 'parsons':
             # Parsons
-            question.lines=self.object.lines
+            question.lines = self.object.lines
 
         elif self.object.question_type == 'debugging':
             # Debugging
-            question.initial_code=self.object.initial_code
-            question.read_only_lines_top=self.object.read_only_lines_top
-            question.read_only_lines_bottom=self.object.read_only_lines_bottom
+            question.initial_code = self.object.initial_code
+            question.read_only_lines_top = self.object.read_only_lines_top
+            question.read_only_lines_bottom = self.object.read_only_lines_bottom
 
         return question
 
     def is_valid_question(self, request):
+        """
+        Check whether the question created is valid.
+
+        Creates a question from the draft in self.object, adds messages for
+        any problems to the request, and returns a boolean describing whether
+        the question is valid.
+        """
         valid = True
         # Create (do NOT save) a question model based on draft
         question = self.create_question_from_draft()
@@ -248,9 +259,11 @@ class SubmitQuestionView(LoginRequiredMixin, generic.CreateView):
         # Return boolean of whether it is valid
         return valid
 
-    def generate_YAML(self):
+    def generate_yaml(self):
         """
-        Generates the YAML to go in questions.yaml with the following format:
+        Generate the YAML to go in questions.yaml.
+
+        Generates yaml with the following format:
         title:
           types:
             -
@@ -268,14 +281,14 @@ class SubmitQuestionView(LoginRequiredMixin, generic.CreateView):
         """
         # Preparation of different question types
         before_test_cases = [
-            {'type' : [self.object.question_type]},
+            {'type': [self.object.question_type]},
         ]
 
         if self.object.question_type == 'parsons':
-            before_test_cases[0]['types'] =  ['function', 'parsons']
+            before_test_cases[0]['types'] = ['function', 'parsons']
             del before_test_cases[0]['type']
             if self.object.lines is not None:
-                before_test_cases.append({'parsons-extra-lines' : [self.object.extra_lines]})
+                before_test_cases.append({'parsons-extra-lines': [self.object.extra_lines]})
         elif self.object.question_type == 'debugging':
             before_test_cases += [
                 {'number_of_read_only_lines_top': self.object.number_of_read_only_lines_top},
@@ -285,8 +298,8 @@ class SubmitQuestionView(LoginRequiredMixin, generic.CreateView):
         # Test cases
         test_cases = []
         for test_case in list(self.object.draft_test_cases.values()):
-            test_cases.append({test_case['number'] : test_case['type']})
-        test_cases = [{'test-cases' : sorted(test_cases, key=lambda x: x.keys())}]
+            test_cases.append({test_case['number']: test_case['type']})
+        test_cases = [{'test-cases': sorted(test_cases, key=lambda x: x.keys())}]
 
         # Difficulty, concepts, and contexts
         after_test_cases = [
@@ -298,10 +311,10 @@ class SubmitQuestionView(LoginRequiredMixin, generic.CreateView):
             after_test_cases.append({'contexts': [context['slug'] for context in contexts]})
 
         # Join together
-        return [{self.object.title : before_test_cases + test_cases + after_test_cases}]
+        return [{self.object.title: before_test_cases + test_cases + after_test_cases}]
 
     def generate_markdown(self):
-        """For question.md file"""
+        """Create markdown for question.md file."""
         lines = [f"# {self.object.title}"]
 
         for line in self.object.question_text.split('<p>'):
@@ -309,13 +322,12 @@ class SubmitQuestionView(LoginRequiredMixin, generic.CreateView):
                              .replace('<strong>', '**')
                              .replace('</strong>', '**')
                              .replace('<code>', '`')
-                             .replace('</code>', '`')
-            )
+                             .replace('</code>', '`'))
 
         return '\n'.join(lines)
 
     def generate_files(self):
-        """Generates all the stored files """
+        """Generate all the stored files for a question."""
         # YAML for structure file
         with open(f'./programming/review/structure/{self.object.slug}.yaml', 'w') as file:
             yaml.dump(self.generate_YAML(), file)
@@ -336,9 +348,10 @@ class SubmitQuestionView(LoginRequiredMixin, generic.CreateView):
         # Iterate through test cases
         test_case_suffix = 'input' if self.object.question_type == 'program' else 'code'
         for test_case in list(self.object.draft_test_cases.values()):
-            with open(f'./programming/review/en/{self.object.slug}/test-case-{test_case["number"]}-{test_case_suffix}.txt', 'w') as file:
+            test_case_file_prefix = f'./programming/review/en/{self.object.slug}/test-case-{test_case["number"]}'
+            with open(f'{test_case_file_prefix}-{test_case_suffix}.txt', 'w') as file:
                 file.write(test_case["test_code"])
-            with open(f'./programming/review/en/{self.object.slug}/test-case-{test_case["number"]}-output.txt', 'w') as file:
+            with open(f'{test_case_file_prefix}-output.txt', 'w') as file:
                 file.write(test_case["expected_output"])
 
         # Create YAML file to store the macros
@@ -353,6 +366,7 @@ class SubmitQuestionView(LoginRequiredMixin, generic.CreateView):
                 yaml.dump(macros, file)
 
     def post(self, request, *args, **kwargs):
+        """Handle post request to submit a draft."""
         if not request.user.is_authenticated:
             return HttpResponseForbidden()
 
@@ -370,12 +384,11 @@ class SubmitQuestionView(LoginRequiredMixin, generic.CreateView):
             return redirect(reverse('programming:draft_list'))
 
         # Question was invalid, send user to question creation form to fix the issues
-        return redirect(reverse('programming:edit_draft', kwargs={'pk':self.kwargs['pk']}))
+        return redirect(reverse('programming:edit_draft', kwargs={'pk': self.kwargs['pk']}))
+
 
 class DraftQuestionView(LoginRequiredMixin, generic.CreateView, generic.UpdateView):
-    """
-    Displays the form for editing a draft question.
-    """
+    """Display the form for editing a draft question."""
 
     template_name = 'programming/add_question.html'
     template_name_suffix = ''
@@ -398,15 +411,14 @@ class DraftQuestionView(LoginRequiredMixin, generic.CreateView, generic.UpdateVi
         return draft
 
     def get_context_data(self, **kwargs):
-        """Provide the context data for the create/edit question view.
+        """
+        Provide the context data for the create/edit question view.
 
         Returns: Dictionary of context data.
         """
-        user = self.request.user
-
         context = super().get_context_data(**kwargs)
         context['question'] = self.object
-        if context['question'] != None:
+        if context['question'] is not None:
             test_cases = self.object.draft_test_cases.values()
             context['test_cases'] = test_cases
             context['test_cases_json'] = json.dumps(list(test_cases))
@@ -422,7 +434,7 @@ class DraftQuestionView(LoginRequiredMixin, generic.CreateView, generic.UpdateVi
 
             context['macros_json'] = json.dumps(list(macros))
         context['forms'] = {
-            "main_form": NewQuestionForm(instance = context['question']),
+            "main_form": NewQuestionForm(instance=context['question']),
             "macro_form": MacroForm(),
             "test_case_form": TestCaseForm(),
         }
@@ -430,7 +442,7 @@ class DraftQuestionView(LoginRequiredMixin, generic.CreateView, generic.UpdateVi
         return context
 
     def _custom_split(self, string):
-        """Splits on commas, but allows backslashes to escape splitting"""
+        """Split on commas, but allow backslashes to escape splitting."""
         parts = string.split(',')
         i = 1
         output = [parts[0]]
@@ -445,13 +457,14 @@ class DraftQuestionView(LoginRequiredMixin, generic.CreateView, generic.UpdateVi
         return output
 
     def form_valid(self, form, *args, **kwargs):
+        """Save the draft when a valid form is submitted."""
         if not self.request.user.is_authenticated:
             return HttpResponseForbidden()
         self.object = self.get_object()
 
         # First save the draft
         draft = form.save(commit=False)
-        if self.object == None:
+        if self.object is None:
             # New draft
             draft.languages = ['en']
             draft.author_id = self.request.user.id
@@ -556,10 +569,9 @@ class DraftQuestionView(LoginRequiredMixin, generic.CreateView, generic.UpdateVi
 
     def _generate_slug(self, cleaned):
         """
-        Creates a slug for new questions in the same style as existing questions:
-        - Make title lowercase
-        - Replace spaces with hyphens
-        - Add -<question type> to the end
+        Create a slug for new questions in a similar style to existing questions.
+
+        Make title lowercase, replace spaces with hyphens, and add -<question type> to the end.
         """
         return f"{cleaned['title'].lower().replace(' ', '-')}-{cleaned['question_type']}"
 
@@ -568,6 +580,7 @@ class DraftQuestionView(LoginRequiredMixin, generic.CreateView, generic.UpdateVi
         return super().form_invalid(form)
 
     def get_success_url(self):
+        """Define the url to visit on a success."""
         return reverse('programming:draft_list')
 
 

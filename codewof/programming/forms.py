@@ -1,9 +1,9 @@
-""" Forms for programming pages """
+"""Forms for programming pages."""
 
 from django import forms
 from django.urls import reverse
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Button, Div, HTML, Field
+from crispy_forms.layout import Layout, Submit, Button, Div, HTML
 from crispy_forms.bootstrap import Modal
 from programming.models import Draft, DifficultyLevel
 
@@ -25,22 +25,22 @@ TEST_CASE_TYPES = [
 ]
 CONCEPTS = {
     "root": [
-        ('display-text','Display Text'),
-        ('functions','Functions'),
-        ('inputs','Inputs'),
-        ('conditionals','Conditionals'),
-        ('loops','Loops'),
-        ('string-operations','String Operations'),
-        ('lists','Lists'),
+        ('display-text', 'Display Text'),
+        ('functions', 'Functions'),
+        ('inputs', 'Inputs'),
+        ('conditionals', 'Conditionals'),
+        ('loops', 'Loops'),
+        ('string-operations', 'String Operations'),
+        ('lists', 'Lists'),
     ],
     "conditionals": [
-        ('single-condition','Single Condition'),
-        ('multiple-conditions','Multiple Conditions'),
-        ('advanced-conditionals','Advanced Conditionals'),
+        ('single-condition', 'Single Condition'),
+        ('multiple-conditions', 'Multiple Conditions'),
+        ('advanced-conditionals', 'Advanced Conditionals'),
     ],
     "loops": [
-        ('conditional-loops','Conditional Loops'),
-        ('range-loops','Range Loops'),
+        ('conditional-loops', 'Conditional Loops'),
+        ('range-loops', 'Range Loops'),
     ],
 }
 CONTEXTS = {
@@ -58,10 +58,15 @@ CONTEXTS = {
     ],
 }
 
+
 class MacroForm(forms.Form):
-    """Form for creating/editing macros for new questions"""
+    """Form for creating/editing macros for new questions."""
+
+    macro_help_text = 'Separate values with a comma (i.e. 6,7). You can escape commas with a backslash (i.e. 6\\,7)'
     name = forms.CharField(required=True, max_length='20')
-    possible_values = forms.CharField(widget=forms.Textarea, required=True, help_text='Separate values with a comma (i.e. 6,7). You can escape commas with a backslash (i.e. 6\,7)')
+    possible_values = forms.CharField(widget=forms.Textarea,
+                                      required=True,
+                                      help_text=macro_help_text)
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
@@ -92,13 +97,19 @@ class MacroForm(forms.Form):
             ),
         )
 
+
 class TestCaseForm(forms.Form):
-    """Form for creating/editing test cases for new questions"""
+    """Form for creating/editing test cases for new questions."""
+
     testcase_type = forms.ChoiceField(required=True, label='Type', choices=TEST_CASE_TYPES)
     testcase_code = forms.CharField(widget=forms.Textarea, label='Input Code', required=True)
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
+        expected_output_notice = '<small class="form-text text-muted font-italic">' + \
+                                 'Expected output is generated from your provided solution code.' + \
+                                 '</small>'
+
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
@@ -106,7 +117,7 @@ class TestCaseForm(forms.Form):
             Modal(
                 'testcase_type',
                 'testcase_code',
-                HTML('<small class="form-text text-muted font-italic">Expected output is generated from your provided solution code.</small>'),
+                HTML(expected_output_notice),
                 Button(
                     "close_modal",
                     "Cancel",
@@ -127,29 +138,108 @@ class TestCaseForm(forms.Form):
             ),
         )
 
+
 class NewQuestionForm(forms.ModelForm):
     """Form for creating or editing new questions."""
-    macros = forms.CharField(widget=forms.Textarea, required=False)
-    initial_code = forms.CharField(widget=forms.Textarea, required=False)
-    read_only_lines_top = forms.IntegerField(required=False, help_text="The number of lines at the top of the initial code to make read-only")
-    read_only_lines_bottom = forms.IntegerField(required=False, help_text="The number of lines at the bottom of the initial code to make read-only")
-    lines = forms.CharField(widget=forms.Textarea, required=False, label="Extra lines", help_text="Lines to mix in with solution lines")
-    test_cases = forms.CharField(widget=forms.Textarea, required=False, help_text="Drag test cases up and down to reorder them (may not work with touch devices)")
 
-    concepts = forms.MultipleChoiceField(required=False, choices=CONCEPTS["root"], widget=forms.CheckboxSelectMultiple(), label=False)
-    concept_conditionals = forms.ChoiceField(required=False, choices=CONCEPTS["conditionals"], widget=forms.RadioSelect, label=False)
-    concept_loops = forms.ChoiceField(required=False, choices=CONCEPTS["loops"], widget=forms.RadioSelect, label=False)
+    # Fields specific to a type of question
+    initial_code = forms.CharField(
+        widget=forms.Textarea,
+        required=False
+    )
+    read_only_lines_top = forms.IntegerField(
+        required=False,
+        help_text="The number of lines at the top of the initial code to make read-only"
+    )
+    read_only_lines_bottom = forms.IntegerField(
+        required=False,
+        help_text="The number of lines at the bottom of the initial code to make read-only"
+    )
+    lines = forms.CharField(
+        widget=forms.Textarea,
+        required=False,
+        label="Extra lines",
+        help_text="Lines to mix in with solution lines"
+    )
 
-    contexts = forms.MultipleChoiceField(required=False, choices=CONTEXTS["root"], widget=forms.CheckboxSelectMultiple(), label=False)
-    context_has_geometry = forms.BooleanField(required=False, initial=False, label="Geometry")
-    context_mathematics = forms.ChoiceField(required=False, choices=CONTEXTS["mathematics"], widget=forms.RadioSelect, label=False)
-    context_geometry = forms.ChoiceField(required=False, choices=CONTEXTS["geometry"], widget=forms.RadioSelect, label=False)
+    # Many-to-many fields
+    macros = forms.CharField(
+        widget=forms.Textarea,
+        required=False
+    )
+    test_cases = forms.CharField(
+        widget=forms.Textarea,
+        required=False,
+        help_text="Drag test cases up and down to reorder them (may not work with touch devices)"
+    )
+    concepts = forms.MultipleChoiceField(
+        required=False,
+        choices=CONCEPTS["root"],
+        widget=forms.CheckboxSelectMultiple(),
+        label=False
+    )
+    contexts = forms.MultipleChoiceField(
+        required=False,
+        choices=CONTEXTS["root"],
+        widget=forms.CheckboxSelectMultiple(),
+        label=False
+    )
 
-    difficulty_level = forms.ChoiceField(required=False, choices=QUESTION_DIFFICULTY_CHOICES, initial=QUESTION_DIFFICULTY_CHOICES[0], label='Difficulty')
+    # Helpers for concepts/contexts
+    concept_conditionals = forms.ChoiceField(
+        required=False,
+        choices=CONCEPTS["conditionals"],
+        widget=forms.RadioSelect,
+        label=False
+    )
+    concept_loops = forms.ChoiceField(
+        required=False,
+        choices=CONCEPTS["loops"],
+        widget=forms.RadioSelect,
+        label=False
+    )
+
+    context_has_geometry = forms.BooleanField(
+        required=False,
+        initial=False,
+        label="Geometry"
+    )
+    context_mathematics = forms.ChoiceField(
+        required=False,
+        choices=CONTEXTS["mathematics"],
+        widget=forms.RadioSelect,
+        label=False
+    )
+    context_geometry = forms.ChoiceField(
+        required=False,
+        choices=CONTEXTS["geometry"],
+        widget=forms.RadioSelect,
+        label=False
+    )
+
+    # Defining a custom widget for difficulty to enable correct display names for the options
+    difficulty_level = forms.ChoiceField(
+        required=False,
+        choices=QUESTION_DIFFICULTY_CHOICES,
+        initial=QUESTION_DIFFICULTY_CHOICES[0],
+        label='Difficulty'
+    )
 
     class Meta:
+        """Defines attributes for crispy form generation."""
+
         model = Draft
-        fields = ["title", "question_type", "difficulty_level", "question_text", "macros", "solution", "concepts", "contexts", "lines"]
+        fields = [
+            "title",
+            "question_type",
+            "difficulty_level",
+            "question_text",
+            "macros",
+            "solution",
+            "concepts",
+            "contexts",
+            "lines"
+        ]
         labels = {
             "title": "Question Title",
             "question_type": "Type",
@@ -157,8 +247,6 @@ class NewQuestionForm(forms.ModelForm):
         widgets = {
             "question_type": forms.Select(choices=QUESTION_TYPE_CHOICES),
         }
-
-
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
@@ -175,7 +263,7 @@ class NewQuestionForm(forms.ModelForm):
             Div(
                 Div(
                     HTML('{% include "programming/question_creation/macros_display_table.html" %}'),
-                    css_class = "table-responsive",
+                    css_class="table-responsive",
                 ),
                 Button(
                     "new_macro",
@@ -184,7 +272,7 @@ class NewQuestionForm(forms.ModelForm):
                     css_class="btn-outline-secondary",
                     type="button",
                 ),
-                css_class = "text-center",
+                css_class="text-center",
             ),
             'solution',
             HTML('{% include "programming/question_components/indentation-warning.html" %}'),
@@ -232,8 +320,8 @@ class NewQuestionForm(forms.ModelForm):
             Div(
                 Div(
                     HTML('{% include "programming/question_creation/creation_test_case_table.html" %}'),
-                    css_class = "table-responsive",
-                    css_id = "test_case_table_container",
+                    css_class="table-responsive",
+                    css_id="test_case_table_container",
                 ),
                 Button(
                     "new_test_case",
@@ -242,7 +330,7 @@ class NewQuestionForm(forms.ModelForm):
                     css_class="btn-outline-secondary",
                     type="button",
                 ),
-                css_class = "text-center",
+                css_class="text-center",
             ),
             Div(
                 HTML(f'<a href = "{reverse("programming:draft_list")}" class="btn btn-outline-secondary">Cancel</a>'),
@@ -253,8 +341,9 @@ class NewQuestionForm(forms.ModelForm):
 
     def clean(self, *args, **kwargs):
         """
-        Overrides the validation, as difficulty level is a foreign key and would otherwise
-        raise an error.
+        Override the values returned from cleaning the form.
+
+        Difficulty level is a foreign key and would otherwise raise an error.
         """
         cleaned_data = self.cleaned_data
         cleaned_data['difficulty_level'] = DifficultyLevel.objects.get(

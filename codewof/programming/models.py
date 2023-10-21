@@ -240,7 +240,7 @@ class ProgrammingConcepts(models.Model):
 
 # ----- Base draft classes -------------------------------------------------
 class Draft(TranslatableModel):
-    """Class for a draft question"""
+    """Class for a draft question."""
 
     slug = models.SlugField(unique=True)
     title = models.CharField(max_length=SMALL)
@@ -301,6 +301,7 @@ class Draft(TranslatableModel):
         verbose_name = 'Draft'
         verbose_name_plural = 'Drafts'
 
+
 class DraftTestCase(TranslatableModel):
     """Base class for a draft for TestCase."""
 
@@ -323,6 +324,7 @@ class DraftTestCase(TranslatableModel):
         return self.type
         pass
 
+
 class DraftMacro(models.Model):
     """A macro for a draft question."""
 
@@ -333,8 +335,9 @@ class DraftMacro(models.Model):
         on_delete=models.CASCADE,
     )
 
+
 class DraftMacroValue(TranslatableModel):
-    """A potential value for a draft macro to take"""
+    """A potential value for a draft macro to take."""
 
     macro = models.ForeignKey(
         DraftMacro,
@@ -343,7 +346,9 @@ class DraftMacroValue(TranslatableModel):
     )
     value = models.TextField()
 
+
 # ----- Base question classes -------------------------------------------------
+
 class Question(TranslatableModel):
     """Base class for a question for CodeWOF.
 
@@ -431,7 +436,7 @@ class Macro(models.Model):
 
 
 class MacroValue(TranslatableModel):
-    """A potential value for a macro to take"""
+    """A potential value for a macro to take."""
 
     macro = models.ForeignKey(
         Macro,

@@ -46,7 +46,7 @@ class QuestionFilter(django_filters.FilterSet):
 
 
 class DraftFilter(django_filters.FilterSet):
-    """Filter for drafts extends FilterSet. Allows for filtering identical to questions"""
+    """Filter for drafts extends FilterSet. Allows for filtering identical to questions."""
 
     difficulty_level = django_filters.filters.ModelMultipleChoiceFilter(
         queryset=DifficultyLevel.objects.order_by('level'),
