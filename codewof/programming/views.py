@@ -338,7 +338,13 @@ class SubmitQuestionView(LoginRequiredMixin, generic.CreateView):
 
         # Question solution
         with open(f'./programming/review/en/{self.object.slug}/solution.py', 'w') as file:
-            file.write(self.object.solution)
+            # Add a newline to the end of the file if needed
+            solution = self.object.solution
+            solution_lines = self.object.solution.split('/n')
+            if solution_lines[-1] != '':
+                solution += '\n'
+
+            file.write(solution)
 
         # Initial code (for debugging)
         if self.object.question_type == 'debugging':

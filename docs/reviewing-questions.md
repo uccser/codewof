@@ -18,12 +18,12 @@ Pick a question from its file in `structure/` - e.g. `question_name.yaml`. This 
     - `initial.py`: This should be valid python code which will need to be debugged.
 - For the files described above, check that:
     - The question text makes the requirements clear;
-    - The solution code correctly answers the question;
+    - The solution code correctly answers the question and is stylistically correct (especially check that there is whitespace around operators);
     - The test cases adequately describe the solution (e.g. boundary cases);
     - Any initial code does not pass all test cases;
     - No Python code uses the `round()` function (currently broken)
 
-Additionally, check that the question being reviewed does not contain macros (look for a `macros.yaml` file in the `en/question_name/` directory). These are not currently used in questions, so would return broken questions to the user.
+Additionally, check that the question being reviewed does not contain macros (look for a `macros.yaml` file in the `en/question_name/` directory). These are not currently used when serving questions, so would return broken questions to the user.
 
 ### Passing review
 To move a question from a review state to being used, copy the contents of `question_name.yaml` to `programming/content/structure/questions.yaml` and delete `question_name.yaml`. Then, move the folder `programming/review/en/question_name/` to `programming/content/en/question_name/`.
