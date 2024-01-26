@@ -160,6 +160,150 @@ $parsons-hover-colour: #2196f35c;
     opacity: 0.5;
 }
 
+// Question adding
+$form-border: $gray-300;
+$form-light: #fffcf8;
+$form-medium: #efece8;
+$form-dark: #dfdcd8;
+
+.header-button-tray{
+    display: flex;
+    margin-bottom: 8px;
+
+    .link-vertical-center {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.tab-content {
+    border: 1px solid $form-border;
+    border-radius: 0px 10px 10px;
+    padding: 10px;
+
+    .new-question-form-container {
+        margin:auto;
+        min-width: none;
+        max-width: 100%;
+
+        @media (min-width: 768px) {
+            min-width: max-content;
+            max-width: 60%;
+        }
+    }
+}
+
+.nav-tabs {
+    border-bottom: 1px;
+}
+
+#preview-select-tab .nav-link.active {
+    background-color: $form-light;
+    border-bottom: 1px solid $form-light;
+}
+
+#macro-container {
+    border: 1px solid $form-border;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+}
+
+.variable-cycler {
+    background-color: $form-medium;
+    margin: auto;
+    width: 95%;
+
+    button {
+        border: 0px;
+        background-color: $form-medium;
+
+        &:active, &:hover {
+            background-color: $form-dark;
+        }
+    }
+}
+
+.preview-code {
+    width: 95%;
+    margin: 5px auto;
+    textarea {
+        width: 100%;
+        height: max-content;
+        resize: none;
+    }
+}
+
+.question-tag-tray {
+    display: flex;
+    align-items: center;
+    border: solid $form-border;
+    border-width: 1px 0px;
+    margin: -2px 0px 10px;
+}
+
+#div_id_concept_conditionals, #div_id_concept_loops, #div_id_context_has_geometry, #div_id_context_mathematics {
+    margin-left: 30px;
+    margin-bottom: 0px;
+}
+
+#div_id_context_geometry {
+    margin-left: 60px;
+    margin-bottom: 0px;
+}
+
+#div_id_macros, #div_id_test_cases {
+    margin-bottom: 0px;
+
+    label {
+        margin-bottom: 0px;
+    }
+}
+
+.hover-button {
+    background-color: $form-light;
+    cursor: default;
+
+    &:hover {
+        background-color: $form-medium;
+    }
+}
+
+.creation_form_table {
+    width: 100%;
+    border-collapse: collapse;
+    user-select: none;
+    text-align: left;
+    border-bottom: 1px solid $form-border;
+    margin-bottom: 5px;
+
+    .dnd-interactable {
+        cursor: move;
+    }
+
+    td {
+        padding: 3px 5px;
+    }
+
+    .btn-cell {
+        text-align: right;
+        width: 0px;
+        border-left: 1px dashed $form-border;
+        padding: 1px 5px;
+        cursor: default;
+    }
+
+    .horizontal-overflow-cell {
+        white-space: nowrap;
+        overflow-x: auto;
+        max-width: 20em;
+    }
+}
+
+.button-tray {
+    text-align: right;
+}
+
 // Other
 
 strong {

@@ -59,8 +59,11 @@
               <a class="nav-item nav-link" href="{% url 'programming:question_list' %}">
                 Questions
               </a>
-              <a class="nav-item nav-link{% if not RESEARCH %} mr-auto{% endif %}" href="{% url 'style:home' %}">
+              <a class="nav-item nav-link" href="{% url 'style:home' %}">
                 Style Checkers
+              </a>
+              <a class="nav-item nav-link{% if not RESEARCH %} mr-auto{% endif %}" href="{% url 'programming:draft_list' %}">
+                Created Questions
               </a>
               {% if RESEARCH %}
                 <a class="nav-item nav-link mr-auto" href="{% url 'research:home' %}">

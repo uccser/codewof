@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Edit New Question{% endblock %}
+
+{% block page_heading %}
+    <h1>New Question</h1>
+{% endblock page_heading %}
+
+{% block content %}
+  <!-- Beginning of tabbed pane -->
+  <ul id="preview-select-tab" class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#details">Details</a></li>
+    <li class="nav-item"><a id="preview-tab-button" class="nav-link" data-toggle="tab" href="#preview">Preview</a></li>
+  </ul>
+
+  {% include "programming/question_creation/configurable_delete_modal.html" %}
+
+  <div class="tab-content">
+    <div id="details" class="tab-pane active">
+      <div class="new-question-form-container">
+        {% crispy forms.macro_form %}
+        {% crispy forms.test_case_form %}
+        {% crispy forms.main_form %}
+      </div>
+    </div>
+    <!-- End of details tab, start of preview tab -->
+    <div id="preview" class="tab-pane">
+      <div class="row">
+        <div class="col-9">
+          <h3>{{ question.title }}</h3>
+          <div class="question-text">
+            {{ question.question_text|safe }}
+          </div>
+          <!-- Solution -->
+          <h5>Solution Code</h5>
+          {% include "programming/question_components/editor-python.html" %}
+          <br />
+          <!-- Test cases <br /> -->
+          {% include "programming/question_creation/test-case-preview-table.html" %}
+        </div>
+        <div class="col-3">
+          {% include "programming/question_creation/preview-macros.html" %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of tabbed pane -->
+
+{% endblock %}
+
+{% block scripts %}
+    {% csrf_token %}
+    <script>
+        var csrf_token = jQuery("[name=csrfmiddlewaretoken]").val();
+        {% if question %}
+            var question_id = {{ question.id }};
+            var test_cases_list = {{ test_cases_json|safe }};
+            var macros_list = {{ macros_json|safe }};
+            var question_type = '{{ question.QUESTION_TYPE }}';
+            {% if question.QUESTION_TYPE == QUESTION_TYPE_DEBUGGING %}
+                var read_only_lines_top = {{ question.read_only_lines_top }};
+                var read_only_lines_bottom = {{ question.read_only_lines_bottom }};
+                var initial_code = '{{ question.initial_code|escapejs }}';
+            {% endif %}
+        {% else %}
+            var question_id = 0;
+            var question_type = 'program';
+        {% endif %}
+    </script>
+    <script src="{% static 'js/question_types/delete_modal_config.js' %}"></script>
+    <script src="{% static 'js/question_types/preview.js' %}"></script>
+{% endblock scripts %}

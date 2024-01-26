@@ -1,0 +1,46 @@
+<table id="test_case_preview" class="creation_form_table">
+    <thead>
+        <tr>
+            <th>
+                <i>Type</i>
+            </th>
+            <th>
+                <i>Test</i>
+            </th>
+            <th>
+                <i>Expected output</i>
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if test_cases %}
+            {% for test_case in test_cases %}
+                <tr draggable='true' class='dnd-interactable'>
+                    <td>
+                        {{ test_case.type }}
+                    </td>
+                    <td class = 'horizontal-overflow-cell'>
+                        <pre class="mb-0 test-case-test-code"
+                        id="test-case-{{ test_case.id }}-test-code">{% if test_case.test_code %}{{ test_case.test_code }}{% elif test_case.test_input %}{{ test_case.test_input }}{% endif %}</pre>
+                    </td>
+                    <td class = 'horizontal-overflow-cell'>
+                        <pre class="mb-0" id="test-case-{{ test_case.number }}-output">{{ test_case.expected_output }}</pre>
+                        <p class="output-help-text d-none" id="test-case-{{ test_case.number }}-output-help-text">
+                            An error has occurred once our test code has been added to the end of yours. You may not have terminated your strings correctly (is there a closing quote for every opening quote?)
+                        </p>
+                    </td>
+                    <td class='btn-cell btn-edit-test-case hover-button'>
+                        Edit
+                    </td>
+                    <td class='btn-cell btn-delete-test-case hover-button delete-modal-button'
+                        data-object-name="{% if test_case.test_code %}{{ test_case.test_code }}{% elif test_case.test_input %}{{ test_case.test_input }}{% endif %}"
+                        data-object-type="test case" data-object-id="{{ test_case.id }}">
+                        Delete
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </tbody>
+</table>

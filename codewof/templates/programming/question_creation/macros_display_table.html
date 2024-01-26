@@ -1,0 +1,35 @@
+<table id="macro_table" class="creation_form_table">
+    <thead>
+        <tr>
+            <th>
+                <i>Name</i>
+            </th>
+            <th>
+                <i>Possible Values</i>
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if macros %}
+            {% for macro in macros %}
+                <tr>
+                    <td>
+                        {{ macro.name }}
+                    </td>
+                    <td>
+                        {{ macro.value }}
+                    </td>
+                    <td class='btn-cell btn-edit-macro hover-button'>
+                        Edit
+                    </td>
+                    <td class='btn-cell btn-delete-macro hover-button delete-modal-button'
+                        data-object-name="{{ macro.name }}" data-object-type="macro" data-object-id="{{ macro.id }}">
+                        Delete
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </tbody>
+</table>

@@ -1,0 +1,22 @@
+<label for="id_concepts">Concepts</label>
+<div class="question-tag-tray">
+    <div id="concept_tray">
+    {% for concept in question.concepts.all %}
+        {% if not concept.has_children %}
+            {% include "programming/question_components/badges/concept.html" with link=False %}
+        {% endif %}
+    {% endfor %}
+    </div>
+    <button id="btn-concepts" class="btn ml-auto hover-button" type="button" data-toggle="modal" data-target="#concept_modal">Edit</button>
+</div>
+<label for="id_contexts">Contexts</label>
+<div class="question-tag-tray">
+    <div id="context_tray">
+    {% for context in question.contexts.all %}
+        {% if not context.has_children %}
+            {% include "programming/question_components/badges/context.html" with link=False %}
+        {% endif %}
+    {% endfor %}
+    </div>
+    <button id="btn-contexts" class="btn ml-auto hover-button" type="button" data-toggle="modal" data-target="#context_modal">Edit</button>
+</div>
