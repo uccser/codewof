@@ -15,6 +15,6 @@ pydocstyle==6.3.0
 
 # Django
 # ------------------------------------------------------------------------------
-django-debug-toolbar==3.8.1  # https://github.com/jazzband/django-debug-toolbar
+django-debug-toolbar==5.0.1  # https://github.com/jazzband/django-debug-toolbar
 django-extensions==3.2.3  # https://github.com/django-extensions/django-extensions
 pytest-django==4.10.0  # https://github.com/pytest-dev/pytest-django
