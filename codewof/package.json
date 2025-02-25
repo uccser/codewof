@@ -14,7 +14,7 @@
         "cssnano": "5.1.15",
         "details-element-polyfill": "2.4.0",
         "fancy-log": "2.0.0",
-        "fuse.js": "6.6.2",
+        "fuse.js": "7.1.0",
         "gulp-concat": "2.6.1",
         "gulp-error-handle": "1.0.1",
         "gulp-filter": "7.0.0",
