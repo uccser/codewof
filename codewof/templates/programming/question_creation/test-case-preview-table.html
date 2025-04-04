@@ -1,0 +1,25 @@
+<div id="table-container" class="table-responsive">
+    <table id="test-case-table" class="table table-sm table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Test</th>
+                <th scope="col">Expected output</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for test_case in test_cases %}
+            <tr id="test-case-{{ test_case.id }}-row">
+                <td class="macro-substitution">
+                    <pre class="mb-0 test-case-test-code"
+                        id="test-case-{{ test_case.id }}-test-code">{{ test_case.test_code }}</pre>
+                </td>
+                <td>
+                    <pre class="mb-0"
+                        id="test-case-{{ test_case.id }}-output">{{ test_case.expected_output }}</pre>
+                    <p class="output-help-text d-none" id="test-case-{{ test_case.id }}-output-help-text">An error has occurred once our test code has been added to the end of yours. You may not have terminated your strings correctly (is there a closing quote for every opening quote?)</p>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

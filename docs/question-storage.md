@@ -1,15 +1,7 @@
-# Adding questions to codeWOF
+# Questions in codeWOF
 
-This guide provides a brief overview of how to add questions to codeWOF.
+This guide provides a brief overview of how questions are stored in codeWOF.
 The system we use for storing questions in our repository more complicated than you might expect, but we have used this system successfully for many years as it handles translations very well.
-
-## Writing a question
-
-When writing a question for codeWOF, you will want to keep the main goal of codeWOF in your mind, which is "Strengthen your programming skills, and maintain your coding warrant of fitness."
-This website is not for teaching new skills, but reinforcing existing knowledge for the user.
-
-Questions should be quick to complete, easy to understand, short to write, and use basic skills.
-The questions on the website are all handwritten, so for each question we recommend creating multiple variants if possible (up to five), with each question expecting different values.
 
 Most questions on the website so far can be completed in a few lines, and only test one or a couple of skills at a time.
 
@@ -34,7 +26,7 @@ Currently we do not test advanced skills, such as:
 
 **Note:** *We currently cannot include questions requiring the `round()` function due to a bug.*
 
-## Choosing a question type
+## Question type
 
 There are multiple types of questions available:
 
@@ -43,32 +35,62 @@ There are multiple types of questions available:
 - **Parsons:** Drag and drop code creator from a set of given blocks.
 - **Debugging:** Existing code with errors, some code is read only.
 
+A question can only be one type, except for questions that can be both function and parson types.
 
+## Components of a question
 
-## Adding a question
+There are three major components of a question:
 
-There are three stages to a question being added:
+1. Question metadata (language independent)
+2. Question content (language dependent)
+3. Question tags (difficulty, concepts, contexts)
 
-1. Creating a draft
-2. Submitting a draft
-3. Reviewing a draft
+## Question metadata
 
-### Creating a draft
-Visit `codewof.co.nz/questions/created` to see the list of drafts you have yet to submit. On this page is a button to create a new question. Clicking this will take you to an interface allowing you to enter the form data.
+The file `codewof/programming/content/structure/questions.yaml` contains key information about the question.
 
-Pressing save on a draft will not submit it, but will instead save it and take you back to the list of drafts page.
+Each question requires a slug, a unique identifier made from lower case letters, numbers, and dashes.
 
-### Submitting a draft
-To submit a draft, click on it on the list page mentioned above and then click Submit. Don't be surprised if you get brought back to the form for creating the question - the rules for submitting a question are more strict than for saving one.
+Each question then has a `type` or `types`.
 
-### Reviewing a draft
-Once a draft has been submitted, it can be reviewed by an administrator user via the process described in reviewing-questions.md.
+Each question also has a number of test cases.
+Each test case is either `normal` or `exceptional`.
+All test cases are normal, but exceptional test cases are when unexpected values are checked (like a wrong data type).
+If in doubt, mark a test case as 'normal'.
+
+Parson questions have the following additional item:
+
+- `parsons-extra-lines`
+
+Debugging questions have the following additional items:
+
+- `number_of_read_only_lines_top`
+- `number_of_read_only_lines_bottom`
+
+## Question content
+
+In the directory `codewof/programming/content/en/`, there must be a directory with the slug from `questions.yaml` (see Question metadata).
+
+Each question directory should have the following files:
+
+- `question.md` - Markdown file containing question title and description.
+- `solution.py` - Python file that is the solution to the question.
+- Test cases:
+
+  - `test-case-N-input.txt` (program type only) - Input for test case.
+  - `test-case-N-code.txt` (non-program types only) - Code to append for test case.
+  - `test-case-N-output.txt` - Expected output for test case.
+
+- `initial.py` (debugging type only) - Python file for initial code to display.
+
+Question directories may optionally have a `macros.yaml` file. See randomisation.md for more details.
 
 ## Question tags
+
 Each question must be tagged by difficulty, and can be tagged by programming concepts and programming contexts.
 This allows users to easily search for questions of a specific type.
 
-Open directory `codewof/programming/content/structure/questions.yaml`
+These are defined in the file `codewof/programming/content/structure/questions.yaml`
 
 Each question **requires** a `difficulty`, either:
 - `difficulty-0` - Easy
@@ -102,3 +124,6 @@ If applicable, one or more `contexts` should be added to the question from the f
   - `simple-mathematics` - Simple Mathematics
   - `advanced-mathematics` - Advanced Mathematics
 - `real-world-applications` - Real World Applications
+
+## Draft questions
+Draft questions are stored as a more generic instance of a question, and are more strictly typed when submitting. This is to allow drafts to be saved with very little information. Once submitted for review, drafts are stored as files until they have been reviewed (see reviewing-questions.md).

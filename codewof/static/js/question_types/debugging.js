@@ -13,7 +13,7 @@ $(document).ready(function () {
         mark_lines_as_read_only(editor);
     });
 
-    var editor = base.editor;
+    var editor = base.create_new_editor("code");
 
     mark_lines_as_read_only(editor);
 
