@@ -1,11 +1,25 @@
 var base = require('./base.js');
 const introJS = require('intro.js');
-
+let pyodide;
 var test_cases = {};
+
+async function initializePyodide() {
+    pyodide = await loadPyodide();
+    pyodide.setStdin({
+        stdin: (str) => {return prompt(str)},
+    });
+}
+
 
 $(document).ready(function () {
     $('#run_code').click(function () {
-        run_code(editor, true);
+        if (!pyodide) {
+            initializePyodide().then(() => {
+                run_code(editor, true);
+            });
+        } else {
+            run_code(editor, true);
+        }
     });
 
     var editor = base.editor;
@@ -53,7 +67,7 @@ function run_code(editor, submit) {
     } else {
         $("#indentation-warning").addClass("d-none");
     }
-    test_cases = base.run_test_cases(test_cases, user_code, run_python_code);
+    test_cases = base.run_test_cases(test_cases, user_code, run_python_code_pyodide);
     if (submit) {
         base.ajax_request(
             'save_question_attempt',
@@ -67,43 +81,138 @@ function run_code(editor, submit) {
     base.display_submission_feedback(test_cases);
 }
 
+async function run_python_code_pyodide(user_code, test_case) {
+    try {
 
-function run_python_code(user_code, test_case) {
-    // Configure Skulpt for running Python code
-    Sk.configure({
-        // Setup Skulpt to read internal library files
-        read: function (x) {
-            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
-                throw "File not found: '" + x + "'";
-            return Sk.builtinFiles["files"][x];
-        },
-        inputfun: function (str) {
-            return prompt(str);
-        },
-        inputfunTakesPrompt: true,
-        // Append print() statements for test case
-        output: function (received_output) {
-            test_case['received_output'] += received_output;
-        },
-        python3: true,
-        execLimit: 1000,
-    });
-    if (typeof user_code == 'string' && user_code.trim()) {
-        try {
-            Sk.importMainWithBody("<stdin>", false, user_code, true);
-        } catch (error) {
-            if (error.hasOwnProperty('traceback')) {
-                test_case.received_output = error.toString();
-                test_case.runtime_error = true;
-            } else {
-                throw error;
-            }
-        }
-    } else {
-        test_case.received_output = 'No Python code provided.';
-        test_case.runtime_error = true;
+        // Redirect standard output to capture print statements
+        pyodide.runPython(`
+            import sys
+            from io import StringIO
+            sys.stdout = StringIO()
+        `);
+
+        // Execute the user's code
+        pyodide.runPython(user_code);
+
+        // Get captured output and reset stdout
+        const output = pyodide.runPython("sys.stdout.getvalue()");
+        pyodide.runPython("sys.stdout = sys.__stdout__");
+
+        test_case['received_output'] = output;
+        test_case['runtime_error'] = false;
+    } catch (error) {
+        // Handle Python exceptions
+        test_case['received_output'] = error.message;
+        test_case['runtime_error'] = true;
     }
 }
+
+// async function run_python_code_pyodide(user_code, test_case) {
+    // try {
+
+    //     // Redirect standard output to capture print statements
+    //     pyodide.runPython(`
+    //         import sys
+    //         from io import StringIO
+    //         sys.stdout = StringIO()
+    //     `);
+
+    //     // Execute the user's code
+    //     pyodide.runPython(user_code);
+
+    //     // Get captured output and reset stdout
+    //     const output = pyodide.runPython("sys.stdout.getvalue()");
+    //     pyodide.runPython("sys.stdout = sys.__stdout__");
+
+    //     test_case['received_output'] = output;
+    //     test_case['runtime_error'] = false;
+    // } catch (error) {
+    //     // Handle Python exceptions
+    //     test_case['received_output'] = error.message;
+    //     test_case['runtime_error'] = true;
+    // }
+// }
+
+// function run_python_code(user_code, test_case) {
+//     // Configure Skulpt for running Python code
+//     Sk.configure({
+//         // Setup Skulpt to read internal library files
+//         read: function (x) {
+//             if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+//                 throw "File not found: '" + x + "'";
+//             return Sk.builtinFiles["files"][x];
+//         },
+//         inputfun: function (str) {
+//             return prompt(str);
+//         },
+//         inputfunTakesPrompt: true,
+//         // Append print() statements for test case
+//         output: function (received_output) {
+//             test_case['received_output'] += received_output;
+//         },
+//         python3: true,
+//         execLimit: 1000,
+//     });
+//     if (typeof user_code == 'string' && user_code.trim()) {
+//         try {
+//             Sk.importMainWithBody("<stdin>", false, user_code, true);
+//         } catch (error) {
+//             if (error.hasOwnProperty('traceback')) {
+//                 test_case.received_output = error.toString();
+//                 test_case.runtime_error = true;
+//             } else {
+//                 throw error;
+//             }
+//         }
+//     } else {
+//         test_case.received_output = 'No Python code provided.';
+//         test_case.runtime_error = true;
+//     }
+// }
+
+// function run_python_code_pyodide(user_code, test_case) {
+//     console.log("Running Python code with timeout...");
+//     runPythonWithTimeout(user_code, 2000)
+//         .then(result => {
+//             console.log("Result:", result);
+//             test_case['received_output'] = result;
+//             test_case['runtime_error'] = false;
+//         })
+//         .catch(err => {
+//             console.error("Error:", err.message)
+//             // Handle Python exceptions
+//             test_case['received_output'] = err.message;
+//             test_case['runtime_error'] = true;
+//         });
+// }
+
+// function runPythonWithTimeout(code, timeoutMs = 2000) {
+//   return new Promise((resolve, reject) => {
+//     let finished = false;
+
+//     // Listen for worker messages
+//     pyodideWorker.onmessage = (event) => {
+//       finished = true;
+//       if (event.data.error) {
+//         reject(new Error(event.data.error));
+//       } else {
+//         resolve(event.data.result);
+//       }
+//     };
+
+//     // Start code execution
+//     pyodideWorker.postMessage({ cmd: "runCode", code });
+
+//     // Setup timeout to interrupt execution
+//     setTimeout(() => {
+//       if (!finished) {
+//         // 2 stands for SIGINT (KeyboardInterrupt)
+//         interruptBuffer[0] = 2;
+//         reject(new Error("Execution timed out and was interrupted."));
+//       }
+//     }, timeoutMs);
+//   });
+// }
 
 
 function setTutorialAttributes() {

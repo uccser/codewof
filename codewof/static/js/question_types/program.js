@@ -1,11 +1,22 @@
 var base = require('./base.js');
 const introJS = require('intro.js');
 
+let pyodide;
 var test_cases = {};
+
+async function initializePyodide() {
+    pyodide = await loadPyodide();
+}
 
 $(document).ready(function () {
     $('#run_code').click(function () {
-        run_code(editor, true);
+        if (!pyodide) {
+            initializePyodide().then(() => {
+                run_code(editor, true);
+            });
+        } else {
+            run_code(editor, true);
+        }
     });
 
     var editor = base.editor;
@@ -54,7 +65,7 @@ function run_code(editor, submit) {
     } else {
         $("#indentation-warning").addClass("d-none");
     }
-    test_cases = base.run_test_cases(test_cases, user_code, run_python_code);
+    test_cases = base.run_test_cases(test_cases, user_code, run_python_code_pyodide);
     if (submit) {
         base.ajax_request(
             'save_question_attempt',
@@ -67,6 +78,41 @@ function run_code(editor, submit) {
     }
 }
 
+async function run_python_code_pyodide(user_code, test_case) {
+    try {
+        // Configure Pyodide to use input from the test case
+        pyodide.setStdin({
+            stdin: (str) => {
+                if (test_case.test_input_list.length > 0) {
+                    return test_case['test_input_list'].shift();
+                } else {
+                    return '';
+                }
+            },
+        });
+
+        // Redirect standard output to capture print statements
+        pyodide.runPython(`
+            import sys
+            from io import StringIO
+            sys.stdout = StringIO()
+        `);
+
+        // Execute the user's code
+        pyodide.runPython(user_code);
+
+        // Get captured output and reset stdout
+        const output = pyodide.runPython("sys.stdout.getvalue()");
+        pyodide.runPython("sys.stdout = sys.__stdout__");
+
+        test_case['received_output'] = output;
+        test_case['runtime_error'] = false;
+    } catch (error) {
+        // Handle Python exceptions
+        test_case['received_output'] = error.message;
+        test_case['runtime_error'] = true;
+    }
+}
 
 function run_python_code(user_code, test_case) {
     // Configure Skulpt for running Python code
