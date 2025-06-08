@@ -1,25 +1,34 @@
 var base = require('./base.js');
+var pyodide = require('./pyodide.js');
 const introJS = require('intro.js');
-let pyodide;
+// let pyodide;
 var test_cases = {};
 
-async function initializePyodide() {
-    pyodide = await loadPyodide();
-    pyodide.setStdin({
-        stdin: (str) => {return prompt(str)},
-    });
-}
+// async function initializePyodide() {
+//     pyodide = await loadPyodide();
+//     pyodide.setStdin({
+//         stdin: (str) => {return prompt(str)},
+//     });
+// }
 
+const pyodideWorker = new Worker("pyodide.js", { type: "module" });
+
+// Create a SharedArrayBuffer for interrupts
+const interruptBuffer = new Uint8Array(new SharedArrayBuffer(1));
+
+// Send the interrupt buffer to the worker
+pyodideWorker.postMessage({ cmd: "setInterruptBuffer", interruptBuffer });
 
 $(document).ready(function () {
     $('#run_code').click(function () {
-        if (!pyodide) {
-            initializePyodide().then(() => {
-                run_code(editor, true);
-            });
-        } else {
-            run_code(editor, true);
-        }
+        // if (!pyodide) {
+        //     initializePyodide().then(() => {
+        //         run_code(editor, true);
+        //     });
+        // } else {
+        //     run_code(editor, true);
+        // }
+        run_code(editor, true);
     });
 
     var editor = base.editor;
@@ -67,7 +76,7 @@ function run_code(editor, submit) {
     } else {
         $("#indentation-warning").addClass("d-none");
     }
-    test_cases = base.run_test_cases(test_cases, user_code, run_python_code_pyodide);
+    test_cases = base.run_test_cases(test_cases, user_code, run_pyodide_timeout);
     if (submit) {
         base.ajax_request(
             'save_question_attempt',
@@ -79,6 +88,21 @@ function run_code(editor, submit) {
         );
     }
     base.display_submission_feedback(test_cases);
+}
+
+function run_pyodide_timeout(user_code, test_case) {
+    pyodide.runPythonWithTimeout(user_code)
+        .then(result => {
+            test_case['received_output'] = result;
+            test_case['runtime_error'] = false;
+            test_case['passed'] = test_case['expected_output'] === result;
+        })
+        .catch(err => {
+            console.error("Error:", err.message);
+            // Handle Python exceptions
+            test_case['received_output'] = err.message;
+            test_case['runtime_error'] = true;
+        });
 }
 
 async function run_python_code_pyodide(user_code, test_case) {

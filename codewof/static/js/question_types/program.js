@@ -8,15 +8,11 @@ async function initializePyodide() {
     pyodide = await loadPyodide();
 }
 
-$(document).ready(function () {
+$(document).ready(async function () {
+    await initializePyodide();
+
     $('#run_code').click(function () {
-        if (!pyodide) {
-            initializePyodide().then(() => {
-                run_code(editor, true);
-            });
-        } else {
-            run_code(editor, true);
-        }
+        run_code(editor, true);
     });
 
     var editor = base.editor;

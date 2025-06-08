@@ -1,7 +1,7 @@
 FROM node:14.17.0-buster
 
-ARG DOCKER_UID
-RUN usermod -u $DOCKER_UID node
+# ARG DOCKER_UID
+# RUN usermod -u $DOCKER_UID node
 
 # Install required system dependencies
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 WORKDIR /app
 RUN chown -R node:node /app
 
-USER node
+# USER node
 RUN mkdir /app/build
 COPY --chown=node:node ./codewof/package.json /app
 RUN npm install && npm cache clean --force
