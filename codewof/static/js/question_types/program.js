@@ -4,13 +4,15 @@ const introJS = require('intro.js');
 let pyodide;
 var test_cases = {};
 
+/* Function to initialize Pyodide and set up stdin
+ * For "program" questions, stdin comes from the test input files.
+ */
 async function initializePyodide() {
     pyodide = await loadPyodide();
 }
 
 $(document).ready(async function () {
     await initializePyodide();
-
     $('#run_code').click(function () {
         run_code(editor, true);
     });
@@ -74,6 +76,8 @@ function run_code(editor, submit) {
     }
 }
 
+// This function runs the user's Python code using Pyodide and captures the output.
+// It has been marked as async to allow for asynchronous execution - but this has not been implemented yet.
 async function run_python_code_pyodide(user_code, test_case) {
     try {
         // Configure Pyodide to use input from the test case
@@ -107,47 +111,6 @@ async function run_python_code_pyodide(user_code, test_case) {
         // Handle Python exceptions
         test_case['received_output'] = error.message;
         test_case['runtime_error'] = true;
-    }
-}
-
-function run_python_code(user_code, test_case) {
-    // Configure Skulpt for running Python code
-    Sk.configure({
-        // Setup Skulpt to read internal library files
-        read: function (x) {
-            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
-                throw "File not found: '" + x + "'";
-            return Sk.builtinFiles["files"][x];
-        },
-        inputfun: function (str) {
-            if (test_case.test_input_list.length > 0) {
-                return test_case['test_input_list'].shift();
-            } else {
-                return '';
-            }
-        },
-        inputfunTakesPrompt: true,
-        // Append print() statements for test case
-        output: function (received_output) {
-            test_case['received_output'] += received_output;
-        },
-        python3: true,
-        execLimit: 1000,
-    });
-    if (typeof user_code == 'string' && user_code.trim()) {
-        try {
-            Sk.importMainWithBody("<stdin>", false, user_code, true);
-        } catch (error) {
-            if (error.hasOwnProperty('traceback')) {
-                test_case.received_output = error.toString();
-                test_case.runtime_error = true;
-            } else {
-                throw error;
-            }
-        }
-    } else {
-        test_case.received_output = 'No Python code provided.';
-        test_case.runtime_error = true;
     }
 }
 
