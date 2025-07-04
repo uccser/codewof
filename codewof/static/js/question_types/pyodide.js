@@ -1,58 +1,29 @@
-let pyodideReadyPromise = loadPyodide();
-let interruptBuffer = null;
+importScripts("https://cdn.jsdelivr.net/pyodide/v0.27.6/full/pyodide.js");
 
-self.onmessage = async (event) => {
-  // Handle interrupt buffer setup
-  if (event.data.cmd === "setInterruptBuffer") {
-    interruptBuffer = event.data.interruptBuffer;
-    const pyodide = await pyodideReadyPromise;
-    pyodide.setInterruptBuffer(interruptBuffer);
-    return;
-  }
-
-  // Handle code execution
-  if (event.data.cmd === "runCode") {
-    const pyodide = await pyodideReadyPromise;
-    try {
-      // Clear interrupt buffer before running code
-      if (interruptBuffer) interruptBuffer[0] = 0;
-      const result = await pyodide.runPythonAsync(event.data.code);
-      self.postMessage({ result });
-    } catch (error) {
-      self.postMessage({ error: error.message });
-    }
-    return;
-  }
-};
-
-// Function to run Python code with a timeout
-function runPythonWithTimeout(code) {
-    const timeoutMs = 2000; // Set the timeout duration (in milliseconds)
-    return new Promise((resolve, reject) => {
-        let finished = false;
-
-        // Listen for worker messages
-        pyodideWorker.onmessage = (event) => {
-        finished = true;
-        if (event.data.error) {
-            reject(new Error(event.data.error));
-        } else {
-            resolve(event.data.result);
-        }
-        };
-
-        // Start code execution
-        pyodideWorker.postMessage({ cmd: "runCode", code });
-
-        // Setup timeout to interrupt execution
-        setTimeout(() => {
-        if (!finished) {
-            // 2 stands for SIGINT (KeyboardInterrupt)
-            interruptBuffer[0] = 2;
-            reject(new Error("Execution timed out and was interrupted."));
-        }
-        }, timeoutMs);
+async function initializePyodide() {
+    let pyodide = await loadPyodide();
+    pyodide.setStdin({
+        stdin: (str) => { return prompt(str) },
     });
+    return pyodide;
 }
 
-exports.runPythonWithTimeout = runPythonWithTimeout;
+let pyodideReadyPromise = initializePyodide();
+
+onmessage = async (event) => {
+  let pyodide = await pyodideReadyPromise;
+  const { user_code } = event.data;
+  try {
+    pyodide.runPython(`
+        import sys
+        from io import StringIO
+        sys.stdout = StringIO()
+    `);
+    pyodide.runPython(user_code);
+    const output = pyodide.runPython("sys.stdout.getvalue()");
+    pyodide.runPython("sys.stdout = sys.__stdout__");
+    postMessage({ output });
+  } catch (error) {
+    postMessage({ error: error.message || String(error) });
+  }
+};

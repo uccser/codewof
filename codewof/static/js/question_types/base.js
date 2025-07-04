@@ -123,7 +123,7 @@ function update_test_case_status(test_case, user_code) {
     }
 }
 
-function run_test_cases(test_cases, user_code, code_function) {
+async function run_test_cases(test_cases, user_code, code_function) {
     // Currently runs in sequential order.
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
@@ -132,7 +132,9 @@ function run_test_cases(test_cases, user_code, code_function) {
             if (test_case.hasOwnProperty('test_code')) {
                 code = code + '\n' + test_case.test_code;
             }
-            code_function(code, test_case);
+            await code_function(code, test_case);
+            console.log("Test case " + test_case.id + " completed.");
+            console.log("Received output: " + test_case.received_output);
             update_test_case_status(test_case, user_code);
         }
     }

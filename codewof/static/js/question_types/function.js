@@ -2,40 +2,40 @@ var base = require('./base.js');
 const introJS = require('intro.js');
 
 // Local Variables
-let pyodide;
+let worker = new Worker("/static/js/question_types/pyodide.js");
 var test_cases = {};
 
 /* Function to initialize Pyodide and set up stdin
  * For "function" questions, stdin uses JavaScript's prompt function to get input from the user.
  */
-async function initializePyodide() {
-    pyodide = await loadPyodide();
-    pyodide.setStdin({
-        stdin: (str) => {return prompt(str)},
-    });
-}
+
 
 
 $(document).ready(async function () {
-    await initializePyodide();
-    $('#run_code').click(function () {
-        run_code(editor, true);
+    $('#run_code').click(async function () {
+         $('#run_code').prop('disabled', true);
+        $('#run_code').addClass('disabled');
+         $('#run_code').attr('aria-disabled', 'true');
+        await run_code(editor, true);
+        $('#run_code').prop('disabled', false);
+        $('#run_code').removeClass('disabled');
+        $('#run_code').attr('aria-disabled', 'false');
     });
 
     var editor = base.editor;
 
     for (let i = 0; i < test_cases_list.length; i++) {
         data = test_cases_list[i];
-        test_cases[data.id] = data
+        test_cases[data.id] = data;
     }
 
     if (editor.getValue()) {
-        run_code(editor, false);
+        await run_code(editor, false);
     }
 
     setTutorialAttributes();
-    $("#introjs-tutorial").click(function() {
-        introJS().start().onbeforechange(function() {
+    $("#introjs-tutorial").click(function () {
+        introJS().start().onbeforechange(function () {
             currentElement = $(this._introItems[this._currentStep].element);
             node = currentElement.prop('nodeName');
             // When looking at a full row of the table, force it to scroll to the far left
@@ -49,7 +49,7 @@ $(document).ready(async function () {
     });
 });
 
-function run_code(editor, submit) {
+async function run_code(editor, submit) {
     base.clear_submission_feedback();
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
@@ -67,7 +67,7 @@ function run_code(editor, submit) {
     } else {
         $("#indentation-warning").addClass("d-none");
     }
-    test_cases = base.run_test_cases(test_cases, user_code, run_python_code_pyodide);
+    test_cases = await base.run_test_cases(test_cases, user_code, run_python_code_pyodide);
     if (submit) {
         base.ajax_request(
             'save_question_attempt',
@@ -81,31 +81,66 @@ function run_code(editor, submit) {
     base.display_submission_feedback(test_cases);
 }
 
+/*
 // This function runs the user's Python code using Pyodide and captures the output.
 // It has been marked as async to allow for asynchronous execution - but this has not been implemented yet.
 async function run_python_code_pyodide(user_code, test_case) {
     try {
-        // Redirect standard output to capture print statements
+        // Set up stdout redirection in Python
         pyodide.runPython(`
             import sys
             from io import StringIO
             sys.stdout = StringIO()
         `);
 
-        // Execute the user's code
-        pyodide.runPython(user_code);
+        pyodide.runPythonAsync(user_code);
 
         // Get captured output and reset stdout
-        const output = pyodide.runPython("sys.stdout.getvalue()");
-        pyodide.runPython("sys.stdout = sys.__stdout__");
-
+        const output = await pyodide.runPythonAsync("sys.stdout.getvalue()");
+        await pyodide.runPythonAsync("sys.stdout = sys.__stdout__");
         test_case['received_output'] = output;
         test_case['runtime_error'] = false;
+        console.log("Finished running from Pyodide");
     } catch (error) {
-        // Handle Python exceptions
         test_case['received_output'] = error.message;
         test_case['runtime_error'] = true;
     }
+}
+*/
+async function run_python_code_pyodide(user_code, test_case) {
+    return await new Promise((resolve, reject) => {
+        let finished = false;
+        let timeoutId = setTimeout(() => {
+            if (finished) return;
+            finished = true;
+            worker.terminate();
+            worker = new Worker("/static/js/question_types/pyodide.js");
+            test_case['received_output'] = "Timeout: Code execution exceeded 1 second";
+            test_case['runtime_error'] = true;
+            resolve(undefined); // Resolve the promise after setting the result
+        }, 1000);
+
+        worker.onmessage = (event) => {
+            if (finished) return;
+            finished = true;
+            clearTimeout(timeoutId);
+            const { output, error } = event.data;
+            test_case['received_output'] = output || error;
+            test_case['runtime_error'] = !!error;
+            resolve(0); // Resolve the promise after setting the result
+        };
+
+        worker.onerror = (e) => {
+            if (finished) return;
+            finished = true;
+            clearTimeout(timeoutId);
+            test_case['received_output'] = "Worker error: " + e.message;
+            test_case['runtime_error'] = true;
+            resolve(0);
+        };
+
+        worker.postMessage({ user_code });
+    });
 }
 
 
