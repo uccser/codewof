@@ -8,9 +8,23 @@ async function initializePyodide() {
     return pyodide;
 }
 
+// After initial load, Pyodide is ready to use, send message to main thread to indicate worker is ready
 let pyodideReadyPromise = initializePyodide();
+pyodideReadyPromise.then(() => {
+  postMessage({ type: "ready" });
+});
 
+/**
+ * Function to run the user's Python code using Pyodide and capture the output.
+ * This function listens for messages from the main thread,
+ * executes the provided Python code,
+ * and sends the output or error back to the main thread.
+ */
 onmessage = async (event) => {
+  if (event.data.type === "ping") {
+    postMessage({ type: "ready" });
+    return;
+  }
   let pyodide = await pyodideReadyPromise;
   const { user_code } = event.data;
   try {

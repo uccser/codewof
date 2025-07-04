@@ -5,18 +5,33 @@ const introJS = require('intro.js');
 let worker = new Worker("/static/js/question_types/pyodide.js");
 var test_cases = {};
 
-/* Function to initialize Pyodide and set up stdin
- * For "function" questions, stdin uses JavaScript's prompt function to get input from the user.
+/**
+ * Function to initialize the worker and wait for it to be ready.
+ * This function listens for a "ready" message from the worker before resolving the promise.
  */
-
-
+function waitForWorkerReady(worker) {
+    return new Promise((resolve) => {
+        function handleReady(event) {
+            if (event.data.type === "ready") {
+                worker.removeEventListener("message", handleReady);
+                resolve(0);
+            }
+        }
+        worker.addEventListener("message", handleReady);
+    });
+}
 
 $(document).ready(async function () {
+    await waitForWorkerReady(worker);
+
     $('#run_code').click(async function () {
-         $('#run_code').prop('disabled', true);
+        // disable the button to prevent multiple clicks
+        $('#run_code').prop('disabled', true);
         $('#run_code').addClass('disabled');
-         $('#run_code').attr('aria-disabled', 'true');
+        $('#run_code').attr('aria-disabled', 'true');
+        // Run the code
         await run_code(editor, true);
+        // Re-enable the button after running the code
         $('#run_code').prop('disabled', false);
         $('#run_code').removeClass('disabled');
         $('#run_code').attr('aria-disabled', 'false');
@@ -81,32 +96,7 @@ async function run_code(editor, submit) {
     base.display_submission_feedback(test_cases);
 }
 
-/*
-// This function runs the user's Python code using Pyodide and captures the output.
-// It has been marked as async to allow for asynchronous execution - but this has not been implemented yet.
-async function run_python_code_pyodide(user_code, test_case) {
-    try {
-        // Set up stdout redirection in Python
-        pyodide.runPython(`
-            import sys
-            from io import StringIO
-            sys.stdout = StringIO()
-        `);
-
-        pyodide.runPythonAsync(user_code);
-
-        // Get captured output and reset stdout
-        const output = await pyodide.runPythonAsync("sys.stdout.getvalue()");
-        await pyodide.runPythonAsync("sys.stdout = sys.__stdout__");
-        test_case['received_output'] = output;
-        test_case['runtime_error'] = false;
-        console.log("Finished running from Pyodide");
-    } catch (error) {
-        test_case['received_output'] = error.message;
-        test_case['runtime_error'] = true;
-    }
-}
-*/
+// This function runs the user's Python code using web workers that call Pyodide and captures the output.
 async function run_python_code_pyodide(user_code, test_case) {
     return await new Promise((resolve, reject) => {
         let finished = false;
@@ -117,7 +107,7 @@ async function run_python_code_pyodide(user_code, test_case) {
             worker = new Worker("/static/js/question_types/pyodide.js");
             test_case['received_output'] = "Timeout: Code execution exceeded 1 second";
             test_case['runtime_error'] = true;
-            resolve(undefined); // Resolve the promise after setting the result
+            resolve(0); // Resolve the promise after setting the result
         }, 1000);
 
         worker.onmessage = (event) => {
