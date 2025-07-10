@@ -2,7 +2,6 @@
     "name": "codewof",
     "version": "1.0.0",
     "private": true,
-    "dependencies": {},
     "devDependencies": {
         "ansi-colors": "4.1.3",
         "autoprefixer": "10.4.21",
@@ -15,6 +14,7 @@
         "details-element-polyfill": "2.4.0",
         "fancy-log": "2.0.0",
         "fuse.js": "6.6.2",
+        "gulp": "4.0.2",
         "gulp-concat": "2.6.1",
         "gulp-error-handle": "1.0.1",
         "gulp-filter": "7.0.0",
@@ -25,7 +25,6 @@
         "gulp-sourcemaps": "3.0.0",
         "gulp-tap": "2.0.0",
         "gulp-terser": "2.1.0",
-        "gulp": "4.0.2",
         "intro.js": "6.0.0",
         "jquery": "3.7.1",
         "pixrem": "5.0.0",

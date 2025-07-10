@@ -1,6 +1,23 @@
 require('skulpt');
 var CodeMirror = require('codemirror');
 require('codemirror/mode/python/python.js');
+let worker = new Worker("/static/js/question_types/pyodide.js");
+
+/**
+ * Function to initialize the worker and wait for it to be ready.
+ * This function listens for a "ready" message from the worker before resolving the promise.
+ */
+function waitForWorkerReady() {
+    return new Promise((resolve) => {
+        function handleReady(event) {
+            if (event.data.type === "ready") {
+                worker.removeEventListener("message", handleReady);
+                resolve(0);
+            }
+        }
+        worker.addEventListener("message", handleReady);
+    });
+}
 
 function ajax_request(url_name, data, success_function) {
     $.ajax({
@@ -35,18 +52,18 @@ function update_gamification(data) {
     point_diff = parseInt(data.point_diff);
     if (point_diff > 0) {
         $("#point_toast_header").text("Points earned!");
-        $("#point_toast_body").text("You earned " + point_diff.toString() +" points!");
-        $(document).ready(function(){
-            $("#point_toast").toast('show', {delay: 8000});
+        $("#point_toast_body").text("You earned " + point_diff.toString() + " points!");
+        $(document).ready(function () {
+            $("#point_toast").toast('show', { delay: 8000 });
         });
     }
 
     achievements = data.achievements;
-    if (achievements.length > 0){
+    if (achievements.length > 0) {
         $("#achievement_toast_header").text("New achievements!");
         $("#achievement_toast_body").text(achievements);
-        $(document).ready(function(){
-            $("#achievement_toast").toast('show', {delay: 8000});
+        $(document).ready(function () {
+            $("#achievement_toast").toast('show', { delay: 8000 });
         });
     }
 
@@ -173,10 +190,10 @@ var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     // Taken from https://stackoverflow.com/questions/15183494/codemirror-tabs-to-spaces and
     // https://stackoverflow.com/questions/32622128/codemirror-how-to-read-editor-text-before-or-after-cursor-position
     extraKeys: {
-        "Tab": function(cm) {
+        "Tab": function (cm) {
             cm.replaceSelection("    ", "end");
         },
-        "Backspace": function(cm) {
+        "Backspace": function (cm) {
             doc = cm.getDoc();
             line = doc.getCursor().line;   // Cursor line
             ch = doc.getCursor().ch;       // Cursor character
@@ -184,25 +201,25 @@ var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
             if (doc.somethingSelected()) {  // Remove user-selected characters
                 doc.replaceSelection("");
             } else {    // Determine the ends of the selection to delete
-                from = {line, ch};
-                to = {line, ch};
-                stringToTest = doc.getLine(line).substr(Math.max(ch - 4,0), Math.min(ch, 4));
+                from = { line, ch };
+                to = { line, ch };
+                stringToTest = doc.getLine(line).substr(Math.max(ch - 4, 0), Math.min(ch, 4));
 
                 if (stringToTest === "    ") {  // Remove 4 spaces (dedent)
-                    from = {line, ch: ch - 4};
+                    from = { line, ch: ch - 4 };
                 } else if (ch == 0) {   // Remove last character of previous line
                     if (line > 0) {
-                        from = {line: line - 1, ch: doc.getLine(line - 1).length};
+                        from = { line: line - 1, ch: doc.getLine(line - 1).length };
                     }
                 } else {    // Remove preceding character
-                    from = {line, ch: ch - 1};
+                    from = { line, ch: ch - 1 };
                 }
 
                 // Delete the selection
                 doc.replaceRange("", from, to);
             }
         },
-        "Delete" : function(cm) {
+        "Delete": function (cm) {
             doc = cm.getDoc();
             line = doc.getCursor().line;   // Cursor line
             ch = doc.getCursor().ch;       // Cursor character
@@ -210,18 +227,18 @@ var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
             if (doc.somethingSelected()) {  // Remove user-selected characters
                 doc.replaceSelection("");
             } else {    // Determine the ends of the selection to delete
-                from = {line, ch};
-                to = {line, ch};
+                from = { line, ch };
+                to = { line, ch };
                 stringToTest = doc.getLine(line).substr(ch, 4);
 
                 if (stringToTest === "    ") {  // Remove 4 spaces (dedent)
-                    to = {line, ch: ch + 4};
+                    to = { line, ch: ch + 4 };
                 } else if (ch == doc.getLine(line).length) {   // Remove first character of next line
                     if (line < doc.size - 1) {
-                        to = {line: line + 1, ch: 0};
+                        to = { line: line + 1, ch: 0 };
                     }
                 } else {    // Remove following character
-                    to = {line, ch: ch + 1};
+                    to = { line, ch: ch + 1 };
                 }
 
                 // Delete the selection
@@ -231,10 +248,49 @@ var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     }
 });
 
+// Function to run the user's Python code using web workers that call Pyodide and captures the output.
+async function run_python_code_pyodide(user_code, test_case) {
+    return await new Promise((resolve, reject) => {
+        let finished = false;
+        let timeoutId = setTimeout(() => {
+            if (finished) return;
+            finished = true;
+            worker.terminate();
+            worker = new Worker("/static/js/question_types/pyodide.js");
+            test_case['received_output'] = "Timeout: Code execution exceeded 1 second";
+            test_case['runtime_error'] = true;
+            resolve(0); // Resolve the promise after setting the result
+        }, 1000);
+
+        worker.onmessage = (event) => {
+            if (finished) return;
+            finished = true;
+            clearTimeout(timeoutId);
+            const { output, error } = event.data;
+            test_case['received_output'] = output || error;
+            test_case['runtime_error'] = !!error;
+            resolve(0); // Resolve the promise after setting the result
+        };
+
+        worker.onerror = (e) => {
+            if (finished) return;
+            finished = true;
+            clearTimeout(timeoutId);
+            test_case['received_output'] = "Worker error: " + e.message;
+            test_case['runtime_error'] = true;
+            resolve(0);
+        };
+
+        worker.postMessage({ user_code });
+    });
+}
+
 exports.ajax_request = ajax_request;
 exports.clear_submission_feedback = clear_submission_feedback;
 exports.display_submission_feedback = display_submission_feedback;
 exports.update_test_case_status = update_test_case_status;
 exports.run_test_cases = run_test_cases;
 exports.scroll_to_element = scroll_to_element;
+exports.waitForWorkerReady = waitForWorkerReady;
+exports.run_python_code_pyodide = run_python_code_pyodide;
 exports.editor = editor;

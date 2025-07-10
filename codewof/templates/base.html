@@ -21,9 +21,6 @@
     <meta name="msapplication-config" content="{% static 'img/favicon/browserconfig.xml' %}">
     <meta name="theme-color" content="#ffffff">
 
-    <!-- Import pyodide globally -->
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.27.6/full/pyodide.js"></script>
-
     {% if PRODUCTION_ENVIRONMENT %}
       <script defer data-domain="codewof.co.nz" src="https://plausible.io/js/plausible.js"></script>
     {% endif %}

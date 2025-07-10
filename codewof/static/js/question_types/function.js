@@ -2,28 +2,11 @@ var base = require('./base.js');
 const introJS = require('intro.js');
 
 // Local Variables
-let worker = new Worker("/static/js/question_types/pyodide.js");
 var test_cases = {};
 
-/**
- * Function to initialize the worker and wait for it to be ready.
- * This function listens for a "ready" message from the worker before resolving the promise.
- */
-function waitForWorkerReady(worker) {
-    return new Promise((resolve) => {
-        function handleReady(event) {
-            if (event.data.type === "ready") {
-                worker.removeEventListener("message", handleReady);
-                resolve(0);
-            }
-        }
-        worker.addEventListener("message", handleReady);
-    });
-}
 
 $(document).ready(async function () {
-    await waitForWorkerReady(worker);
-
+    await base.waitForWorkerReady();
     $('#run_code').click(async function () {
         // disable the button to prevent multiple clicks
         $('#run_code').prop('disabled', true);
@@ -45,7 +28,16 @@ $(document).ready(async function () {
     }
 
     if (editor.getValue()) {
+        // disable the button to prevent multiple clicks
+        $('#run_code').prop('disabled', true);
+        $('#run_code').addClass('disabled');
+        $('#run_code').attr('aria-disabled', 'true');
+        // Run the code
         await run_code(editor, false);
+        // Re-enable the button after running the code
+        $('#run_code').prop('disabled', false);
+        $('#run_code').removeClass('disabled');
+        $('#run_code').attr('aria-disabled', 'false');
     }
 
     setTutorialAttributes();
@@ -82,7 +74,7 @@ async function run_code(editor, submit) {
     } else {
         $("#indentation-warning").addClass("d-none");
     }
-    test_cases = await base.run_test_cases(test_cases, user_code, run_python_code_pyodide);
+    test_cases = await base.run_test_cases(test_cases, user_code, base.run_python_code_pyodide);
     if (submit) {
         base.ajax_request(
             'save_question_attempt',
@@ -94,43 +86,6 @@ async function run_code(editor, submit) {
         );
     }
     base.display_submission_feedback(test_cases);
-}
-
-// This function runs the user's Python code using web workers that call Pyodide and captures the output.
-async function run_python_code_pyodide(user_code, test_case) {
-    return await new Promise((resolve, reject) => {
-        let finished = false;
-        let timeoutId = setTimeout(() => {
-            if (finished) return;
-            finished = true;
-            worker.terminate();
-            worker = new Worker("/static/js/question_types/pyodide.js");
-            test_case['received_output'] = "Timeout: Code execution exceeded 1 second";
-            test_case['runtime_error'] = true;
-            resolve(0); // Resolve the promise after setting the result
-        }, 1000);
-
-        worker.onmessage = (event) => {
-            if (finished) return;
-            finished = true;
-            clearTimeout(timeoutId);
-            const { output, error } = event.data;
-            test_case['received_output'] = output || error;
-            test_case['runtime_error'] = !!error;
-            resolve(0); // Resolve the promise after setting the result
-        };
-
-        worker.onerror = (e) => {
-            if (finished) return;
-            finished = true;
-            clearTimeout(timeoutId);
-            test_case['received_output'] = "Worker error: " + e.message;
-            test_case['runtime_error'] = true;
-            resolve(0);
-        };
-
-        worker.postMessage({ user_code });
-    });
 }
 
 

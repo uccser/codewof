@@ -3,22 +3,12 @@ var Sortable = require('sortablejs');
 const introJS = require('intro.js');
 
 // Local Variables
-let pyodide;
 var test_cases = {};
 var indent_increment = '    ';
 
-/* Function to initialize Pyodide and set up stdin
- * For "parsons" questions, stdin uses JavaScript's prompt function to get input from the user.
- */
-async function initializePyodide() {
-    pyodide = await loadPyodide();
-    pyodide.setStdin({
-        stdin: (str) => {return prompt(str)},
-    });
-}
 
 $(document).ready(async function(){
-    await initializePyodide();
+    await base.waitForWorkerReady();
     var all_sortables = document.getElementsByClassName('parsons-drag-container');
     Array.prototype.forEach.call(all_sortables, function (element) {
         new Sortable(element, {
@@ -71,7 +61,7 @@ function run_code(submit) {
         }
     }
     var user_code = get_user_code();
-    test_cases = base.run_test_cases(test_cases, user_code, run_python_code_pyodide);
+    test_cases = base.run_test_cases(test_cases, user_code, base.run_python_code_pyodide);
     if (submit) {
         base.ajax_request(
             'save_question_attempt',
@@ -113,34 +103,6 @@ function traverse_code_container(container, indent, is_top) {
     }
     return container_code;
 }
-
-// This function runs the user's Python code using Pyodide and captures the output.
-// It has been marked as async to allow for asynchronous execution - but this has not been implemented yet.
-async function run_python_code_pyodide(user_code, test_case) {
-    try {
-        // Redirect standard output to capture print statements
-        pyodide.runPython(`
-            import sys
-            from io import StringIO
-            sys.stdout = StringIO()
-        `);
-
-        // Execute the user's code
-        pyodide.runPython(user_code);
-
-        // Get captured output and reset stdout
-        const output = pyodide.runPython("sys.stdout.getvalue()");
-        pyodide.runPython("sys.stdout = sys.__stdout__");
-
-        test_case['received_output'] = output;
-        test_case['runtime_error'] = false;
-    } catch (error) {
-        // Handle Python exceptions
-        test_case['received_output'] = error.message;
-        test_case['runtime_error'] = true;
-    }
-}
-
 
 function setTutorialAttributes() {
     $(".question-text").attr(

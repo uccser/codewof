@@ -2,23 +2,21 @@ var base = require('./base.js');
 const introJS = require('intro.js');
 
 // Local Variables
-let pyodide;
 var test_cases = {};
 
-/* Function to initialize Pyodide and set up stdin
- * For "debugging" questions, stdin uses JavaScript's prompt function to get input from the user.
- */
-async function initializePyodide() {
-    pyodide = await loadPyodide();
-    pyodide.setStdin({
-        stdin: (str) => {return prompt(str)},
-    });
-}
-
 $(document).ready(async function () {
-    await initializePyodide();
-    $('#run_code').click(function () {
-        run_code(editor, true);
+    await base.waitForWorkerReady();
+    $('#run_code').click(async function () {
+        // disable the button to prevent multiple clicks
+        $('#run_code').prop('disabled', true);
+        $('#run_code').addClass('disabled');
+        $('#run_code').attr('aria-disabled', 'true');
+        // Run the code
+        await run_code(editor, true);
+        // Re-enable the button after running the code
+        $('#run_code').prop('disabled', false);
+        $('#run_code').removeClass('disabled');
+        $('#run_code').attr('aria-disabled', 'false');
     });
 
     $('#reset_to_initial').click(function () {
@@ -36,12 +34,21 @@ $(document).ready(async function () {
     }
 
     if (editor.getValue()) {
-        run_code(editor, false);
+        // disable the button to prevent multiple clicks
+        $('#run_code').prop('disabled', true);
+        $('#run_code').addClass('disabled');
+        $('#run_code').attr('aria-disabled', 'true');
+        // Run the code
+        await run_code(editor, false);
+        // Re-enable the button after running the code
+        $('#run_code').prop('disabled', false);
+        $('#run_code').removeClass('disabled');
+        $('#run_code').attr('aria-disabled', 'false');
     }
 
     setTutorialAttributes();
-    $("#introjs-tutorial").click(function() {
-        introJS().start().onbeforechange(function() {
+    $("#introjs-tutorial").click(function () {
+        introJS().start().onbeforechange(function () {
             currentElement = $(this._introItems[this._currentStep].element);
             node = currentElement.prop('nodeName');
             // When looking at a full row of the table, force it to scroll to the far left
@@ -56,7 +63,7 @@ $(document).ready(async function () {
 });
 
 
-function run_code(editor, submit) {
+async function run_code(editor, submit) {
     base.clear_submission_feedback();
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
@@ -74,7 +81,7 @@ function run_code(editor, submit) {
     } else {
         $("#indentation-warning").addClass("d-none");
     }
-    test_cases = base.run_test_cases(test_cases, user_code, run_python_code_pyodide);
+    test_cases = await base.run_test_cases(test_cases, user_code, base.run_python_code_pyodide);
     if (submit) {
         base.ajax_request(
             'save_question_attempt',
@@ -123,34 +130,6 @@ function mark_lines_as_read_only(editor) {
         );
     }
 }
-
-// This function runs the user's Python code using Pyodide and captures the output.
-// It has been marked as async to allow for asynchronous execution - but this has not been implemented yet.
-async function run_python_code_pyodide(user_code, test_case) {
-    try {
-        // Redirect standard output to capture print statements
-        pyodide.runPython(`
-            import sys
-            from io import StringIO
-            sys.stdout = StringIO()
-        `);
-
-        // Execute the user's code
-        pyodide.runPython(user_code);
-
-        // Get captured output and reset stdout
-        const output = pyodide.runPython("sys.stdout.getvalue()");
-        pyodide.runPython("sys.stdout = sys.__stdout__");
-
-        test_case['received_output'] = output;
-        test_case['runtime_error'] = false;
-    } catch (error) {
-        // Handle Python exceptions
-        test_case['received_output'] = error.message;
-        test_case['runtime_error'] = true;
-    }
-}
-
 
 function setTutorialAttributes() {
     $(".question-text").attr(
