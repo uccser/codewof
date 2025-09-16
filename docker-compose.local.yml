@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   django:
     build:
@@ -23,7 +21,7 @@ services:
       # HTTPS
       - "traefik.http.routers.codewof-django.entryPoints=web-secure"
       - "traefik.http.routers.codewof-django.service=codewof-django"
-      - "traefik.http.routers.codewof-django.rule=Host(`codewof.localhost`)"
+      - "traefik.http.routers.codewof-django.rule=Host(`csse-ubuntu2404-test1.canterbury.ac.nz`)"
       - "traefik.http.routers.codewof-django.tls=true"
 
   # Node server for creating static files
