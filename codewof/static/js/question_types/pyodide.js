@@ -28,6 +28,7 @@ onmessage = async (event) => {
   let pyodide = await pyodideReadyPromise;
   const { user_code, test_case, program } = event.data;
   if (program) {
+    console.log("Test case input list:", test_case.test_input_list);
     pyodide.setStdin({
             stdin: (str) => {
                 if (test_case.test_input_list.length > 0) {
