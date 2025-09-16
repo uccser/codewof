@@ -1,20 +1,22 @@
 var base = require('./base.js');
 const introJS = require('intro.js');
 
-let pyodide;
 var test_cases = {};
 
-/* Function to initialize Pyodide and set up stdin
- * For "program" questions, stdin comes from the test input files.
- */
-async function initializePyodide() {
-    pyodide = await loadPyodide();
-}
 
 $(document).ready(async function () {
-    await initializePyodide();
-    $('#run_code').click(function () {
-        run_code(editor, true);
+    await base.waitForWorkerReady();
+    $('#run_code').click(async function () {
+        // disable the button to prevent multiple clicks
+        $('#run_code').prop('disabled', true);
+        $('#run_code').addClass('disabled');
+        $('#run_code').attr('aria-disabled', 'true');
+        // Run the code
+        await run_code(editor, true);
+        // Re-enable the button after running the code
+        $('#run_code').prop('disabled', false);
+        $('#run_code').removeClass('disabled');
+        $('#run_code').attr('aria-disabled', 'false');
     });
 
     var editor = base.editor;
@@ -25,12 +27,21 @@ $(document).ready(async function () {
     }
 
     if (editor.getValue()) {
-        run_code(editor, false)
+        // disable the button to prevent multiple clicks
+        $('#run_code').prop('disabled', true);
+        $('#run_code').addClass('disabled');
+        $('#run_code').attr('aria-disabled', 'true');
+        // Run the code
+        await run_code(editor, false);
+        // Re-enable the button after running the code
+        $('#run_code').prop('disabled', false);
+        $('#run_code').removeClass('disabled');
+        $('#run_code').attr('aria-disabled', 'false');
     }
 
     setTutorialAttributes();
-    $("#introjs-tutorial").click(function() {
-        introJS().start().onbeforechange(function() {
+    $("#introjs-tutorial").click(function () {
+        introJS().start().onbeforechange(function () {
             currentElement = $(this._introItems[this._currentStep].element);
             node = currentElement.prop('nodeName');
             // When looking at a full row of the table, force it to scroll to the far left
@@ -63,7 +74,7 @@ function run_code(editor, submit) {
     } else {
         $("#indentation-warning").addClass("d-none");
     }
-    test_cases = base.run_test_cases(test_cases, user_code, run_python_code_pyodide);
+    test_cases = base.run_test_cases(test_cases, user_code, base.run_python_code_pyodide, true);
     if (submit) {
         base.ajax_request(
             'save_question_attempt',
