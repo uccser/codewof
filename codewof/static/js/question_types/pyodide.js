@@ -2,10 +2,27 @@ importScripts("https://cdn.jsdelivr.net/pyodide/v0.27.6/full/pyodide.js");
 
 async function initializePyodide() {
     let pyodide = await loadPyodide();
-    pyodide.setStdin({
-        stdin: (str) => { return prompt(str) },
-    });
     return pyodide;
+}
+
+async function configureStdin(pyodide, isProgram, test_case) {
+    if (isProgram) {
+        pyodide.setStdin({
+            stdin: (str) => {
+                if (test_case.test_input_list.length > 0) {
+                    return test_case['test_input_list'].shift();
+                } else {
+                    return '';
+                }
+            },
+        });
+    } else {
+        pyodide.setStdin({
+            stdin: (str) => {
+                return '';
+            },
+        });
+    }
 }
 
 // After initial load, Pyodide is ready to use, send message to main thread to indicate worker is ready
@@ -26,19 +43,9 @@ onmessage = async (event) => {
     return;
   }
   let pyodide = await pyodideReadyPromise;
-  const { user_code, test_case, program } = event.data;
-  if (program) {
-    console.log("Test case input list:", test_case.test_input_list);
-    pyodide.setStdin({
-            stdin: (str) => {
-                if (test_case.test_input_list.length > 0) {
-                    return test_case['test_input_list'].shift();
-                } else {
-                    return '';
-                }
-            },
-        });
-  }
+  const { user_code, test_case, isProgram } = event.data;
+  await configureStdin(pyodide, isProgram, test_case);
+
   try {
     pyodide.runPython(`
         import sys

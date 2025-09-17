@@ -8,8 +8,14 @@ var indent_increment = '    ';
 
 
 $(document).ready(async function(){
-    await base.waitForWorkerReady();
     var all_sortables = document.getElementsByClassName('parsons-drag-container');
+    $('#run_code').prop('disabled', true);
+    $('#run_code').addClass('disabled');
+    $('#run_code').attr('aria-disabled', 'true');
+    await base.waitForWorkerReady();
+    $('#run_code').prop('disabled', false);
+    $('#run_code').removeClass('disabled');
+    $('#run_code').attr('aria-disabled', 'false');
     Array.prototype.forEach.call(all_sortables, function (element) {
         new Sortable(element, {
             group: 'parsons', // set both lists to same group
@@ -25,8 +31,17 @@ $(document).ready(async function(){
         });
     });
 
-    $('#run_code').click(function () {
-        run_code(true);
+    $('#run_code').click(async function () {
+        // disable the button to prevent multiple clicks
+        $('#run_code').prop('disabled', true);
+        $('#run_code').addClass('disabled');
+        $('#run_code').attr('aria-disabled', 'true');
+        // Run the code
+        await run_code(true);
+        // Re-enable the button after running the code
+        $('#run_code').prop('disabled', false);
+        $('#run_code').removeClass('disabled');
+        $('#run_code').attr('aria-disabled', 'false');
     });
 
     for (let i = 0; i < test_cases_list.length; i++) {
@@ -50,7 +65,7 @@ $(document).ready(async function(){
     });
 });
 
-function run_code(submit) {
+async function run_code(submit) {
     base.clear_submission_feedback();
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
@@ -61,7 +76,7 @@ function run_code(submit) {
         }
     }
     var user_code = get_user_code();
-    test_cases = base.run_test_cases(test_cases, user_code, base.run_python_code_pyodide);
+    test_cases = await base.run_test_cases(test_cases, user_code, base.run_python_code_pyodide);
     if (submit) {
         base.ajax_request(
             'save_question_attempt',

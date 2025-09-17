@@ -55,7 +55,7 @@ $(document).ready(async function () {
     });
 });
 
-function run_code(editor, submit) {
+async function run_code(editor, submit) {
     base.clear_submission_feedback();
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
@@ -74,7 +74,7 @@ function run_code(editor, submit) {
     } else {
         $("#indentation-warning").addClass("d-none");
     }
-    test_cases = base.run_test_cases(test_cases, user_code, base.run_python_code_pyodide, true);
+    test_cases = await base.run_test_cases(test_cases, user_code, base.run_python_code_pyodide, true);
     if (submit) {
         base.ajax_request(
             'save_question_attempt',
