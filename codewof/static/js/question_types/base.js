@@ -140,7 +140,7 @@ function update_test_case_status(test_case, user_code) {
     }
 }
 
-async function run_test_cases(test_cases, user_code, code_function, program=false) {
+async function run_test_cases(test_cases, user_code, code_function, isProgram = false) {
     // Currently runs in sequential order.
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
@@ -149,7 +149,7 @@ async function run_test_cases(test_cases, user_code, code_function, program=fals
             if (test_case.hasOwnProperty('test_code')) {
                 code = code + '\n' + test_case.test_code;
             }
-            await code_function(code, test_case, program);
+            await code_function(code, test_case, isProgram);
             console.log("Test case " + test_case.id + " completed.");
             console.log("Received output: " + test_case.received_output);
             update_test_case_status(test_case, user_code);
@@ -252,7 +252,7 @@ if (codeElement && codeElement instanceof HTMLTextAreaElement) {
 
 
 // Function to run the user's Python code using web workers that call Pyodide and captures the output.
-async function run_python_code_pyodide(user_code, test_case, program) {
+async function run_python_code_pyodide(user_code, test_case, isProgram) {
     return await new Promise((resolve, reject) => {
         let finished = false;
         let timeoutId = setTimeout(() => {
@@ -284,7 +284,7 @@ async function run_python_code_pyodide(user_code, test_case, program) {
             resolve(0);
         };
 
-        worker.postMessage({ user_code, test_case, program });
+        worker.postMessage({ user_code, test_case, isProgram });
     });
 }
 
