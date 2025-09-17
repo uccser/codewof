@@ -94,6 +94,7 @@ function display_submission_feedback(test_cases) {
 
 function update_test_case_status(test_case, user_code) {
     var test_case_id = test_case.id;
+    console.log("received output: " + test_case.received_output);
     var expected_output = test_case.expected_output.replace(/\s*$/, '');
     var received_output = test_case.received_output.replace(/\s*$/, '');
 
@@ -270,7 +271,7 @@ async function run_python_code_pyodide(user_code, test_case, isProgram) {
             finished = true;
             clearTimeout(timeoutId);
             const { output, error } = event.data;
-            test_case['received_output'] = output || error;
+            test_case['received_output'] = output ?? error;
             test_case['runtime_error'] = !!error;
             resolve(0); // Resolve the promise after setting the result
         };
