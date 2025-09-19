@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
       - name: Create Docker network
         run: docker network create uccser-development-stack
       - name: Set DOCKER_UID variable
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
       - name: Create Docker network
         run: docker network create uccser-development-stack
       - name: Set DOCKER_UID variable
@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
       - name: Run general tests
         run: ./dev ci test_general
 
@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
       - name: Run style tests
         run: ./dev ci style
 
@@ -77,7 +77,7 @@ jobs:
     needs: [test-django-system-check, test-content, test-general, test-style]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Create Docker network
         run: docker network create uccser-development-stack
@@ -115,7 +115,7 @@ jobs:
     needs: [create-static-files]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
