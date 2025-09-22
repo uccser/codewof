@@ -25,7 +25,7 @@ psycopg2==2.9.10
 
 # Content loading
 verto==1.1.0
-python-markdown-math==0.6
+python-markdown-math==0.9
 PyYAML==6.0.2
 
 # Style checker
