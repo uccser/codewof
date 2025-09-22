@@ -31,5 +31,6 @@ urlpatterns = [
     path("groups/<int:pk>/memberships/invite/", view=views.create_invitations, name="groups-memberships-invite"),
     path("invitations/<int:pk>/accept/", view=views.accept_invitation, name="groups-invitations-accept"),
     path("invitations/<int:pk>/reject/", view=views.reject_invitation, name="groups-invitations-reject"),
-    path("groups/<int:pk>/emails/", view=views.get_group_emails, name="groups-emails")
+    path("groups/<int:pk>/emails/", view=views.get_group_emails, name="groups-emails"),
+    path("information/", views.InformationView.as_view(), name="information-sheet"),
 ]
