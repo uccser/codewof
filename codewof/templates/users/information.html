@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Information Sheet{% endblock %}
+
+{% block page_heading %}
+<h1 class="display-3 orange-underline text-center">
+    Information Sheet for User Study
+</h1>
+{% endblock page_heading %}
+
+{% block content_container %}
+{% comment %} Left column {% endcomment %}
+<header>
+    <h1>Department of Computer Science and Software Engineering | Te Tari Pūhanga Pūmanawa Rorohiko</h1>
+    <p><strong>Phone:</strong> +64 3 369 2777</p>
+    <p><strong>Email:</strong> <a href="mailto:kde54@uclive.ac.nz">kde54@uclive.ac.nz</a></p>
+    <p><strong>Date:</strong> 24/07/2025</p>
+    <p><strong>HREC Ref:</strong> 2025/67/LR</p>
+</header>
+
+<main>
+    <section>
+        <h2>CodeWOF - Information Sheet for participants</h2>
+        <p><em>Kia ora {{ user.first_name }}!</em></p>
+        <p>You are invited to participate in a research study on user engagement in CodeWOF. This study is being
+            conducted by Kush Desai from the University of Canterbury – Te Whare Wānanga o Waitaha (UC). The research
+            team also includes Tim Bell. The study is being carried out as a requirement for SENG402.</p>
+    </section>
+
+    <section>
+        <h3>What is the purpose of this research?</h3>
+        <p>This research aims to investigate how to provide sustainable, up-to-date web-based Python programming
+            resources for teachers and students, and how gamification can be used to increase engagement with the
+            CodeWOF platform. The information from this study will help inform improvements to CodeWOF, contributing to
+            better programming education and supporting both teachers’ and students’ learning needs.</p>
+    </section>
+
+    <section>
+        <h3>Why have you received this invitation?</h3>
+        <p>You are invited to participate in this research because you are either a high school teacher or a student
+            enrolled in COSC121 at the University of Canterbury. The study is being advertised to these groups to help
+            evaluate and improve CodeWOF.</p>
+    </section>
+
+    <section>
+        <h3>Your participation is voluntary</h3>
+        <p>Your participation in this research is entirely your choice. If you decide not to participate, there are no
+            consequences. Your decision will not affect your relationship with the University of Canterbury, the
+            research team, or your course in any way.</p>
+    </section>
+
+    <section>
+        <h3>What is involved in participating?</h3>
+        <p>If you choose to take part in this research, you will use the CodeWOF website as you normally would to
+            practice programming skills. Your anonymised usage data (such as time on site, questions completed, and
+            types of questions attempted) will be collected while you use the website. Participation does not require
+            any additional time beyond your normal use of the website, and you may spend as much or as little time as
+            you wish.</p>
+    </section>
+
+    <section>
+        <h3>Are there any potential benefits from taking part in this research?</h3>
+        <p>A potential benefit is that you may improve your programming skills by using CodeWOF. The research will also
+            contribute to enhancing programming education resources for the community.</p>
+    </section>
+
+    <section>
+        <h3>Are there any potential risks involved in this research?</h3>
+        <p>We do not anticipate any risks to participants from taking part in this research. All data collected will be
+            anonymised, and only aggregated, anonymised results will be reported. No identifiable information will be
+            published or shared with third parties. You do not need to be concerned about your results, as no-one is
+            evaluating your particular work in CodeWOF.</p>
+    </section>
+
+    <section>
+        <h3>What if you change your mind during or after the study?</h3>
+        <p>You are free to withdraw from the study at any time. You can do this either by not using the CodeWOF website
+            or by selecting an opt-out option <a href="https://canterbury.qualtrics.com/jfe/form/SV_0TCVJnQ0dQxaX4y"> here</a>. Any data collected up to the point of withdrawal
+            will be removed if still identifiable and possible. Once data analysis has started and individual data
+            cannot be separated, removal will not be possible, but you always retain the right to ask questions or raise
+            concerns about your data.</p>
+    </section>
+
+    <section>
+        <h3>What will happen to the information you provide?</h3>
+        <p>All data collected will be anonymised and stored securely on University of Canterbury servers, in
+            password-protected files accessible only to the research team. No identifying information will be linked to
+            your data, and individual participants will not be identifiable in any publication or report. Data will be
+            destroyed after completion of the project.</p>
+    </section>
+
+    <section>
+        <h3>Will the results of the study be published?</h3>
+        <p>The results of this research will not be made public, they will only be used as part of my SENG402 research
+            report.</p>
+    </section>
+
+    <section>
+        <h3>Who can you contact if you have any questions or concerns?</h3>
+        <p>If you have any questions about the research, please contact:</p>
+        <ul>
+            <li>Kush Desai (Principal Researcher): <a href="mailto:kde54@uclive.ac.nz">kde54@uclive.ac.nz</a></li>
+            <li>Supervising staff member: Tim Bell, <a
+                    href="mailto:tim.bell@canterbury.ac.nz">tim.bell@canterbury.ac.nz</a></li>
+        </ul>
+        <p>If you have concerns or complaints about this research, please contact the Chair of the HREC at <a
+                href="mailto:human-ethics@canterbury.ac.nz">human-ethics@canterbury.ac.nz</a>.</p>
+    </section>
+
+    <section>
+        <h3>What happens next?</h3>
+        <p>Please read this information and consider whether you wish to participate. By continuing to use the CodeWOF
+            website and not selecting the <a href="https://canterbury.qualtrics.com/jfe/form/SV_0TCVJnQ0dQxaX4y"> opt-out</a> option, you consent to take part in the anonymised data collection for
+            this study.</p>
+        <p>If you would like a summary of the results or have further questions, please feel free to contact the
+            research team.</p>
+    </section>
+</main>
+{% endblock content_container %}
+
+{% block css %}
+{{ block.super }}
+{% endblock css %}
+
+{% block scripts %}
+{{ block.super }}
+{% csrf_token %}
+{% endblock scripts %}

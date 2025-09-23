@@ -36,6 +36,7 @@ END_DATETIME = make_aware(datetime.datetime(
 USER_TYPES_ALLOWED = [
     'student',
     'teacher',
+    'cosc121',
     'other',
 ]
 

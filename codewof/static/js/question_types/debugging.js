@@ -1,13 +1,22 @@
 var base = require('./base.js');
-var CodeMirror = require('codemirror');
-require('codemirror/mode/python/python.js');
 const introJS = require('intro.js');
 
+// Local Variables
 var test_cases = {};
 
-$(document).ready(function () {
-    $('#run_code').click(function () {
-        run_code(editor, true);
+$(document).ready(async function () {
+    await base.waitForWorkerReady();
+    $('#run_code').click(async function () {
+        // disable the button to prevent multiple clicks
+        $('#run_code').prop('disabled', true);
+        $('#run_code').addClass('disabled');
+        $('#run_code').attr('aria-disabled', 'true');
+        // Run the code
+        await run_code(editor, true);
+        // Re-enable the button after running the code
+        $('#run_code').prop('disabled', false);
+        $('#run_code').removeClass('disabled');
+        $('#run_code').attr('aria-disabled', 'false');
     });
 
     $('#reset_to_initial').click(function () {
@@ -15,25 +24,7 @@ $(document).ready(function () {
         mark_lines_as_read_only(editor);
     });
 
-    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        mode: {
-            name: "python",
-            version: 3,
-            singleLineStringErrors: false
-        },
-        lineNumbers: true,
-        textWrapping: false,
-        styleActiveLine: true,
-        autofocus: true,
-        indentUnit: 4,
-        viewportMargin: Infinity,
-        // Replace tabs with 4 spaces. Taken from https://stackoverflow.com/questions/15183494/codemirror-tabs-to-spaces
-        extraKeys: {
-            "Tab": function(cm) {
-                cm.replaceSelection("    ", "end");
-            }
-        }
-    });
+    var editor = base.editor;
 
     mark_lines_as_read_only(editor);
 
@@ -43,12 +34,21 @@ $(document).ready(function () {
     }
 
     if (editor.getValue()) {
-        run_code(editor, false);
+        // disable the button to prevent multiple clicks
+        $('#run_code').prop('disabled', true);
+        $('#run_code').addClass('disabled');
+        $('#run_code').attr('aria-disabled', 'true');
+        // Run the code
+        await run_code(editor, false);
+        // Re-enable the button after running the code
+        $('#run_code').prop('disabled', false);
+        $('#run_code').removeClass('disabled');
+        $('#run_code').attr('aria-disabled', 'false');
     }
 
     setTutorialAttributes();
-    $("#introjs-tutorial").click(function() {
-        introJS().start().onbeforechange(function() {
+    $("#introjs-tutorial").click(function () {
+        introJS().start().onbeforechange(function () {
             currentElement = $(this._introItems[this._currentStep].element);
             node = currentElement.prop('nodeName');
             // When looking at a full row of the table, force it to scroll to the far left
@@ -63,7 +63,7 @@ $(document).ready(function () {
 });
 
 
-function run_code(editor, submit) {
+async function run_code(editor, submit) {
     base.clear_submission_feedback();
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
@@ -81,7 +81,7 @@ function run_code(editor, submit) {
     } else {
         $("#indentation-warning").addClass("d-none");
     }
-    test_cases = base.run_test_cases(test_cases, user_code, run_python_code);
+    test_cases = await base.run_test_cases(test_cases, user_code, base.run_python_code_pyodide);
     if (submit) {
         base.ajax_request(
             'save_question_attempt',
@@ -130,45 +130,6 @@ function mark_lines_as_read_only(editor) {
         );
     }
 }
-
-
-function run_python_code(user_code, test_case) {
-    // Configure Skulpt for running Python code
-    Sk.configure({
-        // Setup Skulpt to read internal library files
-        read: function (x) {
-            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
-                throw "File not found: '" + x + "'";
-            return Sk.builtinFiles["files"][x];
-        },
-        inputfun: function (str) {
-            return prompt(str);
-        },
-        inputfunTakesPrompt: true,
-        // Append print() statements for test case
-        output: function (received_output) {
-            test_case['received_output'] += received_output;
-        },
-        python3: true,
-        execLimit: 1000,
-    });
-    if (typeof user_code == 'string' && user_code.trim()) {
-        try {
-            Sk.importMainWithBody("<stdin>", false, user_code, true);
-        } catch (error) {
-            if (error.hasOwnProperty('traceback')) {
-                test_case.received_output = error.toString();
-                test_case.runtime_error = true;
-            } else {
-                throw error;
-            }
-        }
-    } else {
-        test_case.received_output = 'No Python code provided.';
-        test_case.runtime_error = true;
-    }
-}
-
 
 function setTutorialAttributes() {
     $(".question-text").attr(

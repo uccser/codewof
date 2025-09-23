@@ -1,0 +1,9 @@
+mathematics:
+  number: 2
+  children:
+    - simple-mathematics
+    - advanced-mathematics
+    - geometry:
+      children:
+        - basic-geometry
+        - advanced-geometry

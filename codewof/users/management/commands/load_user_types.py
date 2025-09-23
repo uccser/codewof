@@ -15,6 +15,10 @@ USER_TYPES = [
         'name': _('Teacher'),
     },
     {
+        'slug': 'cosc121',
+        'name': _('COSC121'),
+    },
+    {
         'slug': 'other',
         'name': _('Other'),
     },
@@ -42,3 +46,7 @@ class Command(BaseCommand):
             else:
                 verb_text = 'Updated'
             print('{} user group: {}'.format(verb_text, user_type_data['name']))
+
+        _, result = UserType.objects.exclude(slug__in=[user_type['slug'] for user_type in USER_TYPES]).delete()
+        if result.get('users.UserType', 0) > 0:
+            print('Deleted {} user group(s)'.format(result['users.UserType']))
