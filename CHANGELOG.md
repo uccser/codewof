@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.1.0
+
+- Fix Parson problems.
+- Add PYODIDE experiment.
+
 ## 5.0.2
 
 - Add Plausible analytics.
