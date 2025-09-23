@@ -17,7 +17,7 @@
         "gulp": "4.0.2",
         "gulp-concat": "2.6.1",
         "gulp-error-handle": "1.0.1",
-        "gulp-filter": "7.0.0",
+        "gulp-filter": "9.0.1",
         "gulp-if": "3.0.0",
         "gulp-imagemin": "7.1.0",
         "gulp-postcss": "9.1.0",
