@@ -2,8 +2,12 @@
 
 ## 5.1.0
 
-- Fix Parson problems.
-- Add PYODIDE experiment.
+- Replaced Skulpt with Pyodide
+    - Website now uses Python 3.12
+- Added the /information endpoint for user study information sheet
+- Fixed parsons problems
+    - Dragging code blocks now works
+- Added a COSC121 user type
 
 ## 5.0.2
 
