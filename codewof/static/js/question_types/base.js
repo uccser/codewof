@@ -95,6 +95,19 @@ function display_submission_feedback(test_cases) {
 function update_test_case_status(test_case, user_code) {
     var test_case_id = test_case.id;
     console.log("received output: " + test_case.received_output);
+    // Check for traceback and try to find the bad line number
+    if (test_case.received_output.includes("Traceback")) {
+        let badLineNumber = null;
+        const lines = test_case.received_output.split("\n");
+        for (let line of lines) {
+            if (line.includes('File "<exec>", line')) {
+                badLineNumber = parseInt(line.split('line ')[1].split(',')[0]);
+            }
+        }
+        if (badLineNumber !== null) {
+            test_case.received_output = `Bad input on line ${badLineNumber}.`;
+        }
+    }
     var expected_output = test_case.expected_output.replace(/\s*$/, '');
     var received_output = test_case.received_output.replace(/\s*$/, '');
 
