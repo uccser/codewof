@@ -37,7 +37,7 @@ pep8-naming==0.14.1
 # Other
 pytz==2022.7.1
 python-dateutil==2.9.0.post0
-argon2-cffi==21.3.0
+argon2-cffi==25.1.0
 
 # I18n
 django-modeltranslation==0.18.11
