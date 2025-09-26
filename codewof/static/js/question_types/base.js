@@ -271,8 +271,13 @@ async function run_python_code_pyodide(user_code, test_case, isProgram) {
             finished = true;
             clearTimeout(timeoutId);
             const { output, error } = event.data;
-            test_case['received_output'] = output ?? error;
-            test_case['runtime_error'] = !!error;
+            if (typeof output !== 'string' && typeof error !== 'string') {
+                test_case['received_output'] = "Unknown error: No output received from code execution.";
+                test_case['runtime_error'] = true;
+            } else {
+                test_case['received_output'] = output ?? error;
+                test_case['runtime_error'] = !!error;
+            }
             resolve(0); // Resolve the promise after setting the result
         };
 
