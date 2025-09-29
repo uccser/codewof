@@ -2,16 +2,27 @@ require('skulpt');
 var CodeMirror = require('codemirror');
 require('codemirror/mode/python/python.js');
 let worker = new Worker("/static/js/question_types/pyodide.js");
+let workerReady = false;
+
+function createWorker() {
+    worker = new Worker("/static/js/question_types/pyodide.js");
+    workerReady = false;
+}
 
 /**
  * Function to initialize the worker and wait for it to be ready.
  * This function listens for a "ready" message from the worker before resolving the promise.
  */
 function waitForWorkerReady() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
+        if (!worker) {
+            // Create the worker if it doesn't exist
+            worker = new Worker("/static/js/question_types/pyodide.js");
+        }
         function handleReady(event) {
             if (event.data.type === "ready") {
                 worker.removeEventListener("message", handleReady);
+                workerReady = true;
                 resolve(0);
             }
         }
@@ -40,7 +51,7 @@ function create_alert(type, text) {
     return alert;
 }
 
-function clear_submission_feedback() {
+async function clear_submission_feedback() {
     $('#submission_feedback').empty();
 }
 
@@ -95,6 +106,19 @@ function display_submission_feedback(test_cases) {
 function update_test_case_status(test_case, user_code) {
     var test_case_id = test_case.id;
     console.log("received output: " + test_case.received_output);
+    // Check for traceback and try to find the bad line number
+    if (test_case.received_output.includes("Traceback")) {
+        let badLineNumber = null;
+        const lines = test_case.received_output.split("\n");
+        for (let line of lines) {
+            if (line.includes('File "<exec>", line')) {
+                badLineNumber = parseInt(line.split('line ')[1].split(',')[0]);
+            }
+        }
+        if (badLineNumber !== null) {
+            test_case.received_output = `Bad input on line ${badLineNumber}.`;
+        }
+    }
     var expected_output = test_case.expected_output.replace(/\s*$/, '');
     var received_output = test_case.received_output.replace(/\s*$/, '');
 
@@ -141,8 +165,40 @@ function update_test_case_status(test_case, user_code) {
     }
 }
 
+function reset_test_cases(test_cases) {
+    for (var id in test_cases) {
+        if (test_cases.hasOwnProperty(id)) {
+            var test_case = test_cases[id];
+            test_case.received_output = '';
+            test_case.passed = false;
+            test_case.runtime_error = false;
+            // Update status cell
+            var status_element = $('#test-case-' + test_case.id + '-status');
+            status_element.text('Not run');
+            // Update output cell
+            var output_element = $('#test-case-' + test_case.id + '-output');
+            output_element.text('');
+            output_element.removeClass('error')
+            var output_element_help_text = $('#test-case-' + test_case.id + '-output-help-text');
+            output_element_help_text.addClass('d-none');
+            // Update row
+            var row_element = $('#test-case-' + test_case.id + '-row');
+            row_element.removeClass('table-success');
+            row_element.removeClass('table-danger');
+            row_element.addClass('table-secondary');
+        }
+    }
+}
+
 async function run_test_cases(test_cases, user_code, code_function, isProgram = false) {
     // Currently runs in sequential order.
+    reset_test_cases(test_cases);
+
+    if (!worker || !workerReady) {
+        createWorker();
+        await waitForWorkerReady();
+    }
+
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
             var test_case = test_cases[id];
@@ -254,37 +310,34 @@ if (codeElement && codeElement instanceof HTMLTextAreaElement) {
 
 // Function to run the user's Python code using web workers that call Pyodide and captures the output.
 async function run_python_code_pyodide(user_code, test_case, isProgram) {
-    return await new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         let finished = false;
-        let timeoutId = setTimeout(() => {
+        const timeoutId = setTimeout(() => {
             if (finished) return;
             finished = true;
             worker.terminate();
-            worker = new Worker("/static/js/question_types/pyodide.js");
-            test_case['received_output'] = "Timeout: Code execution exceeded 1 second";
-            test_case['runtime_error'] = true;
-            resolve(0); // Resolve the promise after setting the result
-        }, 1000);
-
-        worker.onmessage = (event) => {
-            if (finished) return;
-            finished = true;
-            clearTimeout(timeoutId);
-            const { output, error } = event.data;
-            test_case['received_output'] = output ?? error;
-            test_case['runtime_error'] = !!error;
-            resolve(0); // Resolve the promise after setting the result
-        };
-
-        worker.onerror = (e) => {
-            if (finished) return;
-            finished = true;
-            clearTimeout(timeoutId);
-            test_case['received_output'] = "Worker error: " + e.message;
+            workerReady = false;
+            test_case['received_output'] = "Timeout: Code execution exceeded 2 seconds";
             test_case['runtime_error'] = true;
             resolve(0);
-        };
+        }, 2000);
 
+        function handleMessage(event) {
+            if (finished) return;
+            finished = true;
+            clearTimeout(timeoutId);
+            worker.removeEventListener("message", handleMessage);
+            const { output, error } = event.data;
+            if (typeof output !== 'string' && typeof error !== 'string') {
+                test_case['received_output'] = "Unknown error: No output received from code execution.";
+                test_case['runtime_error'] = true;
+            } else {
+                test_case['received_output'] = output ?? error;
+                test_case['runtime_error'] = !!error;
+            }
+            resolve(0);
+        }
+        worker.addEventListener("message", handleMessage);
         worker.postMessage({ user_code, test_case, isProgram });
     });
 }
