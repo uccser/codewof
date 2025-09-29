@@ -40,6 +40,7 @@ function create_alert(type, text) {
     return alert;
 }
 
+async function clear_submission_feedback() {
 function clear_submission_feedback() {
     $('#submission_feedback').empty();
 }
@@ -154,8 +155,35 @@ function update_test_case_status(test_case, user_code) {
     }
 }
 
+function reset_test_cases(test_cases) {
+    for (var id in test_cases) {
+        if (test_cases.hasOwnProperty(id)) {
+            var test_case = test_cases[id];
+            test_case.received_output = '';
+            test_case.passed = false;
+            test_case.runtime_error = false;
+            // Update status cell
+            var status_element = $('#test-case-' + test_case.id + '-status');
+            status_element.text('Not run');
+            // Update output cell
+            var output_element = $('#test-case-' + test_case.id + '-output');
+            output_element.text('');
+            output_element.removeClass('error')
+            var output_element_help_text = $('#test-case-' + test_case.id + '-output-help-text');
+            output_element_help_text.addClass('d-none');
+            // Update row
+            var row_element = $('#test-case-' + test_case.id + '-row');
+            row_element.removeClass('table-success');
+            row_element.removeClass('table-danger');
+            row_element.addClass('table-secondary');
+        }
+    }
+}
+
 async function run_test_cases(test_cases, user_code, code_function, isProgram = false) {
     // Currently runs in sequential order.
+    reset_test_cases(test_cases);
+
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
             var test_case = test_cases[id];
