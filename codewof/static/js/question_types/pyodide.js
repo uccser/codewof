@@ -52,6 +52,7 @@ onmessage = async (event) => {
         from io import StringIO
         sys.stdout = StringIO()
     `);
+    console.log("User code in worker:", user_code);
     pyodide.runPython(user_code);
     const output = pyodide.runPython("sys.stdout.getvalue()");
     pyodide.runPython("sys.stdout = sys.__stdout__");

@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.1.1
+
+- Submission table now resets as soon as you click "run code" to make timeouts more obvious
+- Reworked worker creation/termination to fix bug where valid attempts after a timeout would still fail
+- Error messages now changed to "Bad input on line <line number>" instead of stacktrace (reproducing previous functionality)
+
 ## 5.1.0
 
 - Replaced Skulpt with Pyodide
