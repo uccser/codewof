@@ -56,7 +56,7 @@ $(document).ready(async function () {
 });
 
 async function run_code(editor, submit) {
-    base.clear_submission_feedback();
+    await base.clear_submission_feedback();
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
             var test_case = test_cases[id];
@@ -84,44 +84,6 @@ async function run_code(editor, submit) {
                 test_cases: test_cases,
             }
         );
-    }
-}
-
-// This function runs the user's Python code using Pyodide and captures the output.
-// It has been marked as async to allow for asynchronous execution - but this has not been implemented yet.
-async function run_python_code_pyodide(user_code, test_case) {
-    try {
-        // Configure Pyodide to use input from the test case
-        pyodide.setStdin({
-            stdin: (str) => {
-                if (test_case.test_input_list.length > 0) {
-                    return test_case['test_input_list'].shift();
-                } else {
-                    return '';
-                }
-            },
-        });
-
-        // Redirect standard output to capture print statements
-        pyodide.runPython(`
-            import sys
-            from io import StringIO
-            sys.stdout = StringIO()
-        `);
-
-        // Execute the user's code
-        pyodide.runPython(user_code);
-
-        // Get captured output and reset stdout
-        const output = pyodide.runPython("sys.stdout.getvalue()");
-        pyodide.runPython("sys.stdout = sys.__stdout__");
-
-        test_case['received_output'] = output;
-        test_case['runtime_error'] = false;
-    } catch (error) {
-        // Handle Python exceptions
-        test_case['received_output'] = error.message;
-        test_case['runtime_error'] = true;
     }
 }
 

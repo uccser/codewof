@@ -2,16 +2,27 @@ require('skulpt');
 var CodeMirror = require('codemirror');
 require('codemirror/mode/python/python.js');
 let worker = new Worker("/static/js/question_types/pyodide.js");
+let workerReady = false;
+
+function createWorker() {
+    worker = new Worker("/static/js/question_types/pyodide.js");
+    workerReady = false;
+}
 
 /**
  * Function to initialize the worker and wait for it to be ready.
  * This function listens for a "ready" message from the worker before resolving the promise.
  */
 function waitForWorkerReady() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
+        if (!worker) {
+            // Create the worker if it doesn't exist
+            worker = new Worker("/static/js/question_types/pyodide.js");
+        }
         function handleReady(event) {
             if (event.data.type === "ready") {
                 worker.removeEventListener("message", handleReady);
+                workerReady = true;
                 resolve(0);
             }
         }
@@ -41,7 +52,6 @@ function create_alert(type, text) {
 }
 
 async function clear_submission_feedback() {
-function clear_submission_feedback() {
     $('#submission_feedback').empty();
 }
 
@@ -184,6 +194,11 @@ async function run_test_cases(test_cases, user_code, code_function, isProgram = 
     // Currently runs in sequential order.
     reset_test_cases(test_cases);
 
+    if (!worker || !workerReady) {
+        createWorker();
+        await waitForWorkerReady();
+    }
+
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
             var test_case = test_cases[id];
@@ -295,22 +310,23 @@ if (codeElement && codeElement instanceof HTMLTextAreaElement) {
 
 // Function to run the user's Python code using web workers that call Pyodide and captures the output.
 async function run_python_code_pyodide(user_code, test_case, isProgram) {
-    return await new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         let finished = false;
-        let timeoutId = setTimeout(() => {
+        const timeoutId = setTimeout(() => {
             if (finished) return;
             finished = true;
             worker.terminate();
-            worker = new Worker("/static/js/question_types/pyodide.js");
-            test_case['received_output'] = "Timeout: Code execution exceeded 1 second";
+            workerReady = false;
+            test_case['received_output'] = "Timeout: Code execution exceeded 2 seconds";
             test_case['runtime_error'] = true;
-            resolve(0); // Resolve the promise after setting the result
-        }, 1000);
+            resolve(0);
+        }, 2000);
 
-        worker.onmessage = (event) => {
+        function handleMessage(event) {
             if (finished) return;
             finished = true;
             clearTimeout(timeoutId);
+            worker.removeEventListener("message", handleMessage);
             const { output, error } = event.data;
             if (typeof output !== 'string' && typeof error !== 'string') {
                 test_case['received_output'] = "Unknown error: No output received from code execution.";
@@ -319,18 +335,9 @@ async function run_python_code_pyodide(user_code, test_case, isProgram) {
                 test_case['received_output'] = output ?? error;
                 test_case['runtime_error'] = !!error;
             }
-            resolve(0); // Resolve the promise after setting the result
-        };
-
-        worker.onerror = (e) => {
-            if (finished) return;
-            finished = true;
-            clearTimeout(timeoutId);
-            test_case['received_output'] = "Worker error: " + e.message;
-            test_case['runtime_error'] = true;
             resolve(0);
-        };
-
+        }
+        worker.addEventListener("message", handleMessage);
         worker.postMessage({ user_code, test_case, isProgram });
     });
 }

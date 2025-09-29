@@ -66,7 +66,7 @@ $(document).ready(async function(){
 });
 
 async function run_code(submit) {
-    base.clear_submission_feedback();
+    await base.clear_submission_feedback();
     for (var id in test_cases) {
         if (test_cases.hasOwnProperty(id)) {
             var test_case = test_cases[id];
