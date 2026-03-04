@@ -5,6 +5,7 @@ from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML, Fieldset, ButtonHolder, Button, Div
 from django import forms
+from django.core.validators import RegexValidator
 from django.contrib import auth
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -12,6 +13,12 @@ from django.utils.translation import gettext as _
 from users.models import UserType, Group
 
 User = auth.get_user_model()
+
+# removing anything that could be a URL, which could get sent to the user in a confirmation email (or HTML, though we escape that anyway)
+name_validator = RegexValidator(
+    regex=r'^[^./:<>]+$',
+    message="Please enter a valid name (i.e. only letters and spaces)",
+)
 
 
 class SignupForm(forms.Form):
@@ -26,6 +33,9 @@ class SignupForm(forms.Form):
                 'placeholder': _('First name'),
             },
         ),
+        validators=[
+            name_validator,
+        ],
     )
     last_name = forms.CharField(
         max_length=150,
@@ -36,6 +46,9 @@ class SignupForm(forms.Form):
                 'placeholder': _('Last name'),
             },
         ),
+        validators=[
+            name_validator,
+        ],
     )
     user_type = forms.ModelChoiceField(
         queryset=UserType.objects.all(),
