@@ -5,6 +5,7 @@ from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML, Fieldset, ButtonHolder, Button, Div
 from django import forms
+from django.core.validators import RegexValidator
 from django.contrib import auth
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -13,30 +14,37 @@ from users.models import UserType, Group
 
 User = auth.get_user_model()
 
+# removing anything that could be a URL, which could get sent to the user in a confirmation email
+# (or HTML, though we escape that anyway)
+name_validator = RegexValidator(
+    regex=r'^[^./:<>]+$',
+    message="Please enter a valid name (i.e. only letters and spaces)",
+)
+
+
+# so we can share name definitions and validators between different forms
+def _get_name_field(max_length, label):
+    """Return a name field with appropriate validators."""
+    return forms.CharField(
+        max_length=50,
+        label=label,
+        widget=forms.TextInput(
+            attrs={
+                'type': 'text',
+                'placeholder': _(label),
+            },
+        ),
+        validators=[
+            name_validator,
+        ],
+    )
+
 
 class SignupForm(forms.Form):
     """Sign up for user registration."""
 
-    first_name = forms.CharField(
-        max_length=50,
-        label='First name',
-        widget=forms.TextInput(
-            attrs={
-                'type': 'text',
-                'placeholder': _('First name'),
-            },
-        ),
-    )
-    last_name = forms.CharField(
-        max_length=150,
-        label='Last name',
-        widget=forms.TextInput(
-            attrs={
-                'type': 'text',
-                'placeholder': _('Last name'),
-            },
-        ),
-    )
+    first_name = _get_name_field(50, "First name")
+    last_name = _get_name_field(150, "Last name")
     user_type = forms.ModelChoiceField(
         queryset=UserType.objects.all(),
         label='Are you a student or teacher?',
@@ -77,6 +85,9 @@ class SignupForm(forms.Form):
 class UserChangeForm(forms.ModelForm):
     """Form class for changing user."""
 
+    # These are copied from SignupForm above
+    first_name = _get_name_field(50, "First name")
+    last_name = _get_name_field(150, "Last name")
     user_type = forms.ModelChoiceField(
         queryset=UserType.objects.all(),
         label='Are you a student or teacher?',
