@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.1.2
+
+- Update requirements to install a gunicorn-compatible version of setuptools with pkg_resources
+- Sanitise and prevent HTML and URLs being used for user display names (first/last names)
+
 ## 5.1.1
 
 - Submission table now resets as soon as you click "run code" to make timeouts more obvious
