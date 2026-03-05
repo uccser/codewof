@@ -14,7 +14,8 @@ from users.models import UserType, Group
 
 User = auth.get_user_model()
 
-# removing anything that could be a URL, which could get sent to the user in a confirmation email (or HTML, though we escape that anyway)
+# removing anything that could be a URL, which could get sent to the user in a confirmation email
+# (or HTML, though we escape that anyway)
 name_validator = RegexValidator(
     regex=r'^[^./:<>]+$',
     message="Please enter a valid name (i.e. only letters and spaces)",
@@ -22,7 +23,8 @@ name_validator = RegexValidator(
 
 
 # so we can share name definitions and validators between different forms
-def get_name_field(max_length, label):
+def _get_name_field(max_length, label):
+    """Returns a name field with appropriate validators."""
     return forms.CharField(
         max_length=50,
         label=label,
@@ -41,8 +43,8 @@ def get_name_field(max_length, label):
 class SignupForm(forms.Form):
     """Sign up for user registration."""
 
-    first_name = get_name_field(50, "First name")
-    last_name = get_name_field(150, "Last name")
+    first_name = _get_name_field(50, "First name")
+    last_name = _get_name_field(150, "Last name")
     user_type = forms.ModelChoiceField(
         queryset=UserType.objects.all(),
         label='Are you a student or teacher?',
@@ -84,8 +86,8 @@ class UserChangeForm(forms.ModelForm):
     """Form class for changing user."""
 
     # These are copied from SignupForm above
-    first_name = get_name_field(50, "First name")
-    last_name = get_name_field(150, "Last name")
+    first_name = _get_name_field(50, "First name")
+    last_name = _get_name_field(150, "Last name")
     user_type = forms.ModelChoiceField(
         queryset=UserType.objects.all(),
         label='Are you a student or teacher?',
