@@ -24,7 +24,7 @@ name_validator = RegexValidator(
 
 # so we can share name definitions and validators between different forms
 def _get_name_field(max_length, label):
-    """Returns a name field with appropriate validators."""
+    """Return a name field with appropriate validators."""
     return forms.CharField(
         max_length=50,
         label=label,
