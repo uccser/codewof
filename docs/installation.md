@@ -21,6 +21,12 @@ $ git clone git@github.com:uccser/codewof
 ```
 if you use SSH to connect to GitHub. This may be necessary if you have two factor authentication.
 
+## Step 2.5: If using WSL
+
+You will need to convert the dev file to unix.
+`sudo apt install dos2unix` -if not already installed
+`dos2unix dev`
+
 ## Step 3: Start the Docker services
 
 Change directory to the codewof directory that you just

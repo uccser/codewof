@@ -1,5 +1,25 @@
 # Changelog
 
+## 5.1.2
+
+- Update requirements to install a gunicorn-compatible version of setuptools with pkg_resources
+- Sanitise and prevent HTML and URLs being used for user display names (first/last names)
+
+## 5.1.1
+
+- Submission table now resets as soon as you click "run code" to make timeouts more obvious
+- Reworked worker creation/termination to fix bug where valid attempts after a timeout would still fail
+- Error messages now changed to "Bad input on line <line number>" instead of stacktrace (reproducing previous functionality)
+
+## 5.1.0
+
+- Replaced Skulpt with Pyodide
+    - Website now uses Python 3.12
+- Added the /information endpoint for user study information sheet
+- Fixed parsons problems
+    - Dragging code blocks now works
+- Added a COSC121 user type
+
 ## 5.0.2
 
 - Add Plausible analytics.

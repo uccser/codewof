@@ -15,6 +15,10 @@ USER_TYPES = [
         'name': _('Teacher'),
     },
     {
+        'slug': 'cosc121',
+        'name': _('COSC121'),
+    },
+    {
         'slug': 'other',
         'name': _('Other'),
     },

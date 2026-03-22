@@ -477,3 +477,15 @@ class InvitationAPIViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = Invitation.objects.all().select_related('group', 'inviter')
     serializer_class = InvitationSerializer
+
+
+class InformationView(LoginRequiredMixin, DetailView):
+    """View for study information sheet."""
+
+    model = User
+    context_object_name = 'user'
+    template_name = 'users/information.html'
+
+    def get_object(self):
+        """Get object for template."""
+        return self.request.user

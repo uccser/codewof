@@ -13,6 +13,7 @@
     {% comment %} Left column {% endcomment %}
     <div class="col-12 col-md-8 mb-3">
         {% comment %} Conditional here to check if allowed to use website {% endcomment %}
+        <a class="btn btn-primary btn-sm" href="{% url 'users:information-sheet' %}" style="margin-bottom: 1rem;">Information Sheet for User Study</a>
         <h2>Your recommended questions</h2>
         <p>We recommend doing one or two questions per day, to maintain your programming skills over a long period of time.</p>
         {% include "programming/question_components/question_recommendations.html" %}

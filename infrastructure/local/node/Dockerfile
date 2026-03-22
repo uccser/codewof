@@ -1,4 +1,7 @@
-FROM node:14.17.0-buster
+FROM node:20.19.5-bookworm
+
+# ARG DOCKER_UID
+# RUN usermod -u $DOCKER_UID node
 
 # Install required system dependencies
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -11,7 +14,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     libgif-dev \
     librsvg2-dev \
     make \
-    python \
+    python3 \
     # Cleaning up unused files
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
     && rm -rf /var/lib/apt/lists/*
@@ -19,7 +22,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 WORKDIR /app
 RUN chown -R node:node /app
 
-USER node
+# USER node
 RUN mkdir /app/build
 COPY --chown=node:node ./codewof/package.json /app
 RUN npm install && npm cache clean --force
