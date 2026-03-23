@@ -100,7 +100,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: static-files
           path: static-files.tar.gz
           retention-days: 3
 
@@ -128,7 +127,7 @@ jobs:
       - name: Unpack all artifacts
         run: |
           mkdir -p codewof/staticfiles
-          tar -xz --file artifacts/static-files/static-files.tar.gz --directory codewof/staticfiles
+          tar -xz --file artifacts/static-files.tar.gz --directory codewof/staticfiles
 
       - name: Log in to the Container registry
         uses: docker/login-action@v4.0.0
