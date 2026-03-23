@@ -10,6 +10,12 @@ updates:
       - "/infrastructure/**/*"
     schedule:
       interval: "daily"
+    ignore:
+    # Not actually semver minor, but this is how to block an update from Python 3.9 to 3.14, for example...
+    # PLEASE STILL DO THESE UPDATES MANUALLY AT LEAST BEFORE EOL. This just stops dependabot automating it...
+      - dependency-name: "python"
+      update-types: ["version-update:semver-minor"]
+      
     open-pull-requests-limit: 999
   - package-ecosystem: "npm"
     directory: "/codewof/"
