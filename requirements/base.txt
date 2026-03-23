@@ -24,7 +24,7 @@ whitenoise==6.9.0
 psycopg2==2.9.11
 
 # Content loading
-verto==1.1.0
+verto==1.2.0
 python-markdown-math==0.6
 PyYAML==6.0.3
 
