@@ -1,4 +1,4 @@
-FROM python:3.10.20-slim-bookworm AS python
+FROM python:3.14.3-slim-bookworm AS python
 
 # Python build stage ----------------------------------------------------------
 FROM python AS python-build-stage
