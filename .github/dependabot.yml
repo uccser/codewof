@@ -24,7 +24,7 @@ updates:
     ignore:
     # Ignore updates to Django package until LTS version
       - dependency-name: "django"
-        versions: ["4.0.x", "4.1.x", "5.0.x", "5.1.x", "6.0.x", "6.1.x", "7.0.x", "7.1.x"]
+        versions: ["4.0.*", "4.1.*", "5.0.*", "5.1.*", "6.0.*", "6.1.*", "7.0.*", "7.1.*"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
