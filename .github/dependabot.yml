@@ -6,7 +6,8 @@
 version: 2
 updates:
   - package-ecosystem: "docker"
-    directory: "/infrastructure/**/*"
+    directories:
+      - "/infrastructure/**/*"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 999
