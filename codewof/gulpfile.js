@@ -22,7 +22,7 @@ const log = require('fancy-log')
 const pixrem = require('pixrem')
 const postcss = require('gulp-postcss')
 const postcssFlexbugFixes = require('postcss-flexbugs-fixes')
-const sass = require('gulp-sass')(require('sass'));
+const sass = require('gulp-sass/legacy')(require('sass'));
 const sourcemaps = require('gulp-sourcemaps')
 const tap = require('gulp-tap')
 const terser = require('gulp-terser')
@@ -71,6 +71,7 @@ function catchError(error) {
         c.red(error)
     );
     this.emit('end');
+    throw new Error("An error occurred, see logs above");
 }
 
 ////////////////////////////////
@@ -121,7 +122,7 @@ function scss() {
                 paths.scss_source
             ],
             sourceComments: !PRODUCTION,
-        }).on('error', sass.logError))
+        }))
         .pipe(postcss(processCss))
         .pipe(sourcemaps.write())
         .pipe(gulpif(PRODUCTION, postcss(minifyCss))) // Minifies the result
