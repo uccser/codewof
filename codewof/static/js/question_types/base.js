@@ -1,4 +1,3 @@
-require('skulpt');
 var CodeMirror = require('codemirror');
 require('codemirror/mode/python/python.js');
 let worker = new Worker("/static/js/question_types/pyodide.js");
