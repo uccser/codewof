@@ -152,7 +152,7 @@ class TestCodewofUtils(TestCase):
         user_attempts = Attempt.objects.filter(profile=user.profile)
         solved = filter_attempts_in_past_month(user_attempts)
         self.assertEqual(len(solved), 3)
-        self.assertTrue(all(type(solved_attempt) == Attempt for solved_attempt in solved))
+        self.assertTrue(all(isinstance(solved_attempt, Attempt) for solved_attempt in solved))
 
     def test_get_questions_answered_in_past_month(self):
         generate_attempts()

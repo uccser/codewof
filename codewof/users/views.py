@@ -285,9 +285,9 @@ def update_memberships(request, pk, group):
         delete = membership['delete']
         role = membership['role']
 
-        if type(id) != int:
+        if not isinstance(id, int):
             raise Exception("One of the membership objects has an id that is not an integer (id={}).".format(id))
-        if type(delete) != bool:
+        if not isinstance(delete, bool):
             raise Exception("One of the membership objects has delete value that is not a boolean (id={}).".format(id))
 
         membership_object = Membership.objects.filter(id=id)
