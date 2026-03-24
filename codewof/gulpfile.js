@@ -161,7 +161,7 @@ function vendorJs() {
 
 // Image compression
 function img() {
-    return src(`${paths.images_source}/**/*`)
+    return src(`${paths.images_source}/**/*`, {encoding: false})
         .pipe(gulpif(PRODUCTION, imagemin())) // Compresses PNG, JPEG, GIF and SVG images
         .pipe(dest(paths.images_output))
 }
