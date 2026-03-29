@@ -104,7 +104,7 @@ THIRD_PARTY_APPS = [
     'django_activeurl',
     'svg',
     'ckeditor',
-    'captcha',
+    'django_recaptcha',
     'django_bootstrap_breadcrumbs',
     'django_filters',
 ]
