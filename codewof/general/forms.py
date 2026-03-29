@@ -6,8 +6,8 @@ from django.core.mail import send_mail, mail_managers
 from django.template.loader import render_to_string, get_template
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV3
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV3
 
 MESSAGE_TEMPLATE = "{}\n\n-----\nMessage sent from {} <{}>\n\n{}\n"
 
