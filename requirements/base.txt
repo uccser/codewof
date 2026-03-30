@@ -41,7 +41,7 @@ argon2-cffi==25.1.0
 django-modeltranslation==0.18.11
 
 # CORS
-django-cors-headers==3.14.0
+django-cors-headers==4.9.0
 
 # The latest setuptools (>=82) removes pkg_resources, needed for our current version of gunicorn, so lock in the earlier version
 # setuptools==81.0.0
