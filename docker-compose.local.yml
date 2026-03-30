@@ -35,6 +35,7 @@ services:
     volumes:
       # https://burnedikt.com/dockerized-node-development-and-mounting-node-volumes/#exclude-node_modules-from-the-mount
       - ./codewof/package.json:/app/package.json:z
+      - ./codewof/package-lock.json:/app/package-lock.json:z
       - ./codewof/gulpfile.js:/app/gulpfile.js:z
       - ./codewof/static:/app/static:z
       - ./codewof/build:/app/build:z
