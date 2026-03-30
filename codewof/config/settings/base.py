@@ -341,6 +341,10 @@ LOGGING = {
 
 # ckeditor
 # ------------------------------------------------------------------------------
+# Silence the CKEditor 4 security warning - CKEditor 4 is unmaintained but
+# migration is tracked in https://github.com/uccser/codewof/issues/1351
+SILENCED_SYSTEM_CHECKS = ['ckeditor.W001']
+
 CKEDITOR_UPLOAD_PATH = get_upload_path_for_date('text-editor')
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
 CKEDITOR_CONFIGS = {
