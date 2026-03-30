@@ -87,6 +87,11 @@ def check_code(request):
     result = {
         'success': False,
     }
+    # NOTE: request.is_ajax() was removed in Django 4.0. This is its
+    # replacement, checking the X-Requested-With header that jQuery sets by
+    # default. This header is a convention rather than a standard — it can be
+    # spoofed or omitted by other clients. A more robust approach would be to
+    # use a dedicated API endpoint with CSRF and authentication checks.
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         request_json = json.loads(request.body.decode('utf-8'))
         user_code = request_json['user_code']
