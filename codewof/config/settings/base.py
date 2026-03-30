@@ -101,7 +101,6 @@ THIRD_PARTY_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_framework',
-    'django_activeurl',
     'svg',
     'ckeditor',
     'django_recaptcha',
@@ -298,18 +297,6 @@ MIGRATION_MODULES = {
     "socialaccount": "allauth.socialaccount.migrations",
 }
 
-# django-activeurl
-# ------------------------------------------------------------------------------
-ACTIVE_URL_KWARGS = {
-    'css_class': 'active',
-    'parent_tag': 'li',
-    'menu': 'yes',
-    'ignore_params': 'no'
-}
-
-ACTIVE_URL_CACHE = True
-ACTIVE_URL_CACHE_TIMEOUT = 60 * 60 * 24  # 1 day
-ACTIVE_URL_CACHE_PREFIX = 'django_activeurl'
 
 # django-rest-framework
 # ------------------------------------------------------------------------------
