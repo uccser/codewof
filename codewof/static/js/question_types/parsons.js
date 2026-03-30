@@ -51,17 +51,7 @@ $(document).ready(async function(){
 
     setTutorialAttributes();
     $("#introjs-tutorial").click(function() {
-        introJS().start().onbeforechange(function() {
-            currentElement = $(this._introItems[this._currentStep].element);
-            node = currentElement.prop('nodeName');
-            // When looking at a full row of the table, force it to scroll to the far left
-            // so the highlight only overhangs to the right
-            if (node == 'TABLE' || node == 'TR') {
-                currentElement = currentElement.find('td:first-of-type')
-            }
-            containerId = 'table-container';
-            base.scroll_to_element(containerId, currentElement);
-        });
+        introJS().start();
     });
 });
 
