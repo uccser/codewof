@@ -33,6 +33,7 @@ class QuestionsLoaderTest(DjangoTestCase):
                 "<Question: Say Hello!>",
                 "<Question: Say Hello 2!>",
             ],
+            transform=repr,
         )
 
     def test_insert_start(self):
@@ -57,6 +58,7 @@ class QuestionsLoaderTest(DjangoTestCase):
                 "<Question: Say Hello!>",
                 "<Question: Say Hello 2!>",
             ],
+            transform=repr,
         )
 
     def test_delete_end(self):
@@ -79,6 +81,7 @@ class QuestionsLoaderTest(DjangoTestCase):
             [
                 "<Question: Say Hello!>",
             ],
+            transform=repr,
         )
 
     def test_multiple_test_cases(self):
@@ -95,6 +98,7 @@ class QuestionsLoaderTest(DjangoTestCase):
                 "<TestCase: normal>",
                 "<TestCase: normal>",
             ],
+            transform=repr,
         )
 
     def test_insert_start_test_case(self):
@@ -119,6 +123,7 @@ class QuestionsLoaderTest(DjangoTestCase):
                 "<TestCase: normal>",
                 "<TestCase: normal>",
             ],
+            transform=repr,
         )
 
     def test_delete_end_test_case(self):
@@ -135,6 +140,7 @@ class QuestionsLoaderTest(DjangoTestCase):
                 "<TestCase: normal>",
                 "<TestCase: normal>",
             ],
+            transform=repr,
         )
 
         config_file = "delete-end-test-case.yaml"
@@ -149,6 +155,7 @@ class QuestionsLoaderTest(DjangoTestCase):
             [
                 "<TestCase: normal>",
             ],
+            transform=repr,
         )
 
     def test_test_case_numbers_order(self):

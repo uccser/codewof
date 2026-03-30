@@ -25,6 +25,7 @@ class QuestionContextsLoaderTest(TestCase):
                 "<QuestionContexts: Context 3>",
                 "<QuestionContexts: Context 4>",
             ],
+            transform=repr,
         )
 
     def test_insert_start(self):
@@ -51,6 +52,7 @@ class QuestionContextsLoaderTest(TestCase):
                 "<QuestionContexts: Context 3>",
                 "<QuestionContexts: Context 4>",
             ],
+            transform=repr,
         )
 
     def test_delete_end(self):
@@ -75,6 +77,7 @@ class QuestionContextsLoaderTest(TestCase):
                 "<QuestionContexts: Context 2>",
                 "<QuestionContexts: Context 3>",
             ],
+            transform=repr,
         )
 
     def test_child_contexts_load_properly(self):
@@ -97,4 +100,5 @@ class QuestionContextsLoaderTest(TestCase):
                 "<QuestionContexts: Mathematics>",
                 "<QuestionContexts: Simple Mathematics>",
             ],
+            transform=repr,
         )

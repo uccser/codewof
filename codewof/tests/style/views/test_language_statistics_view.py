@@ -115,7 +115,8 @@ class LanguageStatisticsViewTest(TestCase):
                 '<Error: python3 - error3>',
                 '<Error: python3 - error2>',
                 '<Error: python3 - error1>',
-            ]
+            ],
+            transform=repr,
         )
         self.assertEqual(
             response.context['max_count'],

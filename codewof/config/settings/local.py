@@ -83,6 +83,11 @@ INTERNAL_IPS = ['127.0.0.1', '10.0.2.2']
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ["*"]
 
+# Django 4.0+ validates the Origin header on all requests (not just HTTPS).
+# CSRF_TRUSTED_ORIGINS must include the full scheme+host.
+# https://docs.djangoproject.com/en/4.2/ref/settings/#csrf-trusted-origins
+CSRF_TRUSTED_ORIGINS = ["https://codewof.localhost"]
+
 # django-extensions
 # ------------------------------------------------------------------------------
 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html#configuration

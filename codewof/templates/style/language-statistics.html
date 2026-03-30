@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 
-{% load static i18n django_bootstrap_breadcrumbs simplify_error_template %}
+{% load static i18n simplify_error_template %}
 
 {% block title %}{{ language.name }} Style Checker for beginners{% endblock %}
 
 {% block breadcrumbs %}
-    {% trans "Home" as home_label %}
-    {% breadcrumb home_label "general:home" %}
-    {% breadcrumb "Style Checkers" "style:home" %}
-    {% breadcrumb language.name "style:language" language.slug %}
-    {% breadcrumb "Statistics" "style:language_statistics" language.slug %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'general:home' %}">{% trans "Home" %}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'style:home' %}">{% trans "Style Checkers" %}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'style:language' language.slug %}">{{ language.name }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% trans "Statistics" %}</li>
+  </ol>
+</nav>
 {% endblock breadcrumbs %}
 
 {% block page_heading %}

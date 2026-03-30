@@ -59,7 +59,8 @@ class QuestionListViewTest(TestCase):
                 '<Question: Test>',
                 '<Question: Test>',
             ],
-            ordered=False
+            ordered=False,
+            transform=repr,
         )
 
 

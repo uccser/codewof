@@ -27,6 +27,7 @@ class ProgrammingConceptsLoaderTest(TestCase):
                 "<ProgrammingConcepts: Concept 4>",
             ],
             ordered=False,
+            transform=repr,
         )
 
     def test_insert_start(self):
@@ -53,6 +54,7 @@ class ProgrammingConceptsLoaderTest(TestCase):
                 "<ProgrammingConcepts: Concept 3>",
                 "<ProgrammingConcepts: Concept 4>",
             ],
+            transform=repr,
         )
 
     def test_delete_end(self):
@@ -77,6 +79,7 @@ class ProgrammingConceptsLoaderTest(TestCase):
                 "<ProgrammingConcepts: Concept 2>",
                 "<ProgrammingConcepts: Concept 3>",
             ],
+            transform=repr,
         )
 
     def test_child_concepts_load_properly(self):
@@ -95,4 +98,5 @@ class ProgrammingConceptsLoaderTest(TestCase):
                 "<ProgrammingConcepts: Multiple Conditions>",
                 "<ProgrammingConcepts: Single Condition>",
             ],
+            transform=repr,
         )
