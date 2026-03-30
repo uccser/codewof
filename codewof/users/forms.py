@@ -67,7 +67,7 @@ class SignupForm(forms.Form):
             HTML(render_to_string('account/signup-declarations.html')),
             'captcha',
             HTML(render_to_string('account/recaptcha-declaration.html')),
-            Submit('submit', 'Sign Up', css_class="btn-success"),
+            Submit('signup', 'Sign Up', css_class="btn-success"),
         )
         self.fields['captcha'].label = False
 
