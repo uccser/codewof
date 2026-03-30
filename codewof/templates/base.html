@@ -1,4 +1,4 @@
-{% load static i18n activeurl svg django_bootstrap_breadcrumbs i18n %}
+{% load static i18n svg django_bootstrap_breadcrumbs i18n %}
 
 <!doctype html>
 <html lang="en">
@@ -54,7 +54,6 @@
 
         <div class="collapse navbar-collapse" id="navbarContent">
           {% if request %}
-            {% activeurl %}
             <ul id="codewof-navbar-dashboard" class="navbar-nav w-100 d-lg-flex justify-content-end align-items-stretch">
               <a class="nav-item nav-link" href="{% url 'programming:question_list' %}">
                 Questions
@@ -82,7 +81,6 @@
                 <a id="log-in-link" class="nav-item nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
               {% endif %}
             </ul>
-            {% endactiveurl %}
           {% endif %}
         </div>
       </div>
