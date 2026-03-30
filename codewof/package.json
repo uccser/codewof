@@ -19,7 +19,7 @@
         "gulp-error-handle": "1.0.1",
         "gulp-filter": "9.0.1",
         "gulp-if": "3.0.0",
-        "gulp-imagemin": "7.1.0",
+        "gulp-imagemin": "^9.2.0",
         "gulp-postcss": "10.0.0",
         "gulp-sass": "6.0.1",
         "gulp-sourcemaps": "3.0.0",
