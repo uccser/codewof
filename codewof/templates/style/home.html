@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 
-{% load static svg i18n django_bootstrap_breadcrumbs %}
+{% load static svg i18n %}
 
 {% block title %}Style Checkers for schools{% endblock %}
 
 {% block breadcrumbs %}
-    {% trans "Home" as home_label %}
-    {% breadcrumb home_label "general:home" %}
-    {% breadcrumb "Style Checkers" "style:home" %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'general:home' %}">{% trans "Home" %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% trans "Style Checkers" %}</li>
+  </ol>
+</nav>
 {% endblock breadcrumbs %}
 
 {% block page_heading %}

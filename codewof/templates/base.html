@@ -1,4 +1,4 @@
-{% load static i18n svg django_bootstrap_breadcrumbs i18n %}
+{% load static i18n svg i18n %}
 
 <!doctype html>
 <html lang="en">
@@ -100,13 +100,10 @@
         </div>
     {% endif %}
 
-    {% block breadcrumbs %}
-    {% endblock breadcrumbs %}
-
     {% block body_container %}
     <div id="page-header" class="my-3">
       <div class="container">
-        {% render_breadcrumbs %}
+        {% block breadcrumbs %}{% endblock breadcrumbs %}
         {% block page_heading %}
         {% endblock page_heading %}
       </div>
