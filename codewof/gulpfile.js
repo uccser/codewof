@@ -17,7 +17,6 @@ const errorHandler = require('gulp-error-handle')
 const { default: filter } = require('gulp-filter')
 const gulpif = require('gulp-if');
 const { hideBin } = require('yargs/helpers')
-const { default: imagemin } = require('gulp-imagemin')
 const log = require('fancy-log')
 const pixrem = require('pixrem')
 const postcss = require('gulp-postcss')
@@ -160,7 +159,8 @@ function vendorJs() {
 }
 
 // Image compression
-function img() {
+async function img() {
+    const { default: imagemin } = await import('gulp-imagemin')
     return src(`${paths.images_source}/**/*`, {encoding: false})
         .pipe(gulpif(PRODUCTION, imagemin())) // Compresses PNG, JPEG, GIF and SVG images
         .pipe(dest(paths.images_output))
