@@ -28,6 +28,7 @@ class DifficultiesLoaderTest(TestCase):
                 "<DifficultyLevel: Complex>",
             ],
             ordered=False,
+            transform=repr,
         )
 
     def test_insert_start(self):
@@ -55,6 +56,7 @@ class DifficultiesLoaderTest(TestCase):
                 "<DifficultyLevel: Complex>",
             ],
             ordered=False,
+            transform=repr,
         )
 
     def test_delete_end(self):
@@ -80,4 +82,5 @@ class DifficultiesLoaderTest(TestCase):
                 "<DifficultyLevel: Difficult>",
             ],
             ordered=False,
+            transform=repr,
         )

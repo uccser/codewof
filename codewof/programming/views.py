@@ -143,7 +143,7 @@ def save_question_attempt(request):
     result = {
         'success': False,
     }
-    if request.is_ajax():
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         if request.user.is_authenticated:
             request_json = json.loads(request.body.decode('utf-8'))
             profile = request.user.profile

@@ -175,7 +175,8 @@ class AchievementModelTests(TestCase):
                 '<Achievement: Solved five questions>',
                 '<Achievement: Solved ten questions>',
                 '<Achievement: Solved one hundred questions>',
-            ]
+            ],
+            transform=repr,
         )
 
     def test_queryset_ordering_attempts_made(self):
@@ -187,7 +188,8 @@ class AchievementModelTests(TestCase):
                 '<Achievement: Five attempts made>',
                 '<Achievement: Ten attempts made>',
                 '<Achievement: One hundred attempts made>',
-            ]
+            ],
+            transform=repr,
         )
 
 

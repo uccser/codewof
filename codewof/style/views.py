@@ -87,7 +87,7 @@ def check_code(request):
     result = {
         'success': False,
     }
-    if request.is_ajax():
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         request_json = json.loads(request.body.decode('utf-8'))
         user_code = request_json['user_code']
         language = request_json['language']
