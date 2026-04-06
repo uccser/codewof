@@ -13,7 +13,7 @@
         "cssnano": "7.1.4",
         "details-element-polyfill": "2.4.0",
         "fancy-log": "2.0.0",
-        "fuse.js": "7.2.0",
+        "fuse.js": "7.3.0",
         "gulp": "5.0.1",
         "gulp-concat": "2.6.1",
         "gulp-error-handle": "1.0.1",
