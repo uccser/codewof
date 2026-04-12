@@ -50,6 +50,16 @@
     }
 }
 
+.qc-card.qc-card-draft {
+    grid-template-areas:
+        "qc-checkbox qc-type qc-delete"
+        "qc-checkbox qc-title qc-delete"
+        "qc-checkbox qc-details qc-delete"
+        "qc-tags qc-tags qc-tags"
+        "qc-buttons qc-buttons qc-buttons";
+    grid-template-rows: auto auto auto;
+}
+
 .qc-checkbox {
     grid-area: qc-checkbox;
     display:flex;
@@ -80,4 +90,21 @@
     align-self: end;
     margin-top: 0.5rem;
     grid-area: qc-tags;
+}
+
+.qc-buttons {
+    align-self: end;
+    margin-top: 0.5rem;
+    display: flex;
+    grid-area: qc-buttons;
+}
+
+.qc-delete {
+    border: 0px;
+    grid-area: qc-delete;
+    height: max-content;
+
+    svg {
+        width: 24px;
+    }
 }

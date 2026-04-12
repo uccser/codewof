@@ -8,7 +8,7 @@ $(document).ready(function () {
         run_code(editor, true);
     });
 
-    var editor = base.editor;
+    var editor = base.create_new_editor("code");
 
     for (let i = 0; i < test_cases_list.length; i++) {
         data = test_cases_list[i];

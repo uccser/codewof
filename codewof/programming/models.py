@@ -238,6 +238,115 @@ class ProgrammingConcepts(models.Model):
         ordering = ["number", "name"]
 
 
+# ----- Base draft classes -------------------------------------------------
+class Draft(TranslatableModel):
+    """Class for a draft question."""
+
+    slug = models.SlugField(unique=True)
+    title = models.CharField(max_length=SMALL)
+    question_type = models.CharField(max_length=SMALL, default="Program", null=False)
+    question_text = models.TextField(blank=True)
+    solution = models.TextField(blank=True)
+
+    difficulty_level = models.ForeignKey(
+        DifficultyLevel,
+        related_name='drafts',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    concepts = models.ManyToManyField(
+        ProgrammingConcepts,
+        related_name='draft_concepts'
+    )
+    contexts = models.ManyToManyField(
+        QuestionContexts,
+        related_name='draft_contexts'
+    )
+    author = models.ForeignKey(
+        Profile,
+        related_name='authored_drafts',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
+    # Attributes of certain questions
+    # These are separated to the correct classes once drafts are submitted
+    lines = models.TextField(null=True)
+    initial_code = models.TextField(null=True)
+    read_only_lines_top = models.PositiveSmallIntegerField(default=0)
+    read_only_lines_bottom = models.PositiveSmallIntegerField(default=0)
+
+    objects = InheritanceManager()
+
+    def get_absolute_url(self):
+        """Return URL of draft on website.
+
+        Returns:
+            URL as a string.
+        """
+        return reverse('programming:edit_draft', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        """Text representation of a draft."""
+        if hasattr(self, 'QUESTION_TYPE'):
+            return '{}: {}'.format(self.QUESTION_TYPE, self.title)
+        else:
+            return self.title
+
+    class Meta:
+        """Meta information for class."""
+
+        verbose_name = 'Draft'
+        verbose_name_plural = 'Drafts'
+
+
+class DraftTestCase(TranslatableModel):
+    """Base class for a draft for TestCase."""
+
+    number = models.PositiveSmallIntegerField(default=1)
+    type = models.CharField(max_length=SMALL, default="Program", null=False)
+    expected_output = models.TextField(blank=True)
+
+    # These are stored with the draft model, then applied to the specific type once submitted
+    test_code = models.TextField()
+    draft = models.ForeignKey(
+        Draft,
+        related_name='draft_test_cases',
+        on_delete=models.CASCADE
+    )
+
+    objects = InheritanceManager()
+
+    def __str__(self):
+        """Text representation of a test case."""
+        return self.type
+        pass
+
+
+class DraftMacro(models.Model):
+    """A macro for a draft question."""
+
+    placeholder = models.CharField(max_length=SMALL, null=False)
+    draft = models.ForeignKey(
+        Draft,
+        related_name='macros',
+        on_delete=models.CASCADE,
+    )
+
+
+class DraftMacroValue(TranslatableModel):
+    """A potential value for a draft macro to take."""
+
+    macro = models.ForeignKey(
+        DraftMacro,
+        related_name='macro_values',
+        on_delete=models.CASCADE,
+    )
+    value = models.TextField()
+
+
 # ----- Base question classes -------------------------------------------------
 
 class Question(TranslatableModel):
@@ -313,6 +422,28 @@ class TestCase(TranslatableModel):
         """Text representation of a test case."""
         return self.type
         pass
+
+
+class Macro(models.Model):
+    """A macro for a question."""
+
+    placeholder = models.CharField(max_length=SMALL, null=False)
+    question = models.ForeignKey(
+        Question,
+        related_name='macros',
+        on_delete=models.CASCADE,
+    )
+
+
+class MacroValue(TranslatableModel):
+    """A potential value for a macro to take."""
+
+    macro = models.ForeignKey(
+        Macro,
+        related_name='macro_values',
+        on_delete=models.CASCADE,
+    )
+    value = models.TextField()
 
 # ----- Program question ------------------------------------------------------
 

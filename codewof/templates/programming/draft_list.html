@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load static crispy_forms_tags %}
+
+{% block title %}My Questions{% endblock %}
+
+{% block page_heading %}
+    <h1>My Created Questions</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    <p>Currently all questions are based in Python 3.</p>
+    <div class="header-button-tray">
+        <h2>All questions</h2>
+        <a class="btn btn-primary ml-auto link-vertical-center" href="{% url 'programming:new_draft' %}">New Question</a>
+    </div>
+    {% include "programming/question_creation/configurable_delete_modal.html" %}
+
+    <details id="question-filter" {% if filter_button_pressed %} open {% endif %}>
+        <summary>
+            Filter Questions
+            <div id="filter-summary" class="text-muted text-right">
+                <div id="filter-summary-text"></div>
+            </div>
+        </summary>
+        {% crispy filter.form filter_formatter %}
+    </details>
+
+    {% if filter.qs %}
+        <div class="row">
+            {% for draft in filter.qs %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    {% include "programming/question_creation/draft-question-card.html" %}
+                </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <p class="text-center">
+                <strong>Sorry!</strong></br>
+                No questions found matching the selected filters.
+            </p>
+        {% endif %}
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/question_list/checkbox_listener.js' %}"></script>
+    <script src="{% static 'js/question_list/question_selection.js' %}"></script>
+    <script src="{% static 'js/question_types/delete_modal_config.js' %}"></script>
+{% endblock scripts %}

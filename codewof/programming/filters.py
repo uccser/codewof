@@ -6,6 +6,7 @@ from programming.models import (
     DifficultyLevel,
     ProgrammingConcepts,
     QuestionContexts,
+    Draft,
 )
 from programming.widgets import IndentCheckbox, DifficultyCheckbox, TypeCheckbox
 
@@ -41,4 +42,35 @@ class QuestionFilter(django_filters.FilterSet):
         """Meta options for Filter. Sets which model and fields are filtered."""
 
         model = Question
+        fields = {'difficulty_level', 'concepts', 'contexts', 'question_type'}
+
+
+class DraftFilter(django_filters.FilterSet):
+    """Filter for drafts extends FilterSet. Allows for filtering identical to questions."""
+
+    difficulty_level = django_filters.filters.ModelMultipleChoiceFilter(
+        queryset=DifficultyLevel.objects.order_by('level'),
+        widget=DifficultyCheckbox,
+    )
+
+    concepts = django_filters.filters.ModelMultipleChoiceFilter(
+        queryset=ProgrammingConcepts.objects.prefetch_related('parent').order_by('number'),
+        widget=IndentCheckbox,
+        conjoined=False,
+    )
+
+    contexts = django_filters.filters.ModelMultipleChoiceFilter(
+        queryset=QuestionContexts.objects.prefetch_related('parent').order_by('number'),
+        widget=IndentCheckbox,
+        conjoined=False,
+    )
+
+    question_type = django_filters.filters.AllValuesMultipleFilter(
+        widget=TypeCheckbox,
+    )
+
+    class Meta:
+        """Meta options for Filter. Sets which model and fields are filtered."""
+
+        model = Draft
         fields = {'difficulty_level', 'concepts', 'contexts', 'question_type'}

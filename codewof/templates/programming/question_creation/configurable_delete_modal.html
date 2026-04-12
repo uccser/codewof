@@ -1,0 +1,21 @@
+<div id="delete-modal" class="modal fade " aria-labelledby="modal_title_id-label" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title w-100 text-center" id="modal_title_id">Delete Object</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="float: left">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="delete-warning-message"></p>
+                <input type="button" name="close_modal" value="Cancel" class="btn btn-outline-secondary mt-3" id="button-id-close_modal" data-target="#delete-modal" data-toggle="modal">
+                <input type="submit" name="delete_object" value="Delete Object" class="btn btn-danger mt-3" id="btn_delete_request">
+                <form id="deleteForm" method="post" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
