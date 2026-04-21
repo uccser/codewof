@@ -19,7 +19,7 @@ gunicorn==24.1.1
 whitenoise==6.12.0
 
 # Database APIs
-psycopg2==2.9.11
+psycopg2==2.9.12
 
 # Content loading
 verto==1.2.0
