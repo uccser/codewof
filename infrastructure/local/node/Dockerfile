@@ -1,4 +1,4 @@
-FROM node:24.15.0-bookworm
+FROM node:26.1.0-bookworm
 
 # ARG DOCKER_UID
 # RUN usermod -u $DOCKER_UID node
