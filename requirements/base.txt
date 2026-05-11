@@ -2,7 +2,7 @@
 django==4.2.30
 django-environ==0.13.0
 django-model-utils==5.0.0
-django-anymail[mailgun]==14.0
+django-anymail[mailgun]==15.0
 django-mail-templated==2.6.5
 django-allauth==0.55.2
 django-crispy-forms==1.14.0
