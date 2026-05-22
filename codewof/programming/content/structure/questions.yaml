@@ -2275,3 +2275,22 @@ space-cargo:
     - lists
   contexts:
     - simple-mathematics
+
+
+taylor-swifts-favourite-number:
+  types:
+    - debugging
+  number_of_read_only_lines_top: 2
+  number_of_read_only_lines_bottom: 3
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+  difficulty: difficulty-2
+  concepts:
+    - inputs
+    - functions
+    - string-operations
+    - multiple-conditions
+  contexts:
+    - real-world-applications
