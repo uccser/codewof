@@ -1,0 +1,170 @@
+var base = require('./base.js');
+const introJS = require('intro.js');
+
+// Local Variables
+var test_cases = {};
+
+$(document).ready(async function () {
+    await base.waitForWorkerReady();
+    $('#run_code').click(async function () {
+        // disable the button to prevent multiple clicks
+        $('#run_code').prop('disabled', true);
+        $('#run_code').addClass('disabled');
+        $('#run_code').attr('aria-disabled', 'true');
+        // Run the code
+        await run_code(editor, true);
+        // Re-enable the button after running the code
+        $('#run_code').prop('disabled', false);
+        $('#run_code').removeClass('disabled');
+        $('#run_code').attr('aria-disabled', 'false');
+    });
+
+    $('#reset_to_initial').click(function () {
+        editor.setValue(initial_code);
+        mark_lines_as_read_only(editor);
+    });
+
+    var editor = base.editor;
+
+    mark_lines_as_read_only(editor);
+
+    for (let i = 0; i < test_cases_list.length; i++) {
+        data = test_cases_list[i];
+        test_cases[data.id] = data
+    }
+
+    if (editor.getValue()) {
+        // disable the button to prevent multiple clicks
+        $('#run_code').prop('disabled', true);
+        $('#run_code').addClass('disabled');
+        $('#run_code').attr('aria-disabled', 'true');
+        // Run the code
+        await run_code(editor, false);
+        // Re-enable the button after running the code
+        $('#run_code').prop('disabled', false);
+        $('#run_code').removeClass('disabled');
+        $('#run_code').attr('aria-disabled', 'false');
+    }
+
+    setTutorialAttributes();
+    $("#introjs-tutorial").click(function () {
+        introJS().start();
+    });
+});
+
+
+async function run_code(editor, submit) {
+    await base.clear_submission_feedback();
+    for (var id in test_cases) {
+        if (test_cases.hasOwnProperty(id)) {
+            var test_case = test_cases[id];
+            test_case.received_output = '';
+            test_case.passed = false;
+            test_case.runtime_error = false;
+        }
+    }
+    var user_code = editor.getValue();
+    if (user_code.includes("\t")) {
+        // contains tabs
+        $("#indentation-warning").removeClass("d-none");
+        return; // do not run tests
+    } else {
+        $("#indentation-warning").addClass("d-none");
+    }
+    test_cases = await base.run_test_cases(test_cases, user_code, base.run_python_code_pyodide);
+    if (submit) {
+        base.ajax_request(
+            'save_question_attempt',
+            {
+                user_input: user_code,
+                question: question_id,
+                test_cases: test_cases,
+            }
+        );
+    }
+    base.display_submission_feedback(test_cases);
+}
+
+
+function mark_lines_as_read_only(editor) {
+    // Lock top lines
+    if (read_only_lines_top) {
+        // Minus one as line count is zero indexed
+        editor.markText(
+            { line: 0, ch: 0 },
+            { line: read_only_lines_top - 1 },
+            {
+                readOnly: true,
+                className: 'code-read-only',
+                atomic: true,
+                selectLeft: true,
+                inclusiveLeft: true
+            }
+        );
+    }
+
+    // Lock bottom lines
+    if (read_only_lines_bottom) {
+        var line_count = editor.lineCount();
+        // Minus one as line count is zero indexed
+        editor.markText(
+            { line: line_count - read_only_lines_bottom - 1, ch: 0 },
+            { line: line_count - 1 },
+            {
+                readOnly: true,
+                className: 'code-read-only',
+                atomic: true,
+                selectRight: true,
+                inclusiveRight: true
+            }
+        );
+    }
+}
+
+function setTutorialAttributes() {
+    $(".question-text").attr(
+        'data-intro',
+        'This is a description of what the code should do. In modify questions you will be asked to modify working code so tests still pass but the code is not the same as the old code.'
+    );
+    $("#python-editor").attr(
+        'data-intro',
+        "This is the code original code that works, change it so it is implemented differently and still works. Greyed out lines cannot be edited."
+    );
+    $("#run_code").attr(
+        'data-intro',
+        "Clicking this button will run your code against the test cases."
+    );
+    $("#reset_to_initial").attr(
+        'data-intro',
+        "Click this button at any time to discard all of your changes."
+    );
+    $("#test-case-table").attr(
+        'data-intro',
+        "These are the test cases that have been run against the given code."
+    );
+    // the first row in the test case table
+    $('#test-case-table tbody tr:nth-child(1)').attr(
+        'data-intro',
+        'Here is the first test case.'
+    );
+    // the input for the first test case
+    $('#test-case-table tbody tr:nth-child(1) td:eq(0)').attr(
+        'data-intro',
+        'This is the test code that has been run for this particular test.'
+    );
+    // the expected output for the first test case
+    $('#test-case-table tbody tr:nth-child(1) td:eq(1)').attr(
+        'data-intro',
+        'This is the output that the test code is expected to print.'
+    );
+    // the received output for the first test case
+    $('#test-case-table tbody tr:nth-child(1) td:eq(2)').attr(
+        'data-intro',
+        'This is the output that has been printed by the test code.'
+    );
+    // the status of the first test case
+    $('#test-case-table tbody tr:nth-child(1) td:eq(3)').attr(
+        'data-intro',
+        "A test case will pass if the received output matches the expected output. If all test cases pass the question has been solved."
+    );
+}

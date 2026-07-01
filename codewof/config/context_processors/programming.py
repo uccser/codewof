@@ -5,6 +5,7 @@ from programming.models import (
     QuestionTypeFunction,
     QuestionTypeParsons,
     QuestionTypeDebugging,
+    QuestionTypeModify,
 )
 
 
@@ -19,4 +20,5 @@ def question_types(request):
         "QUESTION_TYPE_FUNCTION": QuestionTypeFunction.QUESTION_TYPE,
         "QUESTION_TYPE_PARSONS": QuestionTypeParsons.QUESTION_TYPE,
         "QUESTION_TYPE_DEBUGGING": QuestionTypeDebugging.QUESTION_TYPE,
+        "QUESTION_TYPE_MODIFY": QuestionTypeModify.QUESTION_TYPE,
     }

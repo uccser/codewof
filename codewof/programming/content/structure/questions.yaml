@@ -2280,8 +2280,8 @@ space-cargo:
 taylor-swifts-favourite-number:
   types:
     - debugging
-  number_of_read_only_lines_top: 2
-  number_of_read_only_lines_bottom: 3
+  number_of_read_only_lines_top: 0
+  number_of_read_only_lines_bottom: 0
   test-cases:
     1: normal
     2: normal
@@ -2294,3 +2294,19 @@ taylor-swifts-favourite-number:
     - multiple-conditions
   contexts:
     - real-world-applications
+
+
+loopy-loop:
+  types:
+    - modify
+  number_of_read_only_lines_top: 1
+  number_of_read_only_lines_bottom: 0
+  test-cases:
+    1: normal
+  difficulty: difficulty-1
+  concepts:
+    - functions
+    - lists
+    - range-loops
+  contexts:
+    - simple-mathematics

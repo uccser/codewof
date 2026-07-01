@@ -18,6 +18,8 @@ from programming.models import (
     QuestionTypeParsonsTestCase,
     QuestionTypeDebugging,
     QuestionTypeDebuggingTestCase,
+    QuestionTypeModify,
+    QuestionTypeModifyTestCase,
     DifficultyLevel,
     ProgrammingConcepts,
     QuestionContexts
@@ -40,6 +42,11 @@ VALID_QUESTION_TYPES = {
         'question_class': QuestionTypeDebugging,
         'test_case_class': QuestionTypeDebuggingTestCase,
     },
+    QuestionTypeModify.QUESTION_TYPE: {
+        'question_class': QuestionTypeModify,
+        'test_case_class': QuestionTypeModifyTestCase,
+    }
+#     todo add new question type here.
 }
 VALID_QUESTION_TYPE_SETS = [
     {
@@ -125,8 +132,8 @@ class QuestionsLoader(TranslatableModelLoader):
                     lines_as_text = '\n'.join(lines)
                     question_translations[language]['lines'] = lines_as_text
 
-            # If debugging question, get initial code,
-            if QuestionTypeDebugging.QUESTION_TYPE in question_types:
+            # If debugging or modify question, get initial code,
+            if QuestionTypeDebugging.QUESTION_TYPE in question_types or QuestionTypeModify.QUESTION_TYPE in question_types:
                 initial_code_filename = join(question_slug, 'initial.py')
                 for language in get_available_languages():
                     initial_code = open(self.get_localised_file(
@@ -156,7 +163,7 @@ class QuestionsLoader(TranslatableModelLoader):
 
                 if question_class == QuestionTypeParsons:
                     required_fields += ['lines']
-                elif question_class == QuestionTypeDebugging:
+                elif question_class == QuestionTypeDebugging or question_class == QuestionTypeModify: # modify should act similar to debug.
                     required_fields += ['initial_code']
                     defaults['read_only_lines_top'] = int(question_data.get('number_of_read_only_lines_top', 0))
                     defaults['read_only_lines_bottom'] = int(question_data.get('number_of_read_only_lines_bottom', 0))
@@ -247,7 +254,7 @@ class QuestionsLoader(TranslatableModelLoader):
                             test_case_input = open(self.get_localised_file(
                                 language, test_case_input_filename), encoding='UTF-8').read()
                             test_case_translations[language]['test_input'] = test_case_input
-                    elif question_class in (QuestionTypeFunction, QuestionTypeParsons, QuestionTypeDebugging):
+                    elif question_class in (QuestionTypeFunction, QuestionTypeParsons, QuestionTypeDebugging, QuestionTypeModify):
                         test_case_code_filename = join(
                             question_slug,
                             TEST_CASE_FILE_TEMPLATE.format(id=test_case_id, type='code')
@@ -280,6 +287,7 @@ class QuestionsLoader(TranslatableModelLoader):
                         QuestionTypeFunctionTestCase,
                         QuestionTypeParsonsTestCase,
                         QuestionTypeDebuggingTestCase,
+                        QuestionTypeModifyTestCase
                     ):
                         required_fields = ['test_code', 'expected_output']
 

@@ -441,3 +441,35 @@ class QuestionTypeDebuggingTestCase(TestCase):
         """Meta information for class."""
 
         verbose_name = 'Debugging Problem Question Test Case'
+
+
+
+# ----- Modify problem question -----------------------------------------------------
+
+class QuestionTypeModify(Question):
+    """A 'modify the code' problem question."""
+
+    QUESTION_TYPE = 'modify'
+    initial_code = models.TextField()
+    read_only_lines_top = models.PositiveSmallIntegerField(default=0) #Note: may want to remove the ability to make likes unmodifiable - todo: this may be good for fill in the blank questions.
+    read_only_lines_bottom = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        """Meta information for class."""
+        verbose_name = 'Modify Problem Question'
+
+class QuestionTypeModifyTestCase(TestCase):
+    """A test case for a modify problem question."""
+
+    test_code = models.TextField()
+    question = models.ForeignKey(
+        QuestionTypeModify,
+        related_name='test_cases',
+        on_delete=models.CASCADE
+    )
+
+    class Meta:
+        """Meta information for class."""
+
+        verbose_name = 'Modify Problem Question Test Case'
+    # todo add new question type here.

@@ -136,3 +136,12 @@ If applicable, one or more `contexts` should be added to the question from the f
   - `simple-mathematics` - Simple Mathematics
   - `advanced-mathematics` - Advanced Mathematics
 - `real-world-applications` - Real World Applications
+
+
+## Adding a new question type
+- Add to models
+- do migrations
+
+`docker compose -f docker-compose.local.yml exec django python manage.py makemigrations programming`
+`docker compose -f docker-compose.local.yml exec django python manage.py migrate`
+- 

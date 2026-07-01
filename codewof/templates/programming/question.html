@@ -59,7 +59,7 @@
             <button id="run_code" type="button" class="btn btn-primary">
                 Run code
             </button>
-            {% if question.QUESTION_TYPE == QUESTION_TYPE_DEBUGGING %}
+            {% if question.initial_code %}
                 <button type="button" id="reset_to_initial" class="btn btn-secondary">
                     Reset to initial code
                 </button>
@@ -112,7 +112,7 @@
         var csrf_token = jQuery("[name=csrfmiddlewaretoken]").val();
         var question_id = {{ question.id }};
         var test_cases_list = {{ test_cases_json|safe }};
-        {% if question.QUESTION_TYPE == QUESTION_TYPE_DEBUGGING %}
+        {% if question.QUESTION_TYPE == QUESTION_TYPE_DEBUGGING or question.QUESTION_TYPE == QUESTION_TYPE_MODIFY %}
             var read_only_lines_top = {{ question.read_only_lines_top }};
             var read_only_lines_bottom = {{ question.read_only_lines_bottom }};
             var initial_code = '{{ question.initial_code|escapejs }}';
