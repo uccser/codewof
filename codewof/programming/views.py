@@ -23,6 +23,7 @@ from programming.serializers import (
 from programming.models import (
     Profile,
     Question,
+    QuestionTypeModify,
     TestCase,
     Attempt,
     TestCaseAttempt,
@@ -31,6 +32,8 @@ from programming.models import (
 from programming.codewof_utils import add_points, check_achievement_conditions
 from programming.filters import QuestionFilter
 from programming.utils import create_filter_helper
+
+from utils.ast_structure_check import check_structural_requirements
 
 QUESTION_JAVASCRIPT = 'js/question_types/{}.js'
 
@@ -168,11 +171,22 @@ def save_question_attempt(request):
                     if test_case['passed']:
                         total_passed += 1
 
+                structure_errors = [] #for modify questions that require using/not using a statement
+                if isinstance(question, QuestionTypeModify):
+                    try:
+                        structure_errors = check_structural_requirements(
+                            user_code,
+                            required=question.required_constructs,
+                            disallowed=question.disallowed_constructs
+                        )
+                    except SyntaxError:
+                        structure_errors = ["Code could not be parsed."]
+
                 attempt = Attempt.objects.create(
                     profile=profile,
                     question=question,
                     user_code=user_code,
-                    passed_tests=total_passed == total_tests,
+                    passed_tests=(total_passed == total_tests) and not structure_errors,
                 )
 
                 # Create test case attempt objects
@@ -184,6 +198,7 @@ def save_question_attempt(request):
                         passed=test_case_data['passed'],
                     )
                 result['success'] = True
+                result['structure_errors'] = structure_errors
                 points_before = profile.points
                 points = add_points(question, profile, attempt)
                 achievements = check_achievement_conditions(profile)

@@ -453,6 +453,8 @@ class QuestionTypeModify(Question):
     initial_code = models.TextField()
     read_only_lines_top = models.PositiveSmallIntegerField(default=0) #Note: may want to remove the ability to make likes unmodifiable - todo: this may be good for fill in the blank questions.
     read_only_lines_bottom = models.PositiveSmallIntegerField(default=0)
+    disallowed_constructs = models.JSONField(default=list, blank=True)
+    required_constructs = models.JSONField(default=list, blank=True)
 
     class Meta:
         """Meta information for class."""

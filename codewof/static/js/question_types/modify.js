@@ -79,7 +79,10 @@ async function run_code(editor, submit) {
                 user_input: user_code,
                 question: question_id,
                 test_cases: test_cases,
-            }
+            },
+            function (response) {
+                base.display_structure_feedback(response.structure_errors);
+        }
         );
     }
     base.display_submission_feedback(test_cases);

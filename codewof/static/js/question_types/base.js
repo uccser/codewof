@@ -38,7 +38,12 @@ function ajax_request(url_name, data, success_function) {
         contentType: 'application/json; charset=utf-8',
         headers: { "X-CSRFToken": csrf_token },
         dataType: 'json',
-        success: update_gamification
+        success: function (response) {
+            update_gamification(response);
+            if (typeof success_function === 'function') {
+                success_function(response);
+            }
+        }
     });
 }
 
@@ -52,6 +57,7 @@ function create_alert(type, text) {
 
 async function clear_submission_feedback() {
     $('#submission_feedback').empty();
+    $('#structure_feedback').empty();
 }
 
 function update_gamification(data) {
@@ -341,6 +347,21 @@ async function run_python_code_pyodide(user_code, test_case, isProgram) {
     });
 }
 
+function display_structure_feedback(structure_errors) {
+    var container = $('#structure_feedback');
+    container.empty();
+    if (structure_errors && structure_errors.length > 0) {
+        var text = "Tests passed, but your solution doesn't meet the requirements:";
+        var alert = create_alert('warning', text);
+        var list = $('<ul>');
+        structure_errors.forEach(function (message) {
+            list.append($('<li>').text(message));
+        });
+        alert.append(list);
+        container.append(alert);
+    }
+}
+
 exports.ajax_request = ajax_request;
 exports.clear_submission_feedback = clear_submission_feedback;
 exports.display_submission_feedback = display_submission_feedback;
@@ -349,4 +370,5 @@ exports.run_test_cases = run_test_cases;
 exports.scroll_to_element = scroll_to_element;
 exports.waitForWorkerReady = waitForWorkerReady;
 exports.run_python_code_pyodide = run_python_code_pyodide;
+exports.display_structure_feedback = display_structure_feedback;
 exports.editor = editor;

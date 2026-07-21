@@ -2301,6 +2301,10 @@ loopy-loop:
     - modify
   number_of_read_only_lines_top: 1
   number_of_read_only_lines_bottom: 0
+  disallowed-constructs: // for modify questions do not allow the solutions to be same as sample code
+    - while
+  required-constructs: // what feature is required to be used in the code for modify questions.
+    - for
   test-cases:
     1: normal
   difficulty: difficulty-1
