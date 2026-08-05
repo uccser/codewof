@@ -351,7 +351,9 @@ function display_structure_feedback(structure_errors) {
     var container = $('#structure_feedback');
     container.empty();
     if (structure_errors && structure_errors.length > 0) {
-        var text = "Tests passed, but your solution doesn't meet the requirements:";
+        var test_container = $('#submission_feedback');
+        test_container.empty();
+        var text = "Your solution doesn't meet the requirements:";
         var alert = create_alert('warning', text);
         var list = $('<ul>');
         structure_errors.forEach(function (message) {

@@ -1,6 +1,8 @@
 """Views for programming application."""
 
 import json
+import logging
+
 from django.contrib.auth.decorators import login_required
 from django.views import generic
 from django.db.models import Count, Max, Exists, OuterRef
@@ -155,7 +157,7 @@ def save_question_attempt(request):
         if request.user.is_authenticated:
             request_json = json.loads(request.body.decode('utf-8'))
             profile = request.user.profile
-            question = Question.objects.get(pk=request_json['question'])
+            question = Question.objects.get_subclass(pk=request_json['question'])
             user_code = request_json['user_input']
 
             # If same as previous attempt, don't save to database
@@ -186,9 +188,8 @@ def save_question_attempt(request):
                     profile=profile,
                     question=question,
                     user_code=user_code,
-                    passed_tests=(total_passed == total_tests) and not structure_errors,
+                    passed_tests=((total_passed == total_tests) and (len(structure_errors) == 0)),
                 )
-
                 # Create test case attempt objects
                 for test_case_id, test_case_data in test_cases.items():
                     test_case = TestCase.objects.get(pk=test_case_id)

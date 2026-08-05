@@ -81,7 +81,7 @@ async function run_code(editor, submit) {
                 test_cases: test_cases,
             },
             function (response) {
-                base.display_structure_feedback(response.structure_errors);
+                base.display_structure_feedback(response['structure_errors']);
         }
         );
     }
@@ -123,6 +123,7 @@ function mark_lines_as_read_only(editor) {
         );
     }
 }
+
 
 function setTutorialAttributes() {
     $(".question-text").attr(

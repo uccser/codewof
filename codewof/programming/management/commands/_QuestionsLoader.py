@@ -168,8 +168,8 @@ class QuestionsLoader(TranslatableModelLoader):
                     defaults['read_only_lines_top'] = int(question_data.get('number_of_read_only_lines_top', 0))
                     defaults['read_only_lines_bottom'] = int(question_data.get('number_of_read_only_lines_bottom', 0))
                     if question_class == QuestionTypeModify:
-                        defaults['disallowed_constructs'] = question_data.get('disallowed_constructs', [])
-                        defaults['required_constructs'] = question_data.get('required_constructs', [])
+                        defaults['disallowed_constructs'] = question_data.get('disallowed-constructs', [])
+                        defaults['required_constructs'] = question_data.get('required-constructs', [])
 
                 defaults['difficulty_level'] = difficulty_level
                 defaults['question_type'] = question_type.title()

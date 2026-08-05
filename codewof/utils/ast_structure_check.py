@@ -1,6 +1,7 @@
 import ast
+import logging
 
-# todo: add docstrings
+
 def get_node_type_names(code):
     syntax_tree = ast.parse(code)
     return {type(node).__name__ for node in ast.walk(syntax_tree)}
