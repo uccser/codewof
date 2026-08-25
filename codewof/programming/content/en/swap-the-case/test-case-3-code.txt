@@ -1,0 +1,1 @@
+print(swap_the_case("abc"))

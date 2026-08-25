@@ -1,0 +1,1 @@
+print(is_valid_triangle(3, 4, 5))

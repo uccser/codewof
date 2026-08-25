@@ -33,3 +33,6 @@ string-operations:
 
 lists:
   name: Lists
+
+ai-generated:
+  name: AI Generated Question

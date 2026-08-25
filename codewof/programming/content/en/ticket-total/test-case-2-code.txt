@@ -1,0 +1,1 @@
+print(ticket_total(1, 1))

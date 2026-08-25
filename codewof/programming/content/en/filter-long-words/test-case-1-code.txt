@@ -1,0 +1,1 @@
+print(long_words(["hi", "hello", "there", "cat"]))

@@ -1,0 +1,1 @@
+print(digit_sum(123))

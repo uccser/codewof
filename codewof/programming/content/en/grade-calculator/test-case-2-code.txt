@@ -1,0 +1,1 @@
+print(grade(70))

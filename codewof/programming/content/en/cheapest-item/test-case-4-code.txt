@@ -1,0 +1,1 @@
+print(cheapest([-1, 4, 12]))

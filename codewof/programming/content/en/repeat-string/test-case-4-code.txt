@@ -1,0 +1,1 @@
+print(repeat_string("-", 10))

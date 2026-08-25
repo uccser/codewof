@@ -1,0 +1,1 @@
+print(letter_count("hello", "l"))

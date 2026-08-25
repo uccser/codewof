@@ -1,0 +1,1 @@
+print(repeat_string("hi", 0))

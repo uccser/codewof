@@ -1,0 +1,1 @@
+print(middle_item([1, 2, 3]))

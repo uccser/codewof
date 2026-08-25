@@ -1,0 +1,1 @@
+vowel_or_consonant('z')

@@ -1,0 +1,1 @@
+print(count_passes([100, 20, 75, 50]))

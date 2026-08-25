@@ -1,0 +1,1 @@
+print(is_multiple(0, 4))

@@ -1,0 +1,1 @@
+stars_square(1)

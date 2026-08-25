@@ -1,0 +1,2 @@
+Usernames cannot contain spaces!
+Welcome johnsmith!
