@@ -1,0 +1,1 @@
+print(net_pay(10, 20))

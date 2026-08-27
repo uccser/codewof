@@ -1,0 +1,1 @@
+print(count_odds([2, 4, 6]))

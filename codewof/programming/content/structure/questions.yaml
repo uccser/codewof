@@ -2275,3 +2275,1017 @@ space-cargo:
     - lists
   contexts:
     - simple-mathematics
+
+#      AI GENERATED QUESTIONS:
+
+
+# kia-ora-name
+kia-ora-name:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+  difficulty: difficulty-0
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+    - string-operations
+
+
+# kilometres-to-metres
+kilometres-to-metres:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-0
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+  contexts:
+    - simple-mathematics
+    - real-world-applications
+
+
+# hangi-portions
+hangi-portions:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+  contexts:
+    - simple-mathematics
+    - real-world-applications
+
+
+# ferry-ticket-total
+ferry-ticket-total:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+  contexts:
+    - simple-mathematics
+    - real-world-applications
+
+
+# average-of-three
+average-of-three:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+  contexts:
+    - simple-mathematics
+
+
+# whisper-it
+whisper-it:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+    - string-operations
+
+
+# initials
+initials:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+    - string-operations
+  contexts:
+    - real-world-applications
+
+
+# raincoat-check
+raincoat-check:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+    - single-condition
+  contexts:
+    - real-world-applications
+
+
+# film-rating
+film-rating:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+    5: normal
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+    - multiple-conditions
+  contexts:
+    - real-world-applications
+
+
+# count-up-to
+count-up-to:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+    - range-loops
+  contexts:
+    - simple-mathematics
+
+
+# sum-to-n
+sum-to-n:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+    - range-loops
+  contexts:
+    - simple-mathematics
+
+
+# add-until-zero
+add-until-zero:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+    - single-condition
+    - conditional-loops
+  contexts:
+    - simple-mathematics
+
+
+# secret-kiwi-word
+secret-kiwi-word:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+    - single-condition
+    - conditional-loops
+    - string-operations
+  contexts:
+    - real-world-applications
+
+
+# bigger-of-two
+bigger-of-two:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+    - single-condition
+  contexts:
+    - simple-mathematics
+
+
+# market-stall-total
+market-stall-total:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+    - range-loops
+  contexts:
+    - simple-mathematics
+    - real-world-applications
+
+
+# word-length
+word-length:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+    - string-operations
+
+
+# temperature-difference
+temperature-difference:
+  types:
+    - program
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - display-text
+    - inputs
+  contexts:
+    - simple-mathematics
+    - real-world-applications
+
+
+# cube-number
+cube-number:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - functions
+  contexts:
+    - simple-mathematics
+
+
+# seconds-to-whole-minutes
+seconds-to-whole-minutes:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - functions
+  contexts:
+    - simple-mathematics
+    - real-world-applications
+
+
+# is-vowel
+is-vowel:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - single-condition
+    - string-operations
+
+
+# count-kiwis
+count-kiwis:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - real-world-applications
+
+
+# sum-of-squares
+sum-of-squares:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
+
+
+# longest-word
+longest-word:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-3
+  concepts:
+    - ai-generated
+    - functions
+    - single-condition
+    - range-loops
+    - string-operations
+    - lists
+
+
+# triangle-area
+triangle-area:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - functions
+  contexts:
+    - basic-geometry
+    - simple-mathematics
+
+
+# is-palindrome
+is-palindrome:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+  difficulty: difficulty-3
+  concepts:
+    - ai-generated
+    - functions
+    - range-loops
+    - string-operations
+
+
+# count-words
+count-words:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - string-operations
+
+
+# number-range
+number-range:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - lists
+  contexts:
+    - simple-mathematics
+
+
+# count-capitals
+count-capitals:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - single-condition
+    - range-loops
+    - string-operations
+
+
+# remove-short-words
+remove-short-words:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+  difficulty: difficulty-3
+  concepts:
+    - ai-generated
+    - functions
+    - single-condition
+    - range-loops
+    - string-operations
+    - lists
+
+
+# every-second-item
+every-second-item:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-3
+  concepts:
+    - ai-generated
+    - functions
+    - range-loops
+    - lists
+
+
+# net-pay
+net-pay:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+  contexts:
+    - simple-mathematics
+    - real-world-applications
+
+
+# is-even-length
+is-even-length:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - single-condition
+    - string-operations
+
+
+# print-ladder
+print-ladder:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - display-text
+    - functions
+    - range-loops
+
+
+# middle-item
+middle-item:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - lists
+  contexts:
+    - simple-mathematics
+
+
+# count-odds
+count-odds:
+  types:
+    - function
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
+
+
+# halve-number
+halve-number:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "return number * 2"
+    - "return number // 2"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - functions
+  contexts:
+    - simple-mathematics
+
+
+# print-name-tags
+print-name-tags:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print("Hello, my name is name")'
+    - "for name in range(names):"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - display-text
+    - functions
+    - range-loops
+    - string-operations
+    - lists
+  contexts:
+    - real-world-applications
+
+
+# total-of-list
+total-of-list:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "result = 1"
+    - "return numbers"
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
+
+
+# count-evens
+count-evens:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "if number % 2 != 0:"
+    - "count = number"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
+
+
+# largest-in-list
+largest-in-list:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "biggest = 0"
+    - "if number < biggest:"
+  test-cases:
+    1: normal
+    2: exceptional
+    3: exceptional
+  difficulty: difficulty-3
+  concepts:
+    - ai-generated
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
+
+
+# multiply-list
+multiply-list:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "result = 0"
+    - "result += number"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: exceptional
+  difficulty: difficulty-3
+  concepts:
+    - ai-generated
+    - functions
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
+
+
+# first-and-last-letter
+first-and-last-letter:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "return word[0] + word[len(word)]"
+    - "return word[1] + word[-1]"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - string-operations
+
+
+# uppercase-list
+uppercase-list:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "result.append(word)"
+    - "return words"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - range-loops
+    - string-operations
+    - lists
+
+
+# warmer-than
+warmer-than:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "if temperature >= threshold:"
+    - "count = temperature"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
+  difficulty: difficulty-3
+  concepts:
+    - ai-generated
+    - functions
+    - single-condition
+    - range-loops
+    - lists
+  contexts:
+    - real-world-applications
+
+
+# double-all
+double-all:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "result.append(number)"
+    - "result = number * 2"
+  test-cases:
+    1: normal
+    2: exceptional
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
+
+
+# countdown-by-twos
+countdown-by-twos:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "for start in range(0, 2):"
+    - "start -= 1"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-3
+  concepts:
+    - ai-generated
+    - display-text
+    - functions
+    - single-condition
+    - conditional-loops
+  contexts:
+    - simple-mathematics
+
+
+# join-with-dashes
+join-with-dashes:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "return result"
+    - "result = word + '-'"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-3
+  concepts:
+    - ai-generated
+    - functions
+    - range-loops
+    - string-operations
+    - lists
+
+
+# is-adult
+is-adult:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "if age > 18:"
+    - 'return "True"'
+  test-cases:
+    1: normal
+    2: normal
+    3: normal
+    4: normal
+  difficulty: difficulty-1
+  concepts:
+    - ai-generated
+    - functions
+    - single-condition
+  contexts:
+    - real-world-applications
+
+
+# reverse-list
+reverse-list:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "result = result + [item]"
+    - "return items"
+  test-cases:
+    1: normal
+    2: exceptional
+    3: exceptional
+  difficulty: difficulty-3
+  concepts:
+    - ai-generated
+    - functions
+    - range-loops
+    - lists
+
+
+# stars-square
+stars-square:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - 'print("#" * i)'
+    - "for i in range(1, size):"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - display-text
+    - functions
+    - range-loops
+    - string-operations
+  contexts:
+    - basic-geometry
+
+
+# average-of-list
+average-of-list:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "return total / total"
+    - "return total // len(numbers)"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+  difficulty: difficulty-2
+  concepts:
+    - ai-generated
+    - functions
+    - range-loops
+    - lists
+  contexts:
+    - simple-mathematics
+
+
+# koha-boxes
+koha-boxes:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "boxes = envelopes / 20"
+    - "if envelopes % 20 == 0:"
+  test-cases:
+    1: normal
+    2: normal
+    3: exceptional
+    4: normal
+  difficulty: difficulty-3
+  concepts:
+    - ai-generated
+    - functions
+    - single-condition
+  contexts:
+    - advanced-mathematics
+    - real-world-applications
+
+
+# tally-tries
+tally-tries:
+  types:
+    - function
+    - parsons
+  parsons-extra-lines:
+    - "return tries + 5"
+    - "print(tries * 5)"
+  test-cases:
+    1: normal
+    2: exceptional
+    3: normal
+  difficulty: difficulty-0
+  concepts:
+    - ai-generated
+    - functions
+  contexts:
+    - simple-mathematics
+    - real-world-applications

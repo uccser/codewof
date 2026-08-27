@@ -1,0 +1,1 @@
+print(join_with_dashes(['one', 'two', 'three']))

@@ -1,0 +1,1 @@
+print(join_with_dashes(['kia', 'ora']))
