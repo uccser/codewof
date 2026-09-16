@@ -1,0 +1,1 @@
+print(halve_all([2, 4]))

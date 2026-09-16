@@ -1,0 +1,1 @@
+print(star_rating(5))

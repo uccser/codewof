@@ -1,0 +1,1 @@
+print(average_temperature([0, 0, 3]))

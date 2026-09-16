@@ -1,0 +1,1 @@
+print(average_of_two(0, 0))

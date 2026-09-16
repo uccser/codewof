@@ -1,0 +1,1 @@
+print(type(is_in_range(3, 1, 10)))

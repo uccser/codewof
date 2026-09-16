@@ -1,0 +1,1 @@
+print(percentage(0, 5))

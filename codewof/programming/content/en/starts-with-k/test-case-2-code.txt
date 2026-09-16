@@ -1,0 +1,1 @@
+print(starts_with_k('Kererū'))

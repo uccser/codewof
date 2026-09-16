@@ -1,0 +1,1 @@
+print(count_above_average([1, 2, 3]))

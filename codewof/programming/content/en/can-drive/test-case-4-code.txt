@@ -1,0 +1,1 @@
+print(type(can_drive(2)))

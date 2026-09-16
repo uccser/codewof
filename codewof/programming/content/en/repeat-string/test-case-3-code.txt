@@ -1,0 +1,1 @@
+print(repeat('x', 0) == '')

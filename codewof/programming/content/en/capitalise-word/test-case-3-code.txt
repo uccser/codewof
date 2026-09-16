@@ -1,0 +1,1 @@
+print(capitalise('tE rEo'))

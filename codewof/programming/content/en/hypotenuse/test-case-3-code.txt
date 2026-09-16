@@ -1,0 +1,1 @@
+print(hypotenuse(5, 12))

@@ -1,0 +1,1 @@
+print_score_message("Hemi", 0)

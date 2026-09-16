@@ -1,0 +1,1 @@
+print(total_rainfall([2, 0, 5]))

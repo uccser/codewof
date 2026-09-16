@@ -1,0 +1,1 @@
+print_word_times("tui", 2)

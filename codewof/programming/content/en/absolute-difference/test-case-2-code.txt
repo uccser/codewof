@@ -1,0 +1,1 @@
+print(difference(10, 3))

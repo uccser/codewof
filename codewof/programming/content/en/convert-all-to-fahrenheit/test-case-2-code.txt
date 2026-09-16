@@ -1,0 +1,1 @@
+print(all_to_fahrenheit([-40]))

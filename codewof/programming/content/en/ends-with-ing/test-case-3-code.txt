@@ -1,0 +1,1 @@
+print(ends_with_ing('SINGING'))

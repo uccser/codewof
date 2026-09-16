@@ -1,0 +1,1 @@
+print(time_string(90))

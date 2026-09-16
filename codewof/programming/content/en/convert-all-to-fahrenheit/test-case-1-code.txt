@@ -1,0 +1,1 @@
+print(all_to_fahrenheit([0, 10, 100]))

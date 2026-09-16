@@ -1,0 +1,1 @@
+print(is_in_range(5, 1, 10))

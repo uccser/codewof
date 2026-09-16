@@ -1,0 +1,1 @@
+print(percentage_of(3, 4))

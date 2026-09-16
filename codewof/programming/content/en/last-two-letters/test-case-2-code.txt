@@ -1,0 +1,1 @@
+print(last_two('tui'))

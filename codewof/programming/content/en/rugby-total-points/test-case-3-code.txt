@@ -1,0 +1,1 @@
+print(total_points(1, 1))

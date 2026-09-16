@@ -1,0 +1,1 @@
+print(cuboid_volume(1, 1, 1))

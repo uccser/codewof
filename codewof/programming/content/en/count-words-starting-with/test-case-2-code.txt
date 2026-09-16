@@ -1,0 +1,1 @@
+print(count_starting_with(['tui'], 'k'))

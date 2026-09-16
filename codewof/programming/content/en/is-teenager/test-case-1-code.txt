@@ -1,0 +1,1 @@
+print(is_teenager(15))

@@ -1,0 +1,1 @@
+print(total_legs(1))

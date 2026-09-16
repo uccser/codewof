@@ -1,0 +1,1 @@
+print(fuel_economy(0, 5))

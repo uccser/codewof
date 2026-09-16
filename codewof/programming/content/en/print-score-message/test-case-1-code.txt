@@ -1,0 +1,1 @@
+print_score_message("Aroha", 12)

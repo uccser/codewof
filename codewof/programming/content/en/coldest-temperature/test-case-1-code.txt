@@ -1,0 +1,1 @@
+print(coldest([12, 5, 20]))

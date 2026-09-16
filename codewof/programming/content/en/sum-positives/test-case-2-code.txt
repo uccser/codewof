@@ -1,0 +1,1 @@
+print(sum_positives([-1, -2]))

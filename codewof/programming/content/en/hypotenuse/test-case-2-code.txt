@@ -1,0 +1,1 @@
+print(hypotenuse(6, 8))

@@ -1,0 +1,1 @@
+print(subtract_two(0))

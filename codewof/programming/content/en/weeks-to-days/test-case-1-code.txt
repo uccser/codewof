@@ -1,0 +1,1 @@
+print(weeks_to_days(2))

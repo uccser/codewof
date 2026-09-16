@@ -1,0 +1,1 @@
+print(running_totals([1, 2, 3]))

@@ -1,0 +1,1 @@
+print(count_longer_than(['kiwi', 'moa', 'kereru'], 3))
