@@ -5,7 +5,7 @@ django-model-utils==5.0.0
 django-anymail[mailgun]==14.0
 django-mail-templated==2.6.5
 django-allauth==0.55.2
-django-crispy-forms==1.14.0
+django-crispy-forms==2.7
 django-autoslug==1.9.9
 djangorestframework==3.17.2
 coreapi==2.3.3
