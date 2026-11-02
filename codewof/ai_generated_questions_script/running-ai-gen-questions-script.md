@@ -20,7 +20,7 @@ It reads the existing questions and the [adding questions guide](../../docs/addi
 2. In a terminal, go to this directory and create a virtual environment:
 
    ```
-   cd codewof/ai-generated-questions-script
+   cd codewof/ai_generated_questions_script
    python3 -m venv .venv
    source .venv/bin/activate
    ```
